@@ -1,0 +1,207 @@
+{
+  "fetched_at": "2026-04-09",
+  "sources": [
+    "https://gardnermcintyre.com/wips/personas/lab-research.html",
+    "https://gardnermcintyre.com/wips/personas/lab-experiments-supplemental.html"
+  ],
+  "experiments": {
+    "2.16": {
+      "id": "2.16",
+      "title": "Prompt compression",
+      "problem_space": 2,
+      "files": ["synthesis/engine/prompt_builder.py", "evals/prompt_ablation.py"],
+      "change_description": "Ablation harness that deletes each system-prompt section and measures score impact. Systematically delete prompt sections to identify essential components and find dead weight.",
+      "metric": "Score delta per removed section (finds dead weight)",
+      "hypothesis": "Removing 50% of non-essential prompt language won't degrade synthesis quality"
+    },
+    "2.17": {
+      "id": "2.17",
+      "title": "System vs user prompt placement",
+      "problem_space": 2,
+      "files": ["synthesis/engine/prompt_builder.py", "synthesis/engine/model_backend.py"],
+      "change_description": "Parameterize where schema / data / instructions live across the two message roles. Three layouts. Measure cache-hit rates and quality outcomes.",
+      "metric": "Cache-hit rate and quality",
+      "hypothesis": "Restructuring prompt layers optimizes both cached-prefix efficiency and output quality"
+    },
+    "2.18": {
+      "id": "2.18",
+      "title": "Prompt prefix caching",
+      "problem_space": 2,
+      "files": ["synthesis/engine/model_backend.py", "synthesis/engine/prompt_builder.py"],
+      "change_description": "Mark static prompt sections with cache_control=ephemeral. Verify cache hits via usage headers. Reorganize prompts to maximize prefix caching by placing static schema/instructions first.",
+      "metric": "Cost reduction at fleet scale",
+      "hypothesis": "Cost reductions at scale through cached prompt prefixes on immutable schema portions"
+    },
+    "1.23": {
+      "id": "1.23",
+      "title": "Internalized contradictions",
+      "problem_space": 1,
+      "files": ["synthesis/models/persona.py", "synthesis/engine/prompt_builder.py", "twin/twin/chat.py"],
+      "change_description": "Add contradictions: list[str] (2-4 items). Prompt elicits them. Twin references them for character consistency under probing. Forces synthesizer to surface internal tensions per persona.",
+      "metric": "Turing-pass rate; adversarial-refusal handling",
+      "hypothesis": "Personas with embedded contradictions feel measurably more human and handle adversarial challenges better"
+    },
+    "5.08": {
+      "id": "5.08",
+      "title": "Adversarial detector model",
+      "problem_space": 5,
+      "files": ["evals/ai_detector.py"],
+      "change_description": "Train or prompt a small classifier to distinguish AI personas from real transcripts. Use accuracy as inverted realism metric.",
+      "metric": "Classifier accuracy as realism proxy",
+      "hypothesis": "Detector discrimination is more sensitive than rubric-based judging for evaluating top-tier models"
+    },
+    "6.09": {
+      "id": "6.09",
+      "title": "Color palette view",
+      "problem_space": 6,
+      "files": ["evals/persona_viz.py"],
+      "change_description": "UMAP or t-SNE projection of the persona set. Render as HTML trust artifact. Visualize all personas in 2D embedding-space projection.",
+      "metric": "Visual spread vs cluster",
+      "hypothesis": "Visual distribution patterns correlate with set quality perception and distinctiveness"
+    },
+    "6.17": {
+      "id": "6.17",
+      "title": "Persona naming distinctiveness",
+      "problem_space": 6,
+      "files": ["evals/naming_audit.py"],
+      "change_description": "Cluster persona names across all tenants to find archetype collapse (Marketing Mary, Technical Tom). Audit naming patterns for synthetic-origin bias.",
+      "metric": "Name-space clustering coefficient",
+      "hypothesis": "Generic naming indicates low lexical creativity and synthetic-origin bias in persona generation"
+    },
+    "4.19": {
+      "id": "4.19",
+      "title": "Cross-language coherence",
+      "problem_space": 4,
+      "files": ["twin/twin/chat.py", "evals/multilingual_twin.py"],
+      "change_description": "Send user messages in Spanish / Mandarin while persona remains English. Measure code-switching + trait preservation.",
+      "metric": "Trait preservation rate; voice collapse rate",
+      "hypothesis": "Traits and voice degrade under translation; personality anchors don't reliably cross linguistic boundaries"
+    },
+    "4.21": {
+      "id": "4.21",
+      "title": "Curiosity behavior",
+      "problem_space": 4,
+      "files": ["twin/twin/chat.py"],
+      "change_description": "Instruction variant that encourages curiosity (twin asks back). Measure question-asking rate and correlate with realism.",
+      "metric": "Question rate vs realism score correlation",
+      "hypothesis": "Realistic conversations show symmetric curiosity; one-way personas feel like chatbots"
+    },
+    "3.23": {
+      "id": "3.23",
+      "title": "Predictive grounding",
+      "problem_space": 3,
+      "files": ["evals/predictive_grounding.py", "synthesis/fixtures/longitudinal_tenant/"],
+      "change_description": "Need a longitudinal fixture with train/test time split. Synthesize on train, evaluate predictions on held-out records after time T.",
+      "metric": "Future behavior prediction accuracy",
+      "hypothesis": "Grounded personas accurately predict future behavior; LLM-prior personas do not"
+    },
+    "1.12": {
+      "id": "1.12",
+      "title": "Temporal layering",
+      "problem_space": 1,
+      "files": ["synthesis/models/persona.py", "synthesis/engine/synthesizer.py"],
+      "change_description": "Wrap PersonaV1 in PersonaTemporal with past/present/future slices. Synthesize 3x per cluster with time offset metadata.",
+      "metric": "Twin depth rating; responses to 'how did you feel 5 years ago' questions",
+      "hypothesis": "Temporal layering deepens perceived authenticity versus single-slice snapshot personas"
+    },
+    "1.14": {
+      "id": "1.14",
+      "title": "Belief vs value separation",
+      "problem_space": 1,
+      "files": ["synthesis/models/persona.py", "synthesis/engine/prompt_builder.py"],
+      "change_description": "Split into beliefs[] (factual claims) and values[] (epistemic style / how they decide).",
+      "metric": "Contradiction rate under belief-updating prompts",
+      "hypothesis": "Splitting belief and values reduces contradictions because twins can update facts without breaking reasoning style"
+    },
+    "3.13": {
+      "id": "3.13",
+      "title": "Temporal grounding",
+      "problem_space": 3,
+      "files": ["synthesis/models/persona.py", "synthesis/engine/prompt_builder.py"],
+      "change_description": "Add date_range field to SourceEvidence. Prompt requires it. Twin reads it for 'is this still true' handling.",
+      "metric": "Staleness detection by twin on dated claims",
+      "hypothesis": "Time-stamped evidence improves customer confidence and enables longitudinal persona aging"
+    },
+    "5.09": {
+      "id": "5.09",
+      "title": "Eval drift over model versions",
+      "problem_space": 5,
+      "files": ["evals/version_drift.py"],
+      "change_description": "Save eval results per model version. Re-run suite on new releases. Diff. Track judge calibration drift across releases.",
+      "metric": "Score delta per version bump",
+      "hypothesis": "Judges become measurably harsher or kinder with model generations; requires version pinning"
+    },
+    "1.16": {
+      "id": "1.16",
+      "title": "Persona-to-persona references",
+      "problem_space": 1,
+      "files": ["synthesis/models/persona.py", "synthesis/engine/synthesizer.py"],
+      "change_description": "Add relates_to: list[{other_persona_id, relation}]. Second pass fills relationships after all personas exist.",
+      "metric": "Set distinctiveness; relational graph density",
+      "hypothesis": "Relational structure improves population-level distinctiveness over isolated persona definitions"
+    },
+    "2.20": {
+      "id": "2.20",
+      "title": "Reverse-engineered persona",
+      "problem_space": 2,
+      "files": ["synthesis/engine/transcript_first.py"],
+      "change_description": "First call generates a 10-turn customer-interview transcript from cluster data. Second call extracts the persona JSON from transcript.",
+      "metric": "Groundedness lift via dialogue-forced grounding",
+      "hypothesis": "Dialogue-first approach forces grounding through realistic conversation patterns"
+    },
+    "3.19": {
+      "id": "3.19",
+      "title": "Source weighting by recency",
+      "problem_space": 3,
+      "files": ["synthesis/engine/prompt_builder.py"],
+      "change_description": "Add time-decay weight to cluster record rendering. Parameterize decay constant.",
+      "metric": "Freshness perception in judge scores",
+      "hypothesis": "Recent behavioral data dominates persona traits; older data gets systematically deprioritized"
+    },
+    "5.19": {
+      "id": "5.19",
+      "title": "Continuous vs binary metrics",
+      "problem_space": 5,
+      "files": ["evals/metric_resolution.py"],
+      "change_description": "Run rubric with 1-5 scale vs pass/fail. Compare reliability across both scale types.",
+      "metric": "Reliability per scale type",
+      "hypothesis": "Binary metrics yield more robust signals than scales despite coarser resolution"
+    },
+    "3.22": {
+      "id": "3.22",
+      "title": "Domain-specific grounding rules",
+      "problem_space": 3,
+      "files": ["synthesis/engine/domain_rules.py"],
+      "change_description": "Rule engine that applies stricter grounding for financial/medical claims. N+1 sources required for sensitive categories.",
+      "metric": "High-risk false-positive rate",
+      "hypothesis": "Strict evidence enforcement reduces false-positive grounding in sensitive claim categories"
+    },
+    "4.12": {
+      "id": "4.12",
+      "title": "Twin-to-twin conversations",
+      "problem_space": 4,
+      "files": ["evals/twin_to_twin.py"],
+      "change_description": "Pair two TwinChat instances from same tenant, alternate messages. Score distinctiveness and personality preservation.",
+      "metric": "Inter-twin distinctiveness; archetype recognition",
+      "hypothesis": "Twins should remain distinct and recognizable to each other across substantive dialogue"
+    },
+    "5.23": {
+      "id": "5.23",
+      "title": "Composite realism score",
+      "problem_space": 5,
+      "files": ["evals/composite_score.py"],
+      "change_description": "Test weighting schemes for headline 0-100 number from weighted sub-metrics (validity, groundedness, distinctiveness, judge rubric, Turing).",
+      "metric": "Stability across model swaps; customer-signal correlation",
+      "hypothesis": "Composite metric stability is achievable and correlates with downstream business outcomes"
+    },
+    "6.14": {
+      "id": "6.14",
+      "title": "Persona graph relationships",
+      "problem_space": 6,
+      "files": ["evals/persona_graph.py"],
+      "change_description": "Build a graph where edges represent shared traits. Compute density and clustering coefficient as coherence/distinctiveness proxy.",
+      "metric": "Graph density (lower = more distinct)",
+      "hypothesis": "Graph topology quantifies population-level coherence and reveals persona clustering patterns"
+    }
+  }
+}
