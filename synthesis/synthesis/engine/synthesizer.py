@@ -54,6 +54,7 @@ class SynthesisResult:
 async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
+    system_prompt: str | None = None,
     max_retries: int = MAX_RETRIES,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
@@ -61,6 +62,7 @@ async def synthesize(
     Calls the LLM with tool-use forcing, validates with Pydantic, checks
     groundedness, and retries with error context on failure.
     """
+    effective_system_prompt = system_prompt if system_prompt is not None else SYSTEM_PROMPT
     tool = build_tool_definition()
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
@@ -78,7 +80,7 @@ async def synthesize(
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
+            system=effective_system_prompt,
             messages=messages,
             tool=tool,
         )
