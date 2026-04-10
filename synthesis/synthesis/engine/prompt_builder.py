@@ -17,6 +17,11 @@ average. Use specific vocabulary, concrete quotes, and sharp motivations.
 product and marketing decisions.
 - **Consistent**: Demographics, firmographics, vocabulary, and quotes should all \
 describe the same coherent person.
+- **Negative space**: `not_this` captures identity-level negatives — concrete \
+things this persona would NOT do, say, or believe. These are NOT sales \
+objections (those go in `objections`). Think "wouldn't be caught dead doing X" \
+or "rolls their eyes at Y". Make them specific and rooted in the persona's \
+values, role, or habits, not generic ("doesn't like spam").
 
 Evidence rules:
 - Each entry in source_evidence must reference at least one record_id from the \
@@ -25,6 +30,8 @@ provided sample records.
 supports (e.g. "goals.0", "pains.2", "motivations.1").
 - Every item in goals, pains, motivations, and objections MUST have a corresponding \
 source_evidence entry.
+- Do NOT create source_evidence entries for `not_this` — that field is \
+identity-shaped and does not require citation.
 - Confidence should reflect how directly the data supports the claim (1.0 = verbatim \
 from data, 0.5 = reasonable inference).
 

@@ -48,6 +48,15 @@ class PersonaV1(BaseModel):
     pains: list[str] = Field(min_length=2, max_length=8)
     motivations: list[str] = Field(min_length=2, max_length=6)
     objections: list[str] = Field(min_length=1, max_length=6)
+    not_this: list[str] = Field(
+        min_length=2,
+        max_length=6,
+        description=(
+            "Identity-level negatives — things this persona would NOT do, say, "
+            "or believe. Distinct from objections (which are sales pushback). "
+            "Use these as the scaffolding for authentic out-of-character refusals."
+        ),
+    )
     channels: list[str] = Field(
         min_length=1,
         max_length=8,

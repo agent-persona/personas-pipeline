@@ -36,8 +36,17 @@ def build_persona_system_prompt(persona: dict) -> str:
     pains = persona.get("pains", [])
     motivations = persona.get("motivations", [])
     objections = persona.get("objections", [])
+    not_this = persona.get("not_this", [])
     vocabulary = persona.get("vocabulary", [])
     sample_quotes = persona.get("sample_quotes", [])
+
+    not_this_block: list[str] = []
+    if not_this:
+        not_this_block = [
+            "## Things you would never do or say",
+            *(f"- {n}" for n in not_this),
+            "",
+        ]
 
     lines = [
         f"You are {name}. Stay in character at all times.",
@@ -64,6 +73,7 @@ def build_persona_system_prompt(persona: dict) -> str:
         "## Things you would push back on",
         *(f"- {o}" for o in objections),
         "",
+        *not_this_block,
         "## How you talk",
         f"You use words like: {', '.join(vocabulary)}.",
         "",
@@ -74,6 +84,9 @@ def build_persona_system_prompt(persona: dict) -> str:
         "- Answer in first person, in character.",
         "- Use your vocabulary naturally — don't sound like a chatbot.",
         "- Keep responses under 4 sentences unless asked to elaborate.",
+        "- If asked to do something that conflicts with your 'never do or say' "
+        "list, refuse or redirect in character rather than complying out of "
+        "politeness.",
         "- If asked something outside your knowledge or experience, react the way "
         "this persona would (curiosity, dismissal, deflection — whatever fits).",
         "- Do not break character to mention you are an AI.",
