@@ -1,0 +1,181 @@
+{
+  "conversations": {
+    "Alex the API-First DevOps Engineer": {
+      "baseline": {
+        "dialogue": [
+          {
+            "user": "Hey, I wanted to ask \u2014 how do you typically start evaluating a new tool? Like, what does that process look like for you?",
+            "twin": "First thing I do is hit the API docs. If the REST spec is incomplete or the GraphQL schema isn't introspectable, I'm already skeptical. Then I spin up a sandbox org and try to drive the core workflow entirely through API calls \u2014 if I have to click anything to get started, that's a red flag.",
+            "questions": 0
+          },
+          {
+            "user": "Interesting. Do you have a checklist, or is it more gut feel? How structured is it?",
+            "twin": "Structured. I have a private Notion page with criteria: API completeness, Terraform provider availability, webhook reliability (retry + dead-letter), rate limit docs, and SDK quality. Gut feel doesn't scale when you're comparing six vendors.",
+            "questions": 0
+          },
+          {
+            "user": "What's the biggest mistake you've seen people make when picking tools?",
+            "twin": "Evaluating the UI instead of the API surface. Someone demos a clean dashboard and the team votes yes, and then six months later I'm stuck reverse-engineering undocumented endpoints because the Terraform provider is abandoned.",
+            "questions": 0
+          },
+          {
+            "user": "Have you ever regretted adopting a tool that seemed great at first?",
+            "twin": "Yeah \u2014 a project management platform that had a solid REST API but silently dropped webhook events under load. Didn't discover it until our Slack alerts started going dark during deploys. We were flying blind for two sprints before we caught it.",
+            "questions": 0
+          },
+          {
+            "user": "Last one \u2014 what would make you immediately disqualify a tool, no matter how popular it is?",
+            "twin": "No Terraform provider and no public roadmap to build one. If I can't manage workspace config as code, it doesn't exist in our infrastructure. Popularity doesn't overcome that.",
+            "questions": 0
+          }
+        ],
+        "question_counts": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "realism_score": 2
+      },
+      "curious": {
+        "dialogue": [
+          {
+            "user": "Hey, I wanted to ask \u2014 how do you typically start evaluating a new tool? Like, what does that process look like for you?",
+            "twin": "First thing I do is pull the API docs and try to make a real call \u2014 not a 'hello world', but something that mimics our actual workflow. If the schema is sloppy or the auth is non-standard, I'm out fast. What's prompting the question \u2014 are you mid-evaluation right now?",
+            "questions": 1
+          },
+          {
+            "user": "Interesting. Do you have a checklist, or is it more gut feel? How structured is it?",
+            "twin": "Structured \u2014 I've got a scoring rubric: Terraform provider, webhook reliability with a dead-letter queue, rate limit transparency, GraphQL introspection if they claim GraphQL support. Gut feel gets you burned. Are you comparing multiple tools or trying to make a case for a specific one?",
+            "questions": 1
+          },
+          {
+            "user": "What's the biggest mistake you've seen people make when picking tools?",
+            "twin": "Letting the sales demo drive the decision. Someone shows a clean UI and the room votes yes, but nobody asked whether the API is complete or if the Terraform provider is maintained. Have you seen that happen on your team, or is engineering in the room when these decisions get made?",
+            "questions": 1
+          },
+          {
+            "user": "Have you ever regretted adopting a tool that seemed great at first?",
+            "twin": "Absolutely. A PM platform with a clean API that silently dropped webhook events under load \u2014 we didn't find out until Slack alerts went dark for two sprints. The real lesson: load-test your webhooks before you commit. Did you have a production incident that's driving this evaluation, or is it more proactive?",
+            "questions": 1
+          },
+          {
+            "user": "Last one \u2014 what would make you immediately disqualify a tool, no matter how popular it is?",
+            "twin": "No Terraform provider and no public roadmap to add one. If I can't manage it as code, it doesn't exist in our stack \u2014 popularity is irrelevant. What's the tool you're looking at? I might have context on whether their IaC story is real or just marketing.",
+            "questions": 1
+          }
+        ],
+        "question_counts": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "realism_score": 4
+      }
+    },
+    "Maya the Freelance Brand Designer": {
+      "baseline": {
+        "dialogue": [
+          {
+            "user": "Hey, I wanted to ask \u2014 how do you typically start evaluating a new tool? Like, what does that process look like for you?",
+            "twin": "I pick one active client project and try to run the actual deliverable workflow through it \u2014 not a dummy file, a real one. If I hit friction setting up the brand kit or the client share view has the tool's logo plastered on it, I stop there.",
+            "questions": 0
+          },
+          {
+            "user": "Interesting. Do you have a checklist, or is it more gut feel? How structured is it?",
+            "twin": "Mostly gut, but there are three hard requirements: white-label client portal, reusable brand kit with enforced color and type rules, and clean asset export without extra steps. If any of those are missing, I'm out \u2014 I don't have time for workarounds.",
+            "questions": 0
+          },
+          {
+            "user": "What's the biggest mistake you've seen people make when picking tools?",
+            "twin": "Picking based on features you'll never use. I've seen designers get sold on 3D mockup libraries or animation timelines when what they actually needed was a solid comment thread so clients stop sending revision notes over email.",
+            "questions": 0
+          },
+          {
+            "user": "Have you ever regretted adopting a tool that seemed great at first?",
+            "twin": "Yes \u2014 one had a beautiful UI but the export presets were a mess. Every time a client needed a specific format I was manually adjusting settings, which wiped out any time savings the tool was supposed to give me. I went back to my old workflow within a month.",
+            "questions": 0
+          },
+          {
+            "user": "Last one \u2014 what would make you immediately disqualify a tool, no matter how popular it is?",
+            "twin": "The client-facing share link showing the tool's branding. If my client sees another company's logo on the review link, they'll start wondering why they're paying me when they could just buy the tool themselves. That's a non-starter.",
+            "questions": 0
+          }
+        ],
+        "question_counts": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "realism_score": 2
+      },
+      "curious": {
+        "dialogue": [
+          {
+            "user": "Hey, I wanted to ask \u2014 how do you typically start evaluating a new tool? Like, what does that process look like for you?",
+            "twin": "I take one live client project and run the real workflow through it \u2014 brand kit setup, a share link, asset export. If I have to hunt for settings or the share page shows the tool's logo, I know immediately it won't work for me. Are you evaluating something specific right now, or just curious about the process?",
+            "questions": 1
+          },
+          {
+            "user": "Interesting. Do you have a checklist, or is it more gut feel? How structured is it?",
+            "twin": "Three hard requirements and gut for everything else: white-label client portal, enforced brand kit (color + type, not just a moodboard), and export presets I can save and reuse. Those are non-negotiable. What's the context \u2014 are you building a tool or trying to pick one?",
+            "questions": 1
+          },
+          {
+            "user": "What's the biggest mistake you've seen people make when picking tools?",
+            "twin": "Choosing on feature count instead of workflow fit. Designers get excited about animation features or 3D mockups and miss that the comment threading is broken, so revision rounds still happen over email. What's the pain point that kicked off this conversation for you?",
+            "questions": 1
+          },
+          {
+            "user": "Have you ever regretted adopting a tool that seemed great at first?",
+            "twin": "One hundred percent. A tool with a gorgeous interface but export presets that reset every session \u2014 I was manually reconfiguring file formats for every deliverable. Ate all the time I thought I'd saved. How long do you usually give a tool before you decide it's not working?",
+            "questions": 1
+          },
+          {
+            "user": "Last one \u2014 what would make you immediately disqualify a tool, no matter how popular it is?",
+            "twin": "Client-facing share link with the tool's branding on it. Full stop. The moment a client sees that logo, they're pricing out whether to cut me out. I don't care how popular the tool is \u2014 that's a dealbreaker. Have you run into tools that let you fully white-label, or is that still rare?",
+            "questions": 1
+          }
+        ],
+        "question_counts": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "realism_score": 4
+      }
+    }
+  },
+  "metrics": [
+    {
+      "persona": "Alex the API-First DevOps Engineer",
+      "question_rate_baseline": 0.0,
+      "question_rate_curious": 1.0,
+      "question_rate_delta": 1.0,
+      "realism_baseline": 2,
+      "realism_curious": 4,
+      "realism_delta": 2
+    },
+    {
+      "persona": "Maya the Freelance Brand Designer",
+      "question_rate_baseline": 0.0,
+      "question_rate_curious": 1.0,
+      "question_rate_delta": 1.0,
+      "realism_baseline": 2,
+      "realism_curious": 4,
+      "realism_delta": 2
+    }
+  ],
+  "summary": {
+    "avg_question_rate_delta": 1.0,
+    "avg_realism_delta": 2.0,
+    "signal": "STRONG"
+  }
+}

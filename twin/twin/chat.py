@@ -22,7 +22,7 @@ class TwinReply:
         return (self.input_tokens * 3 + self.output_tokens * 15) / 1_000_000
 
 
-def build_persona_system_prompt(persona: dict) -> str:
+def build_persona_system_prompt(persona: dict, curiosity_mode: bool = False) -> str:
     """Construct a system prompt that puts Claude in character as the persona.
 
     Accepts a persona dict (the output of `PersonaV1.model_dump()`) so the
@@ -78,6 +78,12 @@ def build_persona_system_prompt(persona: dict) -> str:
         "this persona would (curiosity, dismissal, deflection — whatever fits).",
         "- Do not break character to mention you are an AI.",
     ]
+    if curiosity_mode:
+        lines.append(
+            "- Show genuine curiosity — ask ONE follow-up question per response "
+            "when it feels natural. Curiosity should emerge from your specific "
+            "goals and interests, not generic politeness."
+        )
     return "\n".join(lines)
 
 
@@ -89,11 +95,12 @@ class TwinChat:
         persona: dict,
         client: AsyncAnthropic,
         model: str = "claude-haiku-4-5-20251001",
+        curiosity_mode: bool = False,
     ) -> None:
         self.persona = persona
         self.client = client
         self.model = model
-        self.system_prompt = build_persona_system_prompt(persona)
+        self.system_prompt = build_persona_system_prompt(persona, curiosity_mode=curiosity_mode)
 
     async def reply(
         self,
