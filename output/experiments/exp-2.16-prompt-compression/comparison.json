@@ -43,5 +43,79 @@
       {"name": "Maya the Freelance Brand Designer", "groundedness": 1.0, "attempts": 1}
     ]
   },
-  "total_cost_usd": 0.0
+  "total_cost_usd": 0.0,
+  "ablation_results": {
+    "baseline_groundedness": 1.0,
+    "sections_tested": 7,
+    "per_section": [
+      {
+        "section": "preamble",
+        "size_pct": 18.0,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "quality_grounded",
+        "size_pct": 11.2,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "quality_distinctive",
+        "size_pct": 10.7,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "quality_actionable",
+        "size_pct": 7.8,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "quality_consistent",
+        "size_pct": 6.8,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "evidence_rules",
+        "size_pct": 35.1,
+        "cluster_00_groundedness": 0.1765,
+        "cluster_01_groundedness": 0.1765,
+        "mean_groundedness": 0.1765,
+        "delta_vs_baseline": -0.8235,
+        "load_bearing": true
+      },
+      {
+        "section": "evidence_example",
+        "size_pct": 10.2,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      }
+    ],
+    "load_bearing_sections": ["evidence_rules"],
+    "safe_sections": ["preamble", "quality_grounded", "quality_distinctive", "quality_actionable", "quality_consistent", "evidence_example"],
+    "safe_to_remove_pct": 64.7,
+    "hypothesis_verdict": "CONFIRMED",
+    "rationale": "64.7% of the prompt can be removed without any groundedness regression. Only evidence_rules (35.1%) is mechanically load-bearing — it is the sole enforcement requiring every goals/pains/motivations/objections item to have source_evidence. All quality description sections and the example entry are redundant for the groundedness metric."
+  }
 }

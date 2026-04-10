@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "name": "Alex the API-First DevOps Engineer",
+  "summary": "A Senior DevOps Engineer at a fintech company (50-200 employees) who approaches the project management tool as an integration platform. Deep API sessions, GitHub integration work, and Terraform setup indicate an automation-first mindset. Has specific complaints about the GraphQL endpoint quality.",
+  "demographics": {
+    "age_range": "28-38",
+    "gender_distribution": "predominantly male",
+    "location_signals": ["US or EU fintech hub"],
+    "education_level": "BS/MS Computer Science"
+  },
+  "firmographics": {
+    "company_size": "50-200 employees",
+    "industry": "Fintech",
+    "role_titles": ["Senior DevOps Engineer", "Platform Engineer", "SRE"],
+    "tech_stack_signals": ["GitHub", "Terraform", "Webhooks", "REST API", "GraphQL", "Slack"]
+  },
+  "goals": [
+    "Automate all project state transitions via API to remove manual ticket updates",
+    "Integrate deeply with GitHub CI/CD pipeline for automatic task management",
+    "Set up real-time webhook-driven notifications to Slack and monitoring systems",
+    "Provision the entire workspace via Terraform for infrastructure-as-code compliance",
+    "Build custom dashboards surfacing engineering velocity metrics"
+  ],
+  "pains": [
+    "GraphQL endpoint has rough edges and inconsistencies that break automation scripts",
+    "Insufficient documentation makes webhook setup time-consuming and error-prone",
+    "Terraform provider is immature and may require maintaining a custom fork",
+    "Team invite workflow requires manual UI interaction, disrupting automation flow",
+    "API setup requires long sessions due to fragmented documentation across multiple pages"
+  ],
+  "motivations": [
+    "Eliminating toil: manual steps create operational risk and waste engineering time",
+    "Demonstrating that infrastructure-as-code discipline extends to all tooling layers",
+    "Earning team credibility by shipping seamless, zero-click automation workflows",
+    "Meeting fintech compliance requirements by version-controlling all configuration in git"
+  ],
+  "objections": [
+    "GraphQL schema instability without versioning makes production automation unreliable",
+    "Lack of first-party Terraform provider signals low API investment priority",
+    "Webhook reliability and retry behavior are insufficiently documented for compliance needs"
+  ],
+  "channels": ["GitHub", "Hacker News", "Internal Slack engineering channels", "API documentation sites", "Stack Overflow", "DevOps newsletters"],
+  "vocabulary": ["idempotent", "webhook", "IaC", "pipeline", "Terraform", "GraphQL", "schema drift", "CI/CD", "event-driven", "observability", "gitops", "rate limiting"],
+  "decision_triggers": [
+    "Stable versioned GraphQL schema with documented breaking change policy",
+    "Official Terraform provider maintained by the vendor",
+    "GitHub integration that auto-closes tasks on PR merge without custom glue"
+  ],
+  "sample_quotes": [
+    "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+    "If I can't manage it in Terraform, it doesn't exist in our infrastructure.",
+    "Webhooks are great until they silently drop events. What's your retry and dead-letter story?"
+  ],
+  "journey_stages": [
+    {
+      "stage": "evaluation",
+      "mindset": "Skeptical — scanning for API quality signals before committing integration time",
+      "key_actions": ["Reading /api/docs end-to-end", "Testing GraphQL introspection", "Checking Terraform provider availability"],
+      "content_preferences": ["API reference docs", "OpenAPI/GraphQL schema files", "GitHub provider repo"]
+    },
+    {
+      "stage": "activation",
+      "mindset": "Deep builder mode — connecting tool to every system in the stack",
+      "key_actions": ["api_setup (multiple sessions)", "webhook_config", "github_integration", "terraform_setup", "custom_dashboard"],
+      "content_preferences": ["Code samples", "Webhook event catalog", "Integration guides", "Changelog"]
+    },
+    {
+      "stage": "expansion",
+      "mindset": "Scaling adoption — onboarding team and locking in long-term integrations",
+      "key_actions": ["team_invite", "Slack integration", "Building internal runbooks"],
+      "content_preferences": ["Role-based access docs", "Admin API endpoints", "Status page"]
+    }
+  ],
+  "source_evidence": [
+    {
+      "claim": "Senior DevOps Engineer at a 50-200 person fintech company",
+      "record_ids": ["hubspot_000"],
+      "field_path": "firmographics.role_titles",
+      "confidence": 1.0
+    },
+    {
+      "claim": "GraphQL endpoint has rough edges breaking automation scripts",
+      "record_ids": ["intercom_000"],
+      "field_path": "pains.0",
+      "confidence": 1.0
+    },
+    {
+      "claim": "Automate all project state transitions via API",
+      "record_ids": ["ga4_000", "ga4_003", "ga4_007"],
+      "field_path": "goals.0",
+      "confidence": 0.9
+    },
+    {
+      "claim": "GitHub integration work shows CI/CD automation goal",
+      "record_ids": ["ga4_002", "ga4_009"],
+      "field_path": "goals.1",
+      "confidence": 0.95
+    }
+  ]
+}
