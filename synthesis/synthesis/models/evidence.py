@@ -17,3 +17,11 @@ class SourceEvidence(BaseModel):
         le=1.0,
         description="How strongly the data supports this claim",
     )
+    date_range: str | None = Field(
+        default=None,
+        pattern=r"^\d{4}-\d{2} to \d{4}-\d{2}$",
+        description=(
+            "Earliest to latest month of the cited source records, "
+            "formatted as 'YYYY-MM to YYYY-MM' (e.g. '2026-03 to 2026-04')"
+        ),
+    )

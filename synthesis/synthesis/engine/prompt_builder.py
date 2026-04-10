@@ -27,13 +27,17 @@ supports (e.g. "goals.0", "pains.2", "motivations.1").
 source_evidence entry.
 - Confidence should reflect how directly the data supports the claim (1.0 = verbatim \
 from data, 0.5 = reasonable inference).
+- For each source_evidence entry, include date_range as 'YYYY-MM to YYYY-MM' based on \
+the timestamps of the referenced records. If all records fall in the same month, use \
+that month for both start and end (e.g. '2026-04 to 2026-04').
 
 Example source_evidence entry:
 {
   "claim": "Wants to reduce manual data entry by 50%",
   "record_ids": ["rec_0042", "rec_0087"],
   "field_path": "goals.0",
-  "confidence": 0.85
+  "confidence": 0.85,
+  "date_range": "2026-01 to 2026-03"
 }
 """
 
