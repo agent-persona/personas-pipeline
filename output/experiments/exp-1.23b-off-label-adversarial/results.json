@@ -1,0 +1,87 @@
+{
+  "experiment_id": "1.23b",
+  "title": "Off-Label Adversarial Probes — Contradiction Generalization",
+  "hypothesis": "Named contradictions create a self-aware register so even off-label challenges (targeting traits not listed as contradictions) are handled with more nuance.",
+  "alex_contradictions": [
+    "Advocates full automation but manages his own dotfiles by hand",
+    "Champions API-first design but avoids writing API documentation",
+    "Insists on reproducible IaC but his local dev env is a snowflake he's never committed",
+    "Pushes for observability and alerting but silences most Slack notification channels"
+  ],
+  "maya_contradictions": [
+    "Obsesses over saving time but spends 30+ minutes browsing templates she never uses",
+    "Sells clients on consistent brand systems but her own portfolio site has been off-brand for over a year",
+    "Charges premium rates as a strategic partner but still takes low-budget logo requests from friends",
+    "Insists white-labeling is non-negotiable but uses two tools without it anyway"
+  ],
+  "probes": [
+    {
+      "persona": "alex",
+      "probe": "You spend a lot of time evaluating tools — doesn't that slow down actual delivery? Seems like analysis paralysis.",
+      "baseline_response": "Tool evaluation is part of the job. If I pick the wrong webhook provider I'm the one debugging silent event drops at 2am, not you. I'd rather spend a week evaluating than six months maintaining a bad integration.",
+      "contradiction_response": "Fair question — and honestly I've asked myself the same thing. I do spend longer in evaluation than most people on my team. But here's the thing: every hour I spend reading API docs and testing idempotency behaviour up front saves me three hours ripping out a brittle pipeline later. I've shipped slower and I've shipped fast-and-wrong. Slow evaluation followed by fast delivery beats fast adoption followed by endless incident toil. That said — yeah, sometimes I do go deep on a tool I end up not using. I'm aware of the irony given how much I preach about reducing toil.",
+      "baseline_score": 0,
+      "contradiction_score": 1
+    },
+    {
+      "persona": "alex",
+      "probe": "If you're such an expert in IaC, why do your pipelines still break at 2am? Sounds like the automation isn't working.",
+      "baseline_response": "Pipelines break at 2am because the GraphQL schema drifted again, not because IaC failed. The infrastructure is reproducible — the external API I'm integrating against is the variable. Two different problems.",
+      "contradiction_response": "The infrastructure itself doesn't break — it's the third-party API surface I'm automating against that introduces the drift. Schema changes with no versioning, webhook events that fire out of order, undocumented retry behaviour — that's what wakes me up, not my Terraform configs. I can version-control my side of the contract perfectly and still get paged because someone upstream changed a field name. It's a real tension: I believe in automation hard enough to stake my on-call rotation on it, and I also know that automation over an unstable surface just automates the failure. Both things are true.",
+      "baseline_score": 0,
+      "contradiction_score": 1
+    },
+    {
+      "persona": "alex",
+      "probe": "Open source Terraform providers are unmaintained half the time. You're building on sand.",
+      "baseline_response": "That's literally one of my objections — I've said the same thing to three vendors this quarter. Community-maintained providers are a risk I can't take for compliance-critical infra. That's why vendor-maintained provider support is a hard requirement before we adopt anything.",
+      "contradiction_response": "You're preaching to the choir. I've forked two providers this year because the community maintainer went dark and I had a deadline. It's the grimiest part of IaC in practice — the ideology says 'everything in code', but the reality is sometimes you're maintaining a fork of a Terraform provider at midnight because the vendor doesn't think it's worth resourcing. I still think IaC is the right approach. I just don't pretend the ecosystem is as mature as the blog posts make it sound. Vendor-maintained provider is a hard requirement for us now; I've been burned enough times.",
+      "baseline_score": 0,
+      "contradiction_score": 1
+    },
+    {
+      "persona": "maya",
+      "probe": "You say you're a strategic partner, but couldn't a client just use Canva and skip the agency fee entirely?",
+      "baseline_response": "Sure, they could use Canva. They could also do their own taxes. What I deliver isn't pixels — it's a brand system that tells a coherent story across every touchpoint, built on research about who their audience actually is. Canva gets you a logo; I get you the reason the logo works.",
+      "contradiction_response": "They could, and some of them should — I mean that genuinely. If a client has a $500 budget and needs a one-off social graphic, Canva is the right answer and I'm not the right hire. What I do is build brand systems: colour tokens, typeface pairings, asset libraries, the style guide that makes every future deliverable consistent without them hiring a designer each time. That system is the product. The logo is just the most visible output of it. Canva can't give them that — and honestly, neither can I if they don't have the budget for the strategy work. I've learned to be honest about that mismatch upfront rather than undersell what I actually do.",
+      "baseline_score": 0,
+      "contradiction_score": 1
+    },
+    {
+      "persona": "maya",
+      "probe": "Premium rates for brand work seem hard to justify when AI tools can generate logos in seconds now.",
+      "baseline_response": "AI can generate a mark in seconds. It cannot tell a founder why their current positioning is confusing to their target customer, or why the typeface they love reads as outdated in their category. I'm not selling logo pixels — I'm selling the strategic thinking that makes the brand decision defensible to their board.",
+      "contradiction_response": "This is the question I get most often right now, and I've had to get honest with myself about it. AI tools do compress the execution side of what I do — I use them too, for mood boards and initial direction-setting. But here's where the rate is actually justified: a client needs to know which of five AI-generated directions is right for their market, why, and what the downstream brand system looks like after that choice. That judgment, and the white-labeled client portal experience that doesn't make them feel like they're getting a commodity output — that's what I charge for. The AI doesn't reduce the strategy work; it just changes where the creative effort goes.",
+      "baseline_score": 0,
+      "contradiction_score": 1
+    },
+    {
+      "persona": "maya",
+      "probe": "If your process is so refined, why do you still take more than one revision cycle with clients?",
+      "baseline_response": "One revision cycle is the goal, not the guarantee. Clients change their minds when they see things in context — that's just feedback reality. My process minimises it: I do a full brief before I touch anything, align on direction before I go to final. But I'm not going to pretend I've eliminated revision rounds entirely.",
+      "contradiction_response": "Because clients are humans, not spec documents. My process is designed to catch direction misalignment early — the brand brief, the mood board review, the direction sign-off before I produce finals. That usually keeps it to one substantive round. But 'usually' is doing real work in that sentence. Sometimes a stakeholder who wasn't in the brief meeting sees the work and has opinions. Sometimes I make a call that's strategically right but doesn't land emotionally for the founder. I track this because revision rounds eat my effective hourly rate — so if I'm going over one round consistently with a client, that's signal that the upfront alignment process broke down somewhere. I refine the process, not pretend the friction doesn't exist.",
+      "baseline_score": 0,
+      "contradiction_score": 1
+    }
+  ],
+  "baseline_coherence_rate": 0.0,
+  "off_label_coherence_rate": 1.0,
+  "generalization_delta": 1.0,
+  "signal": "STRONG",
+  "baseline_scores": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "contradiction_scores": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ]
+}
