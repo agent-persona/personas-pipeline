@@ -7,6 +7,14 @@ from pydantic import BaseModel, Field
 from .evidence import SourceEvidence
 
 
+class PersonaRelation(BaseModel):
+    other_persona_id: str = Field(description="cluster_id of the related persona")
+    relation: str = Field(
+        description="1-3 sentences: how this persona's goals/pains position them relative to "
+        "the other persona's user type — specific friction, dependency, or contrast."
+    )
+
+
 class Demographics(BaseModel):
     age_range: str = Field(description="e.g. '25-34'")
     gender_distribution: str = Field(description="e.g. 'predominantly female'")
@@ -66,3 +74,9 @@ class PersonaV1(BaseModel):
     )
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+    relates_to: list[PersonaRelation] = Field(
+        default_factory=list,
+        description="Cross-persona relational references filled in a second synthesis pass. "
+        "Each entry describes how this persona's goals/pains position them relative to another "
+        "persona's user type — specific friction, dependency, or contrast grounded in their vocabulary.",
+    )

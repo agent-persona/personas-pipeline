@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import json
 import logging
+import re
 from dataclasses import dataclass, field
 
 from pydantic import ValidationError
 
 from synthesis.models.cluster import ClusterData
-from synthesis.models.persona import PersonaV1
+from synthesis.models.persona import PersonaRelation, PersonaV1
 
 from .groundedness import GroundednessReport, check_groundedness
 from .model_backend import LLMResult, ModelBackend
@@ -150,3 +152,62 @@ async def synthesize(
         f"Synthesis failed after {max_retries + 1} attempts",
         attempts=attempts,
     )
+
+
+async def synthesize_relations(
+    personas: list[tuple[str, PersonaV1]],
+    backend: ModelBackend,
+) -> dict[str, list[PersonaRelation]]:
+    """Second-pass: fill relates_to for each persona based on the full population.
+
+    Args:
+        personas: list of (persona_id, PersonaV1) tuples
+        backend: LLM backend
+
+    Returns:
+        dict mapping persona_id -> list of relation dicts [{other_persona_id, relation}]
+    """
+    summaries = {
+        pid: f"[{pid}] {p.name}: {p.summary}\nGoals: {'; '.join(p.goals[:3])}\nPains: {'; '.join(p.pains[:3])}"
+        for pid, p in personas
+    }
+    results: dict[str, list[PersonaRelation]] = {}
+
+    for pid, persona in personas:
+        others = [(oid, op) for oid, op in personas if oid != pid]
+        if not others:
+            results[pid] = []
+            continue
+
+        other_summaries = "\n\n".join(summaries[oid] for oid, _ in others)
+        prompt = f"""You are filling in the 'relates_to' field for a persona in a multi-persona system.
+
+CURRENT PERSONA ({pid}):
+Name: {persona.name}
+Summary: {persona.summary}
+Goals: {chr(10).join(f'- {g}' for g in persona.goals)}
+Pains: {chr(10).join(f'- {p}' for p in persona.pains)}
+Vocabulary: {', '.join(persona.vocabulary)}
+
+OTHER PERSONAS IN THE SYSTEM:
+{other_summaries}
+
+For each other persona, write a 'relation' string (1-3 sentences) that describes:
+- What this persona ({pid}) specifically needs from or thinks about the other persona's user type
+- How their goals/pains/workflows create friction OR dependency
+- Use specific vocabulary and concrete references to their actual jobs/tools/frustrations
+
+Return a JSON array: [{{"other_persona_id": "<id>", "relation": "<description>"}}]
+Only return the JSON array, nothing else."""
+
+        # NOTE: This requires a text-completion backend extension (generate_text method).
+        # The current AnthropicBackend is tool-use only and cannot be called here.
+        # Raise explicitly so callers know this path is not yet wired up.
+        raise NotImplementedError(
+            "synthesize_relations requires a text-completion backend. "
+            "Add a generate_text() method to ModelBackend that returns raw text, "
+            "then replace this raise with the actual call. "
+            "For exp-1.16, relations were synthesized manually (Claude-as-LLM)."
+        )
+
+    return results
