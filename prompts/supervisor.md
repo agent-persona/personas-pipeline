@@ -403,6 +403,24 @@ prompt: |
   ## 5. Compute target metric: "{metric}"
   {metric_collection_instructions_from_plan}
 
+  ## 5a. Metric reality check — MANDATORY
+  Before reporting, verify the metric value is a REAL measurement, not a proxy:
+  - "Tests pass" is NOT a metric value
+  - "Harness exists" is NOT a metric value
+  - "Tool implemented" is NOT a metric value
+  
+  If the experiment built a harness or tool that IS the measurement mechanism, you MUST
+  run it with real inputs and record actual numbers. Examples:
+  - Ablation harness → run it on both clusters, record per-section groundedness deltas
+  - Classifier → run it on real vs synthetic samples, record accuracy
+  - Caching layer → run pipeline, check usage headers for cache-hit rate
+  - Scoring rubric → score real persona outputs, record the distribution
+  
+  If you cannot produce a real measurement (e.g., no real data, API not available):
+  - Set target_metric.value = null
+  - Set target_metric.blocked_reason = "<specific reason>"
+  - Do NOT invent a synthetic proxy and present it as the measurement
+
   ## 6. Archive experiment results
   mkdir -p output/experiments/exp-{id}-{slugified_title}/experiment
   cp output/persona_*.json output/experiments/exp-{id}-{slugified_title}/experiment/
@@ -428,6 +446,8 @@ prompt: |
 
 **Supervisor review:**
 - If `success: false` → note failure, still proceed to Phase 5 (failures are data)
+- If `target_metric.value` is null AND `target_metric.blocked_reason` is absent → STOP. Worker did not complete the metric. Spawn once more with explicit instructions to run the measurement.
+- If `target_metric.value` is a description/label (e.g. "7.014 efficiency ratio", "harness established") rather than a direct measurement of the hypothesis variable → STOP. Spawn worker with instruction to run the actual test the hypothesis describes.
 - Proceed to Phase 5
 
 ---
@@ -481,6 +501,11 @@ COMPARISON:
   recommendation: {adopt | reject | defer | rerun}
   rationale: "<2-3 sentences explaining the recommendation>"
 ```
+
+**Before computing signal strength — metric null check:**
+- If `target_metric.baseline` AND `target_metric.experiment` are BOTH null → signal = INCONCLUSIVE, recommendation = RERUN. Do not proceed to Phase 6 without real values.
+- If only baseline is null because the metric is new (harness didn't exist on main) → acceptable. Use experiment value as the established baseline and note it in comparison.
+- If experiment value is null with a blocked_reason → signal = INCONCLUSIVE, log to `failed`, skip to next experiment.
 
 **Signal Strength Rules:**
 
