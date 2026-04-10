@@ -1,0 +1,630 @@
+{
+  "experiment": "exp-3.25-semantic-groundedness-validation",
+  "hypothesis": "Structural checker passes >90% of claims that semantic proxy flags as weakly grounded",
+  "personas": [
+    {
+      "persona": "Alex (DevOps)",
+      "structural_score": 1.0,
+      "structural_violations": [],
+      "semantic_score": 0.133,
+      "claim_count": 17,
+      "weak_count": 5,
+      "weak_pairs": [
+        {
+          "field_path": "goals.0",
+          "claim": "Automate all project state transitions via API so no engineer has to manually update tickets",
+          "overlap": 0.0
+        },
+        {
+          "field_path": "goals.2",
+          "claim": "Set up webhook-driven alerts that push status changes into Slack and internal dashboards",
+          "overlap": 0.0
+        },
+        {
+          "field_path": "pains.2",
+          "claim": "API setup sessions run very long (38+ minutes) because discovery is fragmented across docs pages",
+          "overlap": 0.0833
+        },
+        {
+          "field_path": "motivations.0",
+          "claim": "Reducing toil\u2014every manual step is a future incident waiting to happen",
+          "overlap": 0.0
+        },
+        {
+          "field_path": "motivations.1",
+          "claim": "Proving that infrastructure-as-code extends to the project management layer, not just compute",
+          "overlap": 0.0
+        }
+      ],
+      "divergence_rate": 0.2941,
+      "agreement_rate": 0.7059,
+      "diverging_claims": [
+        {
+          "field_path": "goals.0",
+          "claim": "Automate all project state transitions via API so no engineer has to manually update tickets",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "goals.2",
+          "claim": "Set up webhook-driven alerts that push status changes into Slack and internal dashboards",
+          "record_ids": [
+            "ga4_001",
+            "ga4_006"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "pains.2",
+          "claim": "API setup sessions run very long (38+ minutes) because discovery is fragmented across docs pages",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0833,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.0",
+          "claim": "Reducing toil\u2014every manual step is a future incident waiting to happen",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.1",
+          "claim": "Proving that infrastructure-as-code extends to the project management layer, not just compute",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        }
+      ],
+      "per_claim_table": [
+        {
+          "field_path": "goals.0",
+          "claim": "Automate all project state transitions via API so no engineer has to manually update tickets",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "goals.1",
+          "claim": "Integrate the project management tool deeply into the existing GitHub CI/CD pipeline",
+          "record_ids": [
+            "ga4_002",
+            "ga4_009"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1,
+          "diverges": false
+        },
+        {
+          "field_path": "goals.2",
+          "claim": "Set up webhook-driven alerts that push status changes into Slack and internal dashboards",
+          "record_ids": [
+            "ga4_001",
+            "ga4_006"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "goals.3",
+          "claim": "Provision the entire workspace configuration through Terraform for reproducibility",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1429,
+          "diverges": false
+        },
+        {
+          "field_path": "goals.4",
+          "claim": "Build custom dashboards that surface real-time engineering velocity metrics to leadership",
+          "record_ids": [
+            "ga4_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1111,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.0",
+          "claim": "GraphQL endpoint has rough edges and schema inconsistencies that break automation scripts",
+          "record_ids": [
+            "intercom_000"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.5556,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.1",
+          "claim": "Webhook configuration is time-consuming and lacks sufficient documentation for edge cases",
+          "record_ids": [
+            "ga4_001",
+            "ga4_006"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.125,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.2",
+          "claim": "API setup sessions run very long (38+ minutes) because discovery is fragmented across docs pages",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0833,
+          "diverges": true
+        },
+        {
+          "field_path": "pains.3",
+          "claim": "Team invite workflow interrupts automation-focused sessions with manual UI steps",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.25,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.4",
+          "claim": "Integration setup requires context-switching between too many pages (/api/docs, /api/reference, /settings/integrations)",
+          "record_ids": [
+            "ga4_002",
+            "ga4_008",
+            "ga4_009"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.2,
+          "diverges": false
+        },
+        {
+          "field_path": "motivations.0",
+          "claim": "Reducing toil\u2014every manual step is a future incident waiting to happen",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.1",
+          "claim": "Proving that infrastructure-as-code extends to the project management layer, not just compute",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.2",
+          "claim": "Earning credibility with their team by shipping a zero-click onboarding experience for new engineers",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.125,
+          "diverges": false
+        },
+        {
+          "field_path": "motivations.3",
+          "claim": "Staying ahead of audit requirements in fintech by having all config version-controlled in git",
+          "record_ids": [
+            "hubspot_000",
+            "ga4_008"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.125,
+          "diverges": false
+        },
+        {
+          "field_path": "objections.0",
+          "claim": "If the GraphQL schema keeps changing without versioning, I can't depend on it in production pipelines",
+          "record_ids": [
+            "intercom_000"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.2,
+          "diverges": false
+        },
+        {
+          "field_path": "objections.1",
+          "claim": "Terraform provider support is immature\u2014I shouldn't have to maintain my own fork",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1429,
+          "diverges": false
+        },
+        {
+          "field_path": "objections.2",
+          "claim": "Webhook retry logic isn't documented well enough for me to trust it for compliance-critical events",
+          "record_ids": [
+            "ga4_001",
+            "ga4_006",
+            "intercom_000"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1,
+          "diverges": false
+        }
+      ]
+    },
+    {
+      "persona": "Maya (Designer)",
+      "structural_score": 1.0,
+      "structural_violations": [],
+      "semantic_score": 0.1537,
+      "claim_count": 17,
+      "weak_count": 6,
+      "weak_pairs": [
+        {
+          "field_path": "goals.2",
+          "claim": "Build and maintain a living brand kit for each client that enforces color, type, and asset consisten",
+          "overlap": 0.0909
+        },
+        {
+          "field_path": "pains.4",
+          "claim": "No way to bundle brand assets, colors, and typography into a portable kit that travels cleanly acros",
+          "overlap": 0.0909
+        },
+        {
+          "field_path": "motivations.1",
+          "claim": "Professional reputation depends on delivering a polished, seamless client experience end-to-end, not",
+          "overlap": 0.0833
+        },
+        {
+          "field_path": "motivations.2",
+          "claim": "Winning repeat business and referrals by making the review process feel effortless for non-designer ",
+          "overlap": 0.0
+        },
+        {
+          "field_path": "motivations.3",
+          "claim": "Building a scalable solo practice where systems do the administrative work so she can focus on creat",
+          "overlap": 0.0
+        },
+        {
+          "field_path": "objections.1",
+          "claim": "The template library isn't deep enough in brand identity categories to save me meaningful time on re",
+          "overlap": 0.0769
+        }
+      ],
+      "divergence_rate": 0.3529,
+      "agreement_rate": 0.6471,
+      "diverging_claims": [
+        {
+          "field_path": "goals.2",
+          "claim": "Build and maintain a living brand kit for each client that enforces color, type, and asset consistency",
+          "record_ids": [
+            "ga4_019"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0909,
+          "diverges": true
+        },
+        {
+          "field_path": "pains.4",
+          "claim": "No way to bundle brand assets, colors, and typography into a portable kit that travels cleanly across projects",
+          "record_ids": [
+            "ga4_019"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0909,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.1",
+          "claim": "Professional reputation depends on delivering a polished, seamless client experience end-to-end, not just the design fil",
+          "record_ids": [
+            "ga4_014",
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0833,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.2",
+          "claim": "Winning repeat business and referrals by making the review process feel effortless for non-designer clients",
+          "record_ids": [
+            "ga4_014",
+            "ga4_016"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.3",
+          "claim": "Building a scalable solo practice where systems do the administrative work so she can focus on creative output",
+          "record_ids": [
+            "ga4_019",
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "objections.1",
+          "claim": "The template library isn't deep enough in brand identity categories to save me meaningful time on real projects",
+          "record_ids": [
+            "ga4_011",
+            "ga4_015",
+            "ga4_017"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0769,
+          "diverges": true
+        }
+      ],
+      "per_claim_table": [
+        {
+          "field_path": "goals.0",
+          "claim": "Save at least 10 minutes per project through templating and reusable brand kit components",
+          "record_ids": [
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.2222,
+          "diverges": false
+        },
+        {
+          "field_path": "goals.1",
+          "claim": "Present deliverables to clients through a white-labeled share view that reinforces her own brand, not the tool's",
+          "record_ids": [
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.3,
+          "diverges": false
+        },
+        {
+          "field_path": "goals.2",
+          "claim": "Build and maintain a living brand kit for each client that enforces color, type, and asset consistency",
+          "record_ids": [
+            "ga4_019"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0909,
+          "diverges": true
+        },
+        {
+          "field_path": "goals.3",
+          "claim": "Streamline the client feedback loop via comment threading so revision cycles don't drag out over email",
+          "record_ids": [
+            "ga4_016"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1667,
+          "diverges": false
+        },
+        {
+          "field_path": "goals.4",
+          "claim": "Export production-ready assets quickly in the correct formats without extra manual steps",
+          "record_ids": [
+            "ga4_013",
+            "ga4_020"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.0",
+          "claim": "Client share view exposes the tool's branding, which undermines her professional positioning and makes clients question ",
+          "record_ids": [
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.2667,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.1",
+          "claim": "Template browsing sessions are long (20-35 min) but often end without finding a close enough starting point, forcing fro",
+          "record_ids": [
+            "ga4_011",
+            "ga4_015",
+            "ga4_017"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1333,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.2",
+          "claim": "Asset export requires too many steps or produces files that need post-processing before delivery",
+          "record_ids": [
+            "ga4_013",
+            "ga4_020"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.2,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.3",
+          "claim": "Comment threading notifications are scattered, making it hard to track which revision round a comment belongs to",
+          "record_ids": [
+            "ga4_016"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.2,
+          "diverges": false
+        },
+        {
+          "field_path": "pains.4",
+          "claim": "No way to bundle brand assets, colors, and typography into a portable kit that travels cleanly across projects",
+          "record_ids": [
+            "ga4_019"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0909,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.0",
+          "claim": "Time is money\u2014she bills hourly and any friction in her workflow directly reduces her effective hourly rate",
+          "record_ids": [
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1,
+          "diverges": false
+        },
+        {
+          "field_path": "motivations.1",
+          "claim": "Professional reputation depends on delivering a polished, seamless client experience end-to-end, not just the design fil",
+          "record_ids": [
+            "ga4_014",
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0833,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.2",
+          "claim": "Winning repeat business and referrals by making the review process feel effortless for non-designer clients",
+          "record_ids": [
+            "ga4_014",
+            "ga4_016"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "motivations.3",
+          "claim": "Building a scalable solo practice where systems do the administrative work so she can focus on creative output",
+          "record_ids": [
+            "ga4_019",
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0,
+          "diverges": true
+        },
+        {
+          "field_path": "objections.0",
+          "claim": "If the client share view shows your logo, I can't use it for client-facing deliverables\u2014that's a dealbreaker",
+          "record_ids": [
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.4,
+          "diverges": false
+        },
+        {
+          "field_path": "objections.1",
+          "claim": "The template library isn't deep enough in brand identity categories to save me meaningful time on real projects",
+          "record_ids": [
+            "ga4_011",
+            "ga4_015",
+            "ga4_017"
+          ],
+          "structural_pass": true,
+          "semantic_pass": false,
+          "overlap": 0.0769,
+          "diverges": true
+        },
+        {
+          "field_path": "objections.2",
+          "claim": "Monthly subscription cost needs to be offset by real time savings\u2014I'm tracking this against my hourly rate",
+          "record_ids": [
+            "intercom_004"
+          ],
+          "structural_pass": true,
+          "semantic_pass": true,
+          "overlap": 0.1818,
+          "diverges": false
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "total_claims": 34,
+    "total_diverging": 11,
+    "overall_divergence_rate": 0.3235,
+    "overall_agreement_rate": 0.6765,
+    "signal": "MODERATE"
+  }
+}
