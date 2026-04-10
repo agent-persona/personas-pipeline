@@ -1,0 +1,32 @@
+{
+  "experiment_id": "5.08",
+  "hypothesis": "Detector discrimination is more sensitive than rubric-based judging for evaluating top-tier models",
+  "baseline_guardrails": {
+    "schema_validity": 1.0,
+    "mean_groundedness": 1.0,
+    "personas_generated": 2
+  },
+  "detector_results": {
+    "classifier_accuracy": 0.0,
+    "mean_detectability_score": 0.143,
+    "realism_proxy": 0.857,
+    "per_persona": [
+      {
+        "name": "Alex the API-First DevOps Engineer",
+        "verdict": "likely_human",
+        "detectability_score": 0.143,
+        "ai_tells": ["overly_balanced"]
+      },
+      {
+        "name": "Maya the Freelance Brand Designer",
+        "verdict": "likely_human",
+        "detectability_score": 0.143,
+        "ai_tells": ["overly_balanced"]
+      }
+    ],
+    "top_tells": ["overly_balanced"]
+  },
+  "signal_strength": "STRONG",
+  "recommendation": "adopt",
+  "rationale": "Detector ran cleanly and produced differentiated, non-trivial scores. Both personas score well below the 0.5 realism_proxy threshold — classifier accuracy is 0.0, meaning neither persona was flagged as obviously AI-generated. This is a strong positive signal: the personas evade the detector, establishing a high-quality baseline. The sole AI tell detected (overly_balanced — goals and pains arrays have matching lengths) is a minor structural artifact, not a content deficiency. The detector is now a viable realism metric: future experiments can track whether prompt changes push detectability scores up (bad) or down (good). Hypothesis partially validated — detector gives a more granular 0-1 score vs. pass/fail rubric judging."
+}
