@@ -81,7 +81,8 @@ def build_graph(persona_files: list[Path]) -> dict:
         all_traits |= p["traits"]
     total_unique = len(all_traits)
 
-    graph_density = total_shared / total_unique if total_unique > 0 else 0.0
+    # Note: this is shared_traits/total_unique_traits (Jaccard index), not standard graph density (2|E|/|V|(|V|-1))
+    trait_overlap_ratio = total_shared / total_unique if total_unique > 0 else 0.0
 
     # For 2 nodes: normalized_edge_weight == the single edge's normalized_weight.
     # For N>2: report mean across all edges as graph-level summary.
@@ -92,11 +93,11 @@ def build_graph(persona_files: list[Path]) -> dict:
     return {
         "nodes": nodes,
         "edges": edges,
-        "graph_density": round(graph_density, 4),
+        "trait_overlap_ratio": round(trait_overlap_ratio, 4),
         "normalized_edge_weight": round(normalized_edge_weight, 4),
         "total_unique_traits": total_unique,
         "shared_trait_count": total_shared,
-        "interpretation": "lower density = more distinct population",
+        "interpretation": "lower trait_overlap_ratio = more distinct population",
         "note_on_clustering": (
             "With 2 nodes there are no triangles, so the standard clustering "
             "coefficient is always 0. normalized_edge_weight (geometric-mean "
@@ -138,7 +139,7 @@ def main():
         print(f"    shared: {e['shared_traits']}")
     print(f"\nTotal unique traits : {result['total_unique_traits']}")
     print(f"Shared trait count  : {result['shared_trait_count']}")
-    print(f"Graph density       : {result['graph_density']}")
+    print(f"Trait overlap ratio : {result['trait_overlap_ratio']}")
     print(f"Norm. edge weight   : {result['normalized_edge_weight']}")
     print(f"\nResults written to  : {out_path}")
 
