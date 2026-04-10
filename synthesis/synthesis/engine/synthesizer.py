@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 
-from pydantic import ValidationError
+from pydantic import Field, ValidationError, create_model
 
 from synthesis.models.cluster import ClusterData
 from synthesis.models.persona import PersonaV1
@@ -11,9 +11,9 @@ from synthesis.models.persona import PersonaV1
 from .groundedness import GroundednessReport, check_groundedness
 from .model_backend import LLMResult, ModelBackend
 from .prompt_builder import (
-    SYSTEM_PROMPT,
     build_messages,
     build_retry_messages,
+    build_system_prompt,
     build_tool_definition,
 )
 
@@ -55,13 +55,48 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    *,
+    strip_vocabulary: bool = False,
+    strip_quotes: bool = False,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
     Calls the LLM with tool-use forcing, validates with Pydantic, checks
     groundedness, and retries with error context on failure.
+
+    `strip_vocabulary` and `strip_quotes` are ablation knobs used by
+    experiment 1.3. When set, the corresponding fields are removed from
+    the tool schema and system prompt. `PersonaV1` itself is untouched;
+    validation is delegated to an in-memory subclass with the relevant
+    fields relaxed to `default_factory=list`, so the rest of the pipeline
+    can keep treating the result as a `PersonaV1`.
     """
-    tool = build_tool_definition()
+    tool = build_tool_definition(
+        strip_vocabulary=strip_vocabulary,
+        strip_quotes=strip_quotes,
+    )
+    system_prompt = build_system_prompt(
+        strip_vocabulary=strip_vocabulary,
+        strip_quotes=strip_quotes,
+    )
+
+    # Relax PersonaV1 validation for whichever fields were stripped. This
+    # subclass is built fresh per call, never leaks out of `synthesize()`,
+    # and the returned instance is still a PersonaV1 subclass so downstream
+    # code (groundedness, TwinChat) is byte-identical.
+    validation_cls: type[PersonaV1] = PersonaV1
+    if strip_vocabulary or strip_quotes:
+        overrides: dict = {}
+        if strip_vocabulary:
+            overrides["vocabulary"] = (list[str], Field(default_factory=list))
+        if strip_quotes:
+            overrides["sample_quotes"] = (list[str], Field(default_factory=list))
+        validation_cls = create_model(
+            "PersonaV1Ablated",
+            __base__=PersonaV1,
+            **overrides,
+        )
+
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
     first_attempt_cost: float | None = None
@@ -72,13 +107,22 @@ async def synthesize(
 
         # Build messages (with error context on retries)
         if errors_for_retry:
-            messages = build_retry_messages(cluster, errors_for_retry)
+            messages = build_retry_messages(
+                cluster,
+                errors_for_retry,
+                strip_vocabulary=strip_vocabulary,
+                strip_quotes=strip_quotes,
+            )
         else:
-            messages = build_messages(cluster)
+            messages = build_messages(
+                cluster,
+                strip_vocabulary=strip_vocabulary,
+                strip_quotes=strip_quotes,
+            )
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
+            system=system_prompt,
             messages=messages,
             tool=tool,
         )
@@ -100,7 +144,7 @@ async def synthesize(
         # Validate with Pydantic
         errors_for_retry = []
         try:
-            persona = PersonaV1.model_validate(llm_result.tool_input)
+            persona = validation_cls.model_validate(llm_result.tool_input)
         except ValidationError as e:
             record.validation_errors = [
                 f"{err['loc']}: {err['msg']}" for err in e.errors()
