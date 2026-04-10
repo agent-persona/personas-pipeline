@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from pydantic import BaseModel
+
 from synthesis.models.cluster import ClusterData
+from synthesis.models.cohort import CohortModel
 from synthesis.models.persona import PersonaV1
 
 SYSTEM_PROMPT = """\
@@ -37,20 +40,32 @@ Example source_evidence entry:
 }
 """
 
+RENDER_SYSTEM_PROMPT = SYSTEM_PROMPT + """
 
-def build_tool_definition() -> dict:
-    """Build the Claude tool definition from the PersonaV1 JSON schema."""
+Age/cohort rendering rules:
+- Respect the supplied birth year and evaluation year.
+- Keep historical references, technology familiarity, and slang compatible with the cohort context.
+- Do not reference technology, events, or idioms the persona would not plausibly know.
+"""
+
+
+def build_tool_definition(schema_model: type[BaseModel] = PersonaV1) -> dict:
+    """Build the tool definition from the supplied schema model."""
     return {
         "name": "create_persona",
         "description": (
             "Create a structured persona from the analyzed cluster data. "
             "All fields are required and must be grounded in the provided source records."
         ),
-        "input_schema": PersonaV1.model_json_schema(),
+        "input_schema": schema_model.model_json_schema(),
     }
 
 
-def build_user_message(cluster: ClusterData) -> str:
+def build_user_message(
+    cluster: ClusterData,
+    *,
+    extra_sections: list[str] | None = None,
+) -> str:
     """Build the user message containing all cluster data for the LLM."""
     sections: list[str] = []
 
@@ -133,22 +148,31 @@ def build_user_message(cluster: ClusterData) -> str:
         "Use the create_persona tool to structure your output."
     )
 
+    if extra_sections:
+        sections.extend(f"\n{section}" for section in extra_sections if section)
+
     return "\n".join(sections)
 
 
-def build_messages(cluster: ClusterData) -> list[dict]:
+def build_messages(
+    cluster: ClusterData,
+    *,
+    extra_sections: list[str] | None = None,
+) -> list[dict]:
     """Build the full message list for the Anthropic API call."""
     return [
-        {"role": "user", "content": build_user_message(cluster)},
+        {"role": "user", "content": build_user_message(cluster, extra_sections=extra_sections)},
     ]
 
 
 def build_retry_messages(
     cluster: ClusterData,
     errors: list[str],
+    *,
+    extra_sections: list[str] | None = None,
 ) -> list[dict]:
     """Build messages for a retry attempt, including previous errors."""
-    user_msg = build_user_message(cluster)
+    user_msg = build_user_message(cluster, extra_sections=extra_sections)
     error_section = "\n## Previous Attempt Errors\n"
     error_section += "Your previous attempt had these issues. Please fix them:\n"
     for err in errors:
@@ -158,3 +182,22 @@ def build_retry_messages(
     return [
         {"role": "user", "content": error_section + "\n\n" + user_msg},
     ]
+
+
+def build_cohort_context(cohort: CohortModel) -> str:
+    """Render compact cohort context for the V2 synthesis pass."""
+    return "\n".join([
+        "## Historical Cohort Context",
+        f"- Birth year: {cohort.birth_year}",
+        f"- Evaluation year: {cohort.eval_year}",
+        f"- Childhood window: {cohort.childhood_window.start_year}-{cohort.childhood_window.end_year}",
+        f"- Adolescence window: {cohort.adolescence_window.start_year}-{cohort.adolescence_window.end_year}",
+        f"- Early adulthood window: {cohort.early_adulthood_window.start_year}-{cohort.early_adulthood_window.end_year}",
+        f"- Major events lived through: {', '.join(cohort.major_events_lived_through[:6])}",
+        f"- Grew up with: {', '.join(cohort.tech_familiarity.grew_up_with[:6])}",
+        f"- Adopted later: {', '.join(cohort.tech_familiarity.adopted_as_adult[:6])}",
+        f"- Never used: {', '.join(cohort.tech_familiarity.never_used[:6])}",
+        f"- Active slang: {', '.join(cohort.slang_compatibility.active_slang[:6])}",
+        f"- Recognized slang: {', '.join(cohort.slang_compatibility.recognized_slang[:6])}",
+        f"- Unknown slang: {', '.join(cohort.slang_compatibility.unknown_slang[:6])}",
+    ])

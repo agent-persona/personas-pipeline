@@ -6,10 +6,13 @@ Researcher #5 owns filling this out.
 """
 
 from .metrics import (
+    field_interdependence,
+    field_interdependence_breakdown,
     schema_validity,
     groundedness_rate,
     distinctiveness,
     cost_per_persona,
+    summarize_metric_runs,
 )
 from .judges import LLMJudge, JudgeScore
 from .golden_set import GoldenTenant, load_golden_set
@@ -19,6 +22,9 @@ __all__ = [
     "groundedness_rate",
     "distinctiveness",
     "cost_per_persona",
+    "field_interdependence",
+    "field_interdependence_breakdown",
+    "summarize_metric_runs",
     "LLMJudge",
     "JudgeScore",
     "GoldenTenant",

@@ -7,10 +7,10 @@
 >  sycophancy). We need to red-team the judge before using it as ground
 >  truth."* — `PRD_LAB_RESEARCH.md`
 
-This module is a **scaffold**. Every other problem space (1, 2, 3, 4, 6)
-depends on stable metric and judge APIs to compare a variant run against a
-control run. Researcher #5 owns filling out the bodies; the signatures are
-frozen today so everyone else can import them right now without waiting.
+This module now provides the deterministic evaluation core for the current
+P2/P3/P4 tranche. Every other problem space (1, 2, 3, 4, 6) depends on stable
+metric and judge APIs to compare a variant run against a control run. The
+signatures stay frozen so everyone else can import them without waiting.
 
 ## What lives here
 
@@ -41,8 +41,13 @@ from evaluation import (
 |---|---|---|
 | `schema_validity()` | Implemented | space 1, 2 (schema experiments) |
 | `groundedness_rate()` | Implemented (expects `GroundednessReport` from synthesis) | space 3 |
+| `developmental_fit()` | Implemented | space 1, 2, 4 |
+| `historical_fit()` | Implemented | space 1, 2, 5 |
+| `capability_coherence()` | Implemented | space 3b, 6 |
+| `relational_realism()` | Implemented | space 3c, 6 |
 | `distinctiveness()` | **TODO** — stub returns NaN | space 4, 6 |
 | `cost_per_persona()` | Implemented | everyone |
+| `field_interdependence()` | Implemented heuristic harness metric | space 1 |
 | `turing_pass_rate()` | **TODO** | space 4, 5 |
 | `drift()` | **TODO** | space 4 |
 | `turns_to_break()` | **TODO** | space 4 |
@@ -51,7 +56,7 @@ from evaluation import (
 
 ### 2. `judges.py` — LLM-as-judge
 
-`LLMJudge` has three entry points and no real body yet:
+`LLMJudge` has three entry points and remains the LLM-backed judge surface:
 
 - `score_persona(persona_dict) -> JudgeScore` — one persona, one rubric.
 - `score_transcript(persona, transcript) -> JudgeScore` — twin chat eval.
@@ -89,6 +94,24 @@ From `PRD_LAB_RESEARCH.md`:
    transcript) as inverted realism metric.
 9. **5.9 Eval drift over model versions.** Re-run as new Claude models
    ship. Version-pin if it drifts.
+
+## Research scripts
+
+The repo-level `scripts/` directory now contains experiment harnesses for:
+
+- `run_temp_sweep.py` → **2.06 Temperature & sampling sweep**
+- `run_field_interdependence.py` → **1.07 Field interdependence harness**
+- `run_rubric_ablation.py` → **5.05 Rubric ablation**
+- `run_reference_judging.py` → **5.11 Reference-based vs free judging**
+
+The versioned baseline runner also supports:
+
+- `python scripts/run_baseline.py --schema-version v1`
+- `python scripts/run_baseline.py --schema-version v2 --birth-year 1988 --eval-year 2026`
+- `python scripts/run_temp_sweep.py --schema-version v2 --birth-year 1988 --eval-year 2026`
+
+Those scripts all write JSON artifacts under `evaluation/baselines/` so they
+can be committed, diffed, and later consumed by the dashboard layer.
 
 ## Dependencies on other modules
 

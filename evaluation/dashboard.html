@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persona Pipeline Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --yellow: #d29922;
+    --orange: #db6d28;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+    line-height: 1.5;
+  }
+  h1 { font-size: 24px; margin-bottom: 8px; }
+  h2 { font-size: 18px; margin: 24px 0 12px; color: var(--accent); }
+  .subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
+
+  /* File loader */
+  .loader {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .loader label {
+    font-size: 13px;
+    color: var(--text-dim);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .loader input[type="file"] { font-size: 12px; color: var(--text-dim); }
+  .loader .status {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: var(--border);
+  }
+  .loader .status.loaded { background: #1a3a2a; color: var(--green); }
+  .loader .status.missing { background: #3a1a1a; color: var(--red); }
+  .auto-note { font-size: 11px; color: var(--text-dim); }
+
+  /* Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .card .label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+  .card .value { font-size: 22px; font-weight: 600; margin-top: 4px; }
+  .card .value.green { color: var(--green); }
+  .card .value.red { color: var(--red); }
+  .card .value.yellow { color: var(--yellow); }
+  .card .value.accent { color: var(--accent); }
+
+  /* Metric table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: #1c2128;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  .winner-a { color: var(--accent); font-weight: 600; }
+  .winner-b { color: var(--orange); font-weight: 600; }
+  .winner-tie { color: var(--text-dim); }
+
+  /* Chart containers */
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .chart-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .chart-box h3 { font-size: 14px; margin-bottom: 12px; color: var(--text-dim); }
+  .chart-box canvas { max-height: 260px; }
+
+  /* Expandable persona */
+  details {
+    border-bottom: 1px solid var(--border);
+  }
+  details summary {
+    cursor: pointer;
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  details summary:hover { text-decoration: underline; }
+  pre.json-view {
+    background: #1c2128;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 12px;
+    overflow-x: auto;
+    margin: 8px 0 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    color: var(--text-dim);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-dim);
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+  }
+  .empty-state p { margin-top: 8px; font-size: 14px; }
+
+  /* Mode badge */
+  .mode-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+  .mode-badge.single { background: #1a3a2a; color: var(--green); }
+  .mode-badge.compare { background: #1a2a3a; color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .chart-row { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<h1>Persona Pipeline Dashboard <span id="modeBadge" class="mode-badge"></span></h1>
+<p class="subtitle" id="subtitle">Load baseline files to begin</p>
+
+<!-- File loader -->
+<div class="loader">
+  <label>
+    P1 Baseline
+    <input type="file" id="fileP1" accept=".json">
+  </label>
+  <label>
+    P2 Baseline
+    <input type="file" id="fileP2" accept=".json">
+  </label>
+  <label>
+    Comparison
+    <input type="file" id="fileComp" accept=".json">
+  </label>
+  <span id="statusP1" class="status missing">P1: --</span>
+  <span id="statusP2" class="status missing">P2: --</span>
+  <span id="statusComp" class="status missing">Comp: --</span>
+  <span id="statusTemp" class="status missing">2.06: --</span>
+  <span id="statusField" class="status missing">1.07: --</span>
+  <span id="statusRubric" class="status missing">5.05: --</span>
+  <span id="statusRef" class="status missing">5.11: --</span>
+  <span class="auto-note" id="autoNote"></span>
+</div>
+
+<!-- Dashboard content -->
+<div id="dashboard"></div>
+
+<script>
+const state = { p1: null, p2: null, comp: null, temp: null, field: null, rubric: null, ref: null };
+let metricChart = null;
+let pairwiseChart = null;
+let tempSweepChart = null;
+let fieldChart = null;
+let rubricChart = null;
+let referenceChart = null;
+
+// Auto-load files from baselines/ (works when served from evaluation/)
+async function autoLoad() {
+  const basePath = 'baselines/';
+  const files = [
+    { key: 'p1', path: basePath + 'p1_baseline.json' },
+    { key: 'p2', path: basePath + 'p2_baseline.json' },
+    { key: 'comp', path: basePath + 'comparison_p1_vs_p2.json' },
+    { key: 'temp', path: basePath + 'temp_sweep.json' },
+    { key: 'field', path: basePath + 'field_interdependence.json' },
+    { key: 'rubric', path: basePath + 'rubric_ablation.json' },
+    { key: 'ref', path: basePath + 'reference_vs_free_judging.json' },
+  ];
+  let loaded = 0;
+  for (const f of files) {
+    try {
+      const resp = await fetch(f.path);
+      if (resp.ok) {
+        state[f.key] = await resp.json();
+        loaded++;
+      }
+    } catch (e) { /* ignore */ }
+  }
+  if (loaded > 0) {
+    document.getElementById('autoNote').textContent = `Auto-loaded ${loaded} file(s) from ${basePath}`;
+    updateStatus();
+    render();
+  }
+}
+
+// File input handlers
+document.getElementById('fileP1').addEventListener('change', e => loadFile(e, 'p1'));
+document.getElementById('fileP2').addEventListener('change', e => loadFile(e, 'p2'));
+document.getElementById('fileComp').addEventListener('change', e => loadFile(e, 'comp'));
+
+function loadFile(e, key) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      state[key] = JSON.parse(ev.target.result);
+      updateStatus();
+      render();
+    } catch (err) {
+      alert('Invalid JSON: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function updateStatus() {
+  setStatus('statusP1', state.p1, 'P1');
+  setStatus('statusP2', state.p2, 'P2');
+  setStatus('statusComp', state.comp, 'Comp');
+  setStatus('statusTemp', state.temp, '2.06');
+  setStatus('statusField', state.field, '1.07');
+  setStatus('statusRubric', state.rubric, '5.05');
+  setStatus('statusRef', state.ref, '5.11');
+}
+
+function setStatus(id, data, label) {
+  const el = document.getElementById(id);
+  if (data) {
+    el.textContent = label + ': loaded';
+    el.className = 'status loaded';
+  } else {
+    el.textContent = label + ': --';
+    el.className = 'status missing';
+  }
+}
+
+function fmt(v) {
+  if (v === null || v === undefined) return 'N/A';
+  if (typeof v === 'number' && isNaN(v)) return 'N/A';
+  if (typeof v === 'number') return v.toFixed(4);
+  return String(v);
+}
+
+function fmtShort(v) {
+  if (v === null || v === undefined) return 'N/A';
+  if (typeof v === 'number' && isNaN(v)) return 'N/A';
+  if (typeof v === 'number') return v.toFixed(2);
+  return String(v);
+}
+
+function fmtCost(v) {
+  if (v === null || v === undefined) return 'N/A';
+  return '$' + v.toFixed(4);
+}
+
+function winnerClass(w) {
+  if (w === 'a') return 'winner-a';
+  if (w === 'b') return 'winner-b';
+  return 'winner-tie';
+}
+
+function winnerLabel(w, comp) {
+  if (!comp) return w;
+  if (w === 'a') return comp.version_a || 'A';
+  if (w === 'b') return comp.version_b || 'B';
+  return 'Tie';
+}
+
+function render() {
+  const el = document.getElementById('dashboard');
+  const badge = document.getElementById('modeBadge');
+  const sub = document.getElementById('subtitle');
+
+  const isCompare = state.p1 && state.p2 && state.comp;
+  const isSingle = state.p1 && !isCompare;
+
+  if (!state.p1) {
+    badge.textContent = '';
+    sub.textContent = 'Load baseline files to begin';
+    el.innerHTML = '<div class="empty-state"><h2>No data loaded</h2><p>Load a P1 baseline JSON to view single-version metrics, or load P1 + P2 + comparison for compare mode.</p></div>';
+    return;
+  }
+
+  if (isSingle) {
+    badge.textContent = 'Single Version';
+    badge.className = 'mode-badge single';
+    sub.textContent = `${state.p1.version} | ${state.p1.model} | ${new Date(state.p1.timestamp).toLocaleString()}`;
+    renderSingle(el, state.p1);
+  } else {
+    badge.textContent = 'Compare';
+    badge.className = 'mode-badge compare';
+    sub.textContent = `${state.comp.version_a} vs ${state.comp.version_b}`;
+    renderCompare(el, state.p1, state.p2, state.comp);
+  }
+}
+
+function renderSingle(el, b) {
+  const agg = b.aggregate || {};
+  const meta = b.run_metadata || {};
+  const totalRuns = meta.num_runs ?? meta.num_reruns ?? 1;
+  const extraReruns = meta.num_reruns ?? Math.max(0, totalRuns - 1);
+  const stability = b.stability_breakdown || {};
+  const stabilityFields = Object.entries(stability.fields || {});
+  let html = '';
+
+  // Cards
+  html += '<h2>Summary</h2><div class="cards">';
+  html += card('Version', b.version, 'accent');
+  html += card('Model', b.model.replace('claude-', ''), '');
+  html += card('Runs', totalRuns, 'accent');
+  html += card('Extra Reruns', extraReruns, '');
+  html += card('Personas', b.num_personas, 'accent');
+  html += card('Total Cost', fmtCost(b.total_cost_usd), '');
+  html += card('Groundedness', fmtShort(agg.groundedness), scoreColor(agg.groundedness));
+  html += card('Dev. Fit', fmtShort(agg.developmental_fit), scoreColor(agg.developmental_fit));
+  html += card('Stability', fmtShort(agg.stability), scoreColor(agg.stability));
+  html += card('Schema Valid', fmtShort(agg.schema_validity), scoreColor(agg.schema_validity));
+  html += '</div>';
+
+  // Metrics table
+  html += '<h2>All Metrics</h2>';
+  html += '<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>';
+  for (const [k, v] of Object.entries(agg)) {
+    html += `<tr><td>${k}</td><td>${fmt(v)}</td></tr>`;
+  }
+  html += '</tbody></table>';
+
+  if (stabilityFields.length > 0) {
+    html += '<h2>Stability Breakdown</h2>';
+    html += '<table><thead><tr><th>Field</th><th>Similarity</th><th>Comparisons</th></tr></thead><tbody>';
+    for (const [field, detail] of stabilityFields.sort((a, b) => {
+      const aScore = a[1]?.similarity ?? -1;
+      const bScore = b[1]?.similarity ?? -1;
+      return bScore - aScore;
+    })) {
+      html += `<tr><td>${field}</td><td>${fmt(detail.similarity)}</td><td>${detail.comparisons ?? '--'}</td></tr>`;
+    }
+    html += '</tbody></table>';
+  }
+
+  // Chart placeholder
+  html += '<div class="chart-box" style="max-width:600px;margin-bottom:24px"><h3>Metric Scores</h3><canvas id="singleChart"></canvas></div>';
+
+  // Per-persona table
+  html += renderPersonaTable(b.per_persona, false);
+
+  if (Array.isArray(b.runs) && b.runs.length > 0) {
+    html += '<h2>Run Details</h2>';
+    b.runs.forEach((run, idx) => {
+      html += `<details><summary>Run ${idx + 1} of ${b.runs.length}</summary><div style="padding: 8px 14px">`;
+      html += '<table style="margin-bottom:12px"><thead><tr><th>Cluster ID</th><th>Name</th><th>Groundedness</th><th>Cost</th><th>Attempts</th></tr></thead><tbody>';
+      for (const entry of run) {
+        html += `<tr>
+          <td style="font-family:monospace;font-size:12px">${entry.cluster_id || '--'}</td>
+          <td>${entry.persona?.name || '--'}</td>
+          <td>${fmtShort(entry.groundedness_score)}</td>
+          <td>${fmtCost(entry.cost_usd)}</td>
+          <td>${entry.attempts ?? '--'}</td>
+        </tr>`;
+      }
+      html += '</tbody></table>';
+      html += `<pre class="json-view">${escapeHtml(JSON.stringify(run, null, 2))}</pre>`;
+      html += '</div></details>';
+    });
+  }
+
+  html += renderResearchSections();
+
+  el.innerHTML = html;
+  drawSingleChart(agg);
+  drawResearchCharts();
+}
+
+function renderCompare(el, p1, p2, comp) {
+  const agg1 = p1.aggregate || {};
+  const agg2 = p2.aggregate || {};
+  const pw = comp.pairwise || {};
+  let html = '';
+
+  // Top cards
+  html += '<h2>Summary</h2><div class="cards">';
+  const owLabel = winnerLabel(comp.overall_winner, comp);
+  const owColor = comp.overall_winner === 'tie' ? 'yellow' : 'green';
+  html += card('Overall Winner', owLabel, owColor);
+  html += card(comp.version_a + ' Personas', p1.num_personas, '');
+  html += card(comp.version_b + ' Personas', p2.num_personas, '');
+  html += card(comp.version_a + ' Cost', fmtCost(p1.total_cost_usd), '');
+  html += card(comp.version_b + ' Cost', fmtCost(p2.total_cost_usd), '');
+  html += card('Matched Pairs', comp.num_matched_pairs, 'accent');
+  html += card('A Win Rate', (pw.rate_a * 100).toFixed(0) + '%', '');
+  html += card('B Win Rate', (pw.rate_b * 100).toFixed(0) + '%', '');
+  html += '</div>';
+
+  // Metric comparison table
+  html += '<h2>Metric Comparison</h2>';
+  html += `<table><thead><tr><th>Metric</th><th>${comp.version_a}</th><th>${comp.version_b}</th><th>Delta</th><th>Winner</th></tr></thead><tbody>`;
+  for (const d of (comp.per_metric || [])) {
+    const wc = winnerClass(d.winner);
+    html += `<tr>
+      <td>${d.metric}</td>
+      <td>${fmt(d.score_a)}</td>
+      <td>${fmt(d.score_b)}</td>
+      <td>${fmt(d.delta)}</td>
+      <td class="${wc}">${winnerLabel(d.winner, comp)}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+
+  // Charts
+  html += '<div class="chart-row">';
+  html += '<div class="chart-box"><h3>Metric Deltas (B - A)</h3><canvas id="deltaChart"></canvas></div>';
+  html += '<div class="chart-box"><h3>Pairwise Win Rate</h3><canvas id="pairwiseChart"></canvas></div>';
+  html += '</div>';
+
+  // Per-persona table (from P1 with judge scores)
+  html += renderPersonaTable(p1.per_persona, true, p2, comp);
+
+  html += renderResearchSections();
+
+  el.innerHTML = html;
+  drawDeltaChart(comp.per_metric || []);
+  drawPairwiseChart(pw, comp);
+  drawResearchCharts();
+}
+
+function card(label, value, colorClass) {
+  return `<div class="card"><div class="label">${label}</div><div class="value ${colorClass}">${value}</div></div>`;
+}
+
+function scoreColor(v) {
+  if (v === null || v === undefined || (typeof v === 'number' && isNaN(v))) return 'yellow';
+  if (v >= 0.8) return 'green';
+  if (v >= 0.5) return 'yellow';
+  return 'red';
+}
+
+function renderPersonaTable(personas, isCompare, p2, comp) {
+  let html = '<h2>Per-Persona Details</h2>';
+  html += '<table><thead><tr>';
+  html += '<th>Cluster ID</th><th>Name</th><th>Groundedness</th><th>Judge Overall</th><th>Cost</th>';
+  html += '</tr></thead><tbody>';
+
+  for (const p of personas) {
+    const m = p.metrics || {};
+    const j = p.judge_score || {};
+    html += `<tr>
+      <td style="font-family:monospace;font-size:12px">${p.cluster_id || '--'}</td>
+      <td>${p.name}</td>
+      <td>${fmtShort(m.groundedness)}</td>
+      <td>${fmtShort(j.overall)}</td>
+      <td>${fmtCost(m.cost_usd)}</td>
+    </tr>`;
+
+    // Expandable details
+    html += `<tr><td colspan="5" style="padding:0">
+      <details>
+        <summary>View judge dimensions & raw persona JSON</summary>
+        <div style="padding: 8px 14px">`;
+
+    // Judge dimensions
+    if (j.dimensions) {
+      html += '<table style="margin-bottom:12px;font-size:13px"><thead><tr><th>Dimension</th><th>Score (0-5)</th></tr></thead><tbody>';
+      for (const [dim, score] of Object.entries(j.dimensions)) {
+        html += `<tr><td>${dim}</td><td>${fmtShort(score)}</td></tr>`;
+      }
+      html += '</tbody></table>';
+      if (j.rationale) {
+        html += `<p style="font-size:12px;color:var(--text-dim);margin-bottom:12px"><strong>Rationale:</strong> ${escapeHtml(j.rationale)}</p>`;
+      }
+    }
+
+    // Raw JSON
+    html += `<pre class="json-view">${escapeHtml(JSON.stringify(p.persona || p, null, 2))}</pre>`;
+    html += '</div></details></td></tr>';
+  }
+
+  html += '</tbody></table>';
+  return html;
+}
+
+function renderResearchSections() {
+  let html = '<h2>Research Findings</h2>';
+  const anyResearch = state.temp || state.field || state.rubric || state.ref;
+  if (!anyResearch) {
+    html += '<div class="empty-state"><h2>No research artifacts loaded</h2><p>Expected files in baselines/: temp_sweep.json, field_interdependence.json, rubric_ablation.json, reference_vs_free_judging.json</p></div>';
+    return html;
+  }
+
+  if (state.temp) html += renderTempSweepSection(state.temp);
+  if (state.field) html += renderFieldSection(state.field);
+  if (state.rubric) html += renderRubricSection(state.rubric);
+  if (state.ref) html += renderReferenceSection(state.ref);
+  return html;
+}
+
+function renderTempSweepSection(report) {
+  const selection = report.selection || {};
+  const results = report.results || [];
+  const successful = results.filter(r => (r.status || 'ok') === 'ok');
+  const failed = results.filter(r => r.status === 'failed');
+  let html = '<h2>2.06 Temperature Sweep</h2><div class="cards">';
+  html += card('Best Temp', selection.best_temperature ?? 'N/A', 'accent');
+  html += card('Eligible Temps', (selection.eligible_temperatures || []).join(', ') || 'N/A', '');
+  html += card('Successful Temps', successful.length, 'green');
+  html += card('Failed Temps', failed.length, failed.length ? 'red' : 'green');
+  html += card('Model', report.model || 'N/A', '');
+  html += card('Total Cost', fmtCost(report.total_cost_usd), '');
+  html += '</div>';
+
+  html += '<div class="chart-row">';
+  html += '<div class="chart-box"><h3>Groundedness, Stability, Judge by Temperature</h3><canvas id="tempSweepChart"></canvas></div>';
+  html += '<div class="chart-box"><h3>Decision Rule</h3><p style="font-size:13px;color:var(--text-dim)">' + escapeHtml(selection.selection_rule || 'N/A') + '</p>';
+  if (selection.best_summary) {
+    html += '<table style="margin-top:12px"><thead><tr><th>Metric</th><th>Winner</th></tr></thead><tbody>';
+    for (const [key, value] of Object.entries(selection.best_summary)) {
+      html += `<tr><td>${key}</td><td>${fmt(value)}</td></tr>`;
+    }
+    html += '</tbody></table>';
+  }
+  html += '</div></div>';
+
+  html += '<table><thead><tr><th>Temp</th><th>Status</th><th>Groundedness</th><th>Stability</th><th>Judge</th><th>Cost</th></tr></thead><tbody>';
+  for (const result of results) {
+    const summary = result.aggregate_summary?.means || result.aggregate || {};
+    html += `<tr>
+      <td>${fmt(result.temperature)}</td>
+      <td>${result.status || 'ok'}</td>
+      <td>${fmt(summary.groundedness)}</td>
+      <td>${fmt(summary.stability ?? result.aggregate?.stability)}</td>
+      <td>${fmt(result.judge_overall_mean)}</td>
+      <td>${fmtCost(result.total_cost_usd)}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+function renderFieldSection(report) {
+  const mutations = report.mutations || {};
+  const top = Object.entries(mutations).sort((a, b) => (b[1].mean_score_drop || 0) - (a[1].mean_score_drop || 0))[0];
+  let html = '<h2>1.07 Field Interdependence</h2><div class="cards">';
+  html += card('Input Artifact', report.source_artifact_type || 'N/A', 'accent');
+  html += card('Mutations', Object.keys(mutations).length, '');
+  html += card('Largest Drop', top ? fmt(top[1].mean_score_drop) : 'N/A', top ? 'red' : '');
+  html += card('Most Sensitive', top ? top[0] : 'N/A', '');
+  html += '</div>';
+  html += '<div class="chart-box" style="margin-bottom:24px"><h3>Mean Score Drop by Mutation</h3><canvas id="fieldChart"></canvas></div>';
+  html += '<table><thead><tr><th>Mutation</th><th>Mean Drop</th><th>Max Drop</th><th>Trials</th></tr></thead><tbody>';
+  for (const [name, stats] of Object.entries(mutations)) {
+    html += `<tr><td>${name}</td><td>${fmt(stats.mean_score_drop)}</td><td>${fmt(stats.max_score_drop)}</td><td>${stats.num_trials ?? '--'}</td></tr>`;
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+function renderRubricSection(report) {
+  const variants = report.variants || [];
+  let html = '<h2>5.05 Rubric Ablation</h2><div class="cards">';
+  const full = variants.find(v => v.variant === 'full');
+  html += card('Judge Model', report.judge_model || 'N/A', 'accent');
+  html += card('Variants', variants.length, '');
+  html += card('Full Mean', full ? fmt(full.mean_overall) : 'N/A', 'green');
+  html += '</div>';
+  html += '<div class="chart-box" style="margin-bottom:24px"><h3>Mean Overall by Rubric Variant</h3><canvas id="rubricChart"></canvas></div>';
+  html += '<table><thead><tr><th>Variant</th><th>Mean Overall</th><th>Delta vs Full</th><th>Rank Corr vs Full</th></tr></thead><tbody>';
+  for (const row of variants) {
+    html += `<tr><td>${row.variant}</td><td>${fmt(row.mean_overall)}</td><td>${fmt(row.delta_vs_full)}</td><td>${fmt(row.rank_correlation_vs_full)}</td></tr>`;
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+function renderReferenceSection(report) {
+  const agg = report.aggregate || {};
+  let html = '<h2>5.11 Reference vs Free Judging</h2><div class="cards">';
+  html += card('Judge Model', report.judge_model || 'N/A', 'accent');
+  html += card('Free Mean', fmt(agg.free_overall_mean), 'green');
+  html += card('Reference Mean', fmt(agg.reference_overall_mean), 'yellow');
+  html += card('Mean Delta', fmt(agg.overall_delta_mean), (agg.overall_delta_mean || 0) < 0 ? 'red' : 'green');
+  html += '</div>';
+  html += '<div class="chart-row">';
+  html += '<div class="chart-box"><h3>Dimension Delta Means (Reference - Free)</h3><canvas id="referenceChart"></canvas></div>';
+  html += '<div class="chart-box"><h3>Per-Persona Deltas</h3><table><thead><tr><th>Persona</th><th>Overall Delta</th></tr></thead><tbody>';
+  for (const row of (report.rows || [])) {
+    html += `<tr><td>${row.persona_name}</td><td>${fmt(row.delta?.overall)}</td></tr>`;
+  }
+  html += '</tbody></table></div></div>';
+  html += '<table><thead><tr><th>Dimension</th><th>Mean Delta</th></tr></thead><tbody>';
+  for (const [dim, value] of Object.entries(agg.dimension_delta_means || {})) {
+    html += `<tr><td>${dim}</td><td>${fmt(value)}</td></tr>`;
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Charts
+function drawSingleChart(agg) {
+  const canvas = document.getElementById('singleChart');
+  if (!canvas) return;
+  const labels = [];
+  const values = [];
+  for (const [k, v] of Object.entries(agg)) {
+    if (v !== null && typeof v === 'number' && !isNaN(v)) {
+      labels.push(k);
+      values.push(v);
+    }
+  }
+  if (metricChart) metricChart.destroy();
+  metricChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Score',
+        data: values,
+        backgroundColor: values.map(v => v >= 0.8 ? '#3fb950' : v >= 0.5 ? '#d29922' : '#f85149'),
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true, max: 1.05, grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+        x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 11 } } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+function drawDeltaChart(metrics) {
+  const canvas = document.getElementById('deltaChart');
+  if (!canvas) return;
+  const valid = metrics.filter(m => m.delta !== null);
+  if (metricChart) metricChart.destroy();
+  metricChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: valid.map(m => m.metric),
+      datasets: [{
+        label: 'Delta (B-A)',
+        data: valid.map(m => m.delta),
+        backgroundColor: valid.map(m => m.delta > 0 ? '#3fb950' : m.delta < 0 ? '#f85149' : '#8b949e'),
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      indexAxis: 'y',
+      scales: {
+        x: { grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+        y: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 11 } } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+function drawPairwiseChart(pw, comp) {
+  const canvas = document.getElementById('pairwiseChart');
+  if (!canvas) return;
+  if (pairwiseChart) pairwiseChart.destroy();
+  pairwiseChart = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: [comp.version_a || 'A', comp.version_b || 'B', 'Tie'],
+      datasets: [{
+        data: [pw.rate_a || 0, pw.rate_b || 0, pw.tie_rate || 0],
+        backgroundColor: ['#58a6ff', '#db6d28', '#8b949e'],
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#8b949e', padding: 16 } }
+      }
+    }
+  });
+}
+
+function drawResearchCharts() {
+  drawTempSweepChart(state.temp);
+  drawFieldChart(state.field);
+  drawRubricChart(state.rubric);
+  drawReferenceChart(state.ref);
+}
+
+function drawTempSweepChart(report) {
+  const canvas = document.getElementById('tempSweepChart');
+  if (!canvas || !report) return;
+  const ok = (report.results || []).filter(r => (r.status || 'ok') === 'ok');
+  if (tempSweepChart) tempSweepChart.destroy();
+  tempSweepChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: ok.map(r => r.temperature),
+      datasets: [
+        {
+          label: 'Groundedness',
+          data: ok.map(r => (r.aggregate_summary?.means || r.aggregate || {}).groundedness),
+          backgroundColor: '#58a6ff',
+        },
+        {
+          label: 'Stability',
+          data: ok.map(r => (r.aggregate_summary?.means || r.aggregate || {}).stability ?? r.aggregate?.stability),
+          backgroundColor: '#3fb950',
+        },
+        {
+          label: 'Judge',
+          data: ok.map(r => r.judge_overall_mean),
+          backgroundColor: '#d29922',
+          yAxisID: 'y1',
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true, max: 1.05, grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+        y1: { beginAtZero: true, max: 5.2, position: 'right', grid: { display: false }, ticks: { color: '#8b949e' } },
+        x: { grid: { display: false }, ticks: { color: '#8b949e' } },
+      },
+      plugins: { legend: { labels: { color: '#8b949e' } } },
+    }
+  });
+}
+
+function drawFieldChart(report) {
+  const canvas = document.getElementById('fieldChart');
+  if (!canvas || !report) return;
+  const rows = Object.entries(report.mutations || {});
+  if (fieldChart) fieldChart.destroy();
+  fieldChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: rows.map(([name]) => name),
+      datasets: [{
+        label: 'Mean Score Drop',
+        data: rows.map(([, stats]) => stats.mean_score_drop),
+        backgroundColor: '#f85149',
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+        x: { grid: { display: false }, ticks: { color: '#8b949e' } },
+      },
+      plugins: { legend: { display: false } },
+    }
+  });
+}
+
+function drawRubricChart(report) {
+  const canvas = document.getElementById('rubricChart');
+  if (!canvas || !report) return;
+  const rows = report.variants || [];
+  if (rubricChart) rubricChart.destroy();
+  rubricChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: rows.map(row => row.variant),
+      datasets: [{
+        label: 'Mean Overall',
+        data: rows.map(row => row.mean_overall),
+        backgroundColor: rows.map(row => row.variant === 'full' ? '#58a6ff' : '#d29922'),
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true, max: 5.2, grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+        x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 10 } } },
+      },
+      plugins: { legend: { display: false } },
+    }
+  });
+}
+
+function drawReferenceChart(report) {
+  const canvas = document.getElementById('referenceChart');
+  if (!canvas || !report) return;
+  const rows = Object.entries(report.aggregate?.dimension_delta_means || {});
+  if (referenceChart) referenceChart.destroy();
+  referenceChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: rows.map(([name]) => name),
+      datasets: [{
+        label: 'Reference - Free',
+        data: rows.map(([, value]) => value),
+        backgroundColor: rows.map(([, value]) => (value || 0) < 0 ? '#f85149' : '#3fb950'),
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      indexAxis: 'y',
+      scales: {
+        x: { grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+        y: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 11 } } },
+      },
+      plugins: { legend: { display: false } },
+    }
+  });
+}
+
+// Init
+autoLoad();
+</script>
+</body>
+</html>

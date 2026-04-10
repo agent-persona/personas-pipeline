@@ -1,0 +1,615 @@
+{
+  "experiment_id": "5.11",
+  "name": "Reference-based vs free judging",
+  "timestamp": "2026-04-10T21:00:01.771602+00:00",
+  "input_artifact": "evaluation/baselines/p1_baseline.json",
+  "source_artifact_type": "p1",
+  "selected_temperature": null,
+  "judge_model": "claude-haiku-4-5-20251001",
+  "aggregate": {
+    "free_overall_mean": 4.833333,
+    "reference_overall_mean": 4.166667,
+    "overall_delta_mean": -0.666667,
+    "dimension_delta_means": {
+      "groundedness": -1.0,
+      "developmental_fit": -1.0,
+      "historical_fit": 0.0,
+      "capability_coherence": -1.0,
+      "relational_realism": 0.0,
+      "overall_preference": -1.0
+    }
+  },
+  "rows": [
+    {
+      "persona_name": "Alex Chen, the Platform Architect",
+      "cluster_id": "clust_df29bc6657e2",
+      "free": {
+        "overall": 4.833333333333333,
+        "dimensions": {
+          "groundedness": 5.0,
+          "developmental_fit": 5.0,
+          "historical_fit": 5.0,
+          "capability_coherence": 5.0,
+          "relational_realism": 4.0,
+          "overall_preference": 5.0
+        },
+        "rationale": "This persona is exceptionally well-grounded with comprehensive source evidence (24 evidence entries with 0.7\u20131.0 confidence scores) mapped to specific claims across demographics, goals, pains, and objections. Developmental fit is strong: a 28\u201340 year-old Senior DevOps Engineer at a fintech firm earning $120K\u2013$180K with a CS degree is highly plausible and coherent. Historical fit is excellent\u2014the tech stack (Terraform, GraphQL, GitHub Actions, webhooks, IaC) reflects current industry best practices (circa 2023\u20132024) in DevOps and fintech automation. Capability coherence is outstanding: skills, tools, and confidence align seamlessly (API-driven infrastructure, CI/CD automation, custom integration ownership). Relational realism is strong but slightly lower because the persona lacks specific interpersonal friction details, team dynamics nuance, or communication quirks that would elevate it from technically accurate to deeply human. The sample quotes and journey stages are specific and believable, but could benefit from more personality variance or conflict-resolution examples. Overall this is an exemplary, production-ready persona with high utility for API product decisions and fintech engineering teams."
+      },
+      "reference_based": {
+        "overall": 4.166666666666667,
+        "dimensions": {
+          "groundedness": 4.0,
+          "developmental_fit": 4.0,
+          "historical_fit": 5.0,
+          "capability_coherence": 4.0,
+          "relational_realism": 4.0,
+          "overall_preference": 4.0
+        },
+        "rationale": "This persona is exceptionally well-grounded in the provided evidence. All major claims (role, company size, goals around Terraform/GitHub/webhooks, GraphQL pain points, API documentation friction) map directly to source records with high confidence scores (0.75\u20131.0). The tech stack, vocabulary, and decision triggers align tightly with documented behaviors (terraform_setup, webhook_config, github_integration, custom_dashboard, API feedback). Developmental fit is strong: age range 28\u201340, senior IC role, and $120\u2013$180K income cohere plausibly with a fintech DevOps engineer trajectory. Historical fit is excellent\u2014Terraform, GitHub Actions, GraphQL, and webhook-driven automation are standard 2024\u20132026 infrastructure patterns. Capability coherence is solid: skills in IaC, CI/CD, API integration, and custom dashboarding form a believable profile for platform architecture work. Relational realism is credible: the persona exhibits domain-specific skepticism (vendor lock-in, workaround resistance), pragmatic objections, and collaborative mindset (team onboarding, cross-tool integration). Minor deduction from perfect scores reflects minor gaps: location is inferred rather than confirmed; demographic details (gender, exact education) lack direct evidence; and some motivations (e.g., 'reduce onboarding friction') have slightly lower confidence (0.8). Overall, this is a highly usable, research-grade persona with clear decision triggers and authentic voice."
+      },
+      "delta": {
+        "overall": -0.666667,
+        "dimensions": {
+          "groundedness": -1.0,
+          "developmental_fit": -1.0,
+          "historical_fit": 0.0,
+          "capability_coherence": -1.0,
+          "relational_realism": 0.0,
+          "overall_preference": -1.0
+        }
+      },
+      "reference_context": {
+        "cluster_id": "clust_df29bc6657e2",
+        "tenant": {
+          "tenant_id": "tenant_acme_corp",
+          "industry": "B2B SaaS",
+          "product_description": "Project management tool for engineering teams"
+        },
+        "summary": {
+          "source_evidence_claims": [
+            "Senior DevOps Engineer role with fintech industry context",
+            "Works at 50-200 employee fintech company",
+            "Goal: Automate infrastructure with Terraform and IaC",
+            "Goal: Integrate with GitHub workflows",
+            "Goal: Build custom dashboards for visibility",
+            "Goal: Enable automation and webhooks at scale",
+            "Pain: GraphQL endpoint has rough edges and quality issues",
+            "Pain: Manual webhook configuration is time-consuming",
+            "Pain: Lack of native Terraform support requires workarounds",
+            "Pain: Complex API documentation creates friction",
+            "Pain: Team access and permissions management at scale is cumbersome",
+            "Motivation: Drive operational efficiency through automation",
+            "Motivation: Integrate multiple tools into single source of truth",
+            "Motivation: Customize architecture rather than accept defaults",
+            "Motivation: Reduce on-boarding friction for new engineers",
+            "Objection: Won't adopt without GraphQL feature parity with REST",
+            "Objection: Terraform/IaC support is non-negotiable",
+            "Objection: Concerned about API reliability under high webhook load",
+            "Objection: Needs native integrations, not workarounds",
+            "Objection: Skeptical of vendor lock-in without export/portability",
+            "Decision trigger: Native Terraform provider or IaC integration",
+            "Decision trigger: GraphQL API improvements with feature parity",
+            "Uses API documentation, webhooks, GitHub, Terraform, and custom dashboards",
+            "Actively engaged in testing consideration stage: webhooks, GitHub, Terraform, dashboards, team invite"
+          ]
+        },
+        "sample_records": [
+          {
+            "record_id": "hubspot_000",
+            "tenant_id": "tenant_acme_corp",
+            "source": "hubspot",
+            "timestamp": "2026-03-28T09:00:00Z",
+            "user_id": "user_eng_a",
+            "behaviors": [
+              "technical_role"
+            ],
+            "pages": [],
+            "payload": {
+              "contact_title": "Senior DevOps Engineer",
+              "company_size": "50-200",
+              "industry": "fintech"
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_008",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_c",
+            "behaviors": [
+              "terraform_setup"
+            ],
+            "pages": [
+              "/integrations/terraform"
+            ],
+            "payload": {
+              "event": "terraform_setup",
+              "session_duration": 870
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_002",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_a",
+            "behaviors": [
+              "github_integration"
+            ],
+            "pages": [
+              "/integrations/github"
+            ],
+            "payload": {
+              "event": "github_integration",
+              "session_duration": 980
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_009",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_d",
+            "behaviors": [
+              "github_integration"
+            ],
+            "pages": [
+              "/integrations/github"
+            ],
+            "payload": {
+              "event": "github_integration",
+              "session_duration": 660
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_004",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_b",
+            "behaviors": [
+              "custom_dashboard"
+            ],
+            "pages": [
+              "/dashboards/custom"
+            ],
+            "payload": {
+              "event": "custom_dashboard",
+              "session_duration": 1980
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_001",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_a",
+            "behaviors": [
+              "webhook_config"
+            ],
+            "pages": [
+              "/settings/webhooks"
+            ],
+            "payload": {
+              "event": "webhook_config",
+              "session_duration": 1560
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_006",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_c",
+            "behaviors": [
+              "webhook_config"
+            ],
+            "pages": [
+              "/settings/webhooks",
+              "/integrations/slack"
+            ],
+            "payload": {
+              "event": "webhook_config",
+              "session_duration": 1560
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "intercom_000",
+            "tenant_id": "tenant_acme_corp",
+            "source": "intercom",
+            "timestamp": "2026-04-02T10:00:00Z",
+            "user_id": "user_eng_a",
+            "behaviors": [
+              "graphql_question"
+            ],
+            "pages": [],
+            "payload": {
+              "message": "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+              "topic": "api_feedback"
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_005",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_b",
+            "behaviors": [
+              "team_invite"
+            ],
+            "pages": [
+              "/team/manage"
+            ],
+            "payload": {
+              "event": "team_invite",
+              "session_duration": 420
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_000",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_a",
+            "behaviors": [
+              "api_setup"
+            ],
+            "pages": [
+              "/settings/integrations",
+              "/api/docs"
+            ],
+            "payload": {
+              "event": "api_setup",
+              "session_duration": 2340
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_003",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_b",
+            "behaviors": [
+              "api_setup"
+            ],
+            "pages": [
+              "/api/docs",
+              "/api/reference"
+            ],
+            "payload": {
+              "event": "api_setup",
+              "session_duration": 1820
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_007",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_eng_c",
+            "behaviors": [
+              "api_setup"
+            ],
+            "pages": [
+              "/api/docs"
+            ],
+            "payload": {
+              "event": "api_setup",
+              "session_duration": 1240
+            },
+            "schema_version": "1.0"
+          }
+        ],
+        "enrichment": {},
+        "all_record_ids": [
+          "hubspot_000",
+          "ga4_008",
+          "ga4_002",
+          "ga4_009",
+          "ga4_004",
+          "ga4_001",
+          "ga4_006",
+          "intercom_000",
+          "ga4_005",
+          "ga4_000",
+          "ga4_003",
+          "ga4_007"
+        ]
+      }
+    },
+    {
+      "persona_name": "Sophie the Freelance Brand Strategist",
+      "cluster_id": "clust_724c3d2e2a92",
+      "free": {
+        "overall": 4.833333333333333,
+        "dimensions": {
+          "groundedness": 5.0,
+          "developmental_fit": 5.0,
+          "historical_fit": 5.0,
+          "capability_coherence": 5.0,
+          "relational_realism": 4.0,
+          "overall_preference": 5.0
+        },
+        "rationale": "Sophie is exceptionally well-constructed with strong evidence backing nearly every claim (confidence scores 0.7\u20131.0 across source records). The persona demonstrates coherent internal logic: hourly billing \u2192 time=money \u2192 preference for templating and white-label features forms a tight causal chain. Age range (28\u201342), education (design degree), and remote-first positioning are plausible for a mid-career freelance strategist. Goals, pains, motivations, and objections align perfectly\u2014she resists complexity because it erodes margins, demands white-labeling to protect expert positioning, and measures value in minutes saved. Journey stages map logically from awareness (template browsing) through consideration (feature testing) to decision (white-label confirmation). Vocabulary and decision triggers are specific and authentic. The only minor weakness is relational_realism (4/5): while her professional stance is credible, the persona could include more nuance about peer collaboration, client communication challenges, or emotional dimensions of solo work. Otherwise, this is a highly usable, research-backed persona suitable for product prioritization and messaging."
+      },
+      "reference_based": {
+        "overall": 4.166666666666667,
+        "dimensions": {
+          "groundedness": 4.0,
+          "developmental_fit": 4.0,
+          "historical_fit": 5.0,
+          "capability_coherence": 4.0,
+          "relational_realism": 4.0,
+          "overall_preference": 4.0
+        },
+        "rationale": "Sophie is a well-constructed persona with strong evidential support for core claims (hourly billing ROI, white-label needs, template workflows, asset export patterns). The source evidence validates 21 specific claims with confidence scores averaging 0.87, with multiple GA4, Intercom, and HubSpot records backing behavioral and motivational assertions. Developmental fit is solid\u2014the 28-42 age range, freelance positioning, and efficiency mindset align coherently. Historical fit is excellent; remote-first brand strategists with white-label tool demands reflect current market realities (2026 context). Capability coherence is strong: design background, tool familiarity, and hourly billing model reinforce each other logically. Relational realism is believable\u2014the quote about 10-minute ROI, concern about platform exposure, and skepticism of non-billable features feel authentic to solo service providers. Minor weakness: the provided evidence comes from only 4 distinct user IDs (user_des_a/b/c/d) aggregated into one persona, and some supporting claims (e.g., 'Design or Marketing degree likely') lack direct evidence. The persona risks overgeneralization from a small cluster. Additionally, there's no evidence about actual age, gender, or location\u2014these are inferred from role behavior alone. The reference tenant context (B2B SaaS project management tool) is notably misaligned with Sophie's brand design needs, raising questions about actual product fit. These gaps prevent a 5/5 overall."
+      },
+      "delta": {
+        "overall": -0.666667,
+        "dimensions": {
+          "groundedness": -1.0,
+          "developmental_fit": -1.0,
+          "historical_fit": 0.0,
+          "capability_coherence": -1.0,
+          "relational_realism": 0.0,
+          "overall_preference": -1.0
+        }
+      },
+      "reference_context": {
+        "cluster_id": "clust_724c3d2e2a92",
+        "tenant": {
+          "tenant_id": "tenant_acme_corp",
+          "industry": "B2B SaaS",
+          "product_description": "Project management tool for engineering teams"
+        },
+        "summary": {
+          "source_evidence_claims": [
+            "Deliver professional brand kits and templates to clients in minimal time to maximize hourly revenue",
+            "Create polished, client-ready brand systems and templates quickly without spending hours on design tasks",
+            "Provide white-labeled client collaboration experiences that reflect her personal brand rather than generic platform branding",
+            "Maintain expert positioning and control over the client experience while using tools to accelerate delivery",
+            "Hourly billing model means every minute spent on repetitive design tasks reduces profit margins",
+            "Difficulty presenting professional client collaboration experiences without tools that feel generic or expose the underlying platform",
+            "Time spent configuring tools, templates, or customizing assets takes away from billable client work",
+            "Concern that using templates or platforms might make her work feel less bespoke or expert to clients",
+            "Direct ROI mindset: 10 minutes saved per project = tangible additional revenue",
+            "Pride in delivering polished, professional-looking client experiences that reflect her expertise",
+            "Desire to scale deliverables without hiring staff or raising overhead",
+            "Efficiency mindset driven by solo business model where she wears all roles (designer, project manager, accountant, strategist)",
+            "Resistance to tools that add complexity or require significant learning curve for marginal time savings",
+            "Concerns that a platform might expose their process or reduce their perceived expertise to clients",
+            "Unwillingness to adopt features that don't directly improve billable output or project speed",
+            "Skepticism about data analytics or reporting features that don't translate to faster project delivery",
+            "Freelance Brand Designer with company size of 1",
+            "Works in design services industry",
+            "Spending significant session time on template browsing (1820, 1450, 2100 seconds) indicates this is a core workflow",
+            "Testing color picker and asset export indicates evaluation phase",
+            "White-label request indicates decision-stage readiness with specific feature requirement"
+          ]
+        },
+        "sample_records": [
+          {
+            "record_id": "intercom_004",
+            "tenant_id": "tenant_acme_corp",
+            "source": "intercom",
+            "timestamp": "2026-04-02T10:00:00Z",
+            "user_id": "user_des_a",
+            "behaviors": [
+              "white_label_request"
+            ],
+            "pages": [],
+            "payload": {
+              "message": "I bill clients hourly so anything that saves me 10 minutes per project is worth real money. Can your client share view be white-labeled?",
+              "topic": "white_labeling"
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "hubspot_004",
+            "tenant_id": "tenant_acme_corp",
+            "source": "hubspot",
+            "timestamp": "2026-03-28T09:00:00Z",
+            "user_id": "user_des_a",
+            "behaviors": [
+              "creative_role"
+            ],
+            "pages": [],
+            "payload": {
+              "contact_title": "Freelance Brand Designer",
+              "company_size": "1",
+              "industry": "design_services"
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_011",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_a",
+            "behaviors": [
+              "template_browsing"
+            ],
+            "pages": [
+              "/templates/marketing"
+            ],
+            "payload": {
+              "event": "template_browsing",
+              "session_duration": 1820
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_015",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_b",
+            "behaviors": [
+              "template_browsing"
+            ],
+            "pages": [
+              "/templates/marketing"
+            ],
+            "payload": {
+              "event": "template_browsing",
+              "session_duration": 1450
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_017",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_c",
+            "behaviors": [
+              "template_browsing"
+            ],
+            "pages": [
+              "/templates/marketing"
+            ],
+            "payload": {
+              "event": "template_browsing",
+              "session_duration": 2100
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_019",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_c",
+            "behaviors": [
+              "brand_kit_creation"
+            ],
+            "pages": [
+              "/brand-kit"
+            ],
+            "payload": {
+              "event": "brand_kit_creation",
+              "session_duration": 1340
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_014",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_b",
+            "behaviors": [
+              "client_share"
+            ],
+            "pages": [
+              "/share/client-view"
+            ],
+            "payload": {
+              "event": "client_share",
+              "session_duration": 280
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_013",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_a",
+            "behaviors": [
+              "asset_export"
+            ],
+            "pages": [
+              "/assets/library"
+            ],
+            "payload": {
+              "event": "asset_export",
+              "session_duration": 380
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_020",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_d",
+            "behaviors": [
+              "asset_export"
+            ],
+            "pages": [
+              "/assets/library"
+            ],
+            "payload": {
+              "event": "asset_export",
+              "session_duration": 220
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_012",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_a",
+            "behaviors": [
+              "color_picker"
+            ],
+            "pages": [
+              "/brand-kit/colors"
+            ],
+            "payload": {
+              "event": "color_picker",
+              "session_duration": 540
+            },
+            "schema_version": "1.0"
+          },
+          {
+            "record_id": "ga4_018",
+            "tenant_id": "tenant_acme_corp",
+            "source": "ga4",
+            "timestamp": "2026-04-01T12:00:00Z",
+            "user_id": "user_des_c",
+            "behaviors": [
+              "color_picker"
+            ],
+            "pages": [
+              "/brand-kit/colors"
+            ],
+            "payload": {
+              "event": "color_picker",
+              "session_duration": 720
+            },
+            "schema_version": "1.0"
+          }
+        ],
+        "enrichment": {},
+        "all_record_ids": [
+          "intercom_004",
+          "hubspot_004",
+          "ga4_011",
+          "ga4_015",
+          "ga4_017",
+          "ga4_019",
+          "ga4_014",
+          "ga4_013",
+          "ga4_020",
+          "ga4_012",
+          "ga4_018"
+        ]
+      }
+    }
+  ]
+}

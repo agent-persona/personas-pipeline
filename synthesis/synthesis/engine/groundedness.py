@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 from synthesis.models.cluster import ClusterData
-from synthesis.models.persona import PersonaV1
 
 # Fields that require at least one source_evidence entry
 EVIDENCE_REQUIRED_FIELDS = ("goals", "pains", "motivations", "objections")
@@ -20,7 +20,7 @@ class GroundednessReport:
 
 
 def check_groundedness(
-    persona: PersonaV1,
+    persona: Any,
     cluster: ClusterData,
 ) -> GroundednessReport:
     """Run deterministic groundedness checks on a synthesized persona.
