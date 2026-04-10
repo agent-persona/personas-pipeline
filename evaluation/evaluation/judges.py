@@ -107,6 +107,29 @@ class LLMJudge:
             judge_model=self.model,
         )
 
+    PAIRWISE_PROMPT = """\
+You are evaluating two persona documents generated from customer behavioral data.
+Compare Persona A and Persona B on these dimensions:
+- Grounded: claims traceable to source data
+- Distinctive: feels like a real individual, not a generic average
+- Coherent: internally consistent across all fields
+- Actionable: goals/pains sharp enough to drive product decisions
+- Voice fidelity: sample quotes sound like one consistent speaker
+
+## Persona A
+{persona_a}
+
+## Persona B
+{persona_b}
+
+Which persona is better overall? Respond with EXACTLY one of:
+- "A" if Persona A is better
+- "B" if Persona B is better
+- "TIE" if they are equally good
+
+Then on a new line, give a brief rationale (1-2 sentences).
+"""
+
     async def pairwise(
         self,
         persona_a: dict,
@@ -114,10 +137,30 @@ class LLMJudge:
     ) -> tuple[str, str]:
         """Pairwise A/B preference judging.
 
-        Returns (winner, rationale). Always run in both orders (a,b) and
-        (b,a) and average — position bias is one of the known failure
-        modes per experiment 5.4.
+        Returns (winner, rationale) where winner is 'A', 'B', or 'TIE'.
 
-        TODO(space-5): implement.
+        Experiment 5.04 tests whether this judge has position or verbosity bias.
         """
-        return ("tie", "TODO: implement pairwise judging")
+        if self.backend is None:
+            return ("TIE", "No backend configured")
+
+        import json
+        prompt = self.PAIRWISE_PROMPT.format(
+            persona_a=json.dumps(persona_a, indent=2, default=str),
+            persona_b=json.dumps(persona_b, indent=2, default=str),
+        )
+
+        raw = await self.backend.score(prompt)
+        raw = raw.strip()
+
+        # Parse the first line for the verdict
+        first_line = raw.split("\n")[0].strip().upper()
+        if first_line.startswith("A"):
+            winner = "A"
+        elif first_line.startswith("B"):
+            winner = "B"
+        else:
+            winner = "TIE"
+
+        rationale = raw[len(first_line):].strip() if len(raw) > len(first_line) else ""
+        return (winner, rationale)

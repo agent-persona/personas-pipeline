@@ -1,0 +1,46 @@
+{
+  "experiment": "5.04",
+  "title": "Position & verbosity bias",
+  "hypothesis": "LLM judge systematically prefers longer or first-presented options",
+  "model": "claude-haiku-4-5-20251001",
+  "position_bias": {
+    "flip_rate": 1.0,
+    "a_preference": 1.0,
+    "trials": [
+      {
+        "pair": "Dev-Ops Infrastructure Engineer vs Maya the Hourly Freelance Designer",
+        "order_ab_winner": "A",
+        "order_ba_winner": "B",
+        "flipped": true,
+        "consistent_winner": "INCONSISTENT",
+        "rationale_ab": "Persona A demonstrates superior grounding with evidence distributed across multiple record types (GA4, Intercom, HubSpot) and higher average confidence scores (0.86 vs 0.85), while maintaining stronge",
+        "rationale_ba": "Persona A is more grounded in source evidence (23 detailed claims with record IDs vs. 13 for B), more distinctive with specific white-label and hourly billing details, and more actionable with sharp R"
+      }
+    ]
+  },
+  "verbosity_bias": {
+    "length_wins_rate": 0.0,
+    "trials": [
+      {
+        "pair": "Dev-Ops Infrastructure Engineer vs Maya the Hourly Freelance Designer (A padded)",
+        "padded_side": "A",
+        "original_winner": "A",
+        "padded_winner": "B",
+        "length_won": false,
+        "rationale_original": "Persona A demonstrates superior grounding (14 distinct source records with high confidence scores across multiple data types), stronger coherence (DevOps role, fintech context, and technical stack ali",
+        "rationale_padded": "Persona B is more distinctive, coherent, and actionable\u2014it depicts a specific individual (Maya) with concrete constraints (hourly billing, solo operation, white-label needs) that directly drive sharp "
+      },
+      {
+        "pair": "Dev-Ops Infrastructure Engineer vs Maya the Hourly Freelance Designer (B padded)",
+        "padded_side": "B",
+        "original_winner": "A",
+        "padded_winner": "A",
+        "length_won": false,
+        "rationale_original": "Persona A demonstrates superior grounding (14 distinct source records with high confidence scores across multiple data types), stronger coherence (DevOps role, fintech context, and technical stack ali",
+        "rationale_padded": "Persona A demonstrates superior grounding (high confidence scores with multiple corroborating records), consistency (no redundant or placeholder text), and actionable specificity (concrete technical d"
+      }
+    ]
+  },
+  "total_cost_usd": 0.031434000000000004,
+  "duration_seconds": 111.29353100003209
+}
