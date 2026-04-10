@@ -1,0 +1,226 @@
+{
+  "experiment": "5.02",
+  "title": "Cross-judge agreement",
+  "hypothesis": "Subjective dimensions show higher inter-judge variance than objective dimensions",
+  "synthesis_model": "claude-haiku-4-5-20251001",
+  "judges": [
+    "opus",
+    "sonnet",
+    "haiku"
+  ],
+  "judge_models": [
+    "claude-opus-4-6",
+    "claude-sonnet-4-6",
+    "claude-haiku-4-5-20251001"
+  ],
+  "n_personas": 2,
+  "n_judges": 3,
+  "personas": [
+    {
+      "name": "Marcus, the Infrastructure Architect",
+      "cluster_id": "clust_7cf5704dd89c",
+      "synthesis_cost": 0.052482,
+      "groundedness": 1.0,
+      "judge_scores": [
+        {
+          "judge": "claude-opus-4-6",
+          "backend": "anthropic",
+          "overall": 0.886,
+          "dimensions": {
+            "grounded": 0.88,
+            "distinctive": 0.82,
+            "coherent": 0.95,
+            "actionable": 0.9,
+            "voice_fidelity": 0.88
+          },
+          "rationale": "The persona is exceptionally well-grounded with 24 source evidence entries citing specific record IDs across multiple systems (ga4, intercom, hubspot) with confidence scores, and maintains strong internal coherence\u2014every goal, pain, and objection reinforces the automation-first Infrastructure as Code worldview. The voice is distinctive and technically authentic (e.g., 'If we can't codify this in Terraform, it's not going into production'), and the pains/objections are specific enough (GraphQL schema gaps, webhook routing limitations, Terraform-based permission management) to directly inform product roadmap decisions. Minor deductions: some demographic fields (income, gender) appear assumed rather than evidenced, and a few claims rely on single records with moderate confidence.",
+          "cost_usd": 0.07569,
+          "error": null
+        },
+        {
+          "judge": "claude-sonnet-4-6",
+          "backend": "anthropic",
+          "overall": 0.81,
+          "dimensions": {
+            "grounded": 0.82,
+            "distinctive": 0.72,
+            "coherent": 0.88,
+            "actionable": 0.85,
+            "voice_fidelity": 0.78
+          },
+          "rationale": "Marcus is well-grounded with record IDs and confidence scores attached to most claims, and the goals, pains, and objections are specific enough to drive real product decisions around GraphQL, Terraform, and webhook flexibility. However, distinctiveness and voice fidelity are mildly diluted by some overlap between goals/motivations entries and quotes that, while credible, lean toward polished archetype rather than a truly singular individual voice.",
+          "cost_usd": 0.014088,
+          "error": null
+        },
+        {
+          "judge": "claude-haiku-4-5-20251001",
+          "backend": "anthropic",
+          "overall": 0.86,
+          "dimensions": {
+            "grounded": 0.85,
+            "distinctive": 0.82,
+            "coherent": 0.88,
+            "actionable": 0.9,
+            "voice_fidelity": 0.86
+          },
+          "rationale": "This persona is well-grounded with specific evidence citations and high confidence scores across most claims. It is distinctive and coherent, with technical vocabulary and motivations that clearly map to a DevOps/infrastructure role. The goals, pains, and objections are highly actionable for product teams. Minor weaknesses include some evidence citations that rely on single sources (e.g., ga4_008 appears frequently) and a few quotes that, while authentic-sounding, could be slightly more vivid or memorable.",
+          "cost_usd": 0.004791,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "Freelance Designer Maximizing Project Margins",
+      "cluster_id": "clust_d43afbeb36f4",
+      "synthesis_cost": 0.020803,
+      "groundedness": 1.0,
+      "judge_scores": [
+        {
+          "judge": "claude-opus-4-6",
+          "backend": "anthropic",
+          "overall": 0.888,
+          "dimensions": {
+            "grounded": 0.88,
+            "distinctive": 0.82,
+            "coherent": 0.95,
+            "actionable": 0.91,
+            "voice_fidelity": 0.88
+          },
+          "rationale": "The persona is well-grounded with 25 source_evidence entries citing specific record IDs across HubSpot, Intercom, and GA4, with calibrated confidence scores ranging from 0.7 to 1.0. It is highly distinctive\u2014the 'every 10 minutes saved is real money' framing, white-label obsession, and hourly-billing economics create a vivid, memorable individual rather than a generic designer archetype. Internal coherence is excellent: the solo freelancer firmographics, time-as-money motivations, white-label objections, and ROI-focused decision triggers all reinforce one consistent character. Actionability is strong with specific decision triggers (pricing calculators, white-label demos, minute-based ROI framing) and journey-stage content preferences that a product or marketing team could immediately operationalize. Voice fidelity is high\u2014quotes are sharp, consistent in tone, and use vocabulary naturally aligned with the role. Minor deductions: some GA4-sourced behavioral claims (e.g., feature bloat objection at 0.7 confidence) are more inferred than directly stated, and demographics like gender distribution lack cited evidence.",
+          "cost_usd": 0.086775,
+          "error": null
+        },
+        {
+          "judge": "claude-sonnet-4-6",
+          "backend": "anthropic",
+          "overall": 0.77,
+          "dimensions": {
+            "grounded": 0.72,
+            "distinctive": 0.68,
+            "coherent": 0.85,
+            "actionable": 0.82,
+            "voice_fidelity": 0.78
+          },
+          "rationale": "The persona is well-structured with consistent source evidence linkage across most claims, though grounding relies heavily on a single record (intercom_004) and the record IDs are opaque identifiers that cannot be independently verified, limiting full confidence. It is coherent and actionable with specific ROI framing and white-labeling concerns, but falls short of truly distinctive due to a broadly drawn archetype (solo freelance designer) with no unique biographical texture, named tools, or idiosyncratic traits that would make this person memorable versus any other efficiency-focused freelancer.",
+          "cost_usd": 0.015285,
+          "error": null
+        },
+        {
+          "judge": "claude-haiku-4-5-20251001",
+          "backend": "anthropic",
+          "overall": 0.89,
+          "dimensions": {
+            "grounded": 0.85,
+            "distinctive": 0.88,
+            "coherent": 0.9,
+            "actionable": 0.92,
+            "voice_fidelity": 0.89
+          },
+          "rationale": "This persona is well-constructed with strong evidence linkage, vivid and consistent voice, and immediately actionable insights for product teams. Minor deductions reflect some generic record IDs (ga4_011, etc.) without specific detail and a few claims with moderate confidence scores (0.7\u20130.75), but the overall coherence, specificity, and decision-trigger clarity make this a high-quality, production-ready persona.",
+          "cost_usd": 0.00497,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "agreement_matrix": {
+    "grounded": {
+      "mean": 0.8333333333333334,
+      "std_dev": 0.056862407030773256,
+      "min": 0.77,
+      "max": 0.88,
+      "spread": 0.10999999999999999,
+      "scores_by_judge": {
+        "claude-opus-4-6": 0.88,
+        "claude-sonnet-4-6": 0.77,
+        "claude-haiku-4-5-20251001": 0.85
+      }
+    },
+    "distinctive": {
+      "mean": 0.7899999999999999,
+      "std_dev": 0.07937253933193772,
+      "min": 0.7,
+      "max": 0.85,
+      "spread": 0.15000000000000002,
+      "scores_by_judge": {
+        "claude-opus-4-6": 0.82,
+        "claude-sonnet-4-6": 0.7,
+        "claude-haiku-4-5-20251001": 0.85
+      }
+    },
+    "coherent": {
+      "mean": 0.9016666666666666,
+      "std_dev": 0.0436844747402705,
+      "min": 0.865,
+      "max": 0.95,
+      "spread": 0.08499999999999996,
+      "scores_by_judge": {
+        "claude-opus-4-6": 0.95,
+        "claude-sonnet-4-6": 0.865,
+        "claude-haiku-4-5-20251001": 0.89
+      }
+    },
+    "actionable": {
+      "mean": 0.8833333333333333,
+      "std_dev": 0.041932485418030456,
+      "min": 0.835,
+      "max": 0.91,
+      "spread": 0.07500000000000007,
+      "scores_by_judge": {
+        "claude-opus-4-6": 0.905,
+        "claude-sonnet-4-6": 0.835,
+        "claude-haiku-4-5-20251001": 0.91
+      }
+    },
+    "voice_fidelity": {
+      "mean": 0.845,
+      "std_dev": 0.05634713834792321,
+      "min": 0.78,
+      "max": 0.88,
+      "spread": 0.09999999999999998,
+      "scores_by_judge": {
+        "claude-opus-4-6": 0.88,
+        "claude-sonnet-4-6": 0.78,
+        "claude-haiku-4-5-20251001": 0.875
+      }
+    }
+  },
+  "pairwise_mad": {
+    "claude-opus-4-6 vs claude-sonnet-4-6": 0.097,
+    "claude-opus-4-6 vs claude-haiku-4-5-20251001": 0.028000000000000004,
+    "claude-sonnet-4-6 vs claude-haiku-4-5-20251001": 0.085
+  },
+  "hotspots": [
+    {
+      "dimension": "distinctive",
+      "trust_level": "medium",
+      "std_dev": 0.07937253933193772,
+      "spread": 0.15000000000000002
+    },
+    {
+      "dimension": "grounded",
+      "trust_level": "medium",
+      "std_dev": 0.056862407030773256,
+      "spread": 0.10999999999999999
+    },
+    {
+      "dimension": "voice_fidelity",
+      "trust_level": "medium",
+      "std_dev": 0.05634713834792321,
+      "spread": 0.09999999999999998
+    },
+    {
+      "dimension": "coherent",
+      "trust_level": "high",
+      "std_dev": 0.0436844747402705,
+      "spread": 0.08499999999999996
+    },
+    {
+      "dimension": "actionable",
+      "trust_level": "high",
+      "std_dev": 0.041932485418030456,
+      "spread": 0.07500000000000007
+    }
+  ],
+  "total_judging_cost_usd": 0.201599
+}
