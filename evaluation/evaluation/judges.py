@@ -20,7 +20,10 @@ Researcher #5 owns:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
+
+if TYPE_CHECKING:
+    from anthropic import AsyncAnthropic
 
 
 @dataclass
@@ -74,10 +77,48 @@ class LLMJudge:
         backend: JudgeBackend | None = None,
         model: str = "claude-opus-4-6",
         dimensions: tuple[str, ...] = DEFAULT_DIMENSIONS,
+        anthropic_client: "AsyncAnthropic | None" = None,
     ) -> None:
         self.backend = backend
         self.model = model
         self.dimensions = dimensions
+        # Direct Anthropic handle for the narrow methods that bypass the
+        # full rubric/backend plumbing (e.g. `same_speaker`). Experiment
+        # 1.3 passes this in directly; other spaces can ignore it.
+        self.anthropic_client = anthropic_client
+
+    async def same_speaker(self, reply_a: str, reply_b: str) -> bool:
+        """Return True iff the judge thinks the two replies come from the same person.
+
+        Minimal prompt, no rubric, no score — just a yes/no. Used by
+        `evaluation.metrics.pairing_accuracy` in experiment 1.3.
+
+        Self-preference bias: if `self.model` matches the model that
+        generated the replies, the judge tends to over-predict "same".
+        Callers should flag this in their result files.
+        """
+        if self.anthropic_client is None:
+            raise RuntimeError(
+                "LLMJudge.same_speaker requires an anthropic_client; "
+                "pass one to LLMJudge(anthropic_client=...)."
+            )
+        prompt = (
+            "You are judging whether two short replies were written by the same person.\n"
+            "Focus on voice, word choice, punctuation habits, and tone — not topic.\n\n"
+            f"Reply A:\n{reply_a}\n\n"
+            f"Reply B:\n{reply_b}\n\n"
+            'Answer with a single word: "yes" if the same person wrote both, "no" otherwise.'
+        )
+        response = await self.anthropic_client.messages.create(
+            model=self.model,
+            max_tokens=8,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = next(
+            (block.text for block in response.content if block.type == "text"),
+            "",
+        )
+        return "yes" in text.strip().lower()
 
     async def score_persona(self, persona: dict) -> JudgeScore:
         """Score a single persona JSON against the default rubric."""

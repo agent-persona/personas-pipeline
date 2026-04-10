@@ -12,7 +12,10 @@ numbers once the bodies land.
 
 from __future__ import annotations
 
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
+
+if TYPE_CHECKING:
+    from .judges import LLMJudge
 
 
 def schema_validity(persona_dicts: Sequence[dict], schema_cls) -> float:
@@ -62,6 +65,67 @@ def cost_per_persona(total_cost_usd: float, n_personas: int) -> float:
     if n_personas == 0:
         return 0.0
     return total_cost_usd / n_personas
+
+
+def stylometric_cosine(
+    replies: Sequence[str],
+    reference_texts: Sequence[str],
+) -> float:
+    """Character-n-gram TF-IDF cosine between a reply set and a reference corpus.
+
+    Used by experiment 1.3 (vocabulary anchoring) to measure how close
+    a twin's replies sit to the original Intercom verbatim quotes the
+    persona was synthesized from. Character-level n-grams are chosen
+    deliberately: they pick up punctuation habits, contractions, and
+    slang fragments that word-level TF-IDF would smooth over.
+
+    Each list is concatenated into a single "document" so the result
+    is the cosine between two TF-IDF vectors. Returns a scalar in
+    [0, 1]; 1.0 = identical character-n-gram distributions.
+    """
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    if not replies or not reference_texts:
+        return 0.0
+
+    replies_doc = " ".join(replies)
+    reference_doc = " ".join(reference_texts)
+    if not replies_doc.strip() or not reference_doc.strip():
+        return 0.0
+
+    vectorizer = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 4))
+    matrix = vectorizer.fit_transform([replies_doc, reference_doc])
+    sim = cosine_similarity(matrix[0], matrix[1])
+    return float(sim[0][0])
+
+
+async def pairing_accuracy(
+    pairs: Sequence[tuple[str, str, str]],
+    judge: "LLMJudge",
+) -> float:
+    """Fraction of (reply_a, reply_b, label) triples the judge labels correctly.
+
+    `label` must be `"same"` or `"different"`. The judge's
+    `same_speaker(a, b)` is called once per pair and compared to the
+    gold label. Used by experiment 1.3 to ask: can a judge tell the
+    control twin and the ablated twin apart?
+
+    Self-preference caveat: if the judge model matches the twin model
+    (both Haiku in experiment 1.3), "same" calls are inflated. Report
+    this number alongside stylometric_cosine rather than alone.
+    """
+    if not pairs:
+        return 0.0
+    correct = 0
+    for reply_a, reply_b, label in pairs:
+        if label not in ("same", "different"):
+            raise ValueError(f"label must be 'same' or 'different', got {label!r}")
+        predicted_same = await judge.same_speaker(reply_a, reply_b)
+        gold_same = label == "same"
+        if predicted_same == gold_same:
+            correct += 1
+    return correct / len(pairs)
 
 
 # TODO(space-5): add implementations for the remaining shared metrics.

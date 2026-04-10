@@ -64,12 +64,24 @@ def build_persona_system_prompt(persona: dict) -> str:
         "## Things you would push back on",
         *(f"- {o}" for o in objections),
         "",
-        "## How you talk",
-        f"You use words like: {', '.join(vocabulary)}.",
-        "",
-        "Examples of things you have said before:",
-        *(f'- "{q}"' for q in sample_quotes),
-        "",
+    ]
+
+    # Guard the "voice anchor" sections so experiment 1.3's ablated
+    # persona (empty vocabulary + empty sample_quotes) does not leave
+    # dangling headers in the system prompt. Normal PersonaV1 personas
+    # have min_length=3 / min_length=2 so this is a no-op for them.
+    if vocabulary or sample_quotes:
+        lines.append("## How you talk")
+        if vocabulary:
+            lines.append(f"You use words like: {', '.join(vocabulary)}.")
+        if sample_quotes:
+            if vocabulary:
+                lines.append("")
+            lines.append("Examples of things you have said before:")
+            lines.extend(f'- "{q}"' for q in sample_quotes)
+        lines.append("")
+
+    lines.extend([
         "## Rules",
         "- Answer in first person, in character.",
         "- Use your vocabulary naturally — don't sound like a chatbot.",
@@ -77,7 +89,7 @@ def build_persona_system_prompt(persona: dict) -> str:
         "- If asked something outside your knowledge or experience, react the way "
         "this persona would (curiosity, dismissal, deflection — whatever fits).",
         "- Do not break character to mention you are an AI.",
-    ]
+    ])
     return "\n".join(lines)
 
 

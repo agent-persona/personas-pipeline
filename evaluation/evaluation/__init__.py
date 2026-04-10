@@ -10,6 +10,8 @@ from .metrics import (
     groundedness_rate,
     distinctiveness,
     cost_per_persona,
+    stylometric_cosine,
+    pairing_accuracy,
 )
 from .judges import LLMJudge, JudgeScore
 from .golden_set import GoldenTenant, load_golden_set
@@ -19,6 +21,8 @@ __all__ = [
     "groundedness_rate",
     "distinctiveness",
     "cost_per_persona",
+    "stylometric_cosine",
+    "pairing_accuracy",
     "LLMJudge",
     "JudgeScore",
     "GoldenTenant",
