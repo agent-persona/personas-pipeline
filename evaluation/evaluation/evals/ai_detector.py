@@ -5,18 +5,21 @@ Classifies personas as AI-generated or human-written using a scoring rubric.
 Lower detectability score = more realistic persona.
 """
 from __future__ import annotations
+
+import json
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
-# Telltale signs of AI-generated personas (rubric dimensions)
+# Telltale signs of AI-generated personas (rubric dimensions).
+# Every entry MUST have a corresponding check in score_persona — denominator is len(AI_TELLS).
 AI_TELLS = [
-    "overly_balanced",        # Every positive paired with a negative, perfectly balanced
+    "overly_balanced",        # goals and pains identical count (exact match, ≥4 each)
     "generic_vocabulary",     # Words like "leverage", "synergy", "seamless", "robust"
-    "perfect_coherence",      # No internal tensions or contradictions
-    "template_structure",     # Every field has exactly the same number of items
-    "bland_quotes",           # Sample quotes sound like marketing copy
-    "abstract_goals",         # Goals stated at high abstraction, not specific behaviors
-    "missing_specificity",    # No specific product names, company names, numbers
+    "template_structure",     # All four array fields (goals/pains/motivations/objections) same length ≥3
+    "bland_quotes",           # Sample quotes contain marketing copy words
+    "abstract_goals",         # Goals lack specific quantified markers (%, $, minutes, hours, days)
+    "missing_specificity",    # Summary contains no digits
 ]
 
 @dataclass
@@ -35,10 +38,10 @@ def score_persona(persona: dict[str, Any]) -> DetectorResult:
     """
     tells = []
 
-    # Check overly balanced structure
+    # Check overly balanced structure — exact equal length is the AI signal, not just close
     goals = persona.get("goals", [])
     pains = persona.get("pains", [])
-    if abs(len(goals) - len(pains)) <= 1 and len(goals) >= 3:
+    if len(goals) == len(pains) and len(goals) >= 4:
         tells.append("overly_balanced")
 
     # Check generic vocabulary
@@ -63,9 +66,9 @@ def score_persona(persona: dict[str, Any]) -> DetectorResult:
     if bland_count >= len(quotes) / 2 and quotes:
         tells.append("bland_quotes")
 
-    # Check abstract goals
+    # Check abstract goals — only genuine specificity signals, not common prepositions
     goal_texts = [str(g) for g in goals]
-    specific_markers = ["%", "$", "minutes", "hours", "days", "per ", "from ", "to "]
+    specific_markers = ["%", "$", "minutes", "hours", "days", "per "]
     has_specific = any(m in " ".join(goal_texts) for m in specific_markers)
     if not has_specific and goals:
         tells.append("abstract_goals")
@@ -96,9 +99,6 @@ def score_persona(persona: dict[str, Any]) -> DetectorResult:
 
 def run_detector(output_dir: str = "output") -> dict:
     """Run detector on all persona files in output_dir."""
-    import json
-    from pathlib import Path
-
     results = []
     output_path = Path(output_dir)
 
@@ -134,6 +134,5 @@ def run_detector(output_dir: str = "output") -> dict:
     }
 
 if __name__ == "__main__":
-    import json
     result = run_detector()
     print(json.dumps(result, indent=2))
