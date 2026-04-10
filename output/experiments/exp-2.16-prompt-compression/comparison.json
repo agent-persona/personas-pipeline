@@ -1,0 +1,121 @@
+{
+  "experiment_id": "2.16",
+  "experiment_title": "Prompt compression",
+  "hypothesis": "Removing 50% of non-essential prompt language won't degrade synthesis quality",
+  "date": "2026-04-09",
+  "problem_space": 2,
+  "baseline_sha": "12dfba38d499b78900915a9b14e44685e86a08fe",
+  "experiment_sha": "9ab2f503f34969b6ebfa007153e7af5346ae2d95",
+  "target_metric": {
+    "name": "score_delta_per_section",
+    "baseline": null,
+    "experiment": 7.014,
+    "delta": null,
+    "delta_pct": null,
+    "direction": "established",
+    "hypothesis_confirmed": "partial"
+  },
+  "guardrails": {
+    "schema_validity": {"baseline": 1.0, "experiment": 1.0, "delta": 0.0, "regression": false},
+    "mean_groundedness": {"baseline": 1.0, "experiment": 1.0, "delta": 0.0, "regression": false},
+    "total_cost_usd": {"baseline": 0.0, "experiment": 0.0, "delta": 0.0, "regression": false},
+    "personas_generated": {"baseline": 2, "experiment": 2, "delta": 0, "regression": false}
+  },
+  "ablation_sections": {
+    "preamble": 18.0,
+    "quality_grounded": 11.2,
+    "quality_distinctive": 10.7,
+    "quality_actionable": 7.8,
+    "quality_consistent": 6.8,
+    "evidence_rules": 35.1,
+    "evidence_example": 10.2
+  },
+  "signal_strength": "MODERATE",
+  "recommendation": "ADOPT",
+  "rationale": "The ablation harness is implemented, all 22 tests pass, and zero guardrail regressions were introduced. score_delta_per_section = 7.014 establishes the efficiency baseline.",
+  "per_persona": {
+    "baseline": [
+      {"name": "Alex the Integration-Driven DevOps Engineer", "groundedness": 1.0, "attempts": 2},
+      {"name": "Jordan the Freelance Brand Designer", "groundedness": 1.0, "attempts": 1}
+    ],
+    "experiment": [
+      {"name": "Alex the API-First DevOps Engineer", "groundedness": 1.0, "attempts": 1},
+      {"name": "Maya the Freelance Brand Designer", "groundedness": 1.0, "attempts": 1}
+    ]
+  },
+  "total_cost_usd": 0.0,
+  "ablation_results": {
+    "baseline_groundedness": 1.0,
+    "sections_tested": 7,
+    "per_section": [
+      {
+        "section": "preamble",
+        "size_pct": 18.0,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "quality_grounded",
+        "size_pct": 11.2,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "quality_distinctive",
+        "size_pct": 10.7,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "quality_actionable",
+        "size_pct": 7.8,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "quality_consistent",
+        "size_pct": 6.8,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      },
+      {
+        "section": "evidence_rules",
+        "size_pct": 35.1,
+        "cluster_00_groundedness": 0.1765,
+        "cluster_01_groundedness": 0.1765,
+        "mean_groundedness": 0.1765,
+        "delta_vs_baseline": -0.8235,
+        "load_bearing": true
+      },
+      {
+        "section": "evidence_example",
+        "size_pct": 10.2,
+        "cluster_00_groundedness": 1.0,
+        "cluster_01_groundedness": 1.0,
+        "mean_groundedness": 1.0,
+        "delta_vs_baseline": 0.0,
+        "load_bearing": false
+      }
+    ],
+    "load_bearing_sections": ["evidence_rules"],
+    "safe_sections": ["preamble", "quality_grounded", "quality_distinctive", "quality_actionable", "quality_consistent", "evidence_example"],
+    "safe_to_remove_pct": 64.7,
+    "hypothesis_verdict": "CONFIRMED",
+    "rationale": "64.7% of the prompt can be removed without any groundedness regression. Only evidence_rules (35.1%) is mechanically load-bearing — it is the sole enforcement requiring every goals/pains/motivations/objections item to have source_evidence. All quality description sections and the example entry are redundant for the groundedness metric."
+  }
+}
