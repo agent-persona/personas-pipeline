@@ -1,13 +1,19 @@
 from __future__ import annotations
 
+from typing import Literal
+
 from synthesis.models.cluster import ClusterData
 from synthesis.models.persona import PersonaV1
 
-SYSTEM_PROMPT = """\
+SynthesisStyle = Literal["default", "verbs", "adjectives"]
+
+_PREAMBLE = """\
 You are a persona synthesis expert. Your job is to analyze behavioral data from a \
 customer cluster and produce a single, richly detailed persona that a product marketer \
 and a data scientist would both trust.
+"""
 
+_QUALITY_DEFAULT = """\
 Quality criteria:
 - **Grounded**: Every claim must trace back to specific source records. Use the \
 record IDs provided in the data to populate source_evidence entries.
@@ -17,7 +23,45 @@ average. Use specific vocabulary, concrete quotes, and sharp motivations.
 product and marketing decisions.
 - **Consistent**: Demographics, firmographics, vocabulary, and quotes should all \
 describe the same coherent person.
+"""
 
+_QUALITY_VERBS = """\
+Quality criteria — BEHAVIORAL FOCUS (describe what they DO):
+- **Grounded**: Every claim must trace back to specific source records. Use the \
+record IDs provided in the data to populate source_evidence entries.
+- **Action-oriented**: Goals and pains must describe observable actions and behaviors, \
+NOT personality traits or adjectives. Write "reviews API docs before every integration" \
+not "is detail-oriented". Write "runs deployment scripts at 2am to avoid downtime" \
+not "is dedicated".
+- **Verb-driven**: Every goal should start with an active verb (automates, consolidates, \
+reduces, monitors, builds). Every pain should describe a concrete friction \
+(waits 20 minutes for CI, manually copies data between tools, re-enters the same \
+config across 3 dashboards).
+- **Specific workflows**: Sample quotes should describe what the persona does in their \
+daily work, referencing specific tools, cadences, and actions — not abstract values.
+- **Consistent**: Demographics, firmographics, vocabulary, and quotes should all \
+describe the same coherent person.
+"""
+
+_QUALITY_ADJECTIVES = """\
+Quality criteria — IDENTITY FOCUS (describe what they ARE):
+- **Grounded**: Every claim must trace back to specific source records. Use the \
+record IDs provided in the data to populate source_evidence entries.
+- **Trait-oriented**: Goals and pains should characterize the persona's disposition, \
+tendencies, and personality. Write "is efficiency-obsessed and impatient with manual \
+processes" not "automates CI pipelines". Write "is risk-averse about vendor lock-in" \
+not "evaluates three alternatives before committing".
+- **Adjective-driven**: Describe the persona using descriptive adjectives and identity \
+statements (analytical, collaborative, budget-conscious, technically adventurous, \
+process-oriented). Paint a picture of WHO this person is.
+- **Values and mindset**: Sample quotes should reflect personality, values, and \
+attitudes — not specific tool workflows. "I don't trust any tool I can't extend \
+myself" not "I check the API docs every Monday".
+- **Consistent**: Demographics, firmographics, vocabulary, and quotes should all \
+describe the same coherent person.
+"""
+
+_EVIDENCE_RULES = """\
 Evidence rules:
 - Each entry in source_evidence must reference at least one record_id from the \
 provided sample records.
@@ -36,6 +80,21 @@ Example source_evidence entry:
   "confidence": 0.85
 }
 """
+
+_QUALITY_BLOCKS: dict[SynthesisStyle, str] = {
+    "default": _QUALITY_DEFAULT,
+    "verbs": _QUALITY_VERBS,
+    "adjectives": _QUALITY_ADJECTIVES,
+}
+
+
+def build_system_prompt(style: SynthesisStyle = "default") -> str:
+    """Build the system prompt with the selected quality-criteria variant."""
+    return _PREAMBLE + "\n" + _QUALITY_BLOCKS[style] + "\n" + _EVIDENCE_RULES
+
+
+# Keep the original constant for backwards compatibility
+SYSTEM_PROMPT = build_system_prompt("default")
 
 
 def build_tool_definition() -> dict:
@@ -136,7 +195,10 @@ def build_user_message(cluster: ClusterData) -> str:
     return "\n".join(sections)
 
 
-def build_messages(cluster: ClusterData) -> list[dict]:
+def build_messages(
+    cluster: ClusterData,
+    style: SynthesisStyle = "default",
+) -> list[dict]:
     """Build the full message list for the Anthropic API call."""
     return [
         {"role": "user", "content": build_user_message(cluster)},
@@ -146,6 +208,7 @@ def build_messages(cluster: ClusterData) -> list[dict]:
 def build_retry_messages(
     cluster: ClusterData,
     errors: list[str],
+    style: SynthesisStyle = "default",
 ) -> list[dict]:
     """Build messages for a retry attempt, including previous errors."""
     user_msg = build_user_message(cluster)

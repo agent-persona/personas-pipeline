@@ -12,8 +12,10 @@ from .groundedness import GroundednessReport, check_groundedness
 from .model_backend import LLMResult, ModelBackend
 from .prompt_builder import (
     SYSTEM_PROMPT,
+    SynthesisStyle,
     build_messages,
     build_retry_messages,
+    build_system_prompt,
     build_tool_definition,
 )
 
@@ -55,13 +57,18 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    style: SynthesisStyle = "default",
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
     Calls the LLM with tool-use forcing, validates with Pydantic, checks
     groundedness, and retries with error context on failure.
+
+    The `style` parameter selects the quality-criteria variant in the prompt:
+    "default", "verbs" (action-oriented), or "adjectives" (trait-oriented).
     """
     tool = build_tool_definition()
+    system_prompt = build_system_prompt(style)
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
     first_attempt_cost: float | None = None
@@ -72,13 +79,13 @@ async def synthesize(
 
         # Build messages (with error context on retries)
         if errors_for_retry:
-            messages = build_retry_messages(cluster, errors_for_retry)
+            messages = build_retry_messages(cluster, errors_for_retry, style=style)
         else:
-            messages = build_messages(cluster)
+            messages = build_messages(cluster, style=style)
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
+            system=system_prompt,
             messages=messages,
             tool=tool,
         )
