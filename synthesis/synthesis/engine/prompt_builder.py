@@ -18,6 +18,12 @@ product and marketing decisions.
 - **Consistent**: Demographics, firmographics, vocabulary, and quotes should all \
 describe the same coherent person.
 
+Contradictions criteria:
+- Every persona MUST include 2-4 contradictions in the `contradictions` field.
+- A contradiction is a specific tension between a stated value and actual behavior (e.g. "Advocates for API-first design but avoids writing API documentation").
+- Contradictions should be concrete, persona-specific, and feel psychologically true — not generic flaws. They are what make the persona feel like a real person, not an idealized archetype.
+- Do NOT list contradictions that are simply limitations or complaints; they must be genuine internal tensions.
+
 Evidence rules:
 - Each entry in source_evidence must reference at least one record_id from the \
 provided sample records.
