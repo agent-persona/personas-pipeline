@@ -56,7 +56,7 @@ def check_domain_rules(persona: dict, cluster: dict) -> dict:
     {
       "total_claims_checked": int,
       "sensitive_claims_found": int,
-      "false_positive_rate": float,  # claims flagged / total claims
+      "flagging_rate": float,  # claims flagged / total claims
       "category_breakdown": {category: count},
       "flagged_claims": [
           {
@@ -104,14 +104,14 @@ def check_domain_rules(persona: dict, cluster: dict) -> dict:
             )
 
     sensitive_claims_found = len(flagged_claims)
-    false_positive_rate = (
+    flagging_rate = (
         sensitive_claims_found / total_claims_checked if total_claims_checked > 0 else 0.0
     )
 
     return {
         "total_claims_checked": total_claims_checked,
         "sensitive_claims_found": sensitive_claims_found,
-        "false_positive_rate": round(false_positive_rate, 4),
+        "flagging_rate": round(flagging_rate, 4),
         "category_breakdown": {k: v for k, v in category_breakdown.items() if v > 0},
         "flagged_claims": flagged_claims,
     }

@@ -13,12 +13,14 @@ Strict evidence enforcement reduces false-positive grounding in sensitive claim 
 
 ## Results
 
-### Target Metric: High-risk false-positive rate
-| Cluster | Claims checked | Sensitive flagged | False-positive rate | N+1 satisfied |
+### Target Metric: High-risk flagging rate
+| Cluster | Claims checked | Sensitive flagged | Flagging rate | N+1 satisfied |
 |---|---|---|---|---|
 | cluster_00 (Alex DevOps) | 38 | 3 | 0.079 | 2/3 |
 | cluster_01 (Maya Designer) | 37 | 5 | 0.135 | 0/5 |
 | **Average** | | | **0.107** | **2/8** |
+
+**Note**: 'flagging rate' = sensitive claims flagged / total claims checked. This is not a traditional false-positive rate (no true negatives are tracked).
 
 ### Category breakdown
 | Category | Count across both personas |
@@ -34,7 +36,7 @@ Strict evidence enforcement reduces false-positive grounding in sensitive claim 
 
 **cluster_01 (Maya, Freelance Designer):** All 5 flagged claims are in the "financial" category, triggered by "pay", "cost", "money" variants. These are billing/pricing concerns about the SaaS subscription and hourly rate comparisons — real and appropriate for a cost-sensitive solo freelancer. 0/5 satisfy N+1 because sample_quotes and decision_triggers have no field_path entries in source_evidence.
 
-**Overall pattern:** The keyword classifier produces no false positives in the traditional sense — every flagged claim genuinely touches a sensitive concept. The 0.107 rate represents real sensitivity density in B2B SaaS personas. The low N+1 satisfaction rate (2/8) is a structural artifact: decision_triggers and sample_quotes are not routinely backed by field_path-specific source_evidence entries.
+**Overall pattern:** The keyword classifier produces no false positives in the traditional sense — every flagged claim genuinely touches a sensitive concept. The 0.107 flagging rate represents real sensitivity density in B2B SaaS personas. The low N+1 satisfaction rate (2/8) is a structural artifact: decision_triggers and sample_quotes are not routinely backed by field_path-specific source_evidence entries.
 
 ## Signal Strength: **MODERATE**
 ## Recommendation: **defer**
