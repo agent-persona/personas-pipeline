@@ -1,0 +1,398 @@
+{
+  "experiment": "B3-rerun-3.22-semantic",
+  "description": "Re-run exp-3.22 with semantic groundedness proxy to test if domain keyword classifier correlates with actual evidence weakness",
+  "clusters": [
+    {
+      "cluster": "cluster_00 (Alex DevOps)",
+      "domain_rules": {
+        "total_claims_checked": 38,
+        "sensitive_claims_found": 3,
+        "flagging_rate": 0.0789,
+        "category_breakdown": {
+          "legal": 3
+        },
+        "flagged_claims": [
+          {
+            "field": "motivations.3",
+            "text": "Staying ahead of audit requirements in fintech by having all config version-controlled in git",
+            "categories": [
+              "legal"
+            ],
+            "sources_available": 2,
+            "n_plus_1_satisfied": true
+          },
+          {
+            "field": "objections.2",
+            "text": "Webhook retry logic isn't documented well enough for me to trust it for compliance-critical events",
+            "categories": [
+              "legal"
+            ],
+            "sources_available": 3,
+            "n_plus_1_satisfied": true
+          },
+          {
+            "field": "decision_triggers.3",
+            "text": "Gets a clear SLA on webhook delivery reliability and retry behavior",
+            "categories": [
+              "legal"
+            ],
+            "sources_available": 0,
+            "n_plus_1_satisfied": false
+          }
+        ]
+      },
+      "semantic_proxy": {
+        "semantic_score": 0.133,
+        "weak_pairs": [
+          {
+            "field_path": "goals.0",
+            "claim": "Automate all project state transitions via API so no engineer has to manually update tickets",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "goals.2",
+            "claim": "Set up webhook-driven alerts that push status changes into Slack and internal dashboards",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "pains.2",
+            "claim": "API setup sessions run very long (38+ minutes) because discovery is fragmented across docs pages",
+            "overlap": 0.0833
+          },
+          {
+            "field_path": "motivations.0",
+            "claim": "Reducing toil\u2014every manual step is a future incident waiting to happen",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "motivations.1",
+            "claim": "Proving that infrastructure-as-code extends to the project management layer, not just compute",
+            "overlap": 0.0
+          }
+        ],
+        "claim_count": 17,
+        "weak_count": 5,
+        "coverage": 1.0
+      },
+      "per_claim_overlap": {
+        "goals.0": 0.0,
+        "goals.1": 0.1,
+        "goals.2": 0.0,
+        "goals.3": 0.1429,
+        "goals.4": 0.1111,
+        "pains.0": 0.5556,
+        "pains.1": 0.125,
+        "pains.2": 0.0833,
+        "pains.3": 0.25,
+        "pains.4": 0.2,
+        "motivations.0": 0.0,
+        "motivations.1": 0.0,
+        "motivations.2": 0.125,
+        "motivations.3": 0.125,
+        "objections.0": 0.2,
+        "objections.1": 0.1429,
+        "objections.2": 0.1
+      },
+      "correlation": {
+        "persona": "cluster_00 (Alex DevOps)",
+        "flagged_with_semantic": [
+          {
+            "field_path": "motivations.3",
+            "overlap": 0.125
+          },
+          {
+            "field_path": "objections.2",
+            "overlap": 0.1
+          }
+        ],
+        "non_flagged_with_semantic": [
+          {
+            "field_path": "goals.0",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "goals.1",
+            "overlap": 0.1
+          },
+          {
+            "field_path": "goals.2",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "goals.3",
+            "overlap": 0.1429
+          },
+          {
+            "field_path": "goals.4",
+            "overlap": 0.1111
+          },
+          {
+            "field_path": "pains.0",
+            "overlap": 0.5556
+          },
+          {
+            "field_path": "pains.1",
+            "overlap": 0.125
+          },
+          {
+            "field_path": "pains.2",
+            "overlap": 0.0833
+          },
+          {
+            "field_path": "pains.3",
+            "overlap": 0.25
+          },
+          {
+            "field_path": "pains.4",
+            "overlap": 0.2
+          },
+          {
+            "field_path": "motivations.0",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "motivations.1",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "motivations.2",
+            "overlap": 0.125
+          },
+          {
+            "field_path": "objections.0",
+            "overlap": 0.2
+          },
+          {
+            "field_path": "objections.1",
+            "overlap": 0.1429
+          }
+        ],
+        "flagged_no_semantic_score": [
+          {
+            "field": "decision_triggers.3",
+            "text": "Gets a clear SLA on webhook delivery reliability and retry behavior"
+          }
+        ],
+        "avg_overlap_flagged": 0.1125,
+        "avg_overlap_non_flagged": 0.1357,
+        "overlap_gap": 0.0232,
+        "signal": "WEAK"
+      }
+    },
+    {
+      "cluster": "cluster_01 (Maya Designer)",
+      "domain_rules": {
+        "total_claims_checked": 37,
+        "sensitive_claims_found": 5,
+        "flagging_rate": 0.1351,
+        "category_breakdown": {
+          "financial": 5
+        },
+        "flagged_claims": [
+          {
+            "field": "pains.0",
+            "text": "Client share view exposes the tool's branding, which undermines her professional positioning and makes clients question why they're paying her rates",
+            "categories": [
+              "financial"
+            ],
+            "sources_available": 1,
+            "n_plus_1_satisfied": false
+          },
+          {
+            "field": "motivations.0",
+            "text": "Time is money\u2014she bills hourly and any friction in her workflow directly reduces her effective hourly rate",
+            "categories": [
+              "financial"
+            ],
+            "sources_available": 1,
+            "n_plus_1_satisfied": false
+          },
+          {
+            "field": "objections.2",
+            "text": "Monthly subscription cost needs to be offset by real time savings\u2014I'm tracking this against my hourly rate",
+            "categories": [
+              "financial"
+            ],
+            "sources_available": 1,
+            "n_plus_1_satisfied": false
+          },
+          {
+            "field": "decision_triggers.2",
+            "text": "Time savings per project are measurable and exceed the subscription cost",
+            "categories": [
+              "financial"
+            ],
+            "sources_available": 0,
+            "n_plus_1_satisfied": false
+          },
+          {
+            "field": "sample_quotes.0",
+            "text": "I bill clients hourly so anything that saves me 10 minutes per project is worth real money. Can your client share view be white-labeled?",
+            "categories": [
+              "financial"
+            ],
+            "sources_available": 0,
+            "n_plus_1_satisfied": false
+          }
+        ]
+      },
+      "semantic_proxy": {
+        "semantic_score": 0.1537,
+        "weak_pairs": [
+          {
+            "field_path": "goals.2",
+            "claim": "Build and maintain a living brand kit for each client that enforces color, type, and asset consisten",
+            "overlap": 0.0909
+          },
+          {
+            "field_path": "pains.4",
+            "claim": "No way to bundle brand assets, colors, and typography into a portable kit that travels cleanly acros",
+            "overlap": 0.0909
+          },
+          {
+            "field_path": "motivations.1",
+            "claim": "Professional reputation depends on delivering a polished, seamless client experience end-to-end, not",
+            "overlap": 0.0833
+          },
+          {
+            "field_path": "motivations.2",
+            "claim": "Winning repeat business and referrals by making the review process feel effortless for non-designer ",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "motivations.3",
+            "claim": "Building a scalable solo practice where systems do the administrative work so she can focus on creat",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "objections.1",
+            "claim": "The template library isn't deep enough in brand identity categories to save me meaningful time on re",
+            "overlap": 0.0769
+          }
+        ],
+        "claim_count": 17,
+        "weak_count": 6,
+        "coverage": 1.0
+      },
+      "per_claim_overlap": {
+        "goals.0": 0.2222,
+        "goals.1": 0.3,
+        "goals.2": 0.0909,
+        "goals.3": 0.1667,
+        "goals.4": 0.1,
+        "pains.0": 0.2667,
+        "pains.1": 0.1333,
+        "pains.2": 0.2,
+        "pains.3": 0.2,
+        "pains.4": 0.0909,
+        "motivations.0": 0.1,
+        "motivations.1": 0.0833,
+        "motivations.2": 0.0,
+        "motivations.3": 0.0,
+        "objections.0": 0.4,
+        "objections.1": 0.0769,
+        "objections.2": 0.1818
+      },
+      "correlation": {
+        "persona": "cluster_01 (Maya Designer)",
+        "flagged_with_semantic": [
+          {
+            "field_path": "pains.0",
+            "overlap": 0.2667
+          },
+          {
+            "field_path": "motivations.0",
+            "overlap": 0.1
+          },
+          {
+            "field_path": "objections.2",
+            "overlap": 0.1818
+          }
+        ],
+        "non_flagged_with_semantic": [
+          {
+            "field_path": "goals.0",
+            "overlap": 0.2222
+          },
+          {
+            "field_path": "goals.1",
+            "overlap": 0.3
+          },
+          {
+            "field_path": "goals.2",
+            "overlap": 0.0909
+          },
+          {
+            "field_path": "goals.3",
+            "overlap": 0.1667
+          },
+          {
+            "field_path": "goals.4",
+            "overlap": 0.1
+          },
+          {
+            "field_path": "pains.1",
+            "overlap": 0.1333
+          },
+          {
+            "field_path": "pains.2",
+            "overlap": 0.2
+          },
+          {
+            "field_path": "pains.3",
+            "overlap": 0.2
+          },
+          {
+            "field_path": "pains.4",
+            "overlap": 0.0909
+          },
+          {
+            "field_path": "motivations.1",
+            "overlap": 0.0833
+          },
+          {
+            "field_path": "motivations.2",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "motivations.3",
+            "overlap": 0.0
+          },
+          {
+            "field_path": "objections.0",
+            "overlap": 0.4
+          },
+          {
+            "field_path": "objections.1",
+            "overlap": 0.0769
+          }
+        ],
+        "flagged_no_semantic_score": [
+          {
+            "field": "decision_triggers.2",
+            "text": "Time savings per project are measurable and exceed the subscription cost"
+          },
+          {
+            "field": "sample_quotes.0",
+            "text": "I bill clients hourly so anything that saves me 10 minutes per project is worth "
+          }
+        ],
+        "avg_overlap_flagged": 0.1828,
+        "avg_overlap_non_flagged": 0.1474,
+        "overlap_gap": -0.0354,
+        "signal": "INVERSE"
+      }
+    }
+  ],
+  "combined_signal": "WEAK",
+  "summary": {
+    "cluster_00_flagging_rate": 0.0789,
+    "cluster_01_flagging_rate": 0.1351,
+    "cluster_00_semantic_score": 0.133,
+    "cluster_01_semantic_score": 0.1537,
+    "cluster_00_overlap_gap": 0.0232,
+    "cluster_01_overlap_gap": -0.0354,
+    "cluster_00_signal": "WEAK",
+    "cluster_01_signal": "INVERSE"
+  }
+}
