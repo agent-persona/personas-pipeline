@@ -49,6 +49,7 @@ class SynthesisResult:
     total_cost_usd: float
     model_used: str
     attempts: int
+    degraded: bool = False
 
 
 async def synthesize(
@@ -120,29 +121,41 @@ async def synthesize(
             record.groundedness_violations = groundedness.violations
             errors_for_retry.extend(groundedness.violations)
             logger.warning(
-                "Attempt %d: groundedness check failed (score=%.2f, %d violations)",
+                "Attempt %d: groundedness check failed (score=%.2f, threshold=%.2f, %d violations)",
                 attempt_num,
                 groundedness.score,
+                groundedness.threshold,
                 len(groundedness.violations),
             )
             attempts.append(record)
             continue
 
-        # Success
+        # Success (possibly degraded)
         record.success = True
         attempts.append(record)
-        logger.info(
-            "Synthesis succeeded on attempt %d (cost=$%.4f, groundedness=%.2f)",
-            attempt_num,
-            total_cost,
-            groundedness.score,
-        )
+        if groundedness.degraded:
+            logger.info(
+                "Synthesis succeeded DEGRADED on attempt %d "
+                "(cost=$%.4f, groundedness=%.2f, threshold=%.2f)",
+                attempt_num,
+                total_cost,
+                groundedness.score,
+                groundedness.threshold,
+            )
+        else:
+            logger.info(
+                "Synthesis succeeded on attempt %d (cost=$%.4f, groundedness=%.2f)",
+                attempt_num,
+                total_cost,
+                groundedness.score,
+            )
         return SynthesisResult(
             persona=persona,
             groundedness=groundedness,
             total_cost_usd=total_cost,
             model_used=llm_result.model,
             attempts=attempt_num,
+            degraded=groundedness.degraded,
         )
 
     # All attempts exhausted

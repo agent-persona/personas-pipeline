@@ -37,6 +37,23 @@ Example source_evidence entry:
 }
 """
 
+SPARSE_DATA_ADDENDUM = """\
+
+## Sparse Data Notice
+You have very few source records to work with ({n_records} records). Adapt accordingly:
+- **Reuse record IDs** across multiple source_evidence entries when a single record \
+supports more than one claim. This is expected and preferred over fabricating evidence.
+- **Set confidence lower** (0.3–0.6) for claims that are inferred from limited signals \
+rather than directly stated in the data.
+- **Prioritize grounding** goals and pains first — these are the most decision-relevant \
+fields. Motivations and objections may rely on reasonable inference from the same records.
+- **Do not hallucinate record IDs.** Only use IDs that appear in the provided sample \
+records. It is better to reuse an ID with lower confidence than to invent one.
+"""
+
+# Threshold: clusters with fewer records than this get the sparse addendum
+SPARSE_RECORD_THRESHOLD = 8
+
 
 def build_tool_definition() -> dict:
     """Build the Claude tool definition from the PersonaV1 JSON schema."""
@@ -127,6 +144,13 @@ def build_user_message(cluster: ClusterData) -> str:
         "Use these IDs in source_evidence.record_ids: "
         + ", ".join(cluster.all_record_ids)
     )
+
+    # Inject sparse-data guidance when evidence is thin
+    n_records = len(cluster.sample_records)
+    if n_records < SPARSE_RECORD_THRESHOLD:
+        sections.append(
+            SPARSE_DATA_ADDENDUM.format(n_records=n_records)
+        )
 
     sections.append(
         "\nSynthesize a single persona from this data. "

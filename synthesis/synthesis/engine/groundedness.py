@@ -8,15 +8,34 @@ from synthesis.models.persona import PersonaV1
 # Fields that require at least one source_evidence entry
 EVIDENCE_REQUIRED_FIELDS = ("goals", "pains", "motivations", "objections")
 
+# Default (dense data) threshold
+DEFAULT_THRESHOLD = 0.9
+
+
+def scaled_threshold(n_records: int) -> float:
+    """Return the groundedness pass threshold scaled by data density.
+
+    Dense clusters (10+ records) use the full 0.9 bar.
+    Medium clusters (5-9 records) use 0.7 — partial grounding accepted.
+    Sparse clusters (<5 records) use 0.5 — inference-heavy personas allowed.
+    """
+    if n_records >= 10:
+        return DEFAULT_THRESHOLD
+    if n_records >= 5:
+        return 0.7
+    return 0.5
+
 
 @dataclass
 class GroundednessReport:
     score: float
     violations: list[str] = field(default_factory=list)
+    threshold: float = DEFAULT_THRESHOLD
+    degraded: bool = False
 
     @property
     def passed(self) -> bool:
-        return self.score >= 0.9
+        return self.score >= self.threshold
 
 
 def check_groundedness(
@@ -70,4 +89,13 @@ def check_groundedness(
     else:
         score = covered / total_required
 
-    return GroundednessReport(score=score, violations=violations)
+    n_records = len(cluster.sample_records)
+    threshold = scaled_threshold(n_records)
+    degraded = score < DEFAULT_THRESHOLD and score >= threshold
+
+    return GroundednessReport(
+        score=score,
+        violations=violations,
+        threshold=threshold,
+        degraded=degraded,
+    )
