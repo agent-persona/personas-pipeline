@@ -22,6 +22,8 @@ Cost reductions at scale through cached prompt prefixes on immutable schema port
 | cluster_01 | 2355 | 610 | 0.7943 |
 | **Average** | | | **0.7950** |
 
+**Methodology note**: Token counts estimated via chars/4 heuristic. Actual Anthropic tokenizer (cl100k_base) would give different absolute figures, but the static-to-dynamic ratio should remain in the same range since both sections scale proportionally with content length.
+
 At fleet scale (1000 synthesis runs/day), this fraction of tokens would hit the cache prefix, reducing effective cost by ~71.6% on cached portions.
 
 ## Signal Strength: **STRONG** (fraction > 0.5)
