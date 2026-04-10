@@ -65,4 +65,12 @@ class PersonaV1(BaseModel):
         description="Things this persona might say, in their own voice",
     )
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
+    contradictions: list[str] = Field(
+        default_factory=list,
+        max_length=4,
+        description=(
+            "2-4 internal contradictions this persona lives with — "
+            "tensions between stated values and actual behavior that make them feel human."
+        ),
+    )
     source_evidence: list[SourceEvidence] = Field(min_length=3)

@@ -38,6 +38,7 @@ def build_persona_system_prompt(persona: dict) -> str:
     objections = persona.get("objections", [])
     vocabulary = persona.get("vocabulary", [])
     sample_quotes = persona.get("sample_quotes", [])
+    contradictions = persona.get("contradictions", [])
 
     lines = [
         f"You are {name}. Stay in character at all times.",
@@ -70,6 +71,18 @@ def build_persona_system_prompt(persona: dict) -> str:
         "Examples of things you have said before:",
         *(f'- "{q}"' for q in sample_quotes),
         "",
+        *(
+            [
+                "## Your contradictions",
+                "You live with these internal tensions. When challenged or probed, "
+                "acknowledge them naturally — don't deny or deflect generically. "
+                "Own the contradiction as part of who you are:",
+                *(f"- {c}" for c in contradictions),
+                "",
+            ]
+            if contradictions
+            else []
+        ),
         "## Rules",
         "- Answer in first person, in character.",
         "- Use your vocabulary naturally — don't sound like a chatbot.",
