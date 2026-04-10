@@ -6,8 +6,10 @@ and a simple stress-minimization layout. Renders as self-contained HTML.
 No heavy ML dependencies required.
 """
 from __future__ import annotations
+import html as html_lib
 import json
 import math
+import random
 import re
 from collections import Counter
 from pathlib import Path
@@ -48,7 +50,7 @@ def _cosine_distance(v1: dict, v2: dict) -> float:
     n2 = math.sqrt(sum(x**2 for x in v2.values()))
     if n1 == 0 or n2 == 0:
         return 1.0
-    return 1.0 - (dot / (n1 * n2))
+    return max(0.0, 1.0 - (dot / (n1 * n2)))
 
 
 def _mds_2d(dist_matrix: list[list[float]]) -> list[tuple[float, float]]:
@@ -60,7 +62,6 @@ def _mds_2d(dist_matrix: list[list[float]]) -> list[tuple[float, float]]:
         d = dist_matrix[0][1]
         return [(-d / 2, 0.0), (d / 2, 0.0)]
     # Gradient descent approximation for small n
-    import random
     random.seed(42)
     coords = [(random.uniform(-1, 1), random.uniform(-1, 1)) for _ in range(n)]
     for _ in range(500):
@@ -120,8 +121,8 @@ def render_html(personas: list[dict], coords: list[tuple[float, float]],
     for i, (p, (x, y)) in enumerate(zip(personas, coords)):
         color = COLORS[i % len(COLORS)]
         cx, cy = norm_x(x), norm_y(y)
-        name = p.get("name", f"Persona {i}")
-        summary = p.get("summary", "")[:80]
+        name = html_lib.escape(p.get("name", f"Persona {i}"))
+        summary = html_lib.escape(p.get("summary", "")[:80])
         dots += f'<circle cx="{cx}" cy="{cy}" r="14" fill="{color}" opacity="0.85" />'
         dots += f'<text x="{cx}" y="{cy + 4}" text-anchor="middle" font-size="9" fill="white" font-family="sans-serif">{i+1}</text>'
         legend += f'<div style="margin:4px 0"><span style="background:{color};display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px"></span><b>{i+1}. {name}</b> — {summary}</div>'
