@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0",
+  "name": "DevOps Dana",
+  "summary": "Dana is a Senior DevOps Engineer at a fintech company (50-200 employees) who lives in the terminal and CI/CD pipelines. She integrates every tool via API-first workflows and expects webhooks, GitHub integrations, and Terraform support as table stakes. She's a power user who will advocate for a product internally if the developer experience is excellent, but will churn immediately if the API has rough edges.",
+  "demographics": {
+    "age_range": "28-38",
+    "gender_distribution": "skews male, mixed",
+    "location_signals": ["fintech hub (NYC, London, SF inferred from company profile)"],
+    "education_level": "BS/MS Computer Science or related",
+    "income_bracket": "$130k-$180k"
+  },
+  "firmographics": {
+    "company_size": "SMB-Mid (50-200 employees)",
+    "industry": "fintech",
+    "role_titles": ["Senior DevOps Engineer", "Platform Engineer", "Site Reliability Engineer"],
+    "tech_stack_signals": ["GitHub", "Terraform", "Webhooks", "GraphQL", "REST API", "Slack"]
+  },
+  "goals": [
+    "Automate team onboarding and project scaffolding via API so engineers don't touch the UI",
+    "Set up event-driven webhook pipelines to sync project updates with internal CI/CD and Slack",
+    "Integrate GitHub PRs and commits directly into project tracking without manual status updates",
+    "Build custom dashboards to give engineering leads real-time visibility into sprint health"
+  ],
+  "pains": [
+    "GraphQL endpoint has rough edges — schema inconsistencies slow down automation scripting",
+    "Manual configuration required for each new project instead of infrastructure-as-code support",
+    "Team invite workflow requires UI interaction rather than API-driven provisioning",
+    "Webhook reliability is unclear — no delivery guarantees or retry visibility in the dashboard"
+  ],
+  "motivations": [
+    "Reduce toil: every manual step in a workflow is a tax on engineering velocity",
+    "Gain peer respect by shipping toolchain improvements that the whole team benefits from",
+    "Build reproducible, auditable infrastructure that can be version-controlled in git"
+  ],
+  "objections": [
+    "GraphQL API is too immature to build reliable automation on top of",
+    "If Terraform provider isn't maintained, IaC adoption is blocked",
+    "Vendor lock-in risk if export/migration paths aren't API-accessible"
+  ],
+  "channels": [
+    "GitHub (where she lives)",
+    "Internal Slack devops/platform channels",
+    "Hacker News and engineering blogs",
+    "Developer Discord communities",
+    "API documentation and changelog feeds"
+  ],
+  "vocabulary": [
+    "IaC", "idempotent", "drift", "paved road", "toil", "terraform apply",
+    "webhook payload", "schema", "GraphQL mutation", "CI/CD", "provisioning",
+    "rate limit", "pagination", "SDK"
+  ],
+  "decision_triggers": [
+    "Terraform provider exists and is actively maintained",
+    "REST API is stable with versioned endpoints and changelog",
+    "Webhook delivery has retry logic and failure logs",
+    "GitHub integration syncs bidirectionally without polling"
+  ],
+  "sample_quotes": [
+    "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+    "If I can't provision it via Terraform, it's not going into our stack.",
+    "I need webhooks that actually retry on failure — fire-and-forget is not acceptable for fintech.",
+    "The goal is zero manual steps between a GitHub merge and a project status update."
+  ],
+  "journey_stages": [
+    {
+      "stage": "evaluation",
+      "mindset": "Skeptical but thorough — will test API before committing",
+      "key_actions": ["Reads API docs cover-to-cover", "Tests webhook delivery with Postman", "Searches for Terraform provider on GitHub"],
+      "content_preferences": ["API reference documentation", "OpenAPI spec", "Changelog"]
+    },
+    {
+      "stage": "onboarding",
+      "mindset": "Impatient with UI steps, wants CLI or API path for everything",
+      "key_actions": ["Configures webhooks", "Sets up GitHub integration", "Invites team members programmatically"],
+      "content_preferences": ["Quick-start API guides", "SDK documentation", "Example Terraform modules"]
+    },
+    {
+      "stage": "expansion",
+      "mindset": "Champion mode — will build internal tooling around the product if experience is good",
+      "key_actions": ["Builds custom dashboards", "Writes internal Terraform modules", "Advocates to engineering manager for broader rollout"],
+      "content_preferences": ["Advanced API features", "Custom webhook event types", "GraphQL schema improvements"]
+    }
+  ],
+  "source_evidence": [
+    {
+      "claim": "Automate team onboarding and project scaffolding via API",
+      "record_ids": ["ga4_000", "ga4_003", "ga4_007"],
+      "field_path": "goals.0",
+      "confidence": 0.85
+    },
+    {
+      "claim": "Set up event-driven webhook pipelines to sync updates",
+      "record_ids": ["ga4_001", "ga4_006"],
+      "field_path": "goals.1",
+      "confidence": 0.9
+    },
+    {
+      "claim": "Integrate GitHub PRs and commits into project tracking",
+      "record_ids": ["ga4_002", "ga4_009"],
+      "field_path": "goals.2",
+      "confidence": 0.9
+    },
+    {
+      "claim": "Build custom dashboards for engineering lead visibility",
+      "record_ids": ["ga4_004"],
+      "field_path": "goals.3",
+      "confidence": 0.85
+    },
+    {
+      "claim": "GraphQL endpoint has rough edges slowing automation scripting",
+      "record_ids": ["intercom_000"],
+      "field_path": "pains.0",
+      "confidence": 1.0
+    },
+    {
+      "claim": "Manual configuration required instead of IaC support",
+      "record_ids": ["ga4_008"],
+      "field_path": "pains.1",
+      "confidence": 0.75
+    },
+    {
+      "claim": "Team invite requires UI interaction rather than API provisioning",
+      "record_ids": ["ga4_005"],
+      "field_path": "pains.2",
+      "confidence": 0.7
+    },
+    {
+      "claim": "Webhook reliability unclear — no delivery guarantees visible",
+      "record_ids": ["ga4_001", "ga4_006"],
+      "field_path": "pains.3",
+      "confidence": 0.65
+    },
+    {
+      "claim": "Reduce toil — every manual step taxes engineering velocity",
+      "record_ids": ["ga4_000", "ga4_001", "ga4_003"],
+      "field_path": "motivations.0",
+      "confidence": 0.8
+    },
+    {
+      "claim": "Gain peer respect by shipping toolchain improvements for the team",
+      "record_ids": ["ga4_005", "hubspot_000"],
+      "field_path": "motivations.1",
+      "confidence": 0.7
+    },
+    {
+      "claim": "Build reproducible, auditable infrastructure version-controlled in git",
+      "record_ids": ["ga4_008", "ga4_002"],
+      "field_path": "motivations.2",
+      "confidence": 0.8
+    },
+    {
+      "claim": "GraphQL API too immature to build reliable automation on top of",
+      "record_ids": ["intercom_000"],
+      "field_path": "objections.0",
+      "confidence": 1.0
+    },
+    {
+      "claim": "Terraform provider maintenance risk blocks IaC adoption",
+      "record_ids": ["ga4_008"],
+      "field_path": "objections.1",
+      "confidence": 0.75
+    },
+    {
+      "claim": "Vendor lock-in risk if export paths aren't API-accessible",
+      "record_ids": ["ga4_000", "ga4_003"],
+      "field_path": "objections.2",
+      "confidence": 0.6
+    },
+    {
+      "claim": "Senior DevOps Engineer at fintech company size 50-200",
+      "record_ids": ["hubspot_000"],
+      "field_path": "firmographics",
+      "confidence": 1.0
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "experiment_id": "2.17",
+  "title": "System vs user prompt placement",
+  "hypothesis": "Restructuring prompt layers optimizes output quality",
+  "date": "2026-04-09",
+  "branch": "exp-2.17-system-vs-user-prompt",
+  "layout_results": {
+    "A_baseline": {
+      "description": "Full system prompt (preamble + quality criteria + evidence rules + example); cluster data in user message",
+      "mean_groundedness": 1.0,
+      "schema_validity": 1.0,
+      "clusters": [
+        {"cluster_id": "clust_1adb81b417c0", "groundedness": 1.0, "attempts": 1},
+        {"cluster_id": "clust_bc52ee85eb83", "groundedness": 1.0, "attempts": 1}
+      ]
+    },
+    "B_all_in_user": {
+      "description": "Minimal system prompt (role declaration only); all instructions + evidence rules + cluster data in user message",
+      "mean_groundedness": 1.0,
+      "schema_validity": 1.0,
+      "delta_vs_A": 0.0,
+      "clusters": [
+        {"cluster_id": "clust_1adb81b417c0", "groundedness": 1.0, "attempts": 1},
+        {"cluster_id": "clust_bc52ee85eb83", "groundedness": 1.0, "attempts": 1}
+      ]
+    },
+    "C_instructions_split": {
+      "description": "System prompt contains preamble + quality criteria only (no evidence rules, no example); user message contains cluster data + inline evidence reminder",
+      "mean_groundedness": 1.0,
+      "schema_validity": 1.0,
+      "delta_vs_A": 0.0,
+      "clusters": [
+        {"cluster_id": "clust_1adb81b417c0", "groundedness": 1.0, "attempts": 1},
+        {"cluster_id": "clust_bc52ee85eb83", "groundedness": 1.0, "attempts": 1}
+      ]
+    }
+  },
+  "target_metric": {
+    "name": "quality_delta_per_layout",
+    "best_layout": "A",
+    "best_mean_groundedness": 1.0,
+    "worst_layout": "A",
+    "worst_mean_groundedness": 1.0,
+    "note": "All layouts tied at ceiling (1.0) — no signal"
+  },
+  "cache_hit_rate": null,
+  "cache_hit_rate_blocked_reason": "no_api_access",
+  "signal_strength": "NOISE",
+  "recommendation": "defer",
+  "rationale": "All three prompt layouts produced perfect groundedness (1.0) on both clusters. The delta across layouts is 0.0, placing this firmly in NOISE territory. The baseline Layout A (full system prompt) is already optimal for this metric and dataset. A definitive quality comparison would require a harder dataset where at least one layout falls below the 0.9 threshold, or a semantic quality metric beyond structural groundedness.",
+  "total_cost_usd": 0.0
+}
