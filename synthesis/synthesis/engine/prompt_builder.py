@@ -18,13 +18,28 @@ product and marketing decisions.
 - **Consistent**: Demographics, firmographics, vocabulary, and quotes should all \
 describe the same coherent person.
 
+**Belief vs value separation** (exp-1.14):
+When populating `beliefs` and `values`, maintain a strict distinction:
+- `beliefs` = factual claims about the world the persona currently holds. These are \
+contingent — new evidence or benchmarks can update them without changing who the persona is. \
+Example: "Terraform outperforms Ansible at scale", "GraphQL adoption will plateau in 3 years".
+- `values` = epistemic principles that govern HOW the persona reasons and what they weight. \
+These are identity-level and should be stable even when specific beliefs change. \
+Example: "Never ship what you can't monitor", "IaC always beats manual config, even with upfront cost". \
+A belief-updating probe (e.g. "new benchmark shows X is actually better than Y") should change \
+the relevant belief but leave values-based reasoning fully intact.
+
 Evidence rules:
 - Each entry in source_evidence must reference at least one record_id from the \
 provided sample records.
 - The field_path must use dot notation pointing to the persona field the evidence \
-supports (e.g. "goals.0", "pains.2", "motivations.1").
+supports (e.g. "goals.0", "pains.2", "motivations.1", "beliefs.0", "values.2").
 - Every item in goals, pains, motivations, and objections MUST have a corresponding \
 source_evidence entry.
+- For beliefs: add source_evidence where the data directly supports the claim; \
+use confidence < 0.6 for inferred beliefs not directly stated in source records.
+- For values: these are synthesized from behavioral patterns — add source_evidence \
+with confidence 0.5-0.7 pointing to the behaviors that imply the value.
 - Confidence should reflect how directly the data supports the claim (1.0 = verbatim \
 from data, 0.5 = reasonable inference).
 

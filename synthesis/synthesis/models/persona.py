@@ -65,4 +65,35 @@ class PersonaV1(BaseModel):
         description="Things this persona might say, in their own voice",
     )
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
+    contradictions: list[str] = Field(
+        default_factory=list,
+        description=(
+            "2-4 internal contradictions this persona lives with — "
+            "tensions between stated values and actual behavior that make them feel human."
+        ),
+    )
+
+    # exp-1.14: belief/value separation — placed before source_evidence so the LLM
+    # defines beliefs/values first and can then cite them in evidence entries
+    beliefs: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Factual claims this persona holds to be true about the world, their domain, or their industry. "
+            "These are updatable — new evidence can change them without altering who the persona fundamentally is. "
+            "Examples: 'Terraform is more reliable than Ansible for infrastructure at scale', "
+            "'Kubernetes will replace most serverless platforms in 5 years'."
+        ),
+    )
+    values: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Epistemic principles that govern how this persona reasons, weighs tradeoffs, and makes decisions. "
+            "These are stable — they define reasoning style and should not change when individual beliefs are updated. "
+            "Examples: 'Prefer infrastructure-as-code over any manual process, even if IaC takes longer upfront', "
+            "'Measure everything — if you can't monitor it, don't ship it'."
+        ),
+    )
+
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+
+    # exp-1.23: contradictions field — 2-4 internal tensions that make persona feel human

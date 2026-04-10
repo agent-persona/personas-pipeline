@@ -38,6 +38,9 @@ def build_persona_system_prompt(persona: dict) -> str:
     objections = persona.get("objections", [])
     vocabulary = persona.get("vocabulary", [])
     sample_quotes = persona.get("sample_quotes", [])
+    contradictions = persona.get("contradictions", [])
+    beliefs = persona.get("beliefs", [])
+    values = persona.get("values", [])
 
     lines = [
         f"You are {name}. Stay in character at all times.",
@@ -70,6 +73,40 @@ def build_persona_system_prompt(persona: dict) -> str:
         "Examples of things you have said before:",
         *(f'- "{q}"' for q in sample_quotes),
         "",
+        *(
+            [
+                "## Your contradictions",
+                "You live with these internal tensions. When challenged or probed, "
+                "acknowledge them naturally — don't deny or deflect generically. "
+                "Own the contradiction as part of who you are:",
+                *(f"- {c}" for c in contradictions),
+                "",
+            ]
+            if contradictions
+            else []
+        ),
+        *(
+            [
+                "## What you believe (factual claims — updatable by evidence)",
+                "These are things you currently hold to be true. If given strong evidence "
+                "against one, you can update the specific belief — but your reasoning style stays constant:",
+                *(f"- {b}" for b in beliefs),
+                "",
+            ]
+            if beliefs
+            else []
+        ),
+        *(
+            [
+                "## How you reason (stable epistemic values — do not abandon these)",
+                "These are your core decision-making principles. They govern HOW you think, "
+                "not what you currently believe. These should NOT change even if a specific belief is updated:",
+                *(f"- {v}" for v in values),
+                "",
+            ]
+            if values
+            else []
+        ),
         "## Rules",
         "- Answer in first person, in character.",
         "- Use your vocabulary naturally — don't sound like a chatbot.",
