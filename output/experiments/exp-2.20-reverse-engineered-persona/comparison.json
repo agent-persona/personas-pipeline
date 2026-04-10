@@ -1,0 +1,29 @@
+{
+  "experiment": "2.20",
+  "title": "Reverse-engineered persona",
+  "date": "2026-04-10",
+  "approach": "transcript_first vs direct_synthesis",
+  "results": [
+    {
+      "cluster": "cluster_00",
+      "cluster_id": "clust_1adb81b417c0",
+      "baseline_groundedness": 1.0,
+      "transcript_first_groundedness": 1.0,
+      "delta": 0.0
+    },
+    {
+      "cluster": "cluster_01",
+      "cluster_id": "clust_bc52ee85eb83",
+      "baseline_groundedness": 1.0,
+      "transcript_first_groundedness": 1.0,
+      "delta": 0.0
+    }
+  ],
+  "mean_baseline": 1.0,
+  "mean_transcript_first": 1.0,
+  "mean_delta": 0.0,
+  "signal": "NOISE",
+  "recommendation": "defer",
+  "cost_usd": 0.0,
+  "notes": "Both approaches achieve perfect groundedness scores (1.0) on the deterministic check. The metric is saturated at ceiling \u2014 it validates record ID references and field_path coverage, not semantic depth. The transcript-first approach produces qualitatively richer customer voice (more specific quotes, 2am incident detail, rate-per-hour framing) but this is invisible to the current metric. To detect the hypothesized advantage, a semantic groundedness metric (e.g. claim-to-evidence cosine similarity) is needed."
+}
