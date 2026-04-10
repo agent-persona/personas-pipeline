@@ -1,7 +1,146 @@
 from __future__ import annotations
 
+import json
+from typing import Literal
+
 from synthesis.models.cluster import ClusterData
 from synthesis.models.persona import PersonaV1
+
+# ── Experiment 1.19: schema artifact format ───────────────────────────
+# Three ways to render PersonaV1's structure in the system prompt.
+# The actual tool schema (input_schema) stays the same across variants —
+# only the textual description of the expected output changes.
+SchemaFormat = Literal["pydantic", "jsonschema", "typescript"]
+
+
+def _render_pydantic_schema() -> str:
+    """Render PersonaV1 as Pydantic model repr (Python class definition)."""
+    return '''\
+class Demographics(BaseModel):
+    age_range: str               # e.g. '25-34'
+    gender_distribution: str     # e.g. 'predominantly female'
+    location_signals: list[str]
+    education_level: str | None = None
+    income_bracket: str | None = None
+
+class Firmographics(BaseModel):
+    company_size: str | None = None   # e.g. 'SMB (10-50 employees)'
+    industry: str | None = None
+    role_titles: list[str] = []
+    tech_stack_signals: list[str] = []
+
+class JourneyStage(BaseModel):
+    stage: str           # e.g. 'awareness', 'consideration', 'decision'
+    mindset: str
+    key_actions: list[str]
+    content_preferences: list[str]
+
+class PersonaV1(BaseModel):
+    schema_version: Literal["1.0"] = "1.0"
+    name: str
+    summary: str                 # 2-3 sentence overview
+    demographics: Demographics
+    firmographics: Firmographics
+    goals: list[str]             # 2-8 items
+    pains: list[str]             # 2-8 items
+    motivations: list[str]       # 2-6 items
+    objections: list[str]        # 1-6 items
+    channels: list[str]          # 1-8 items
+    vocabulary: list[str]        # 3-15 words/phrases
+    decision_triggers: list[str] # 1-6 items
+    sample_quotes: list[str]     # 2-5 items
+    journey_stages: list[JourneyStage]  # 2-5 stages
+    source_evidence: list[SourceEvidence]  # 3+ entries'''
+
+
+def _render_jsonschema_schema() -> str:
+    """Render PersonaV1 as JSON Schema (compact, readable)."""
+    schema = PersonaV1.model_json_schema()
+    return json.dumps(schema, indent=2)
+
+
+def _render_typescript_schema() -> str:
+    """Render PersonaV1 as TypeScript type definitions."""
+    return '''\
+interface Demographics {
+  age_range: string;               // e.g. '25-34'
+  gender_distribution: string;     // e.g. 'predominantly female'
+  location_signals: string[];
+  education_level?: string | null;
+  income_bracket?: string | null;
+}
+
+interface Firmographics {
+  company_size?: string | null;    // e.g. 'SMB (10-50 employees)'
+  industry?: string | null;
+  role_titles: string[];
+  tech_stack_signals: string[];
+}
+
+interface JourneyStage {
+  stage: string;           // e.g. 'awareness', 'consideration', 'decision'
+  mindset: string;
+  key_actions: string[];
+  content_preferences: string[];
+}
+
+interface SourceEvidence {
+  claim: string;
+  record_ids: string[];    // min 1
+  field_path: string;      // dot notation, e.g. 'goals.0'
+  confidence: number;      // 0.0 - 1.0
+}
+
+interface PersonaV1 {
+  schema_version: "1.0";
+  name: string;
+  summary: string;                   // 2-3 sentence overview
+  demographics: Demographics;
+  firmographics: Firmographics;
+  goals: string[];                   // 2-8 items
+  pains: string[];                   // 2-8 items
+  motivations: string[];             // 2-6 items
+  objections: string[];              // 1-6 items
+  channels: string[];                // 1-8 items
+  vocabulary: string[];              // 3-15 words/phrases
+  decision_triggers: string[];       // 1-6 items
+  sample_quotes: string[];           // 2-5 in their voice
+  journey_stages: JourneyStage[];    // 2-5 stages
+  source_evidence: SourceEvidence[]; // 3+ entries
+}'''
+
+
+SCHEMA_RENDERERS: dict[SchemaFormat, callable] = {
+    "pydantic": _render_pydantic_schema,
+    "jsonschema": _render_jsonschema_schema,
+    "typescript": _render_typescript_schema,
+}
+
+SCHEMA_FORMAT_LABELS: dict[SchemaFormat, str] = {
+    "pydantic": "Pydantic model (Python)",
+    "jsonschema": "JSON Schema",
+    "typescript": "TypeScript interface",
+}
+
+
+def build_system_prompt(schema_format: SchemaFormat | None = None) -> str:
+    """Build the system prompt, optionally embedding a schema description.
+
+    Args:
+        schema_format: If set, appends the PersonaV1 schema in the given format
+            to the system prompt. None = control (no schema in prompt).
+    """
+    prompt = SYSTEM_PROMPT
+    if schema_format is not None:
+        renderer = SCHEMA_RENDERERS[schema_format]
+        label = SCHEMA_FORMAT_LABELS[schema_format]
+        prompt += (
+            f"\n\n## Expected output schema ({label})\n"
+            f"```\n{renderer()}\n```\n"
+            f"Your output MUST conform to this structure."
+        )
+    return prompt
+
 
 SYSTEM_PROMPT = """\
 You are a persona synthesis expert. Your job is to analyze behavioral data from a \

@@ -1,0 +1,183 @@
+
+====================================================================================================
+EXPERIMENT 1.19 — SCHEMA ARTIFACT FORMAT — RESULTS
+====================================================================================================
+Metric                           control (no schema)              pydantic            jsonschema            typescript
+----------------------------------------------------------------------------------------------------------------------
+Groundedness                                   1.000                 1.000                 1.000                 1.000
+Cost (USD)                                    0.0355                0.0351                0.0399                0.0365
+Attempts                                         2.0                   2.0                   2.0                   2.0
+Duration (s)                                    42.0                  39.7                  40.6                  42.9
+Total list items                                  44                    40                    38                    44
+Mean tokens/item                              16.740                13.550                14.105                15.539
+Summary length (tok)                              87                    78                    77                    90
+Success rate                                   1.000                 1.000                 1.000                 1.000
+----------------------------------------------------------------------------------------------------------------------
+
+── FIELD ITEM COUNTS (avg across clusters) ──
+Field                       control (no schema)              pydantic            jsonschema            typescript
+-----------------------------------------------------------------------------------------------------------------
+goals                                       4.5                   4.0                   4.0                   4.5
+pains                                       5.0                   4.5                   4.0                   6.0
+motivations                                 4.5                   3.5                   4.0                   4.0
+objections                                  4.0                   3.5                   3.0                   4.0
+channels                                    5.0                   5.0                   4.0                   5.5
+vocabulary                                 11.0                  11.0                  10.0                  11.5
+decision_triggers                           5.5                   4.5                   5.0                   5.0
+sample_quotes                               4.5                   4.0                   4.0                   4.0
+
+── FIELD MEAN TOKENS/ITEM (avg across clusters) ──
+Field                       control (no schema)              pydantic            jsonschema            typescript
+-----------------------------------------------------------------------------------------------------------------
+goals                                      22.6                  18.4                  18.8                  20.9
+pains                                      24.9                  20.0                  19.2                  22.2
+motivations                                24.1                  20.5                  20.0                  22.9
+objections                                 25.7                  21.7                  19.7                  22.8
+channels                                   12.3                   8.9                  11.2                   9.1
+vocabulary                                  3.2                   3.4                   3.5                   3.4
+decision_triggers                          18.3                  15.8                  12.8                  15.6
+sample_quotes                              22.5                  20.5                  25.2                  28.8
+
+── CROSS-VARIANT FIELD SIMILARITY (Jaccard) ──
+
+  Cluster: clust_3aeaaa2f0d0a
+    goals:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+    pains:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+    motivations:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+    objections:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+    channels:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+    vocabulary:
+      control (no schema) vs pydantic: 0.043 (LOW)
+      control (no schema) vs typescript: 0.091 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+    decision_triggers:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+    sample_quotes:
+      control (no schema) vs pydantic: 0.125 (LOW)
+      control (no schema) vs typescript: 0.125 (LOW)
+      pydantic vs typescript: 0.143 (LOW)
+    name:
+      control (no schema) vs pydantic: 0.286 (MODERATE)
+      control (no schema) vs typescript: 0.100 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+    summary:
+      control (no schema) vs pydantic: 0.243 (MODERATE)
+      control (no schema) vs typescript: 0.173 (LOW)
+      pydantic vs typescript: 0.169 (LOW)
+
+  Cluster: clust_1d316fec7a31
+    goals:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs jsonschema: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs jsonschema: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+      jsonschema vs typescript: 0.000 (LOW)
+    pains:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs jsonschema: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs jsonschema: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+      jsonschema vs typescript: 0.000 (LOW)
+    motivations:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs jsonschema: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs jsonschema: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+      jsonschema vs typescript: 0.000 (LOW)
+    objections:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs jsonschema: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs jsonschema: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+      jsonschema vs typescript: 0.000 (LOW)
+    channels:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs jsonschema: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs jsonschema: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+      jsonschema vs typescript: 0.000 (LOW)
+    vocabulary:
+      control (no schema) vs pydantic: 0.176 (LOW)
+      control (no schema) vs jsonschema: 0.176 (LOW)
+      control (no schema) vs typescript: 0.105 (LOW)
+      pydantic vs jsonschema: 0.333 (MODERATE)
+      pydantic vs typescript: 0.105 (LOW)
+      jsonschema vs typescript: 0.105 (LOW)
+    decision_triggers:
+      control (no schema) vs pydantic: 0.000 (LOW)
+      control (no schema) vs jsonschema: 0.000 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs jsonschema: 0.000 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+      jsonschema vs typescript: 0.000 (LOW)
+    sample_quotes:
+      control (no schema) vs pydantic: 0.333 (MODERATE)
+      control (no schema) vs jsonschema: 0.143 (LOW)
+      control (no schema) vs typescript: 0.000 (LOW)
+      pydantic vs jsonschema: 0.143 (LOW)
+      pydantic vs typescript: 0.000 (LOW)
+      jsonschema vs typescript: 0.000 (LOW)
+    name:
+      control (no schema) vs pydantic: 0.429 (MODERATE)
+      control (no schema) vs jsonschema: 0.250 (MODERATE)
+      control (no schema) vs typescript: 0.429 (MODERATE)
+      pydantic vs jsonschema: 0.250 (MODERATE)
+      pydantic vs typescript: 0.429 (MODERATE)
+      jsonschema vs typescript: 0.250 (MODERATE)
+    summary:
+      control (no schema) vs pydantic: 0.323 (MODERATE)
+      control (no schema) vs jsonschema: 0.219 (MODERATE)
+      control (no schema) vs typescript: 0.328 (MODERATE)
+      pydantic vs jsonschema: 0.224 (MODERATE)
+      pydantic vs typescript: 0.274 (MODERATE)
+      jsonschema vs typescript: 0.164 (LOW)
+
+── SIGNAL ASSESSMENT ──
+
+  pydantic:
+    Groundedness:      +0.0000
+    Cost:              -0.0004
+    List items:        -4.0
+    Tokens/item:       -3.2
+    Avg similarity to ctrl: 0.042 (HIGH VARIANCE)
+    Signal strength:   STRONG
+
+  jsonschema:
+    Groundedness:      +0.0000
+    Cost:              +0.0043
+    List items:        -6.0
+    Tokens/item:       -2.6
+    Avg similarity to ctrl: 0.040 (HIGH VARIANCE)
+    Signal strength:   STRONG
+
+  typescript:
+    Groundedness:      +0.0000
+    Cost:              +0.0010
+    List items:        +0.5
+    Tokens/item:       -1.2
+    Avg similarity to ctrl: 0.020 (HIGH VARIANCE)
+    Signal strength:   MODERATE
+
+====================================================================================================
