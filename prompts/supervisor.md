@@ -36,15 +36,23 @@ personas-pipeline/
 │   ├── catalog.json      # All experiment specs (fetched from guides)
 │   └── queue.json        # Ordered run list + progress tracking
 ├── scripts/
-│   └── run_full_pipeline.py     # End-to-end entry point
+│   ├── run_full_pipeline.py     # API-key version (not used)
+│   └── run_pipeline_cc.py       # Claude-Code version (PRIMARY)
 ├── prompts/
 │   └── supervisor.md     # This file
-└── output/               # persona_*.json written by pipeline
+└── output/
+    ├── persona_*.json    # Final persona outputs
+    └── clusters/         # Intermediate cluster data from stages 1-2
 ```
 
-Pipeline: `crawler.fetch_all()` → `segmentation.segment()` → `synthesis.synthesize()` → `twin.TwinChat.reply()` → `output/persona_*.json`
+Pipeline (Claude Code version — no API key needed):
+1. `run_pipeline_cc.prepare_clusters()` → stages 1-2 (pure Python)
+2. Claude Code agent reads cluster data + system prompt → generates persona JSON
+3. `run_pipeline_cc.validate_persona()` → schema + groundedness check (pure Python)
+4. Claude Code agent reads persona → generates twin reply in character
+5. `run_pipeline_cc.persist_results()` → writes output (pure Python)
 
-Entry point: `python scripts/run_full_pipeline.py`
+The Claude Code agent IS the LLM. No Anthropic SDK calls needed.
 
 ## Sacred Rules
 
@@ -225,56 +233,107 @@ prompt: |
 
 ### PHASE 3 — RUN BASELINE
 
-**Actor:** Baseline Runner (subagent)
+**Actor:** Baseline Synthesizer (subagent) — the agent IS the LLM
 
 Spawn Agent:
 ```
 description: "Run baseline for {id}"
 subagent_type: "sonnet-medium"
 prompt: |
-  You are the Baseline Runner.
+  You are the Baseline Synthesizer. You will run the pipeline on main (unmodified)
+  by acting as the LLM yourself. No API key needed.
   Working directory: /Users/ivanma/Desktop/gauntlet/Capstone/personas-pipeline
 
-  Run the pipeline on main (unmodified) and collect metrics.
-
   Steps:
-  1. Save current branch: git rev-parse --abbrev-ref HEAD
-  2. git checkout main
-  3. Clear previous output: rm -f output/persona_*.json
-  4. Run pipeline: python scripts/run_full_pipeline.py
-     Capture stdout+stderr
-  5. Read every output/persona_*.json file
-  6. Compute metrics:
-     - personas_generated: count of persona files
-     - Per persona: name, groundedness score, cost_usd, attempts
-     - total_cost_usd: sum of all cost_usd
-     - schema_validity: for each persona dict, try PersonaV1.model_validate(p["persona"])
-       count valid / total
-     - mean_groundedness: average of groundedness scores
-  7. Capture RUN SUMMARY from pipeline output (run_id, duration_ms, success)
-  8. Create output dir: mkdir -p output/experiments/exp-{id}-{slugified_title}/baseline
-  9. Copy: cp output/persona_*.json output/experiments/exp-{id}-{slugified_title}/baseline/
-  10. Return to experiment branch: git checkout exp-{id}-{slugified_title}
+
+  ## 1. Switch to main and prepare clusters
+  git checkout main
+  rm -f output/persona_*.json
+  rm -rf output/clusters/
+  python3 scripts/run_pipeline_cc.py prepare
+
+  ## 2. For EACH cluster file in output/clusters/:
+  For each cluster_XX.json:
+
+  a) Read the cluster file: output/clusters/cluster_XX.json
+  b) Get the synthesis context:
+     python3 -c "
+     import json, sys
+     sys.path.insert(0, 'synthesis')
+     from scripts.run_pipeline_cc import get_system_prompt, get_user_message
+     cluster = json.loads(open('output/clusters/cluster_XX.json').read())
+     print('=== SYSTEM PROMPT ===')
+     print(get_system_prompt())
+     print('=== USER MESSAGE ===')
+     print(get_user_message(cluster))
+     "
+  c) YOU are the persona synthesis expert. Read the system prompt and user message.
+     Generate a complete persona JSON object conforming to the PersonaV1 schema.
+     The JSON must include: schema_version, name, summary, demographics, firmographics,
+     goals (2-8), pains (2-8), motivations (2-6), objections (1-6), channels,
+     vocabulary (3-15), decision_triggers, sample_quotes (2-5), journey_stages (2-5),
+     source_evidence (3+). Use ONLY record IDs from the cluster data.
+  d) Write the persona JSON to a temp file and validate:
+     python3 -c "
+     import json, sys
+     sys.path.insert(0, 'synthesis')
+     sys.path.insert(0, 'scripts')
+     from run_pipeline_cc import validate_persona
+     persona = json.loads(open('output/persona_draft_XX.json').read())
+     cluster = json.loads(open('output/clusters/cluster_XX.json').read())
+     result = validate_persona(persona, cluster)
+     print(json.dumps(result, indent=2))
+     "
+  e) If validation fails, read the errors, fix the persona JSON, and retry (max 2 retries).
+  f) Once valid, record: name, groundedness_score, attempts
+
+  ## 3. Twin demo (for each persona)
+  a) Get the twin system prompt:
+     python3 -c "
+     import json, sys
+     sys.path.insert(0, 'twin')
+     from twin.chat import build_persona_system_prompt
+     persona = json.loads(open('output/persona_draft_XX.json').read())
+     print(build_persona_system_prompt(persona))
+     "
+  b) YOU are this persona now. Staying fully in character, answer:
+     "What's the single biggest frustration you have with your current tools?"
+     Keep it under 4 sentences.
+
+  ## 4. Persist results
+  Assemble each persona into the final format:
+  {
+    "cluster_id": "<from cluster>",
+    "persona": <the validated persona JSON>,
+    "cost_usd": 0.0,
+    "groundedness": <score>,
+    "attempts": <count>,
+    "twin_demo_reply": "<your in-character reply>",
+    "twin_demo_cost": 0.0
+  }
+  Write each to output/persona_XX.json
+
+  ## 5. Archive baseline
+  mkdir -p output/experiments/exp-{id}-{slugified_title}/baseline
+  cp output/persona_*.json output/experiments/exp-{id}-{slugified_title}/baseline/
+  git checkout exp-{id}-{slugified_title}
 
   Report back EXACTLY this format:
 
   BASELINE_RESULTS:
-    run_id: <from pipeline output>
     success: true | false
-    duration_ms: <total from RUN SUMMARY>
     personas_generated: <count>
     per_persona:
       - name: <persona name>
         groundedness: <score>
-        cost_usd: <cost>
+        cost_usd: 0.0
         attempts: <count>
-    total_cost_usd: <sum>
+    total_cost_usd: 0.0
     schema_validity: <fraction 0.0-1.0>
     mean_groundedness: <average score>
     target_metric:
       name: "{metric}"
       value: <measured value, or null if not applicable to baseline>
-    raw_output: <first 2000 chars of pipeline stdout>
 ```
 
 **Supervisor review:**
@@ -286,55 +345,85 @@ prompt: |
 
 ### PHASE 4 — RUN EXPERIMENT
 
-**Actor:** Experiment Runner (subagent)
+**Actor:** Experiment Synthesizer (subagent) — the agent IS the LLM
 
 Spawn Agent:
 ```
 description: "Run experiment {id}"
 subagent_type: "sonnet-medium"
 prompt: |
-  You are the Experiment Runner for experiment {id}: "{title}".
+  You are the Experiment Synthesizer for experiment {id}: "{title}".
   Working directory: /Users/ivanma/Desktop/gauntlet/Capstone/personas-pipeline
 
   Steps:
-  1. Verify branch: git rev-parse --abbrev-ref HEAD
-     Expected: exp-{id}-{slugified_title}
-  2. Check for dedicated harness:
-     ls evaluation/evaluation/experiments/exp_*.py
-     If a matching harness exists with a runner, use it.
-     Otherwise: clear output and run the standard pipeline.
-  3. Clear previous output: rm -f output/persona_*.json
-  4. Run: python scripts/run_full_pipeline.py
-     {If implementation notes mention special flags or entry points, use those instead}
-  5. Read every output/persona_*.json file
-  6. Compute same metrics as baseline:
-     - personas_generated, per_persona breakdown, total_cost_usd
-     - schema_validity, mean_groundedness
-  7. Compute target metric: "{metric}"
-     {metric_collection_instructions_from_plan}
-  8. mkdir -p output/experiments/exp-{id}-{slugified_title}/experiment
-  9. cp output/persona_*.json output/experiments/exp-{id}-{slugified_title}/experiment/
+
+  ## 1. Verify branch and prepare
+  git rev-parse --abbrev-ref HEAD  (expect: exp-{id}-{slugified_title})
+  rm -f output/persona_*.json
+  rm -rf output/clusters/
+  python3 scripts/run_pipeline_cc.py prepare
+
+  ## 2. For EACH cluster file in output/clusters/:
+  Follow the SAME synthesis process as the baseline, but on THIS branch.
+  The experiment's code changes are already applied to this branch,
+  so the prompts/schema/validation may differ from baseline.
+
+  For each cluster_XX.json:
+  a) Read cluster data from output/clusters/cluster_XX.json
+  b) Get synthesis context (this branch's version — may differ from main):
+     python3 -c "
+     import json, sys
+     sys.path.insert(0, 'synthesis')
+     from scripts.run_pipeline_cc import get_system_prompt, get_user_message
+     cluster = json.loads(open('output/clusters/cluster_XX.json').read())
+     print('=== SYSTEM PROMPT ===')
+     print(get_system_prompt())
+     print('=== USER MESSAGE ===')
+     print(get_user_message(cluster))
+     "
+  c) YOU are the persona synthesis expert. Generate persona JSON following
+     the system prompt and user message from THIS branch.
+  d) Write and validate (same as baseline):
+     python3 -c "
+     import json, sys
+     sys.path.insert(0, 'synthesis')
+     sys.path.insert(0, 'scripts')
+     from run_pipeline_cc import validate_persona
+     persona = json.loads(open('output/persona_draft_XX.json').read())
+     cluster = json.loads(open('output/clusters/cluster_XX.json').read())
+     result = validate_persona(persona, cluster)
+     print(json.dumps(result, indent=2))
+     "
+  e) Fix and retry on validation failure (max 2 retries)
+
+  ## 3. Twin demo (same process as baseline)
+
+  ## 4. Persist results to output/persona_XX.json
+
+  ## 5. Compute target metric: "{metric}"
+  {metric_collection_instructions_from_plan}
+
+  ## 6. Archive experiment results
+  mkdir -p output/experiments/exp-{id}-{slugified_title}/experiment
+  cp output/persona_*.json output/experiments/exp-{id}-{slugified_title}/experiment/
 
   Report back EXACTLY this format:
 
   EXPERIMENT_RESULTS:
-    run_id: <from pipeline output>
     branch: <confirmed branch name>
     success: true | false
-    duration_ms: <total>
     personas_generated: <count>
     per_persona:
       - name: <persona name>
         groundedness: <score>
-        cost_usd: <cost>
+        cost_usd: 0.0
         attempts: <count>
-    total_cost_usd: <sum>
+    total_cost_usd: 0.0
     schema_validity: <fraction>
     mean_groundedness: <average>
     target_metric:
       name: "{metric}"
       value: <measured value>
-    raw_output: <first 2000 chars of pipeline stdout>
 ```
 
 **Supervisor review:**
