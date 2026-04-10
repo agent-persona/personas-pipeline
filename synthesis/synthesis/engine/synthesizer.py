@@ -55,13 +55,18 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    budget_multiplier: float | None = None,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
     Calls the LLM with tool-use forcing, validates with Pydantic, checks
     groundedness, and retries with error context on failure.
+
+    Args:
+        budget_multiplier: Experiment 1.17 — per-field token budget control.
+            0.4 → ~20 tok, 1.0 → ~50 tok, 4.0 → ~200 tok, None → unbounded.
     """
-    tool = build_tool_definition()
+    tool = build_tool_definition(budget_multiplier=budget_multiplier)
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
     first_attempt_cost: float | None = None
@@ -72,9 +77,9 @@ async def synthesize(
 
         # Build messages (with error context on retries)
         if errors_for_retry:
-            messages = build_retry_messages(cluster, errors_for_retry)
+            messages = build_retry_messages(cluster, errors_for_retry, budget_multiplier)
         else:
-            messages = build_messages(cluster)
+            messages = build_messages(cluster, budget_multiplier)
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(

@@ -3,6 +3,22 @@ from __future__ import annotations
 from synthesis.models.cluster import ClusterData
 from synthesis.models.persona import PersonaV1
 
+# ── Experiment 1.17: per-field token budgets ──────────────────────────
+# Base token budgets at multiplier=1.0 (the "50-token" tier).
+# Multiply by budget_multiplier to sweep: 0.4x → 20 tok, 1x → 50 tok,
+# 4x → 200 tok, None → unbounded (control).
+FIELD_BASE_BUDGETS: dict[str, int] = {
+    "summary": 50,
+    "goals": 30,
+    "pains": 30,
+    "motivations": 30,
+    "objections": 30,
+    "channels": 20,
+    "vocabulary": 20,
+    "decision_triggers": 25,
+    "sample_quotes": 40,
+}
+
 SYSTEM_PROMPT = """\
 You are a persona synthesis expert. Your job is to analyze behavioral data from a \
 customer cluster and produce a single, richly detailed persona that a product marketer \
@@ -38,15 +54,51 @@ Example source_evidence entry:
 """
 
 
-def build_tool_definition() -> dict:
-    """Build the Claude tool definition from the PersonaV1 JSON schema."""
+def _apply_length_budgets(
+    schema: dict,
+    budget_multiplier: float,
+) -> dict:
+    """Inject maxLength / item-level hints into the JSON schema descriptions."""
+    schema = schema.copy()
+    props = schema.get("properties", {})
+    for field_name, base_tokens in FIELD_BASE_BUDGETS.items():
+        if field_name not in props:
+            continue
+        limit = int(base_tokens * budget_multiplier)
+        prop = props[field_name] = props[field_name].copy()
+        hint = f" (TARGET: keep each entry under ~{limit} tokens)"
+        if "items" in prop:  # list field
+            items = prop["items"] = prop["items"].copy()
+            items["description"] = items.get("description", "") + hint
+        else:
+            prop["description"] = prop.get("description", "") + hint
+    schema["properties"] = props
+    return schema
+
+
+def build_tool_definition(budget_multiplier: float | None = None) -> dict:
+    """Build the Claude tool definition from the PersonaV1 JSON schema.
+
+    Args:
+        budget_multiplier: If set, injects per-field token-budget hints into
+            the schema descriptions.  Use 0.4 → ~20 tok, 1.0 → ~50 tok,
+            4.0 → ~200 tok, None → unbounded (control/default).
+    """
+    schema = PersonaV1.model_json_schema()
+    description = (
+        "Create a structured persona from the analyzed cluster data. "
+        "All fields are required and must be grounded in the provided source records."
+    )
+    if budget_multiplier is not None:
+        schema = _apply_length_budgets(schema, budget_multiplier)
+        description += (
+            f" IMPORTANT: Respect the per-field token budgets indicated in "
+            f"each field description (multiplier={budget_multiplier})."
+        )
     return {
         "name": "create_persona",
-        "description": (
-            "Create a structured persona from the analyzed cluster data. "
-            "All fields are required and must be grounded in the provided source records."
-        ),
-        "input_schema": PersonaV1.model_json_schema(),
+        "description": description,
+        "input_schema": schema,
     }
 
 
@@ -136,16 +188,26 @@ def build_user_message(cluster: ClusterData) -> str:
     return "\n".join(sections)
 
 
-def build_messages(cluster: ClusterData) -> list[dict]:
+def build_messages(
+    cluster: ClusterData,
+    budget_multiplier: float | None = None,
+) -> list[dict]:
     """Build the full message list for the Anthropic API call."""
+    user_msg = build_user_message(cluster)
+    if budget_multiplier is not None:
+        user_msg += (
+            f"\n\nIMPORTANT: Keep each field value concise — target the token "
+            f"budgets noted in the tool schema (multiplier={budget_multiplier})."
+        )
     return [
-        {"role": "user", "content": build_user_message(cluster)},
+        {"role": "user", "content": user_msg},
     ]
 
 
 def build_retry_messages(
     cluster: ClusterData,
     errors: list[str],
+    budget_multiplier: float | None = None,
 ) -> list[dict]:
     """Build messages for a retry attempt, including previous errors."""
     user_msg = build_user_message(cluster)
@@ -154,6 +216,11 @@ def build_retry_messages(
     for err in errors:
         error_section += f"- {err}\n"
     error_section += "\nPlease try again, addressing all errors above."
+    if budget_multiplier is not None:
+        error_section += (
+            f"\nRemember: respect the per-field token budgets "
+            f"(multiplier={budget_multiplier})."
+        )
 
     return [
         {"role": "user", "content": error_section + "\n\n" + user_msg},
