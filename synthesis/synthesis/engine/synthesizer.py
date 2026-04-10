@@ -55,11 +55,16 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    retrieval_k: int | None = None,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
     Calls the LLM with tool-use forcing, validates with Pydantic, checks
     groundedness, and retries with error context on failure.
+
+    Args:
+        retrieval_k: Experiment 3.03 — per-section top-k record retrieval.
+            None = control (all records in flat list).
     """
     tool = build_tool_definition()
     attempts: list[AttemptRecord] = []
@@ -72,9 +77,9 @@ async def synthesize(
 
         # Build messages (with error context on retries)
         if errors_for_retry:
-            messages = build_retry_messages(cluster, errors_for_retry)
+            messages = build_retry_messages(cluster, errors_for_retry, retrieval_k)
         else:
-            messages = build_messages(cluster)
+            messages = build_messages(cluster, retrieval_k)
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(

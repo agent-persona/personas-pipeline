@@ -1,0 +1,45 @@
+
+====================================================================================================
+EXPERIMENT 3.03 — RETRIEVAL-AUGMENTED SYNTHESIS — RESULTS
+====================================================================================================
+Metric                             control (all records)                 k=3                k=10                k=30
+-------------------------------------------------------------------------------------------------------------------
+Groundedness                                      1.000               1.000               1.000               1.000
+Long-tail hallucination rate                      0.000               0.059               0.040               0.029
+Mean evidence confidence                          0.872               0.816               0.865               0.838
+Evidence entries                                   25.0                22.5                26.0                18.5
+Low-confidence entries                              0.0                 1.0                 1.0                 0.5
+Unique records cited                               12.0                 7.5                10.0                12.0
+Evidence coverage                                 1.000               0.625               0.833               1.000
+Cost (USD)                                       0.0287              0.0386              0.0339              0.0755
+Attempts                                            1.5                 2.0                 1.5                 3.0
+Duration (s)                                       31.6                43.8                29.7                69.8
+-------------------------------------------------------------------------------------------------------------------
+
+── SIGNAL ASSESSMENT ──
+
+  k=3:
+    Groundedness:     +0.0000 (SAME)
+    Hallucination:    +0.0588 (WORSE)
+    Cost:             +0.0099 (COSTLIER)
+    Coverage:         -0.3750 (LOWER)
+    Confidence:       -0.0558
+    Signal strength:  STRONG
+
+  k=10:
+    Groundedness:     +0.0000 (SAME)
+    Hallucination:    +0.0400 (WORSE)
+    Cost:             +0.0051 (COSTLIER)
+    Coverage:         -0.1667 (LOWER)
+    Confidence:       -0.0070
+    Signal strength:  STRONG
+
+  k=30:
+    Groundedness:     +0.0000 (SAME)
+    Hallucination:    +0.0294 (SAME)
+    Cost:             +0.0468 (COSTLIER)
+    Coverage:         +0.0000 (SAME)
+    Confidence:       -0.0340
+    Signal strength:  MODERATE
+
+====================================================================================================

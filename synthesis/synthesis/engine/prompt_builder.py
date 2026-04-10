@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from synthesis.models.cluster import ClusterData
+from synthesis.models.cluster import ClusterData, SampleRecord
 from synthesis.models.persona import PersonaV1
+from synthesis.engine.record_retrieval import RecordIndex, SECTION_QUERIES
 
 SYSTEM_PROMPT = """\
 You are a persona synthesis expert. Your job is to analyze behavioral data from a \
@@ -136,19 +137,126 @@ def build_user_message(cluster: ClusterData) -> str:
     return "\n".join(sections)
 
 
-def build_messages(cluster: ClusterData) -> list[dict]:
-    """Build the full message list for the Anthropic API call."""
+def _render_records(records: list[SampleRecord]) -> str:
+    """Render a list of records as markdown."""
+    lines: list[str] = []
+    for rec in records:
+        lines.append(f"- **{rec.record_id}** (source: {rec.source})")
+        if rec.timestamp:
+            lines.append(f"  - timestamp: {rec.timestamp}")
+        if rec.payload:
+            for k, v in rec.payload.items():
+                lines.append(f"  - {k}: {v}")
+    return "\n".join(lines)
+
+
+def build_retrieval_augmented_message(
+    cluster: ClusterData,
+    top_k: int,
+) -> str:
+    """Build a user message with per-section top-k record retrieval.
+
+    Experiment 3.03: Instead of dumping all records, retrieves the top-k
+    most relevant records for each persona section via TF-IDF similarity.
+
+    Args:
+        cluster: The cluster data.
+        top_k: Number of records to retrieve per section.
+    """
+    index = RecordIndex(cluster.sample_records)
+    sections: list[str] = []
+
+    # Tenant context (same as original)
+    sections.append("## Tenant Context")
+    sections.append(f"- Tenant ID: {cluster.tenant.tenant_id}")
+    if cluster.tenant.industry:
+        sections.append(f"- Industry: {cluster.tenant.industry}")
+    if cluster.tenant.product_description:
+        sections.append(f"- Product: {cluster.tenant.product_description}")
+    if cluster.tenant.existing_persona_names:
+        names = ", ".join(cluster.tenant.existing_persona_names)
+        sections.append(f"- Existing personas (avoid overlap): {names}")
+
+    # Cluster summary (same as original)
+    sections.append("\n## Cluster Summary")
+    sections.append(f"- Cluster ID: {cluster.cluster_id}")
+    sections.append(f"- Cluster size: {cluster.summary.cluster_size} records")
+    if cluster.summary.top_behaviors:
+        sections.append(f"- Top behaviors: {', '.join(cluster.summary.top_behaviors)}")
+    if cluster.summary.top_pages:
+        sections.append(f"- Top pages: {', '.join(cluster.summary.top_pages)}")
+    if cluster.summary.conversion_rate is not None:
+        sections.append(f"- Conversion rate: {cluster.summary.conversion_rate:.1%}")
+    if cluster.summary.avg_session_duration_seconds is not None:
+        sections.append(f"- Avg session duration: {cluster.summary.avg_session_duration_seconds:.0f}s")
+
+    # Per-section relevant records
+    sections.append(f"\n## Evidence Records (top-{top_k} per section)")
+    sections.append(
+        "Each section below shows the most relevant records for that "
+        "persona dimension. Use these to ground your claims."
+    )
+
+    for section_name in ["goals", "pains", "motivations", "objections",
+                         "demographics", "firmographics", "channels",
+                         "vocabulary", "decision_triggers"]:
+        retrieved = index.retrieve(section_name, k=top_k)
+        sections.append(f"\n### Records relevant to {section_name}")
+        sections.append(_render_records(retrieved))
+
+    # Enrichment (same as original)
+    if cluster.enrichment.firmographic or cluster.enrichment.intent_signals:
+        sections.append("\n## Enrichment Data")
+        if cluster.enrichment.firmographic:
+            sections.append("### Firmographic")
+            for k, v in cluster.enrichment.firmographic.items():
+                sections.append(f"- {k}: {v}")
+        if cluster.enrichment.intent_signals:
+            sections.append("### Intent Signals")
+            for signal in cluster.enrichment.intent_signals:
+                sections.append(f"- {signal}")
+
+    # Available record IDs
+    sections.append("\n## Available Record IDs")
+    sections.append(
+        "Use these IDs in source_evidence.record_ids: "
+        + ", ".join(cluster.all_record_ids)
+    )
+
+    sections.append(
+        "\nSynthesize a single persona from this data. "
+        "Use the create_persona tool to structure your output."
+    )
+
+    return "\n".join(sections)
+
+
+def build_messages(cluster: ClusterData, retrieval_k: int | None = None) -> list[dict]:
+    """Build the full message list for the Anthropic API call.
+
+    Args:
+        retrieval_k: Experiment 3.03 — if set, uses per-section top-k
+            retrieval instead of dumping all records. None = control.
+    """
+    if retrieval_k is not None:
+        content = build_retrieval_augmented_message(cluster, top_k=retrieval_k)
+    else:
+        content = build_user_message(cluster)
     return [
-        {"role": "user", "content": build_user_message(cluster)},
+        {"role": "user", "content": content},
     ]
 
 
 def build_retry_messages(
     cluster: ClusterData,
     errors: list[str],
+    retrieval_k: int | None = None,
 ) -> list[dict]:
     """Build messages for a retry attempt, including previous errors."""
-    user_msg = build_user_message(cluster)
+    if retrieval_k is not None:
+        user_msg = build_retrieval_augmented_message(cluster, top_k=retrieval_k)
+    else:
+        user_msg = build_user_message(cluster)
     error_section = "\n## Previous Attempt Errors\n"
     error_section += "Your previous attempt had these issues. Please fix them:\n"
     for err in errors:
