@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "name": "Alex the API-First DevOps Engineer",
+  "summary": "Alex is a Senior DevOps Engineer at a 50-200 person fintech company who lives in the terminal and treats the project management tool as an integration platform first, a UI second. They spend long sessions deep in API docs, webhook configs, and Terraform setups—automating everything that can be automated. When something doesn't work as expected, they'll tell you directly in the support channel.",
+  "demographics": {
+    "age_range": "28-38",
+    "gender_distribution": "predominantly male",
+    "location_signals": ["likely US or EU tech hub based on fintech industry"],
+    "education_level": "Bachelor's or Master's in Computer Science or Engineering",
+    "income_bracket": "$120,000-$180,000"
+  },
+  "firmographics": {
+    "company_size": "50-200 employees",
+    "industry": "Fintech",
+    "role_titles": ["Senior DevOps Engineer", "Platform Engineer", "SRE"],
+    "tech_stack_signals": ["GitHub", "Terraform", "Webhooks", "REST API", "GraphQL", "Slack", "Custom dashboards"]
+  },
+  "goals": [
+    "Automate all project state transitions via API so no engineer has to manually update tickets",
+    "Integrate the project management tool deeply into the existing GitHub CI/CD pipeline",
+    "Set up webhook-driven alerts that push status changes into Slack and internal dashboards",
+    "Provision the entire workspace configuration through Terraform for reproducibility",
+    "Build custom dashboards that surface real-time engineering velocity metrics to leadership"
+  ],
+  "pains": [
+    "GraphQL endpoint has rough edges and schema inconsistencies that break automation scripts",
+    "Webhook configuration is time-consuming and lacks sufficient documentation for edge cases",
+    "API setup sessions run very long (38+ minutes) because discovery is fragmented across docs pages",
+    "Team invite workflow interrupts automation-focused sessions with manual UI steps",
+    "Integration setup requires context-switching between too many pages (/api/docs, /api/reference, /settings/integrations)"
+  ],
+  "motivations": [
+    "Reducing toil—every manual step is a future incident waiting to happen",
+    "Proving that infrastructure-as-code extends to the project management layer, not just compute",
+    "Earning credibility with their team by shipping a zero-click onboarding experience for new engineers",
+    "Staying ahead of audit requirements in fintech by having all config version-controlled in git"
+  ],
+  "objections": [
+    "If the GraphQL schema keeps changing without versioning, I can't depend on it in production pipelines",
+    "Terraform provider support is immature—I shouldn't have to maintain my own fork",
+    "Webhook retry logic isn't documented well enough for me to trust it for compliance-critical events"
+  ],
+  "channels": [
+    "GitHub",
+    "Hacker News",
+    "Internal Slack engineering channels",
+    "API documentation sites",
+    "Stack Overflow",
+    "DevOps-focused newsletters (e.g., Last Week in AWS)"
+  ],
+  "vocabulary": [
+    "idempotent",
+    "webhook",
+    "IaC",
+    "pipeline",
+    "terraform provider",
+    "schema drift",
+    "GraphQL introspection",
+    "rate limiting",
+    "CI/CD",
+    "event-driven",
+    "observability",
+    "state machine",
+    "gitops"
+  ],
+  "decision_triggers": [
+    "Finds a well-documented REST + GraphQL API with a stable schema and versioning guarantees",
+    "Discovers a Terraform provider maintained by the vendor (not community-only)",
+    "Sees GitHub integration that auto-closes tickets on merge without custom webhook glue",
+    "Gets a clear SLA on webhook delivery reliability and retry behavior"
+  ],
+  "sample_quotes": [
+    "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+    "If I can't manage it in Terraform, it doesn't exist in our infrastructure.",
+    "I don't want to click anything. Give me an API endpoint and I'll wire everything else up myself.",
+    "Webhooks are great until they silently drop events. What's your retry and dead-letter story?"
+  ],
+  "journey_stages": [
+    {
+      "stage": "evaluation",
+      "mindset": "Skeptical but hopeful—scanning for API quality signals before investing integration time",
+      "key_actions": ["Reading /api/docs end-to-end", "Testing GraphQL introspection", "Checking for Terraform provider"],
+      "content_preferences": ["API reference docs", "OpenAPI/GraphQL schema files", "GitHub provider repo"]
+    },
+    {
+      "stage": "activation",
+      "mindset": "Heads-down builder mode—connecting the tool to every existing system in the stack",
+      "key_actions": ["api_setup (multiple sessions)", "webhook_config", "github_integration", "terraform_setup", "custom_dashboard creation"],
+      "content_preferences": ["Code samples", "Webhook event catalog", "Integration guides", "Changelog"]
+    },
+    {
+      "stage": "expansion",
+      "mindset": "Scaling adoption—onboarding team members and locking in the integration for the long term",
+      "key_actions": ["team_invite", "Slack integration", "Building internal runbooks around the API"],
+      "content_preferences": ["Role-based access docs", "Admin API endpoints", "Status page / uptime history"]
+    }
+  ],
+  "source_evidence": [
+    {
+      "claim": "Senior DevOps Engineer at a 50-200 person fintech company",
+      "record_ids": ["hubspot_000"],
+      "field_path": "firmographics",
+      "confidence": 1.0
+    },
+    {
+      "claim": "Automate all project state transitions via API",
+      "record_ids": ["ga4_000", "ga4_003", "ga4_007"],
+      "field_path": "goals.0",
+      "confidence": 0.9
+    },
+    {
+      "claim": "Integrate deeply into GitHub CI/CD pipeline",
+      "record_ids": ["ga4_002", "ga4_009"],
+      "field_path": "goals.1",
+      "confidence": 0.95
+    },
+    {
+      "claim": "Set up webhook-driven alerts",
+      "record_ids": ["ga4_001", "ga4_006"],
+      "field_path": "goals.2",
+      "confidence": 0.95
+    },
+    {
+      "claim": "Provision workspace configuration through Terraform",
+      "record_ids": ["ga4_008"],
+      "field_path": "goals.3",
+      "confidence": 0.9
+    },
+    {
+      "claim": "Build custom dashboards for engineering velocity metrics",
+      "record_ids": ["ga4_004"],
+      "field_path": "goals.4",
+      "confidence": 0.85
+    },
+    {
+      "claim": "GraphQL endpoint has rough edges that break automation scripts",
+      "record_ids": ["intercom_000"],
+      "field_path": "pains.0",
+      "confidence": 1.0
+    },
+    {
+      "claim": "Webhook configuration is time-consuming",
+      "record_ids": ["ga4_001", "ga4_006"],
+      "field_path": "pains.1",
+      "confidence": 0.85
+    },
+    {
+      "claim": "API setup sessions run very long due to fragmented docs",
+      "record_ids": ["ga4_000", "ga4_003", "ga4_007"],
+      "field_path": "pains.2",
+      "confidence": 0.8
+    },
+    {
+      "claim": "Team invite workflow interrupts automation-focused sessions",
+      "record_ids": ["ga4_005"],
+      "field_path": "pains.3",
+      "confidence": 0.7
+    },
+    {
+      "claim": "Integration setup requires too much context-switching across pages",
+      "record_ids": ["ga4_002", "ga4_008", "ga4_009"],
+      "field_path": "pains.4",
+      "confidence": 0.75
+    },
+    {
+      "claim": "Motivated by reducing toil and manual steps",
+      "record_ids": ["ga4_000", "ga4_003", "ga4_007"],
+      "field_path": "motivations.0",
+      "confidence": 0.85
+    },
+    {
+      "claim": "Motivated by proving infrastructure-as-code extends to project management",
+      "record_ids": ["ga4_008"],
+      "field_path": "motivations.1",
+      "confidence": 0.8
+    },
+    {
+      "claim": "Motivated by shipping zero-click onboarding for new engineers",
+      "record_ids": ["ga4_005"],
+      "field_path": "motivations.2",
+      "confidence": 0.7
+    },
+    {
+      "claim": "Fintech compliance requires version-controlled configuration",
+      "record_ids": ["hubspot_000", "ga4_008"],
+      "field_path": "motivations.3",
+      "confidence": 0.7
+    },
+    {
+      "claim": "GraphQL schema instability is a production reliability objection",
+      "record_ids": ["intercom_000"],
+      "field_path": "objections.0",
+      "confidence": 1.0
+    },
+    {
+      "claim": "Immature Terraform provider is a barrier to adoption",
+      "record_ids": ["ga4_008"],
+      "field_path": "objections.1",
+      "confidence": 0.75
+    },
+    {
+      "claim": "Undocumented webhook retry logic is a compliance risk",
+      "record_ids": ["ga4_001", "ga4_006", "intercom_000"],
+      "field_path": "objections.2",
+      "confidence": 0.8
+    }
+  ]
+}
