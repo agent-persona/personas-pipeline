@@ -1,0 +1,237 @@
+{
+  "experiment": "1.22",
+  "title": "Spine minimum",
+  "provider": "openai",
+  "synthesis_model": "gpt-5-nano",
+  "judge_model": "heuristic",
+  "collapse_threshold": 2.0,
+  "removable_fields": [
+    "goals",
+    "pains",
+    "motivations",
+    "objections",
+    "channels",
+    "vocabulary",
+    "decision_triggers",
+    "sample_quotes",
+    "journey_stages"
+  ],
+  "clusters": [
+    {
+      "cluster_id": "clust_7070bb4cd110",
+      "control_persona_name": "Tenant Acme Corp Lead",
+      "control_overall": 3.07,
+      "control_groundedness": 1.0,
+      "control_model_used": "local-fallback",
+      "control_cost_usd": 0.0,
+      "control_dimensions": {
+        "grounded": 3.02,
+        "distinctive": 3.2,
+        "coherent": 3.18,
+        "actionable": 2.83,
+        "voice_fidelity": 3.1
+      },
+      "control_rationale": "heuristic judge: grounded=3.02, distinctive=3.20, coherent=3.18, actionable=2.83, voice_fidelity=3.10",
+      "collapse_threshold": 2.0,
+      "steps": [
+        {
+          "step": 1,
+          "removed_field": "channels",
+          "score_before": 3.07,
+          "score_after": 3.05,
+          "score_drop": 0.020000000000000018,
+          "remaining_fields": [
+            "goals",
+            "pains",
+            "motivations",
+            "objections",
+            "vocabulary",
+            "decision_triggers",
+            "sample_quotes",
+            "journey_stages"
+          ],
+          "rationale": "heuristic judge: grounded=3.02, distinctive=3.20, coherent=3.18, actionable=2.83, voice_fidelity=3.00"
+        },
+        {
+          "step": 2,
+          "removed_field": "objections",
+          "score_before": 3.05,
+          "score_after": 2.96,
+          "score_drop": 0.08999999999999986,
+          "remaining_fields": [
+            "goals",
+            "pains",
+            "motivations",
+            "vocabulary",
+            "decision_triggers",
+            "sample_quotes",
+            "journey_stages"
+          ],
+          "rationale": "heuristic judge: grounded=2.83, distinctive=3.20, coherent=2.95, actionable=2.83, voice_fidelity=3.00"
+        },
+        {
+          "step": 3,
+          "removed_field": "decision_triggers",
+          "score_before": 2.96,
+          "score_after": 2.86,
+          "score_drop": 0.10000000000000009,
+          "remaining_fields": [
+            "goals",
+            "pains",
+            "motivations",
+            "vocabulary",
+            "sample_quotes",
+            "journey_stages"
+          ],
+          "rationale": "heuristic judge: grounded=2.83, distinctive=3.20, coherent=2.77, actionable=2.48, voice_fidelity=3.00"
+        },
+        {
+          "step": 4,
+          "removed_field": "motivations",
+          "score_before": 2.86,
+          "score_after": 2.67,
+          "score_drop": 0.18999999999999995,
+          "remaining_fields": [
+            "goals",
+            "pains",
+            "vocabulary",
+            "sample_quotes",
+            "journey_stages"
+          ],
+          "rationale": "heuristic judge: grounded=2.36, distinctive=3.20, coherent=2.31, actionable=2.48, voice_fidelity=3.00"
+        },
+        {
+          "step": 5,
+          "removed_field": "vocabulary",
+          "score_before": 2.67,
+          "score_after": 2.41,
+          "score_drop": 0.2599999999999998,
+          "remaining_fields": [
+            "goals",
+            "pains",
+            "sample_quotes",
+            "journey_stages"
+          ],
+          "rationale": "heuristic judge: grounded=2.36, distinctive=2.60, coherent=2.31, actionable=2.48, voice_fidelity=2.30"
+        },
+        {
+          "step": 6,
+          "removed_field": "pains",
+          "score_before": 2.41,
+          "score_after": 2.14,
+          "score_drop": 0.27,
+          "remaining_fields": [
+            "goals",
+            "sample_quotes",
+            "journey_stages"
+          ],
+          "rationale": "heuristic judge: grounded=1.89, distinctive=2.60, coherent=1.97, actionable=1.92, voice_fidelity=2.30"
+        },
+        {
+          "step": 7,
+          "removed_field": "journey_stages",
+          "score_before": 2.14,
+          "score_after": 1.86,
+          "score_drop": 0.28,
+          "remaining_fields": [
+            "goals",
+            "sample_quotes"
+          ],
+          "rationale": "heuristic judge: grounded=1.89, distinctive=2.20, coherent=1.41, actionable=1.92, voice_fidelity=1.90"
+        }
+      ],
+      "collapse_step": 7,
+      "spine_fields": [
+        "goals",
+        "sample_quotes"
+      ],
+      "spine_overall": 1.86,
+      "spine_dimensions": {
+        "grounded": 1.89,
+        "distinctive": 2.2,
+        "coherent": 1.41,
+        "actionable": 1.92,
+        "voice_fidelity": 1.9
+      },
+      "spine_rationale": "heuristic judge: grounded=1.89, distinctive=2.20, coherent=1.41, actionable=1.92, voice_fidelity=1.90",
+      "removal_order": [
+        "channels",
+        "objections",
+        "decision_triggers",
+        "motivations",
+        "vocabulary",
+        "pains",
+        "journey_stages"
+      ],
+      "noncollapsed_fields": [
+        "goals",
+        "sample_quotes"
+      ]
+    }
+  ],
+  "summary": {
+    "n_clusters": 1,
+    "mean_control_overall": 3.07,
+    "mean_control_groundedness": 1.0,
+    "mean_spine_overall": 1.86,
+    "mean_quality_drop": 1.2099999999999997,
+    "mean_spine_size": 2.0,
+    "mean_steps_to_collapse": 7.0,
+    "consensus_spine_fields": [
+      "goals",
+      "sample_quotes"
+    ],
+    "union_spine_fields": [
+      "goals",
+      "sample_quotes"
+    ],
+    "removal_ranking": [
+      {
+        "field": "channels",
+        "mean_removal_step": 1.0,
+        "survival_rate": 0.0
+      },
+      {
+        "field": "objections",
+        "mean_removal_step": 2.0,
+        "survival_rate": 0.0
+      },
+      {
+        "field": "decision_triggers",
+        "mean_removal_step": 3.0,
+        "survival_rate": 0.0
+      },
+      {
+        "field": "motivations",
+        "mean_removal_step": 4.0,
+        "survival_rate": 0.0
+      },
+      {
+        "field": "vocabulary",
+        "mean_removal_step": 5.0,
+        "survival_rate": 0.0
+      },
+      {
+        "field": "pains",
+        "mean_removal_step": 6.0,
+        "survival_rate": 0.0
+      },
+      {
+        "field": "journey_stages",
+        "mean_removal_step": 7.0,
+        "survival_rate": 0.0
+      },
+      {
+        "field": "goals",
+        "mean_removal_step": 8.0,
+        "survival_rate": 1.0
+      },
+      {
+        "field": "sample_quotes",
+        "mean_removal_step": 8.0,
+        "survival_rate": 1.0
+      }
+    ]
+  },
+  "duration_seconds": 10.0545442920411
+}
