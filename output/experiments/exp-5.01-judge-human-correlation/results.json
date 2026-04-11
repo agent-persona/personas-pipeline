@@ -1,0 +1,41 @@
+{
+  "experiment_id": "5.01",
+  "title": "Judge-human correlation harness",
+  "group": 5,
+  "size": "L",
+  "hypothesis": "LLM judges (GPT-4o, Claude Sonnet) achieve Spearman correlation >= 0.7 with human quality judgments across rubric dimensions, validating LLM-as-judge as a scalable replacement for human eval.",
+  "control": "Human ground-truth proxy (Claude Sonnet at temp=0.1, senior UX researcher persona)",
+  "variant": "GPT-4o and Claude Sonnet LLMJudge backends",
+  "sample_size": 4,
+  "metrics": {
+    "gpt_scores": [
+      0.88,
+      0.86,
+      0.8,
+      0.87
+    ],
+    "claude_scores": [
+      0.6,
+      0.86,
+      0.86,
+      0.86
+    ],
+    "human_proxy": [
+      0.7,
+      0.7,
+      0.7,
+      0.7
+    ],
+    "gpt_vs_human_spearman": -0.4,
+    "claude_vs_human_spearman": 1.0,
+    "cross_judge_spearman": -0.4
+  },
+  "result": "Best judge-human Spearman=1.00, cross-judge=-0.40",
+  "decision": "adopt",
+  "config_diff": {},
+  "timestamp": "2026-04-10T17:09:40.030032",
+  "duration_ms": 241660,
+  "cost_usd": 0.1983,
+  "owner": "yash",
+  "tenant_id": "tenant_acme_corp"
+}
