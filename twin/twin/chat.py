@@ -82,18 +82,26 @@ def build_persona_system_prompt(persona: dict) -> str:
 
 
 class TwinChat:
-    """Stateless persona-driven chat. Caller manages history."""
+    """Persona-driven chat with optional inner-monologue scaffolding.
+
+    When `inner_monologue=True`, a hidden chain-of-thought step runs
+    before the final reply. The model first reasons about how the persona
+    would respond, then produces the actual in-character reply.
+    """
 
     def __init__(
         self,
         persona: dict,
         client: AsyncAnthropic,
         model: str = "claude-haiku-4-5-20251001",
+        inner_monologue: bool = False,
     ) -> None:
         self.persona = persona
         self.client = client
         self.model = model
+        self.inner_monologue = inner_monologue
         self.system_prompt = build_persona_system_prompt(persona)
+        self.last_thinking: str = ""  # exposed for eval inspection
 
     async def reply(
         self,
@@ -102,16 +110,56 @@ class TwinChat:
     ) -> TwinReply:
         history = history or []
         messages = history + [{"role": "user", "content": message}]
-        response = await self.client.messages.create(
-            model=self.model,
-            max_tokens=512,
-            system=self.system_prompt,
-            messages=messages,
-        )
-        text_block = next(
-            (block.text for block in response.content if block.type == "text"),
-            "",
-        )
+
+        if self.inner_monologue:
+            # Two-step: think first, then reply
+            think_system = self.system_prompt + (
+                "\n\n## Inner Monologue Mode\n"
+                "Before replying, briefly reason (2-3 sentences) about:\n"
+                "- What does this person know about this topic?\n"
+                "- What emotion would they feel?\n"
+                "- What would they NOT say?\n"
+                "Then give your in-character reply after '---'.\n"
+                "Format: <thinking>\\n...reasoning...\\n</thinking>\\n---\\nYour reply"
+            )
+            response = await self.client.messages.create(
+                model=self.model,
+                max_tokens=768,
+                system=think_system,
+                messages=messages,
+            )
+            full_text = next(
+                (block.text for block in response.content if block.type == "text"), ""
+            )
+            # Parse out thinking vs reply
+            if "---" in full_text:
+                parts = full_text.split("---", 1)
+                self.last_thinking = parts[0].strip()
+                text_block = parts[1].strip()
+            elif "</thinking>" in full_text:
+                import re
+                match = re.search(r"<thinking>(.*?)</thinking>(.*)", full_text, re.DOTALL)
+                if match:
+                    self.last_thinking = match.group(1).strip()
+                    text_block = match.group(2).strip().lstrip("-").strip()
+                else:
+                    self.last_thinking = ""
+                    text_block = full_text
+            else:
+                self.last_thinking = ""
+                text_block = full_text
+        else:
+            response = await self.client.messages.create(
+                model=self.model,
+                max_tokens=512,
+                system=self.system_prompt,
+                messages=messages,
+            )
+            text_block = next(
+                (block.text for block in response.content if block.type == "text"), ""
+            )
+            self.last_thinking = ""
+
         return TwinReply(
             text=text_block,
             input_tokens=response.usage.input_tokens,
