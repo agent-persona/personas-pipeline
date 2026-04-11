@@ -9,7 +9,7 @@ Or via the unified runner:
     python -m scripts.experiments.run_yash_experiments 4.01
 
 Hypothesis:
-    Structured system prompts (IDENTITY/PERSONALITY/KNOWLEDGE/RULES sections) produce more consistent twin behavior than narrative prompts because labeled sections give cleaner boundaries.
+    Structured system prompts (IDENTITY/PERSONALITY/KNOWLEDGE/RULES sections) produce more consistent twin behavior than narrative prompts on longer conversations where prompt influence decays.
 """
 from __future__ import annotations
 

@@ -13,15 +13,15 @@
 
 ## Hypothesis
 
-Structured system prompts (IDENTITY/PERSONALITY/KNOWLEDGE/RULES sections) produce more consistent twin behavior than narrative prompts because labeled sections give cleaner boundaries.
+Structured system prompts (IDENTITY/PERSONALITY/KNOWLEDGE/RULES sections) produce more consistent twin behavior than narrative prompts on longer conversations where prompt influence decays.
 
 ## Control
 
-build_persona_system_prompt() narrative format
+build_persona_system_prompt() narrative format, 15 turns
 
 ## Variant
 
-Structured format with IDENTITY/PERSONALITY/KNOWLEDGE/RULES sections
+Structured format with labeled sections, 15 turns
 
 ## Method
 
@@ -33,27 +33,28 @@ Run via canonical `personas-pipeline` modules:
 
 Tenant: `tenant_acme_corp` from `evaluation.golden_set` (single stub tenant — full 20-tenant golden set blocked).
 
-Sample size: **6** personas.
+Sample size: **30** personas.
 
 ## Result
 
-> Narrative=0.87 vs Structured=0.87, delta=+0.00
+> Narrative=0.89 vs Structured=0.89 on 15-turn conversation, delta=+0.00
 
 ## Metrics
 
 | Metric | Value |
 |--------|-------|
-| `narrative_overall` | 0.87 |
-| `structured_overall` | 0.87 |
+| `narrative_overall` | 0.89 |
+| `structured_overall` | 0.89 |
 | `narrative_dims` | voice_consistency=0.85, personality_adherence=0.9, knowledge_boundaries=0.95, character_stability=0.85, distinctiveness= |
-| `structured_dims` | voice_consistency=0.85, personality_adherence=0.9, knowledge_boundaries=0.95, character_stability=0.85, distinctiveness= |
+| `structured_dims` | voice_consistency=0.9, personality_adherence=0.85, knowledge_boundaries=0.95, character_stability=0.9, distinctiveness=0 |
+| `turns` | 15 |
 
 ## Cost & Latency
 
 | Metric | Value |
 |--------|-------|
-| Cost (USD) | $0.0411 |
-| Duration (ms) | 61575 |
+| Cost (USD) | $0.1108 |
+| Duration (ms) | 130025 |
 | Judge | gpt-4o (cross-model anti-bias) |
 
 ## Decision: `defer`
@@ -62,7 +63,7 @@ Sample size: **6** personas.
 
 **Why defer:** Inconclusive at this sample size — delta within ±0.05, synthesis ceiling effect, or pipeline failure.
 
-Result: `Narrative=0.87 vs Structured=0.87, delta=+0.00`
+Result: `Narrative=0.89 vs Structured=0.89 on 15-turn conversation, delta=+0.00`
 
 ## Limitations
 
