@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from pydantic import ValidationError
 
 from synthesis.models.cluster import ClusterData
-from synthesis.models.persona import PersonaV1
+from synthesis.models.persona import PersonaV1, SchemaWidth, SCHEMA_WIDTH_MAP
 
 from .groundedness import GroundednessReport, check_groundedness
 from .model_backend import LLMResult, ModelBackend
@@ -55,13 +55,20 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    schema_width: SchemaWidth | None = None,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
     Calls the LLM with tool-use forcing, validates with Pydantic, checks
     groundedness, and retries with error context on failure.
+
+    Args:
+        schema_width: Experiment 1.01 — schema width variant.
+            None or 'current' = control (PersonaV1).
     """
-    tool = build_tool_definition()
+    tool = build_tool_definition(schema_width=schema_width)
+    width = schema_width or "current"
+    schema_cls = SCHEMA_WIDTH_MAP[width]
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
     first_attempt_cost: float | None = None
@@ -97,10 +104,10 @@ async def synthesize(
                 attempts=attempts,
             )
 
-        # Validate with Pydantic
+        # Validate with Pydantic (using the variant schema)
         errors_for_retry = []
         try:
-            persona = PersonaV1.model_validate(llm_result.tool_input)
+            persona = schema_cls.model_validate(llm_result.tool_input)
         except ValidationError as e:
             record.validation_errors = [
                 f"{err['loc']}: {err['msg']}" for err in e.errors()

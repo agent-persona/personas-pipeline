@@ -54,7 +54,9 @@ def check_groundedness(
     total_required = 0
     covered = 0
     for field_name in EVIDENCE_REQUIRED_FIELDS:
-        items = getattr(persona, field_name)
+        items = getattr(persona, field_name, None)
+        if items is None:
+            continue  # field not present in this schema variant
         for idx in range(len(items)):
             total_required += 1
             path = f"{field_name}.{idx}"
