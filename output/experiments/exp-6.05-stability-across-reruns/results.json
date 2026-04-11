@@ -1,0 +1,3620 @@
+{
+  "experiment": "6.05",
+  "title": "Stability across reruns",
+  "model": "claude-haiku-4-5-20251001",
+  "temperature": 0.7,
+  "runs": [
+    {
+      "run_id": "run_1",
+      "personas": [
+        {
+          "schema_version": "1.0",
+          "name": "Ethan, the Infrastructure Automator",
+          "summary": "Ethan is a Senior DevOps Engineer at a mid-sized fintech company who treats project management as an infrastructure problem. He integrates deeply with APIs, webhooks, and CI/CD pipelines, seeking to eliminate manual coordination overhead through programmatic automation and custom dashboards that speak his language.",
+          "demographics": {
+            "age_range": "28-38",
+            "gender_distribution": "predominantly male",
+            "location_signals": [
+              "US tech hubs",
+              "remote-first companies"
+            ],
+            "education_level": "Bachelor's in Computer Science or related field",
+            "income_bracket": "$120K-$180K"
+          },
+          "firmographics": {
+            "company_size": "50-200 employees",
+            "industry": "fintech",
+            "role_titles": [
+              "Senior DevOps Engineer",
+              "Infrastructure Engineer",
+              "Platform Engineer"
+            ],
+            "tech_stack_signals": [
+              "GitHub",
+              "Terraform",
+              "REST APIs",
+              "GraphQL",
+              "Webhooks",
+              "CI/CD pipelines"
+            ]
+          },
+          "goals": [
+            "Automate project coordination through API-driven workflows and webhooks",
+            "Reduce context-switching by embedding project data into existing infrastructure tools",
+            "Build custom dashboards that surface metrics relevant to infrastructure and deployment teams",
+            "Enable self-service for team members through custom dashboards and automation"
+          ],
+          "pains": [
+            "Manual status updates and context-switching between project management and infrastructure tools",
+            "Lack of programmatic access to project data limits integration possibilities",
+            "GraphQL implementation feels incomplete and unreliable for production use",
+            "Difficulty delegating visibility without giving full admin access"
+          ],
+          "motivations": [
+            "Eliminate toil and manual overhead through automation",
+            "Keep infrastructure teams in their native tooling ecosystem (GitHub, Terraform, APIs)",
+            "Build trust with team members by giving them visibility without creating bottlenecks",
+            "Prove that thoughtful tool integration can multiply team productivity"
+          ],
+          "objections": [
+            "The UI feels designed for managers, not engineers who need programmatic control",
+            "Concerns that the tool is designed for managers, not engineers who need programmatic access",
+            "Hesitation to adopt another SaaS tool that doesn't integrate with existing infrastructure",
+            "Skepticism about GraphQL reliability given current schema limitations"
+          ],
+          "channels": [
+            "API documentation and technical reference pages",
+            "GitHub integrations and CI/CD platforms",
+            "Direct support (Intercom, email) for technical issues",
+            "Terraform Registry and Infrastructure-as-Code communities",
+            "Slack for team coordination"
+          ],
+          "vocabulary": [
+            "programmatic access",
+            "webhooks",
+            "schema",
+            "REST API",
+            "GraphQL",
+            "infrastructure as code",
+            "automation",
+            "self-service",
+            "integration",
+            "CI/CD pipeline",
+            "custom dashboard",
+            "toil"
+          ],
+          "decision_triggers": [
+            "Proof that the API is production-ready and well-documented",
+            "Availability of Terraform provider or IaC-native setup",
+            "Ability to build read-only dashboards without giving team members full admin access",
+            "Strong GraphQL support with stable, comprehensive schema",
+            "Demonstrated GitHub integration that works seamlessly in existing workflows"
+          ],
+          "sample_quotes": [
+            "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+            "I don't want another tool\u2014I want my project data accessible from the tools we already use.",
+            "If I can't automate it or integrate it, it's just adding friction to my day.",
+            "We need dashboards our team can self-service without asking me for permissions every time."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Skeptical but curious\u2014heard about the tool through infrastructure community channels",
+              "key_actions": [
+                "Browsed API documentation",
+                "Explored webhook capabilities",
+                "Checked GitHub integration"
+              ],
+              "content_preferences": [
+                "Technical API reference docs",
+                "Integration guides",
+                "Real-world automation examples"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Testing viability\u2014willing to invest time if the tool can genuinely reduce toil",
+              "key_actions": [
+                "Set up API keys and webhooks",
+                "Built custom dashboard prototype",
+                "Attempted GraphQL queries",
+                "Configured Terraform setup"
+              ],
+              "content_preferences": [
+                "Detailed API schemas",
+                "Webhook trigger documentation",
+                "Custom dashboard tutorials",
+                "Terraform provider docs"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to commit if GraphQL improves and team self-service is feasible",
+              "key_actions": [
+                "Invited team members to test",
+                "Explored team permissions and dashboard access",
+                "Evaluated long-term automation potential"
+              ],
+              "content_preferences": [
+                "Security and permissions documentation",
+                "Team collaboration features",
+                "Advanced API use cases",
+                "Product roadmap for GraphQL"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Senior DevOps Engineer at fintech company, 50-200 employees",
+              "record_ids": [
+                "hubspot_000"
+              ],
+              "field_path": "firmographics.role_titles.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Automate project coordination through API-driven workflows and webhooks",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_003",
+                "ga4_006"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Reduce context-switching by embedding project data into existing infrastructure tools",
+              "record_ids": [
+                "ga4_002",
+                "ga4_008"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Build custom dashboards that surface metrics relevant to infrastructure and deployment teams",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Enable self-service for team members through custom dashboards and automation",
+              "record_ids": [
+                "ga4_004",
+                "ga4_005"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Manual status updates and context-switching between project management and infrastructure tools",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001"
+              ],
+              "field_path": "pains.0",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Lack of programmatic access to project data limits integration possibilities",
+              "record_ids": [
+                "ga4_000",
+                "ga4_003"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "GraphQL implementation feels incomplete and unreliable for production use",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "pains.2",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Difficulty delegating visibility without giving full admin access",
+              "record_ids": [
+                "ga4_005"
+              ],
+              "field_path": "pains.3",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Eliminate toil and manual overhead through automation",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Keep infrastructure teams in their native tooling ecosystem (GitHub, Terraform, APIs)",
+              "record_ids": [
+                "ga4_002",
+                "ga4_008"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Build trust with team members by giving them visibility without creating bottlenecks",
+              "record_ids": [
+                "ga4_005"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Prove that thoughtful tool integration can multiply team productivity",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.75
+            },
+            {
+              "claim": "The UI feels designed for managers, not engineers who need programmatic control",
+              "record_ids": [
+                "ga4_000",
+                "ga4_003",
+                "ga4_007"
+              ],
+              "field_path": "objections.0",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Concerns that the tool is designed for managers, not engineers who need programmatic access",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_003"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Hesitation to adopt another SaaS tool that doesn't integrate with existing infrastructure",
+              "record_ids": [
+                "ga4_002",
+                "ga4_008"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Skepticism about GraphQL reliability given current schema limitations",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "objections.3",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Visited API documentation and reference pages extensively",
+              "record_ids": [
+                "ga4_000",
+                "ga4_003",
+                "ga4_007"
+              ],
+              "field_path": "channels.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Uses GitHub integrations and CI/CD platforms",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "channels.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Engages with direct support channels for technical issues",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "channels.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Active in Terraform and Infrastructure-as-Code communities",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "channels.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Uses vocabulary like 'schema', 'REST API', 'GraphQL', 'webhooks'",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "vocabulary.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Quoted directly from Intercom message about GraphQL schema",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "sample_quotes.0",
+              "confidence": 1.0
+            }
+          ]
+        },
+        {
+          "schema_version": "1.0",
+          "name": "Sofia, the Freelance Brand Architect",
+          "summary": "Sofia is a freelance brand designer who bills clients hourly and works solo. She's deeply invested in design tools that save her time on repetitive tasks\u2014especially templating, color management, and client collaboration\u2014so she can maximize billable hours. She's exploring white-label and client-share capabilities to deliver polished, branded experiences without friction.",
+          "demographics": {
+            "age_range": "28-42",
+            "gender_distribution": "likely female",
+            "location_signals": [
+              "remote",
+              "freelance_based"
+            ],
+            "education_level": "design-focused (portfolio-driven)",
+            "income_bracket": null
+          },
+          "firmographics": {
+            "company_size": "Solo (1 person)",
+            "industry": "Design Services / Brand Consulting",
+            "role_titles": [
+              "Freelance Brand Designer",
+              "Creative Contractor"
+            ],
+            "tech_stack_signals": [
+              "design_tools",
+              "client_collaboration_platforms",
+              "asset_management_systems",
+              "brand_kit_software"
+            ]
+          },
+          "goals": [
+            "Save 10+ minutes per project through automation and templating",
+            "Deliver white-labeled client experiences that reflect the client's brand, not hers",
+            "Build reusable brand kits and design systems to accelerate project delivery",
+            "Share design work with clients in a polished, professional interface",
+            "Maximize billable hours by reducing time spent on repetitive design tasks"
+          ],
+          "pains": [
+            "Time spent on repetitive tasks (color picking, template setup) eats into billable hours",
+            "Difficulty sharing work-in-progress with clients in a way that feels branded and professional",
+            "Manual asset export and organization slows down project handoff",
+            "Lack of white-label options means clients see her tool's branding instead of theirs",
+            "Managing multiple client projects with inconsistent design systems and templates"
+          ],
+          "motivations": [
+            "Hourly billing model creates direct financial incentive to save time on every project",
+            "Pride in delivering polished, professional client experiences",
+            "Need to differentiate her services by offering sophisticated, branded deliverables",
+            "Desire to work efficiently as a solo operator without hiring help",
+            "Commitment to building repeatable design systems and brand standards"
+          ],
+          "objections": [
+            "White-label feature must be available to justify switching tools",
+            "Tool must integrate seamlessly into her client-facing workflow without adding complexity",
+            "Hesitant about tools that don't preserve her ability to showcase her own brand in internal processes",
+            "Concerned about learning curve\u2014time spent learning is time not billed"
+          ],
+          "channels": [
+            "Design tool marketplaces and reviews (Dribbble, Designer Hangout)",
+            "Direct client outreach and word-of-mouth referrals",
+            "Google search for design templates and brand kit solutions",
+            "Slack communities and design forums",
+            "Email and Intercom support channels"
+          ],
+          "vocabulary": [
+            "white-labeled",
+            "client-facing",
+            "billable hours",
+            "brand kit",
+            "asset export",
+            "template",
+            "color picker",
+            "client share view",
+            "professional deliverable",
+            "design system",
+            "automated workflow"
+          ],
+          "decision_triggers": [
+            "Confirmation that white-label feature works seamlessly with client-share interface",
+            "Concrete proof of time savings (e.g., 'saves 10+ minutes per project')",
+            "Testimonials from other freelance designers using the tool",
+            "Free trial that includes all premium features (templates, brand kit, white-label)",
+            "Integration with her existing design tools (Figma, Adobe Creative Suite)"
+          ],
+          "sample_quotes": [
+            "I bill clients hourly so anything that saves me 10 minutes per project is worth real money.",
+            "Can your client share view be white-labeled? I need my clients to see their brand, not yours.",
+            "I need templates that I can customize quickly\u2014I don't have time to reinvent the wheel on every project.",
+            "If it takes me longer to learn the tool than to do the work manually, it's not worth it.",
+            "I want my deliverables to feel premium and branded, even when I'm working solo."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Searching for tools that can help her work faster without sacrificing quality or client experience",
+              "key_actions": [
+                "Browsing templates and brand kit features",
+                "Testing color picker and asset export workflows",
+                "Evaluating how the tool handles client sharing"
+              ],
+              "content_preferences": [
+                "Case studies from freelance designers",
+                "Feature comparisons (especially white-label capabilities)",
+                "Time-saving tutorials and quick-start guides"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Evaluating whether the tool's white-label and client-share features justify switching from her current workflow",
+              "key_actions": [
+                "Spending extended time exploring templates and brand kit creation (1340-2100 second sessions)",
+                "Testing comment threading for client feedback loops",
+                "Asking specific questions about white-label implementation"
+              ],
+              "content_preferences": [
+                "Detailed feature documentation on white-labeling",
+                "ROI calculators showing time/cost savings",
+                "Freelancer-specific pricing and use case guides"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to commit if white-label works as promised and integrates cleanly into her client workflow",
+              "key_actions": [
+                "Requesting white-label feature details in Intercom",
+                "Testing the full client-share experience end-to-end",
+                "Comparing pricing against time savings"
+              ],
+              "content_preferences": [
+                "Live demo or personalized walkthrough",
+                "Clear pricing and white-label feature list",
+                "Onboarding support tailored to freelancers"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Freelance Brand Designer working solo (company_size: 1)",
+              "record_ids": [
+                "hubspot_004"
+              ],
+              "field_path": "firmographics.company_size",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Works in design services industry",
+              "record_ids": [
+                "hubspot_004"
+              ],
+              "field_path": "firmographics.industry",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Saves 10+ minutes per project is worth real money",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "goals.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Wants white-labeled client-share experiences",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "goals.1",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Actively exploring template and brand kit features",
+              "record_ids": [
+                "ga4_011",
+                "ga4_015",
+                "ga4_017",
+                "ga4_019"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Shares design work with clients through platform",
+              "record_ids": [
+                "ga4_014"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Maximizes billable hours through efficiency",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "goals.4",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Time on repetitive tasks eats into billable hours",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "pains.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Struggles with client-facing work sharing that feels professional",
+              "record_ids": [
+                "ga4_014",
+                "intercom_004"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Asset export and organization slows project handoff",
+              "record_ids": [
+                "ga4_013",
+                "ga4_020"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Lacks white-label options for client deliverables",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "pains.3",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Managing multiple client projects with inconsistent design systems",
+              "record_ids": [
+                "ga4_019",
+                "ga4_012",
+                "ga4_018"
+              ],
+              "field_path": "pains.4",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Hourly billing model drives efficiency incentives",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Values polished, professional client experiences",
+              "record_ids": [
+                "intercom_004",
+                "ga4_014"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Wants to differentiate through sophisticated, branded deliverables",
+              "record_ids": [
+                "intercom_004",
+                "ga4_019"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Solo operator seeking efficiency without hiring",
+              "record_ids": [
+                "hubspot_004"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Committed to building reusable design systems",
+              "record_ids": [
+                "ga4_019",
+                "ga4_012"
+              ],
+              "field_path": "motivations.4",
+              "confidence": 0.8
+            },
+            {
+              "claim": "White-label feature is non-negotiable requirement",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Tool must integrate seamlessly into client-facing workflow",
+              "record_ids": [
+                "intercom_004",
+                "ga4_014"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Learning curve concerns\u2014time spent learning is time not billed",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Extensive template browsing with long session times (1450-2100 seconds)",
+              "record_ids": [
+                "ga4_011",
+                "ga4_015",
+                "ga4_017"
+              ],
+              "field_path": "journey_stages.0.key_actions.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Actively testing color picker and asset export features",
+              "record_ids": [
+                "ga4_012",
+                "ga4_013",
+                "ga4_018",
+                "ga4_020"
+              ],
+              "field_path": "journey_stages.0.key_actions.1",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Evaluating client-share and comment threading capabilities",
+              "record_ids": [
+                "ga4_014",
+                "ga4_016"
+              ],
+              "field_path": "journey_stages.1.key_actions.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Asking specific white-label implementation questions",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "journey_stages.2.key_actions.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Sample quote about billable hours and time savings",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "sample_quotes.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Sample quote about white-label requirement",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "sample_quotes.1",
+              "confidence": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "run_2",
+      "personas": [
+        {
+          "schema_version": "1.0",
+          "name": "Kai, the Infrastructure-First DevOps Engineer",
+          "summary": "Kai is a Senior DevOps Engineer at a mid-sized fintech firm who lives in infrastructure-as-code and API-driven workflows. He spends significant time configuring webhooks, integrating with GitHub, and setting up Terraform automation\u2014expecting tools to support his DevOps-native toolchain rather than force him back to the UI.",
+          "demographics": {
+            "age_range": "30-45",
+            "gender_distribution": "predominantly male",
+            "location_signals": [
+              "North America",
+              "tech hub region"
+            ],
+            "education_level": "Bachelor's in Computer Science or equivalent",
+            "income_bracket": "120K-160K"
+          },
+          "firmographics": {
+            "company_size": "50-200 employees",
+            "industry": "fintech",
+            "role_titles": [
+              "Senior DevOps Engineer",
+              "Platform Engineer",
+              "Infrastructure Engineer"
+            ],
+            "tech_stack_signals": [
+              "GitHub",
+              "Terraform",
+              "GraphQL",
+              "REST API",
+              "Webhooks",
+              "CI/CD pipelines"
+            ]
+          },
+          "goals": [
+            "Automate project management workflows using APIs and webhooks instead of manual updates",
+            "Achieve single-source-of-truth for project data by integrating with GitHub and Terraform",
+            "Build custom dashboards that pull real-time data from APIs to monitor team velocity and deployment status",
+            "Reduce manual context-switching between GitHub, Slack, and project management systems"
+          ],
+          "pains": [
+            "Incomplete or outdated API documentation that forces guesswork and trial-and-error",
+            "Webhook configuration is time-consuming and lacks clear debugging tools",
+            "GraphQL schema inconsistencies and missing fields required for his automation use cases",
+            "Difficulty keeping GitHub pull request status synchronized with project management tool",
+            "Tools that require UI-driven setup instead of infrastructure-as-code approaches",
+            "Friction when integrating with GitHub, Terraform, and other DevOps-native tools"
+          ],
+          "motivations": [
+            "Eliminate toil and manual handoffs by treating infrastructure and workflows as code",
+            "Maintain velocity by having project data flow seamlessly across his entire DevOps toolchain",
+            "Gain visibility into team performance through automated, real-time dashboards",
+            "Reduce cognitive load by consolidating tools rather than switching contexts"
+          ],
+          "objections": [
+            "Won't adopt tools that require clicking through UIs when CLI or IaC alternatives exist",
+            "Skeptical of API-first claims if the GraphQL implementation is immature or incomplete",
+            "Concerned about lock-in if the tool doesn't support Terraform or standard DevOps patterns",
+            "Needs proof that webhooks are reliable and well-documented before committing to automation"
+          ],
+          "channels": [
+            "API documentation and reference sites",
+            "GitHub (issue tracking, pull requests, integrations)",
+            "Slack (team communication, bot notifications)",
+            "Intercom/in-app chat (technical support, API feedback)",
+            "Internal dashboards and monitoring tools",
+            "Infrastructure-as-code repositories",
+            "Technical blogs and DevOps community forums"
+          ],
+          "vocabulary": [
+            "API schema",
+            "webhook configuration",
+            "GraphQL endpoint",
+            "Terraform module",
+            "infrastructure-as-code",
+            "single source of truth",
+            "CI/CD pipeline",
+            "custom dashboard",
+            "REST API",
+            "context-switching",
+            "automation",
+            "DevOps-native",
+            "trial-and-error"
+          ],
+          "decision_triggers": [
+            "Seeing a working Terraform module or IaC example for the tool",
+            "Clear, complete API documentation with GraphQL schema examples",
+            "Native GitHub integration that syncs PR status bidirectionally",
+            "Webhook reliability guarantees and retry logic documentation",
+            "Positive feedback from other DevOps engineers in his community"
+          ],
+          "sample_quotes": [
+            "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+            "I'm not setting this up through the UI\u2014where's the Terraform module?",
+            "If I have to manually sync GitHub PRs with project status, I'm not using it.",
+            "Show me the webhook retry logic and error handling before I trust it with our automation.",
+            "I need API docs that actually match the schema, not guesswork."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Evaluating whether this tool fits into an API-first, infrastructure-as-code workflow",
+              "key_actions": [
+                "Visits /api/docs and /api/reference to assess API maturity",
+                "Searches for GitHub integration capabilities",
+                "Checks for Terraform support or IaC examples"
+              ],
+              "content_preferences": [
+                "API documentation and schema references",
+                "Integration guides for GitHub and Terraform",
+                "Technical architecture overviews",
+                "Comparison of REST vs GraphQL capabilities"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Testing whether webhooks, custom dashboards, and integrations actually work as advertised",
+              "key_actions": [
+                "Sets up API authentication and makes test requests",
+                "Configures webhooks to test reliability and delivery",
+                "Attempts GitHub integration and checks bidirectional sync",
+                "Builds a custom dashboard to verify data accessibility",
+                "Explores Terraform setup options"
+              ],
+              "content_preferences": [
+                "Step-by-step webhook configuration guides",
+                "API error handling and debugging documentation",
+                "Real-world automation examples and use cases",
+                "GraphQL schema documentation and limitations",
+                "Terraform module examples"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to commit if the tool reduces toil and integrates cleanly with GitHub, Slack, and Terraform",
+              "key_actions": [
+                "Invites team members to test the integration",
+                "Sets up production webhook endpoints",
+                "Configures Terraform automation or IaC patterns",
+                "Creates team dashboards and notification rules"
+              ],
+              "content_preferences": [
+                "Team onboarding guides",
+                "Webhook production best practices",
+                "Terraform module documentation",
+                "Scaling and reliability documentation"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Senior DevOps Engineer role with fintech background",
+              "record_ids": [
+                "hubspot_000"
+              ],
+              "field_path": "firmographics.role_titles.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Company size 50-200 employees in fintech",
+              "record_ids": [
+                "hubspot_000"
+              ],
+              "field_path": "firmographics.company_size",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Automate project management workflows using APIs and webhooks instead of manual updates",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_003",
+                "ga4_006"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Achieve single-source-of-truth for project data by integrating with GitHub and Terraform",
+              "record_ids": [
+                "ga4_002",
+                "ga4_008",
+                "ga4_009"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Build custom dashboards that pull real-time data from APIs to monitor team velocity and deployment status",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Reduce manual context-switching between GitHub, Slack, and project management systems",
+              "record_ids": [
+                "ga4_002",
+                "ga4_005",
+                "intercom_000"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Incomplete or outdated API documentation that forces guesswork and trial-and-error",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "pains.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Webhook configuration is time-consuming and lacks clear debugging tools",
+              "record_ids": [
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "GraphQL schema inconsistencies and missing fields required for his automation use cases",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Difficulty keeping GitHub pull request status synchronized with project management tool",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "pains.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Tools that require UI-driven setup instead of infrastructure-as-code approaches",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "pains.4",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Friction when integrating with GitHub, Terraform, and other DevOps-native tools",
+              "record_ids": [
+                "ga4_002",
+                "ga4_008",
+                "ga4_009"
+              ],
+              "field_path": "pains.5",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Eliminate toil and manual handoffs by treating infrastructure and workflows as code",
+              "record_ids": [
+                "ga4_008",
+                "ga4_001",
+                "ga4_003"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Maintain velocity by having project data flow seamlessly across his entire DevOps toolchain",
+              "record_ids": [
+                "ga4_000",
+                "ga4_002",
+                "ga4_004"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Gain visibility into team performance through automated, real-time dashboards",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Reduce cognitive load by consolidating tools rather than switching contexts",
+              "record_ids": [
+                "ga4_005",
+                "intercom_000"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Won't adopt tools that require clicking through UIs when CLI or IaC alternatives exist",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "objections.0",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Skeptical of API-first claims if the GraphQL implementation is immature or incomplete",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Concerned about lock-in if the tool doesn't support Terraform or standard DevOps patterns",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Needs proof that webhooks are reliable and well-documented before committing to automation",
+              "record_ids": [
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "objections.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "sample_quotes.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "API documentation and reference sites are key channels",
+              "record_ids": [
+                "ga4_000",
+                "ga4_003",
+                "ga4_007"
+              ],
+              "field_path": "channels.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "GitHub is a primary channel for integration and workflow",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "channels.1",
+              "confidence": 0.95
+            }
+          ]
+        },
+        {
+          "schema_version": "1.0",
+          "name": "Sofia, the Efficiency-Driven Designer",
+          "summary": "Sofia is a freelance brand designer who bills clients hourly and operates as a solo practitioner. She's deeply invested in finding tools that compress project timelines and reduce manual work, allowing her to maintain premium rates while scaling delivery without hiring. She actively explores templates, brand systems, and client collaboration features to build repeatable workflows.",
+          "demographics": {
+            "age_range": "28-42",
+            "gender_distribution": "not specified",
+            "location_signals": [],
+            "education_level": null,
+            "income_bracket": "variable (hourly-billed freelancer)"
+          },
+          "firmographics": {
+            "company_size": "1 (solo freelancer)",
+            "industry": "design_services",
+            "role_titles": [
+              "Freelance Brand Designer"
+            ],
+            "tech_stack_signals": [
+              "brand kit tools",
+              "asset management",
+              "client collaboration platforms",
+              "color management tools"
+            ]
+          },
+          "goals": [
+            "Find templates and systems that accelerate project delivery",
+            "Enable efficient client feedback and approval without context-switching",
+            "Streamline client feedback and approval workflows",
+            "Maintain brand consistency across client assets",
+            "Reduce billable hours spent on repetitive setup tasks"
+          ],
+          "pains": [
+            "Spending excessive time on template searching and customization",
+            "Managing client feedback and revisions without a structured system",
+            "Difficulty organizing color palettes and brand assets across projects",
+            "Client approval delays due to fragmented communication channels",
+            "Setting up brand guidelines from scratch for each new client"
+          ],
+          "motivations": [
+            "Every 10 minutes saved per project translates directly to billable time and income",
+            "Desire to deliver polished, professional work that justifies premium rates",
+            "Need to scale delivery without hiring additional staff",
+            "Building repeatable systems to reduce cognitive load"
+          ],
+          "objections": [
+            "Tool adoption must not consume billable hours with a steep learning curve",
+            "Steep learning curve that eats into billable time",
+            "Limited template library that forces custom work",
+            "Export functionality doesn't match file format needs"
+          ],
+          "channels": [
+            "Product in-app exploration",
+            "Direct support channels (Intercom)",
+            "Template and asset libraries",
+            "Client collaboration features"
+          ],
+          "vocabulary": [
+            "billable time",
+            "white-label",
+            "client share view",
+            "brand kit",
+            "asset export",
+            "template browsing",
+            "color picker",
+            "client feedback",
+            "professional work",
+            "repeatable systems"
+          ],
+          "decision_triggers": [
+            "Quantifiable time savings that translate to revenue impact",
+            "White-labeling capabilities to enhance client perception",
+            "Ready-to-use templates that reduce setup time",
+            "Seamless client collaboration without tool switching",
+            "Reliable asset export in standard file formats"
+          ],
+          "sample_quotes": [
+            "I bill clients hourly so anything that saves me 10 minutes per project is worth real money.",
+            "Can your client share view be white-labeled?",
+            "I need templates that actually work for my clients, not generic designs I have to rebuild."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Actively exploring the platform to understand what efficiency gains are possible",
+              "key_actions": [
+                "Browsing template library extensively (30+ min sessions)",
+                "Testing color picker and brand kit features",
+                "Investigating asset export capabilities"
+              ],
+              "content_preferences": [
+                "Use case examples showing time savings",
+                "Template gallery showcases",
+                "Feature comparisons with competing tools"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Evaluating whether the tool can integrate into existing client workflows and deliver ROI",
+              "key_actions": [
+                "Testing client share functionality",
+                "Exploring comment threading for feedback loops",
+                "Inquiring about white-label customization options"
+              ],
+              "content_preferences": [
+                "Client case studies with measurable time savings",
+                "Integration guides and workflow documentation",
+                "Pricing models tied to time-saved metrics"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to commit if white-labeling and export functionality meet exact requirements",
+              "key_actions": [
+                "Requesting white-label capabilities via support",
+                "Testing export formats with actual client projects",
+                "Negotiating on template customization scope"
+              ],
+              "content_preferences": [
+                "Technical specifications and API documentation",
+                "ROI calculators based on hourly rates",
+                "Implementation timelines and support SLAs"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Solo freelancer operating as a one-person business",
+              "record_ids": [
+                "hubspot_004"
+              ],
+              "field_path": "firmographics.company_size",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Freelance Brand Designer role",
+              "record_ids": [
+                "hubspot_004"
+              ],
+              "field_path": "firmographics.role_titles.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Find templates and systems that accelerate project delivery",
+              "record_ids": [
+                "ga4_011",
+                "ga4_015",
+                "ga4_017"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Enable efficient client feedback and approval without context-switching",
+              "record_ids": [
+                "ga4_014",
+                "ga4_016"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Streamline client feedback and approval workflows",
+              "record_ids": [
+                "intercom_004",
+                "ga4_016"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Maintain brand consistency across client assets",
+              "record_ids": [
+                "ga4_019",
+                "ga4_012",
+                "ga4_018"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Reduce billable hours spent on repetitive setup tasks",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "goals.4",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Spending excessive time on template searching and customization",
+              "record_ids": [
+                "ga4_011",
+                "ga4_015",
+                "ga4_017"
+              ],
+              "field_path": "pains.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Managing client feedback and revisions without a structured system",
+              "record_ids": [
+                "ga4_016",
+                "intercom_004"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Difficulty organizing color palettes and brand assets across projects",
+              "record_ids": [
+                "ga4_012",
+                "ga4_018",
+                "ga4_019"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Client approval delays due to fragmented communication channels",
+              "record_ids": [
+                "ga4_014",
+                "ga4_016"
+              ],
+              "field_path": "pains.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Setting up brand guidelines from scratch for each new client",
+              "record_ids": [
+                "ga4_019"
+              ],
+              "field_path": "pains.4",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Every 10 minutes saved per project translates directly to billable time and income",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Desire to deliver polished, professional work that justifies premium rates",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Need to scale delivery without hiring additional staff",
+              "record_ids": [
+                "hubspot_004",
+                "intercom_004"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Building repeatable systems to reduce cognitive load",
+              "record_ids": [
+                "ga4_019",
+                "ga4_011"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Tool adoption must not consume billable hours with a steep learning curve",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Steep learning curve that eats into billable time",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Limited template library that forces custom work",
+              "record_ids": [
+                "ga4_011",
+                "ga4_015",
+                "ga4_017"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Export functionality doesn't match file format needs",
+              "record_ids": [
+                "ga4_013",
+                "ga4_020"
+              ],
+              "field_path": "objections.3",
+              "confidence": 0.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "run_3",
+      "personas": [
+        {
+          "schema_version": "1.0",
+          "name": "Devon, the Platform Integration Architect",
+          "summary": "Devon is a Senior DevOps Engineer at a mid-sized fintech company who treats project management as an infrastructure problem. He spends significant time configuring APIs, webhooks, and CI/CD integrations, and expects tools to play well with his existing GitHub, Slack, and Terraform ecosystem. For Devon, a tool is only as good as its ability to integrate seamlessly into his team's workflow.",
+          "demographics": {
+            "age_range": "30-45",
+            "gender_distribution": "predominantly male",
+            "location_signals": [
+              "fintech hub regions",
+              "distributed team environments"
+            ],
+            "education_level": "Bachelor's in Computer Science or equivalent",
+            "income_bracket": null
+          },
+          "firmographics": {
+            "company_size": "50-200 employees",
+            "industry": "fintech",
+            "role_titles": [
+              "Senior DevOps Engineer",
+              "Platform Engineer",
+              "Infrastructure Lead"
+            ],
+            "tech_stack_signals": [
+              "GitHub",
+              "Slack",
+              "Terraform",
+              "CI/CD pipelines",
+              "REST APIs",
+              "GraphQL",
+              "webhooks"
+            ]
+          },
+          "goals": [
+            "Set up robust API and webhook infrastructure to automate team workflows and reduce manual handoffs",
+            "Achieve seamless GitHub integration that feels native to the platform, not bolted-on",
+            "Build custom dashboards and reporting that surface team-specific metrics without friction",
+            "Integrate project management deeply with existing development tools (GitHub, Slack) to create a unified workflow",
+            "Enable Infrastructure-as-Code (Terraform) provisioning to treat tool configuration as version-controlled infrastructure"
+          ],
+          "pains": [
+            "Spending excessive time configuring APIs and webhooks when tools lack clear, comprehensive documentation",
+            "Encountering GraphQL schema inconsistencies and rough edges that force workarounds",
+            "Managing multiple disconnected tools instead of having a single source of truth for project status",
+            "Difficulty integrating with existing CI/CD and infrastructure-as-code tooling",
+            "Lack of fine-grained control over dashboards and reporting for team-specific metrics"
+          ],
+          "motivations": [
+            "Drive efficiency by eliminating context-switching between tools",
+            "Establish a reliable, scalable foundation that grows with the team",
+            "Commitment to creating seamless, frictionless developer experiences",
+            "Need to maintain consistency and standardization across multiple teams and projects",
+            "Preference for tools that integrate naturally with the modern DevOps ecosystem"
+          ],
+          "objections": [
+            "Reluctance to adopt tools that require custom code or extensive workarounds to achieve integration",
+            "Worry that limited webhook customization will require custom workarounds",
+            "Hesitation to adopt if GitHub integration feels like an afterthought rather than first-class",
+            "Skepticism toward solutions that don't support Terraform or Infrastructure-as-Code patterns",
+            "Concern that poor API design or documentation will become a long-term maintenance burden"
+          ],
+          "channels": [
+            "API and developer documentation",
+            "GitHub (integration points and discussions)",
+            "Slack (team communication and notifications)",
+            "Product settings and configuration interfaces",
+            "Direct support channels for technical troubleshooting"
+          ],
+          "vocabulary": [
+            "webhook customization",
+            "GraphQL schema",
+            "CI/CD pipeline",
+            "Infrastructure-as-Code",
+            "first-class integration",
+            "unified workflow",
+            "fine-grained control",
+            "API documentation",
+            "source of truth",
+            "frictionless"
+          ],
+          "decision_triggers": [
+            "Demonstration of native, polished GitHub integration",
+            "Availability of comprehensive REST and GraphQL API documentation",
+            "Support for Terraform provisioning and Infrastructure-as-Code patterns",
+            "Ability to create custom dashboards without coding",
+            "Clear evidence of webhook flexibility and customization options"
+          ],
+          "sample_quotes": [
+            "Your REST API is solid but the GraphQL endpoint has some rough edges\u2014plans to improve the schema?",
+            "If GitHub integration feels like an afterthought, I'm not adopting it.",
+            "I need fine-grained control over my dashboards to surface the metrics my team actually cares about.",
+            "Everything should integrate with Slack and GitHub naturally\u2014that's table stakes for us.",
+            "Webhook customization better not force us into custom workarounds."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Evaluating whether this tool can fit into my existing infrastructure stack",
+              "key_actions": [
+                "Reviewing API documentation",
+                "Checking integration capabilities",
+                "Exploring GitHub and Slack connectivity"
+              ],
+              "content_preferences": [
+                "Technical API reference docs",
+                "Integration guides",
+                "Architecture diagrams",
+                "Feature comparisons"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Testing whether the tool's integration depth matches my team's workflow and infrastructure needs",
+              "key_actions": [
+                "Setting up API keys and webhooks",
+                "Configuring custom dashboards",
+                "Testing GitHub integration",
+                "Exploring Terraform support"
+              ],
+              "content_preferences": [
+                "Hands-on setup guides",
+                "Video walkthroughs",
+                "Webhook documentation",
+                "Terraform examples",
+                "API playground"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Committing to the tool only if it proves itself as a reliable, low-maintenance part of my infrastructure",
+              "key_actions": [
+                "Finalizing API and webhook configuration",
+                "Inviting team members",
+                "Setting up Infrastructure-as-Code provisioning",
+                "Creating team-specific dashboards"
+              ],
+              "content_preferences": [
+                "Advanced API documentation",
+                "Best practices guides",
+                "Support channels",
+                "Community examples"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Set up robust API and webhook infrastructure to automate team workflows and reduce manual handoffs",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_003",
+                "ga4_006"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Achieve seamless GitHub integration that feels native to the platform, not bolted-on",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Build custom dashboards and reporting that surface team-specific metrics without friction",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Integrate project management deeply with existing development tools (GitHub, Slack) to create a unified workflow",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Enable Infrastructure-as-Code (Terraform) provisioning to treat tool configuration as version-controlled infrastructure",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "goals.4",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Spending excessive time configuring APIs and webhooks when tools lack clear, comprehensive documentation",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_003",
+                "ga4_006"
+              ],
+              "field_path": "pains.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Encountering GraphQL schema inconsistencies and rough edges that force workarounds",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Managing multiple disconnected tools instead of having a single source of truth for project status",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Difficulty integrating with existing CI/CD and infrastructure-as-code tooling",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "pains.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Lack of fine-grained control over dashboards and reporting for team-specific metrics",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "pains.4",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Drive efficiency by eliminating context-switching between tools",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Establish a reliable, scalable foundation that grows with the team",
+              "record_ids": [
+                "hubspot_000",
+                "ga4_000",
+                "ga4_001"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Commitment to creating seamless, frictionless developer experiences",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Need to maintain consistency and standardization across multiple teams and projects",
+              "record_ids": [
+                "hubspot_000",
+                "ga4_004"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Preference for tools that integrate naturally with the modern DevOps ecosystem",
+              "record_ids": [
+                "ga4_008",
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "motivations.4",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Reluctance to adopt tools that require custom code or extensive workarounds to achieve integration",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_003"
+              ],
+              "field_path": "objections.0",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Worry that limited webhook customization will require custom workarounds",
+              "record_ids": [
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Hesitation to adopt if GitHub integration feels like an afterthought rather than first-class",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Skepticism toward solutions that don't support Terraform or Infrastructure-as-Code patterns",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "objections.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Concern that poor API design or documentation will become a long-term maintenance burden",
+              "record_ids": [
+                "intercom_000",
+                "ga4_000",
+                "ga4_003"
+              ],
+              "field_path": "objections.4",
+              "confidence": 0.85
+            }
+          ]
+        },
+        {
+          "schema_version": "1.0",
+          "name": "Stella, the Efficiency-Driven Freelance Brand Designer",
+          "summary": "Stella is a solo freelance brand designer who bills clients hourly and is intensely focused on reclaiming time spent on repetitive, non-billable work. She needs tools that preserve her professional brand identity while streamlining client collaboration and asset management\u2014and she's willing to pay for solutions that save her 10+ minutes per project.",
+          "demographics": {
+            "age_range": "28-42",
+            "gender_distribution": "female",
+            "location_signals": [
+              "remote",
+              "global"
+            ],
+            "education_level": "design degree or equivalent professional training",
+            "income_bracket": null
+          },
+          "firmographics": {
+            "company_size": "Solo freelancer (1 person)",
+            "industry": "Design Services / Brand Consulting",
+            "role_titles": [
+              "Freelance Brand Designer",
+              "Brand Strategist"
+            ],
+            "tech_stack_signals": [
+              "color_picker tools",
+              "asset management systems",
+              "client collaboration platforms",
+              "white-label solutions"
+            ]
+          },
+          "goals": [
+            "Reduce time spent on repetitive tasks like color matching and asset organization so she can focus on billable creative work",
+            "Create professional, consistent brand deliverables that impress clients and justify premium hourly rates",
+            "Enable seamless client collaboration without exposing her own branding or workflow tools",
+            "Build a scalable freelance practice that maintains quality and professionalism as she takes on more clients"
+          ],
+          "pains": [
+            "Every minute spent on non-billable administrative work directly reduces her hourly income",
+            "Managing multiple client feedback channels (email, Slack, comments) creates confusion and delays approvals",
+            "Recreating brand guidelines and color palettes for each new client project is tedious and error-prone",
+            "Clients want to see work in a polished, branded format but generic tools expose her own branding instead of theirs"
+          ],
+          "motivations": [
+            "Direct financial incentive: time saved = money earned (hourly billing model makes efficiency tangible)",
+            "Professional pride: delivering consistent, high-quality brand work that stands out and justifies premium rates",
+            "Desire to scale her freelance practice without hiring or losing control of quality",
+            "Need to appear enterprise-grade and professional to attract higher-paying clients"
+          ],
+          "objections": [
+            "Skeptical of tools that add complexity instead of removing it from her workflow",
+            "Concerned that generic project management tools don't understand creative workflows or design asset management",
+            "Unwilling to pay for features she doesn't use or can't directly tie to time savings"
+          ],
+          "channels": [
+            "Intercom / live chat support (for quick product questions)",
+            "Google Analytics / product exploration (template and brand kit features)",
+            "Email (client communication and invoicing)",
+            "Slack (client feedback and collaboration)"
+          ],
+          "vocabulary": [
+            "white-label",
+            "client share view",
+            "brand guidelines",
+            "color palette",
+            "asset export",
+            "template browsing",
+            "billable hours",
+            "professional deliverables",
+            "brand kit",
+            "comment threading"
+          ],
+          "decision_triggers": [
+            "Specific ROI calculation: '10 minutes saved per project \u00d7 hourly rate = $X per month'",
+            "White-labeling capability that lets clients see only their brand, not the tool",
+            "Proof that the tool integrates with existing client communication channels",
+            "Testimonials or case studies from other freelance designers or small creative agencies",
+            "Free trial that lets her test time savings on a real client project"
+          ],
+          "sample_quotes": [
+            "I bill clients hourly so anything that saves me 10 minutes per project is worth real money.",
+            "Can your client share view be white-labeled? I need my clients to see their work, not my tools.",
+            "I need something that feels professional and enterprise-grade, but doesn't get in the way of my creative process.",
+            "Every minute I spend on admin work is a minute I'm not billing. That adds up fast.",
+            "I want to deliver consistent, polished brand work that justifies my premium rates\u2014without spending extra time recreating the same color palettes."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Frustrated by time spent on repetitive brand tasks; curious about tools that might streamline her workflow",
+              "key_actions": [
+                "Browsing templates and brand kit features to understand capabilities",
+                "Exploring color picker and asset export functionality",
+                "Spending 30-35 minutes per session investigating the product"
+              ],
+              "content_preferences": [
+                "Feature walkthroughs showing time savings",
+                "Case studies from freelance designers or small agencies",
+                "ROI calculators for hourly billing models"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Evaluating whether the tool can genuinely save her time and preserve her professional brand image",
+              "key_actions": [
+                "Testing client share functionality and comment threading",
+                "Checking white-label options and customization capabilities",
+                "Asking specific questions about integration with her existing workflow"
+              ],
+              "content_preferences": [
+                "Product documentation focused on white-label and client collaboration features",
+                "Comparison guides: 'How to choose a tool for freelance designers'",
+                "Video demos showing client approval workflows"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to commit if the tool demonstrably saves time and maintains her professional image with clients",
+              "key_actions": [
+                "Starting a free trial with a real client project",
+                "Setting up brand kits and testing asset management",
+                "Requesting white-label or customization features if not immediately available"
+              ],
+              "content_preferences": [
+                "Onboarding guides for freelancers",
+                "Live chat support for quick implementation questions",
+                "Success metrics: 'Typical time savings for designers like you'"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Reduce time spent on repetitive tasks like color matching and asset organization so she can focus on billable creative work",
+              "record_ids": [
+                "intercom_004",
+                "ga4_012",
+                "ga4_013",
+                "ga4_018",
+                "ga4_020"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Create professional, consistent brand deliverables that impress clients and justify premium hourly rates",
+              "record_ids": [
+                "intercom_004",
+                "ga4_019",
+                "hubspot_004"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Enable seamless client collaboration without exposing her own branding or workflow tools",
+              "record_ids": [
+                "intercom_004",
+                "ga4_014"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Build a scalable freelance practice that maintains quality and professionalism as she takes on more clients",
+              "record_ids": [
+                "hubspot_004",
+                "ga4_019",
+                "ga4_011",
+                "ga4_015",
+                "ga4_017"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Every minute spent on non-billable administrative work directly reduces her hourly income",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "pains.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Managing multiple client feedback channels (email, Slack, comments) creates confusion and delays approvals",
+              "record_ids": [
+                "ga4_016"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Recreating brand guidelines and color palettes for each new client project is tedious and error-prone",
+              "record_ids": [
+                "ga4_012",
+                "ga4_018",
+                "ga4_019"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Clients want to see work in a polished, branded format but generic tools expose her own branding instead of theirs",
+              "record_ids": [
+                "intercom_004",
+                "ga4_014"
+              ],
+              "field_path": "pains.3",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Direct financial incentive: time saved = money earned (hourly billing model makes efficiency tangible)",
+              "record_ids": [
+                "intercom_004",
+                "hubspot_004"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Professional pride: delivering consistent, high-quality brand work that stands out and justifies premium rates",
+              "record_ids": [
+                "ga4_019",
+                "ga4_011",
+                "ga4_015",
+                "ga4_017"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Desire to scale her freelance practice without hiring or losing control of quality",
+              "record_ids": [
+                "hubspot_004",
+                "ga4_019"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Need to appear enterprise-grade and professional to attract higher-paying clients",
+              "record_ids": [
+                "intercom_004",
+                "ga4_014"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Skeptical of tools that add complexity instead of removing it from her workflow",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.0",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Concerned that generic project management tools don't understand creative workflows or design asset management",
+              "record_ids": [
+                "ga4_013",
+                "ga4_016",
+                "ga4_019"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Unwilling to pay for features she doesn't use or can't directly tie to time savings",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Freelance Brand Designer working solo with hourly billing model",
+              "record_ids": [
+                "hubspot_004",
+                "intercom_004"
+              ],
+              "field_path": "firmographics.company_size",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Extensively explores brand kit, color picker, asset export, and client share features",
+              "record_ids": [
+                "ga4_011",
+                "ga4_012",
+                "ga4_013",
+                "ga4_014",
+                "ga4_015",
+                "ga4_016",
+                "ga4_017",
+                "ga4_018",
+                "ga4_019",
+                "ga4_020"
+              ],
+              "field_path": "channels.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Asks product questions via Intercom live chat about white-label capabilities",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "channels.1",
+              "confidence": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "run_4",
+      "personas": [
+        {
+          "schema_version": "1.0",
+          "name": "Alex Chen, Platform-Minded DevOps Lead",
+          "summary": "A Senior DevOps Engineer at a mid-sized fintech company who views project management through an infrastructure lens. Alex is deeply technical, API-first in thinking, and spends significant time integrating tools into an existing DevOps ecosystem (GitHub, Terraform, CI/CD). They seek elegant solutions that reduce operational toil and empower their team through self-service capabilities.",
+          "demographics": {
+            "age_range": "30-45",
+            "gender_distribution": "not specified",
+            "location_signals": [],
+            "education_level": "Bachelor's degree in Computer Science or equivalent",
+            "income_bracket": null
+          },
+          "firmographics": {
+            "company_size": "50-200 employees",
+            "industry": "fintech",
+            "role_titles": [
+              "Senior DevOps Engineer",
+              "Infrastructure Engineer",
+              "Platform Engineer"
+            ],
+            "tech_stack_signals": [
+              "GitHub",
+              "Terraform",
+              "CI/CD pipelines",
+              "REST APIs",
+              "GraphQL",
+              "Webhooks"
+            ]
+          },
+          "goals": [
+            "Automate project management workflows through API-driven integrations",
+            "Establish a seamless connection between project management and existing DevOps infrastructure",
+            "Integrate project management with existing DevOps toolchain (GitHub, Terraform, CI/CD)",
+            "Build custom dashboards that surface infrastructure-relevant metrics and team activity",
+            "Evaluate and improve GraphQL schema design for production readiness"
+          ],
+          "pains": [
+            "Manual context-switching between multiple tools creates operational friction",
+            "Webhook configuration and API setup require significant time investment to get right",
+            "Existing tools lack deep GitHub and infrastructure-native integrations",
+            "Lack of infrastructure-native features for managing team access and permissions",
+            "Steep learning curve when onboarding new integrations or API endpoints"
+          ],
+          "motivations": [
+            "Seeks to eliminate manual toil and reduce time spent on repetitive tasks",
+            "Driven by system reliability and reducing operational friction",
+            "Motivated by elegant technical solutions and well-designed APIs",
+            "Seeks to empower team autonomy through self-service infrastructure",
+            "Wants to leverage infrastructure-as-code principles in project management workflows"
+          ],
+          "objections": [
+            "API documentation is incomplete or unclear\u2014need concrete examples and schema clarity",
+            "Concerned that adopting yet another tool will add complexity rather than reduce it",
+            "Won't adopt unless the tool reduces toil, not adds to it",
+            "Skeptical of solutions that don't integrate natively with GitHub and Terraform"
+          ],
+          "channels": [
+            "API documentation and reference pages",
+            "GitHub integration workflows",
+            "Slack for team communication",
+            "Direct technical support and Intercom conversations",
+            "Settings and configuration dashboards"
+          ],
+          "vocabulary": [
+            "schema clarity",
+            "infrastructure-native",
+            "DevOps toolchain",
+            "operational friction",
+            "self-service",
+            "webhook configuration",
+            "API-first",
+            "production readiness",
+            "team autonomy",
+            "rough edges"
+          ],
+          "decision_triggers": [
+            "Demonstration of seamless GitHub and Terraform integration",
+            "Clear, example-rich API documentation with schema details",
+            "Evidence that adoption reduces operational toil vs. adds complexity",
+            "Native support for infrastructure-as-code workflows",
+            "Ability to build custom dashboards without manual workarounds"
+          ],
+          "sample_quotes": [
+            "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+            "I need this to work with GitHub and Terraform\u2014if it doesn't, it's just another tool I have to manage around.",
+            "I'm only adopting this if it actually reduces the toil my team faces, not adds to it.",
+            "Show me concrete examples in your API docs\u2014I need to understand the schema before I invest time integrating."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Evaluating whether this tool can fit into an already-complex DevOps ecosystem",
+              "key_actions": [
+                "Reviewing API documentation",
+                "Checking integration capabilities",
+                "Exploring webhook configuration"
+              ],
+              "content_preferences": [
+                "API reference guides",
+                "Integration case studies",
+                "Technical architecture docs"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Assessing whether the tool's API design and integration depth justify adoption",
+              "key_actions": [
+                "Testing GraphQL endpoints",
+                "Configuring webhooks",
+                "Setting up GitHub integration",
+                "Building custom dashboards"
+              ],
+              "content_preferences": [
+                "Detailed schema documentation",
+                "Integration examples",
+                "Performance benchmarks",
+                "Team permission models"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to adopt if the tool genuinely reduces operational friction and empowers team autonomy",
+              "key_actions": [
+                "Terraform configuration",
+                "Team setup and access management",
+                "Custom dashboard creation",
+                "Full API integration"
+              ],
+              "content_preferences": [
+                "Implementation guides",
+                "Infrastructure-as-code templates",
+                "Best practices for team onboarding"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Senior DevOps Engineer at a mid-sized fintech company",
+              "record_ids": [
+                "hubspot_000"
+              ],
+              "field_path": "firmographics.role_titles.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Company size 50-200 employees in fintech",
+              "record_ids": [
+                "hubspot_000"
+              ],
+              "field_path": "firmographics.company_size",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Automate project management workflows through API-driven integrations",
+              "record_ids": [
+                "ga4_000",
+                "ga4_003",
+                "ga4_007"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Establish a seamless connection between project management and existing DevOps infrastructure",
+              "record_ids": [
+                "ga4_002",
+                "ga4_008"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Integrate project management with existing DevOps toolchain (GitHub, Terraform, CI/CD)",
+              "record_ids": [
+                "ga4_002",
+                "ga4_008",
+                "ga4_009"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Build custom dashboards that surface infrastructure-relevant metrics and team activity",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Evaluate and improve GraphQL schema design for production readiness",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "goals.4",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Manual context-switching between multiple tools creates operational friction",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_003",
+                "ga4_006"
+              ],
+              "field_path": "pains.0",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Webhook configuration and API setup require significant time investment to get right",
+              "record_ids": [
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Existing tools lack deep GitHub and infrastructure-native integrations",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Lack of infrastructure-native features for managing team access and permissions",
+              "record_ids": [
+                "ga4_005",
+                "hubspot_000"
+              ],
+              "field_path": "pains.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Steep learning curve when onboarding new integrations or API endpoints",
+              "record_ids": [
+                "ga4_001",
+                "ga4_003"
+              ],
+              "field_path": "pains.4",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Seeks to eliminate manual toil and reduce time spent on repetitive tasks",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Driven by system reliability and reducing operational friction",
+              "record_ids": [
+                "ga4_000",
+                "ga4_008"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Motivated by elegant technical solutions and well-designed APIs",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Seeks to empower team autonomy through self-service infrastructure",
+              "record_ids": [
+                "ga4_004",
+                "ga4_005"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Wants to leverage infrastructure-as-code principles in project management workflows",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "motivations.4",
+              "confidence": 0.85
+            },
+            {
+              "claim": "API documentation is incomplete or unclear\u2014need concrete examples and schema clarity",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "objections.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Concerned that adopting yet another tool will add complexity rather than reduce it",
+              "record_ids": [
+                "ga4_001",
+                "ga4_003"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Won't adopt unless the tool reduces toil, not adds to it",
+              "record_ids": [
+                "ga4_000",
+                "ga4_006"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Skeptical of solutions that don't integrate natively with GitHub and Terraform",
+              "record_ids": [
+                "ga4_002",
+                "ga4_008",
+                "ga4_009"
+              ],
+              "field_path": "objections.3",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Spends significant time on API setup and configuration activities",
+              "record_ids": [
+                "ga4_000",
+                "ga4_003",
+                "ga4_007"
+              ],
+              "field_path": "channels.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Actively engages with GitHub integration workflows",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "channels.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Uses Slack for team communication",
+              "record_ids": [
+                "ga4_005"
+              ],
+              "field_path": "channels.3",
+              "confidence": 0.7
+            },
+            {
+              "claim": "Provides direct technical feedback through Intercom",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "channels.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Spends time in settings and configuration dashboards",
+              "record_ids": [
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "channels.4",
+              "confidence": 0.9
+            },
+            {
+              "claim": "GraphQL endpoint feedback indicates concern about schema quality",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "vocabulary.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Uses language like 'rough edges' when describing technical issues",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "sample_quotes.0",
+              "confidence": 1.0
+            }
+          ]
+        },
+        {
+          "schema_version": "1.0",
+          "name": "Maya the Premium-Minded Freelance Designer",
+          "summary": "Maya is a solo freelance brand designer who bills clients hourly and is acutely focused on time-to-delivery and premium client presentation. She spends considerable time building branded templates, color systems, and client-facing assets, and actively seeks white-label capabilities to position her work as a high-end service offering.",
+          "demographics": {
+            "age_range": "28-42",
+            "gender_distribution": "female",
+            "location_signals": [
+              "remote-first",
+              "freelance-based"
+            ],
+            "education_level": "design education or equivalent",
+            "income_bracket": null
+          },
+          "firmographics": {
+            "company_size": "Solo freelancer (1 person)",
+            "industry": "Design Services / Brand Consulting",
+            "role_titles": [
+              "Freelance Brand Designer",
+              "Design Consultant"
+            ],
+            "tech_stack_signals": [
+              "design tools",
+              "client collaboration platforms",
+              "asset management systems"
+            ]
+          },
+          "goals": [
+            "Save time on repetitive design tasks to increase billable hours per project",
+            "Create branded, professional deliverables that justify premium pricing",
+            "Maintain consistent brand identity across multiple client projects efficiently",
+            "Enable seamless client collaboration and feedback without context switching",
+            "Establish a scalable design workflow that reduces repetitive tasks"
+          ],
+          "pains": [
+            "Time spent on repetitive design work (color selection, template setup) directly reduces billable capacity",
+            "Difficulty presenting work to clients in a branded, professional format",
+            "Repetitive templating and color selection across multiple projects",
+            "Lack of white-label options limits ability to present as a premium service",
+            "Friction in client feedback loops\u2014comments and revisions require context switching"
+          ],
+          "motivations": [
+            "Economic incentive: every minute saved on repetitive work translates directly to billable time or capacity for more clients",
+            "Pride in delivering polished, branded client experiences",
+            "Need to differentiate from other freelancers through service quality",
+            "Ambition to move beyond commodity work toward retainer or premium projects"
+          ],
+          "objections": [
+            "Concerned about tools that require extensive onboarding\u2014needs immediate productivity gains",
+            "Skeptical of tools that require significant onboarding\u2014needs immediate productivity gains",
+            "Concerned about vendor lock-in or integration complexity with existing workflows"
+          ],
+          "channels": [
+            "Design tool ecosystems (Figma, Adobe Creative Cloud integrations)",
+            "Client collaboration platforms",
+            "Design community forums and Slack groups",
+            "Email and direct messaging for client communication",
+            "Project management dashboards"
+          ],
+          "vocabulary": [
+            "white-labeled",
+            "client-facing",
+            "brand kit",
+            "asset library",
+            "billable hours",
+            "template",
+            "color system",
+            "premium service",
+            "branded deliverable",
+            "time-saving",
+            "professional presentation",
+            "workflow efficiency"
+          ],
+          "decision_triggers": [
+            "Demonstration of concrete time savings (e.g., 'saves 10 minutes per project')",
+            "White-label or custom branding capabilities for client-facing materials",
+            "Seamless integration with existing design tools and workflows",
+            "Ability to create and reuse brand systems across projects",
+            "Frictionless client feedback and collaboration features",
+            "Clear ROI calculation: time saved \u00d7 hourly rate"
+          ],
+          "sample_quotes": [
+            "I bill clients hourly so anything that saves me 10 minutes per project is worth real money.",
+            "Can your client share view be white-labeled?",
+            "I need to look premium to my clients\u2014that's how I justify my rates.",
+            "Setting up colors and templates for every new project is killing my productivity.",
+            "If it takes me longer to learn the tool than to do the work manually, I'm not interested."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Searching for ways to reclaim time spent on repetitive design tasks",
+              "key_actions": [
+                "Browsing templates and design systems",
+                "Exploring color picker and brand kit features",
+                "Investigating white-label capabilities"
+              ],
+              "content_preferences": [
+                "Time-savings case studies from other freelancers",
+                "Before/after workflow comparisons",
+                "Feature overviews focused on efficiency"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Evaluating whether the tool delivers enough time savings to justify adoption and learning curve",
+              "key_actions": [
+                "Testing asset export functionality",
+                "Reviewing client share and collaboration features",
+                "Asking about white-label and integration options"
+              ],
+              "content_preferences": [
+                "ROI calculators (time saved \u00d7 hourly rate)",
+                "Integration guides with existing tools",
+                "White-label feature documentation",
+                "Testimonials from solo designers or agencies"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to commit if onboarding is quick and white-label/integration needs are met",
+              "key_actions": [
+                "Creating a brand kit with custom colors",
+                "Setting up client-facing templates",
+                "Testing comment threading and feedback workflows"
+              ],
+              "content_preferences": [
+                "Quick-start guides and video tutorials",
+                "White-label setup documentation",
+                "Customer success stories with measurable time savings"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Solo freelancer who bills clients hourly",
+              "record_ids": [
+                "hubspot_004",
+                "intercom_004"
+              ],
+              "field_path": "firmographics.company_size",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Actively browsing templates as core workflow",
+              "record_ids": [
+                "ga4_011",
+                "ga4_015",
+                "ga4_017"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Save time on repetitive design tasks to increase billable hours per project",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "goals.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Create branded, professional deliverables that justify premium pricing",
+              "record_ids": [
+                "ga4_019",
+                "ga4_012",
+                "ga4_018"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Maintain consistent brand identity across multiple client projects efficiently",
+              "record_ids": [
+                "ga4_019",
+                "ga4_012",
+                "ga4_018"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Enable seamless client collaboration and feedback without context switching",
+              "record_ids": [
+                "ga4_014",
+                "ga4_016"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Establish a scalable design workflow that reduces repetitive tasks",
+              "record_ids": [
+                "ga4_011",
+                "ga4_015",
+                "ga4_017",
+                "ga4_019"
+              ],
+              "field_path": "goals.4",
+              "confidence": 0.88
+            },
+            {
+              "claim": "Time spent on repetitive design work directly reduces billable capacity",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "pains.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Difficulty presenting work to clients in a branded, professional format",
+              "record_ids": [
+                "ga4_014",
+                "ga4_019"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Repetitive templating and color selection across multiple projects",
+              "record_ids": [
+                "ga4_011",
+                "ga4_012",
+                "ga4_015",
+                "ga4_017",
+                "ga4_018"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.92
+            },
+            {
+              "claim": "Lack of white-label options limits ability to present as a premium service",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "pains.3",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Friction in client feedback loops\u2014comments and revisions require context switching",
+              "record_ids": [
+                "ga4_016"
+              ],
+              "field_path": "pains.4",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Economic incentive: every minute saved translates directly to billable time",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Pride in delivering polished, branded client experiences",
+              "record_ids": [
+                "ga4_019",
+                "ga4_014"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Need to differentiate from other freelancers through service quality",
+              "record_ids": [
+                "ga4_019",
+                "intercom_004"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Ambition to move beyond commodity work toward retainer or premium projects",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Concerned about tools that require extensive onboarding\u2014needs immediate productivity gains",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Skeptical of tools that require significant onboarding\u2014needs immediate productivity gains",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Concerned about vendor lock-in or integration complexity with existing workflows",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Actively exploring white-label capabilities",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "decision_triggers.1",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Spending 30+ minutes per session on brand kit and template setup",
+              "record_ids": [
+                "ga4_019",
+                "ga4_011",
+                "ga4_015",
+                "ga4_017"
+              ],
+              "field_path": "journey_stages.0.key_actions.0",
+              "confidence": 0.92
+            },
+            {
+              "claim": "Testing asset export and client-facing collaboration features",
+              "record_ids": [
+                "ga4_013",
+                "ga4_014",
+                "ga4_020"
+              ],
+              "field_path": "journey_stages.1.key_actions.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Sample quote: 'I bill clients hourly so anything that saves me 10 minutes per project is worth real money'",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "sample_quotes.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Sample quote: 'Can your client share view be white-labeled?'",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "sample_quotes.1",
+              "confidence": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "run_5",
+      "personas": [
+        {
+          "schema_version": "1.0",
+          "name": "Alex, the Infrastructure-First Engineer",
+          "summary": "Alex is a senior DevOps/infrastructure engineer at a mid-size fintech firm who treats project management as a systems integration problem. Rather than using the UI for day-to-day tasks, Alex wants to automate workflows through APIs, webhooks, and infrastructure-as-code tools like Terraform, and is deeply invested in making the platform work seamlessly with GitHub and existing CI/CD pipelines.",
+          "demographics": {
+            "age_range": "30-45",
+            "gender_distribution": "predominantly male",
+            "location_signals": [
+              "US-based",
+              "fintech hub region"
+            ],
+            "education_level": "Bachelor's in Computer Science or equivalent",
+            "income_bracket": "120k-180k"
+          },
+          "firmographics": {
+            "company_size": "50-200 employees",
+            "industry": "fintech",
+            "role_titles": [
+              "Senior DevOps Engineer",
+              "Infrastructure Engineer",
+              "Platform Engineer"
+            ],
+            "tech_stack_signals": [
+              "GitHub",
+              "Terraform",
+              "REST APIs",
+              "GraphQL",
+              "webhooks",
+              "CI/CD pipelines",
+              "Slack"
+            ]
+          },
+          "goals": [
+            "Automate project management workflows through API integrations rather than manual UI interactions",
+            "Establish seamless bidirectional sync between project management tool and GitHub for code-driven workflows",
+            "Build custom dashboards that surface real-time infrastructure and deployment metrics",
+            "Reduce friction in team onboarding by programmatically managing team permissions and access via API",
+            "Infrastructure-as-code approach to tool configuration using Terraform for reproducibility and version control"
+          ],
+          "pains": [
+            "Spending excessive time on manual webhook configuration and API setup when integrating with existing systems",
+            "GraphQL API has rough edges and inconsistent schema that makes it difficult to build reliable automations",
+            "No native Terraform provider or IaC support, forcing manual configuration that breaks repeatability",
+            "Limited ability to surface custom metrics and KPIs from engineering workflows in a single dashboard",
+            "Lack of programmatic team management features requiring manual invitation and permission setup",
+            "GitHub integration feels disconnected from the core platform, creating data silos between tools"
+          ],
+          "motivations": [
+            "Strong drive to eliminate manual, repetitive work through automation and infrastructure tooling",
+            "Desire to keep the entire engineering stack integrated and synchronized across tools",
+            "Pride in building robust, maintainable systems that scale without constant intervention",
+            "Need to demonstrate engineering efficiency and reduce operational overhead to leadership",
+            "Preference for code-driven, version-controlled infrastructure over UI-based configuration"
+          ],
+          "objections": [
+            "Won't adopt the tool if it requires extensive manual UI work instead of API-first workflows",
+            "Skeptical of tools that don't have solid REST/GraphQL APIs or Terraform support",
+            "Concerned about vendor lock-in if the platform doesn't allow programmatic data export",
+            "Hesitant to recommend to team if GitHub integration feels bolted-on rather than native",
+            "Unlikely to proceed if API documentation is incomplete or schema is unstable"
+          ],
+          "channels": [
+            "API documentation and technical reference materials",
+            "GitHub integrations and marketplace",
+            "Intercom support for technical API questions",
+            "Slack for team communication",
+            "Internal engineering wikis and runbooks"
+          ],
+          "vocabulary": [
+            "API-first",
+            "infrastructure as code",
+            "webhook",
+            "schema",
+            "integration",
+            "automation",
+            "CI/CD",
+            "Terraform",
+            "GraphQL",
+            "REST endpoint",
+            "programmatic",
+            "sync",
+            "DevOps",
+            "system integration",
+            "reproducibility"
+          ],
+          "decision_triggers": [
+            "Confirmation that GraphQL schema is stable and well-documented",
+            "Availability of an official Terraform provider for infrastructure-as-code setup",
+            "Demonstration of bi-directional GitHub sync that doesn't require manual webhooks",
+            "Proof that API can handle team management and permission automation at scale",
+            "Clear roadmap showing commitment to API stability and feature parity with UI"
+          ],
+          "sample_quotes": [
+            "Your REST API is solid but the GraphQL endpoint has some rough edges. Plans to improve the schema?",
+            "I'm not going to click through a UI for every workflow\u2014I need this to work via API and Terraform.",
+            "If it doesn't integrate with GitHub and our CI/CD pipeline automatically, it's not worth the overhead.",
+            "We need programmatic team management. Manual invites don't scale when we're onboarding engineers constantly.",
+            "Show me the webhook docs and API reference before I commit to a pilot."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Evaluating whether the platform can integrate with existing DevOps infrastructure without adding manual burden",
+              "key_actions": [
+                "Reviewing API documentation and GraphQL schema",
+                "Testing webhook configuration and GitHub integration",
+                "Assessing Terraform support and IaC capabilities"
+              ],
+              "content_preferences": [
+                "Technical API reference docs",
+                "Integration architecture diagrams",
+                "GitHub marketplace listings",
+                "Terraform provider documentation"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Digging into technical feasibility and trying to build a proof-of-concept integration with internal systems",
+              "key_actions": [
+                "Setting up custom dashboards with API data",
+                "Configuring webhooks for CI/CD pipeline integration",
+                "Building Terraform modules for team and project provisioning",
+                "Testing REST and GraphQL endpoints under load"
+              ],
+              "content_preferences": [
+                "Code examples and sample integrations",
+                "API best practices and performance guides",
+                "Case studies from similar fintech/infrastructure teams",
+                "Troubleshooting guides and API error documentation"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to move forward if API stability, GitHub sync, and Terraform support meet infrastructure standards; otherwise, will look for alternatives",
+              "key_actions": [
+                "Requesting SLA and API stability commitments",
+                "Negotiating terms around API rate limits and custom endpoint support",
+                "Planning phased rollout with team via programmatic access controls",
+                "Setting up monitoring and alerting for integration health"
+              ],
+              "content_preferences": [
+                "SLA and support documentation",
+                "Security and compliance certifications",
+                "Roadmap and API versioning policy",
+                "Enterprise integration guides"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Senior DevOps Engineer role at fintech company with 50-200 employees",
+              "record_ids": [
+                "hubspot_000"
+              ],
+              "field_path": "firmographics.role_titles.0",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Automate project management workflows through API integrations",
+              "record_ids": [
+                "ga4_000",
+                "ga4_003",
+                "ga4_007"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Establish seamless bidirectional sync between project management tool and GitHub",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Build custom dashboards that surface real-time metrics",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Programmatic team management via API",
+              "record_ids": [
+                "ga4_005"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Infrastructure-as-code approach using Terraform",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "goals.4",
+              "confidence": 0.95
+            },
+            {
+              "claim": "GraphQL API has rough edges and inconsistent schema",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "pains.1",
+              "confidence": 1.0
+            },
+            {
+              "claim": "Spending excessive time on webhook and API setup",
+              "record_ids": [
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "pains.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "No native Terraform provider or IaC support",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Limited ability to surface custom metrics in dashboards",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "pains.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Lack of programmatic team management features",
+              "record_ids": [
+                "ga4_005"
+              ],
+              "field_path": "pains.4",
+              "confidence": 0.85
+            },
+            {
+              "claim": "GitHub integration feels disconnected from core platform",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "pains.5",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Drive to eliminate manual, repetitive work through automation",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001",
+                "ga4_006"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Desire to keep engineering stack integrated and synchronized",
+              "record_ids": [
+                "ga4_002"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Pride in building robust, maintainable systems",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Need to demonstrate engineering efficiency to leadership",
+              "record_ids": [
+                "ga4_004"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Preference for code-driven, version-controlled infrastructure",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "motivations.4",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Won't adopt tool if it requires extensive manual UI work",
+              "record_ids": [
+                "ga4_000",
+                "ga4_001"
+              ],
+              "field_path": "objections.0",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Skeptical of tools without solid REST/GraphQL APIs or Terraform support",
+              "record_ids": [
+                "intercom_000",
+                "ga4_008"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Concerned about vendor lock-in if no programmatic data export",
+              "record_ids": [
+                "ga4_000"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.7
+            },
+            {
+              "claim": "Hesitant if GitHub integration feels bolted-on rather than native",
+              "record_ids": [
+                "ga4_002",
+                "ga4_009"
+              ],
+              "field_path": "objections.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Unlikely to proceed if API documentation is incomplete",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "objections.4",
+              "confidence": 0.8
+            },
+            {
+              "claim": "GraphQL schema stability is a decision trigger",
+              "record_ids": [
+                "intercom_000"
+              ],
+              "field_path": "decision_triggers.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Official Terraform provider availability is critical for adoption",
+              "record_ids": [
+                "ga4_008"
+              ],
+              "field_path": "decision_triggers.1",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Bi-directional GitHub sync is a key decision factor",
+              "record_ids": [
+                "ga4_002"
+              ],
+              "field_path": "decision_triggers.2",
+              "confidence": 0.85
+            }
+          ]
+        },
+        {
+          "schema_version": "1.0",
+          "name": "Sarah, the Efficiency-Driven Freelance Brand Designer",
+          "summary": "Sarah is a solo freelance brand designer who bills clients hourly and treats every minute saved as direct revenue. She builds custom brand systems for clients and desperately needs tools that streamline asset management, client collaboration, and delivery without adding complexity to her workflow.",
+          "demographics": {
+            "age_range": "30-45",
+            "gender_distribution": "female",
+            "location_signals": [
+              "remote",
+              "freelance_based"
+            ],
+            "education_level": "design_background",
+            "income_bracket": null
+          },
+          "firmographics": {
+            "company_size": "Solo (1 employee)",
+            "industry": "Design Services / Brand Consulting",
+            "role_titles": [
+              "Freelance Brand Designer",
+              "Brand Strategist"
+            ],
+            "tech_stack_signals": [
+              "design_tools",
+              "brand_management_platforms",
+              "client_collaboration_tools",
+              "asset_libraries"
+            ]
+          },
+          "goals": [
+            "Save time on repetitive brand asset management tasks to increase billable hours",
+            "Streamline client collaboration and approval processes",
+            "Build scalable brand systems that can be reused across multiple clients",
+            "Enable clients to self-serve with brand assets through white-labeled solutions",
+            "Create professional brand kit deliverables that impress clients and justify premium pricing"
+          ],
+          "pains": [
+            "Manually organizing and exporting brand assets for each client takes significant time away from billable work",
+            "Clients often need guidance on using brand assets correctly, creating support burden",
+            "Managing multiple versions of brand guidelines and assets across projects is chaotic",
+            "Difficulty scaling her design business without hiring help",
+            "Clients want to access assets but she loses control over how they're used",
+            "Time spent on administrative tasks (sharing, organizing, tracking approvals) directly reduces income"
+          ],
+          "motivations": [
+            "Time savings directly translates to increased revenue when billing hourly",
+            "Professional brand kit presentations enhance her reputation and justify premium rates",
+            "Independence and control over her business model",
+            "Ability to take on more clients by improving efficiency",
+            "Creating systems that make her the go-to designer for comprehensive brand work",
+            "Delivering polished, self-serve solutions that make clients feel supported"
+          ],
+          "objections": [
+            "Tools that require extensive setup or learning curve eat into billable time",
+            "Concerned about losing client relationships if assets are too easily accessible without her involvement",
+            "Skeptical of solutions that require significant learning curve or setup",
+            "Won't adopt tools that don't integrate seamlessly with her existing design workflow",
+            "May hesitate if pricing is based on per-project or per-client fees",
+            "Needs transparent ROI\u2014must be able to calculate time savings in concrete minutes per project"
+          ],
+          "channels": [
+            "Design community forums and Slack groups",
+            "Direct email outreach from tool vendors",
+            "In-app messaging and support chat",
+            "Design-focused social media (Instagram, Dribbble)",
+            "Word-of-mouth from other freelance designers"
+          ],
+          "vocabulary": [
+            "billable hours",
+            "client-facing",
+            "brand assets",
+            "white-label",
+            "efficiency",
+            "brand guidelines",
+            "self-serve",
+            "time savings",
+            "deliverables",
+            "brand kit",
+            "professional",
+            "scalable",
+            "streamline"
+          ],
+          "decision_triggers": [
+            "Clear evidence that a tool saves at least 10 minutes per project",
+            "Ability to white-label or customize the client-facing experience",
+            "Integration with existing design and asset management tools",
+            "Transparent pricing model aligned with freelance income structure",
+            "Positive reviews from other freelance designers",
+            "Free trial or low-risk onboarding to test before committing"
+          ],
+          "sample_quotes": [
+            "I bill clients hourly so anything that saves me 10 minutes per project is worth real money.",
+            "Can your client share view be white-labeled?",
+            "I need something that fits into my workflow without slowing me down.",
+            "If my clients can access the brand kit themselves, I spend less time answering repetitive questions.",
+            "The faster I can deliver polished brand systems, the more clients I can take on."
+          ],
+          "journey_stages": [
+            {
+              "stage": "awareness",
+              "mindset": "Frustrated with manual processes but cautiously optimistic about solutions",
+              "key_actions": [
+                "Browsing templates to understand what's possible",
+                "Exploring color picker and asset export features",
+                "Checking if platforms offer white-labeling capabilities"
+              ],
+              "content_preferences": [
+                "Case studies showing time savings for freelancers",
+                "Feature comparisons focused on efficiency gains",
+                "Testimonials from other solo designers"
+              ]
+            },
+            {
+              "stage": "consideration",
+              "mindset": "Evaluating whether the tool justifies the time investment to learn and set up",
+              "key_actions": [
+                "Creating a test brand kit with sample colors and assets",
+                "Testing client share and comment threading features",
+                "Asking detailed questions about white-labeling and pricing"
+              ],
+              "content_preferences": [
+                "ROI calculators specific to freelance workflows",
+                "Video walkthroughs of setup and client delivery",
+                "Pricing transparency and comparison tables"
+              ]
+            },
+            {
+              "stage": "decision",
+              "mindset": "Ready to commit if onboarding is fast and white-label option is available",
+              "key_actions": [
+                "Setting up the tool with a real client project",
+                "Testing white-label client share view",
+                "Confirming integration with existing design tools"
+              ],
+              "content_preferences": [
+                "Implementation guides tailored to freelancers",
+                "Direct support and onboarding assistance",
+                "Quick-start templates to reduce setup time"
+              ]
+            }
+          ],
+          "source_evidence": [
+            {
+              "claim": "Save time on repetitive brand asset management tasks to increase billable hours",
+              "record_ids": [
+                "intercom_004",
+                "ga4_013",
+                "ga4_020"
+              ],
+              "field_path": "goals.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Streamline client collaboration and approval processes",
+              "record_ids": [
+                "ga4_014",
+                "ga4_016"
+              ],
+              "field_path": "goals.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Build scalable brand systems that can be reused across multiple clients",
+              "record_ids": [
+                "ga4_019",
+                "ga4_011",
+                "ga4_015"
+              ],
+              "field_path": "goals.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Enable clients to self-serve with brand assets through white-labeled solutions",
+              "record_ids": [
+                "intercom_004",
+                "ga4_014"
+              ],
+              "field_path": "goals.3",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Create professional brand kit deliverables that impress clients and justify premium pricing",
+              "record_ids": [
+                "ga4_019",
+                "ga4_012",
+                "ga4_018"
+              ],
+              "field_path": "goals.4",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Manually organizing and exporting brand assets for each client takes significant time away from billable work",
+              "record_ids": [
+                "ga4_013",
+                "ga4_020",
+                "intercom_004"
+              ],
+              "field_path": "pains.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Clients often need guidance on using brand assets correctly, creating support burden",
+              "record_ids": [
+                "ga4_014",
+                "ga4_016",
+                "intercom_004"
+              ],
+              "field_path": "pains.1",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Managing multiple versions of brand guidelines and assets across projects is chaotic",
+              "record_ids": [
+                "ga4_019",
+                "ga4_011",
+                "ga4_015"
+              ],
+              "field_path": "pains.2",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Difficulty scaling her design business without hiring help",
+              "record_ids": [
+                "hubspot_004",
+                "intercom_004"
+              ],
+              "field_path": "pains.3",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Clients want to access assets but she loses control over how they're used",
+              "record_ids": [
+                "ga4_014",
+                "intercom_004"
+              ],
+              "field_path": "pains.4",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Time spent on administrative tasks (sharing, organizing, tracking approvals) directly reduces income",
+              "record_ids": [
+                "intercom_004",
+                "ga4_014",
+                "ga4_016"
+              ],
+              "field_path": "pains.5",
+              "confidence": 0.9
+            },
+            {
+              "claim": "Time savings directly translates to increased revenue when billing hourly",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "motivations.0",
+              "confidence": 0.95
+            },
+            {
+              "claim": "Professional brand kit presentations enhance her reputation and justify premium rates",
+              "record_ids": [
+                "ga4_019",
+                "ga4_012"
+              ],
+              "field_path": "motivations.1",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Independence and control over her business model",
+              "record_ids": [
+                "hubspot_004",
+                "intercom_004"
+              ],
+              "field_path": "motivations.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Ability to take on more clients by improving efficiency",
+              "record_ids": [
+                "intercom_004",
+                "ga4_013",
+                "ga4_020"
+              ],
+              "field_path": "motivations.3",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Creating systems that make her the go-to designer for comprehensive brand work",
+              "record_ids": [
+                "ga4_019",
+                "ga4_011"
+              ],
+              "field_path": "motivations.4",
+              "confidence": 0.75
+            },
+            {
+              "claim": "Delivering polished, self-serve solutions that make clients feel supported",
+              "record_ids": [
+                "ga4_014",
+                "ga4_016"
+              ],
+              "field_path": "motivations.5",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Tools that require extensive setup or learning curve eat into billable time",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.0",
+              "confidence": 0.85
+            },
+            {
+              "claim": "Concerned about losing client relationships if assets are too easily accessible without her involvement",
+              "record_ids": [
+                "ga4_014",
+                "intercom_004"
+              ],
+              "field_path": "objections.1",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Skeptical of solutions that require significant learning curve or setup",
+              "record_ids": [
+                "intercom_004",
+                "ga4_011"
+              ],
+              "field_path": "objections.2",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Won't adopt tools that don't integrate seamlessly with her existing design workflow",
+              "record_ids": [
+                "ga4_013",
+                "ga4_012"
+              ],
+              "field_path": "objections.3",
+              "confidence": 0.75
+            },
+            {
+              "claim": "May hesitate if pricing is based on per-project or per-client fees",
+              "record_ids": [
+                "intercom_004",
+                "hubspot_004"
+              ],
+              "field_path": "objections.4",
+              "confidence": 0.8
+            },
+            {
+              "claim": "Needs transparent ROI\u2014must be able to calculate time savings in concrete minutes per project",
+              "record_ids": [
+                "intercom_004"
+              ],
+              "field_path": "objections.5",
+              "confidence": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "n_runs": 5,
+    "comparisons": [
+      {
+        "run_id": "run_2",
+        "mean_similarity": 0.28343822478071734,
+        "archetype_recurrence_rate": 0.0,
+        "matches": [
+          {
+            "baseline_persona": "Ethan, the Infrastructure Automator",
+            "candidate_persona": "Kai, the Infrastructure-First DevOps Engineer",
+            "overall_similarity": 0.26561789845768236,
+            "per_field_similarity": {
+              "goals": 0.29508196721311475,
+              "pains": 0.14634146341463414,
+              "vocabulary": 0.3611111111111111,
+              "sample_quotes": 0.2808988764044944,
+              "name": 0.25,
+              "summary": 0.2602739726027397
+            }
+          },
+          {
+            "baseline_persona": "Sofia, the Freelance Brand Architect",
+            "candidate_persona": "Sofia, the Efficiency-Driven Designer",
+            "overall_similarity": 0.3012585511037523,
+            "per_field_similarity": {
+              "goals": 0.2153846153846154,
+              "pains": 0.11764705882352941,
+              "vocabulary": 0.4642857142857143,
+              "sample_quotes": 0.4444444444444444,
+              "name": 0.25,
+              "summary": 0.3157894736842105
+            }
+          }
+        ]
+      },
+      {
+        "run_id": "run_3",
+        "mean_similarity": 0.2839731190159275,
+        "archetype_recurrence_rate": 0.0,
+        "matches": [
+          {
+            "baseline_persona": "Ethan, the Infrastructure Automator",
+            "candidate_persona": "Devon, the Platform Integration Architect",
+            "overall_similarity": 0.2432545029411893,
+            "per_field_similarity": {
+              "goals": 0.23684210526315788,
+              "pains": 0.12658227848101267,
+              "vocabulary": 0.29411764705882354,
+              "sample_quotes": 0.2967032967032967,
+              "name": 0.125,
+              "summary": 0.38028169014084506
+            }
+          },
+          {
+            "baseline_persona": "Sofia, the Freelance Brand Architect",
+            "candidate_persona": "Stella, the Efficiency-Driven Freelance Brand Designer",
+            "overall_similarity": 0.3246917350906657,
+            "per_field_similarity": {
+              "goals": 0.1724137931034483,
+              "pains": 0.21505376344086022,
+              "vocabulary": 0.4642857142857143,
+              "sample_quotes": 0.4158415841584158,
+              "name": 0.3333333333333333,
+              "summary": 0.3472222222222222
+            }
+          }
+        ]
+      },
+      {
+        "run_id": "run_4",
+        "mean_similarity": 0.28696108118441443,
+        "archetype_recurrence_rate": 0.0,
+        "matches": [
+          {
+            "baseline_persona": "Ethan, the Infrastructure Automator",
+            "candidate_persona": "Alex Chen, Platform-Minded DevOps Lead",
+            "overall_similarity": 0.21115048793014896,
+            "per_field_similarity": {
+              "goals": 0.3050847457627119,
+              "pains": 0.18181818181818182,
+              "vocabulary": 0.14285714285714285,
+              "sample_quotes": 0.35714285714285715,
+              "name": 0.0,
+              "summary": 0.28
+            }
+          },
+          {
+            "baseline_persona": "Sofia, the Freelance Brand Architect",
+            "candidate_persona": "Maya the Premium-Minded Freelance Designer",
+            "overall_similarity": 0.36277167443867997,
+            "per_field_similarity": {
+              "goals": 0.2328767123287671,
+              "pains": 0.31645569620253167,
+              "vocabulary": 0.5172413793103449,
+              "sample_quotes": 0.5822784810126582,
+              "name": 0.2222222222222222,
+              "summary": 0.3055555555555556
+            }
+          }
+        ]
+      },
+      {
+        "run_id": "run_5",
+        "mean_similarity": 0.2905188360684646,
+        "archetype_recurrence_rate": 0.0,
+        "matches": [
+          {
+            "baseline_persona": "Ethan, the Infrastructure Automator",
+            "candidate_persona": "Alex, the Infrastructure-First Engineer",
+            "overall_similarity": 0.30242015061809113,
+            "per_field_similarity": {
+              "goals": 0.2898550724637681,
+              "pains": 0.1368421052631579,
+              "vocabulary": 0.42857142857142855,
+              "sample_quotes": 0.3263157894736842,
+              "name": 0.2857142857142857,
+              "summary": 0.3472222222222222
+            }
+          },
+          {
+            "baseline_persona": "Sofia, the Freelance Brand Architect",
+            "candidate_persona": "Sarah, the Efficiency-Driven Freelance Brand Designer",
+            "overall_similarity": 0.2786175215188382,
+            "per_field_similarity": {
+              "goals": 0.273972602739726,
+              "pains": 0.1650485436893204,
+              "vocabulary": 0.25,
+              "sample_quotes": 0.36363636363636365,
+              "name": 0.3333333333333333,
+              "summary": 0.2857142857142857
+            }
+          }
+        ]
+      }
+    ],
+    "mean_cross_run_similarity": 0.28622281526238097,
+    "mean_archetype_recurrence_rate": 0.0
+  },
+  "duration_seconds": 393.95451404200867
+}
