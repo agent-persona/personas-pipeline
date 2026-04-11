@@ -43,9 +43,17 @@ class ModelBackend(Protocol):
 class AnthropicBackend:
     """Anthropic Claude backend using tool-use forcing."""
 
-    def __init__(self, client: AsyncAnthropic, model: str) -> None:
+    def __init__(
+        self,
+        client: AsyncAnthropic,
+        model: str,
+        temperature: float | None = None,
+        top_p: float | None = None,
+    ) -> None:
         self.client = client
         self.model = model
+        self.temperature = temperature
+        self.top_p = top_p
 
     async def generate(
         self,
@@ -53,7 +61,7 @@ class AnthropicBackend:
         messages: list[dict],
         tool: dict,
     ) -> LLMResult:
-        response = await self.client.messages.create(
+        kwargs: dict = dict(
             model=self.model,
             max_tokens=4096,
             system=system,
@@ -61,6 +69,12 @@ class AnthropicBackend:
             tools=[tool],
             tool_choice={"type": "tool", "name": tool["name"]},
         )
+        if self.temperature is not None:
+            kwargs["temperature"] = self.temperature
+        if self.top_p is not None:
+            kwargs["top_p"] = self.top_p
+
+        response = await self.client.messages.create(**kwargs)
 
         # Extract the tool use block
         tool_block = next(
