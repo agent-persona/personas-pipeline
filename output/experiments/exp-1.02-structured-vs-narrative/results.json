@@ -1,0 +1,36 @@
+{
+  "experiment_id": "1.02",
+  "title": "Structured vs narrative",
+  "group": 1,
+  "size": "M",
+  "hypothesis": "Structured JSON personas produce better twin conversations than narrative because the model grounds responses in specific fields rather than recalling prose.",
+  "control": "Structured PersonaV1 JSON",
+  "variant": "Free-form narrative persona (3 paragraphs)",
+  "sample_size": 6,
+  "metrics": {
+    "judge_rubric_score_structured": 0.87,
+    "judge_rubric_score_narrative": 0.88,
+    "structured_dims": {
+      "voice_consistency": 0.85,
+      "personality_adherence": 0.9,
+      "knowledge_boundaries": 0.95,
+      "character_stability": 0.85,
+      "distinctiveness": 0.8
+    },
+    "narrative_dims": {
+      "voice_consistency": 0.85,
+      "personality_adherence": 0.9,
+      "knowledge_boundaries": 1.0,
+      "character_stability": 0.85,
+      "distinctiveness": 0.8
+    }
+  },
+  "result": "Structured=0.87 vs Narrative=0.88, delta=-0.01",
+  "decision": "defer",
+  "config_diff": {},
+  "timestamp": "2026-04-10T17:07:31.202999",
+  "duration_ms": 70256,
+  "cost_usd": 0.0463,
+  "owner": "yash",
+  "tenant_id": "tenant_acme_corp"
+}
