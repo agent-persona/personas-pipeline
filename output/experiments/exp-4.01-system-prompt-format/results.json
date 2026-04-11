@@ -1,0 +1,36 @@
+{
+  "experiment_id": "4.01",
+  "title": "System prompt format",
+  "group": 4,
+  "size": "S",
+  "hypothesis": "Structured system prompts (IDENTITY/PERSONALITY/KNOWLEDGE/RULES sections) produce more consistent twin behavior than narrative prompts because labeled sections give cleaner boundaries.",
+  "control": "build_persona_system_prompt() narrative format",
+  "variant": "Structured format with IDENTITY/PERSONALITY/KNOWLEDGE/RULES sections",
+  "sample_size": 6,
+  "metrics": {
+    "narrative_overall": 0.87,
+    "structured_overall": 0.87,
+    "narrative_dims": {
+      "voice_consistency": 0.85,
+      "personality_adherence": 0.9,
+      "knowledge_boundaries": 0.95,
+      "character_stability": 0.85,
+      "distinctiveness": 0.8
+    },
+    "structured_dims": {
+      "voice_consistency": 0.85,
+      "personality_adherence": 0.9,
+      "knowledge_boundaries": 0.95,
+      "character_stability": 0.85,
+      "distinctiveness": 0.8
+    }
+  },
+  "result": "Narrative=0.87 vs Structured=0.87, delta=+0.00",
+  "decision": "defer",
+  "config_diff": {},
+  "timestamp": "2026-04-10T15:21:26.453227",
+  "duration_ms": 61575,
+  "cost_usd": 0.0411,
+  "owner": "yash",
+  "tenant_id": "tenant_acme_corp"
+}
