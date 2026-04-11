@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
 
 class SourceEvidence(BaseModel):
@@ -17,3 +17,10 @@ class SourceEvidence(BaseModel):
         le=1.0,
         description="How strongly the data supports this claim",
     )
+
+    # ── Experiment 3.20: confidence-weighted corroboration ───────────
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def corroboration_depth(self) -> int:
+        """Number of distinct source records supporting this claim."""
+        return len(self.record_ids)
