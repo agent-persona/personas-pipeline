@@ -1,0 +1,57 @@
+
+====================================================================================================
+EXPERIMENT 3.20 — CONFIDENCE-WEIGHTED CORROBORATION — RESULTS
+====================================================================================================
+Metric                                                       control                    enforced
+------------------------------------------------------------------------------------------------
+Groundedness score                                             1.000                       0.958
+Total evidence entries                                            26                          26
+Over-confident claims                                           11.5                        11.5
+Well-corroborated claims                                        14.0                        14.0
+Under-confident claims                                           0.0                         0.0
+Avg confidence                                                 0.887                       0.887
+Avg corroboration depth                                        2.054                       2.054
+Calibration score                                              0.506                       0.506
+Cost (USD)                                                    0.0282                      0.0282
+Attempts                                                         1.5                         1.5
+------------------------------------------------------------------------------------------------
+
+-- PER-PERSONA DETAIL --
+
+  [control] Alex Chen, Platform Architect (cluster clust_6810cd)
+    Evidence: 29 entries
+    Over-confident: 18 | Well-corroborated: 11 | Under-confident: 0
+    Calibration: 0.400
+    Confidence dist: {'0.0-0.5': 0, '0.5-0.7': 0, '0.7-0.8': 1, '0.8-0.9': 10, '0.9-1.0': 18}
+    Corroboration dist: {1: 18, 2: 7, 3: 4}
+
+  [enforced] Alex Chen, Platform Architect (cluster clust_6810cd)
+    Evidence: 29 entries
+    Over-confident: 18 | Well-corroborated: 11 | Under-confident: 0
+    Calibration: 0.400
+    Confidence dist: {'0.0-0.5': 0, '0.5-0.7': 0, '0.7-0.8': 1, '0.8-0.9': 10, '0.9-1.0': 18}
+    Corroboration dist: {1: 18, 2: 7, 3: 4}
+
+  [control] Sarah, the Time-Conscious Freelance Brand Designer (cluster clust_798236)
+    Evidence: 22 entries
+    Over-confident: 5 | Well-corroborated: 17 | Under-confident: 0
+    Calibration: 0.611
+    Confidence dist: {'0.0-0.5': 0, '0.5-0.7': 0, '0.7-0.8': 3, '0.8-0.9': 9, '0.9-1.0': 10}
+    Corroboration dist: {1: 5, 2: 8, 3: 3, 4: 4, 5: 1, 6: 1}
+
+  [enforced] Sarah, the Time-Conscious Freelance Brand Designer (cluster clust_798236)
+    Evidence: 22 entries
+    Over-confident: 5 | Well-corroborated: 17 | Under-confident: 0
+    Calibration: 0.611
+    Confidence dist: {'0.0-0.5': 0, '0.5-0.7': 0, '0.7-0.8': 3, '0.8-0.9': 9, '0.9-1.0': 10}
+    Corroboration dist: {1: 5, 2: 8, 3: 3, 4: 4, 5: 1, 6: 1}
+
+-- SIGNAL ASSESSMENT --
+
+  Avg calibration score: 0.506
+  Over-confident rate:  45.1% (46/102)
+
+  Signal: STRONG FINDING
+  45% of claims are over-confident (high confidence, single record). The corroboration floor would catch these. Calibration 0.506 is moderate.
+
+====================================================================================================
