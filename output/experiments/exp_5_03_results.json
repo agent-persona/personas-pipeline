@@ -1,0 +1,448 @@
+{
+  "experiment": "5.03",
+  "title": "Self-preference bias",
+  "hypothesis": "Judges score their own model's outputs higher (diagonal bias)",
+  "models": {
+    "haiku": "claude-haiku-4-5-20251001",
+    "sonnet": "claude-sonnet-4-6",
+    "opus": "claude-opus-4-6"
+  },
+  "n_clusters": 2,
+  "personas_per_synth": {
+    "haiku": 2,
+    "sonnet": 2,
+    "opus": 2
+  },
+  "synthesis_costs": {
+    "haiku": 0.051631,
+    "sonnet": 0.111576,
+    "opus": 0.6132
+  },
+  "preference_matrix": {
+    "haiku": {
+      "haiku": 0.83,
+      "sonnet": 0.776,
+      "opus": 0.852
+    },
+    "sonnet": {
+      "haiku": 0.885,
+      "sonnet": 0.841,
+      "opus": 0.918
+    },
+    "opus": {
+      "haiku": 0.885,
+      "sonnet": 0.849,
+      "opus": 0.906
+    }
+  },
+  "per_dimension_matrix": {
+    "grounded": {
+      "haiku": {
+        "haiku": 0.82,
+        "sonnet": 0.82,
+        "opus": 0.88
+      },
+      "sonnet": {
+        "haiku": 0.87,
+        "sonnet": 0.77,
+        "opus": 0.88
+      },
+      "opus": {
+        "haiku": 0.82,
+        "sonnet": 0.77,
+        "opus": 0.85
+      }
+    },
+    "distinctive": {
+      "haiku": {
+        "haiku": 0.78,
+        "sonnet": 0.6699999999999999,
+        "opus": 0.765
+      },
+      "sonnet": {
+        "haiku": 0.865,
+        "sonnet": 0.8,
+        "opus": 0.91
+      },
+      "opus": {
+        "haiku": 0.88,
+        "sonnet": 0.815,
+        "opus": 0.9
+      }
+    },
+    "coherent": {
+      "haiku": {
+        "haiku": 0.88,
+        "sonnet": 0.865,
+        "opus": 0.935
+      },
+      "sonnet": {
+        "haiku": 0.905,
+        "sonnet": 0.91,
+        "opus": 0.95
+      },
+      "opus": {
+        "haiku": 0.905,
+        "sonnet": 0.92,
+        "opus": 0.95
+      }
+    },
+    "actionable": {
+      "haiku": {
+        "haiku": 0.875,
+        "sonnet": 0.795,
+        "opus": 0.87
+      },
+      "sonnet": {
+        "haiku": 0.9199999999999999,
+        "sonnet": 0.88,
+        "opus": 0.93
+      },
+      "opus": {
+        "haiku": 0.925,
+        "sonnet": 0.89,
+        "opus": 0.925
+      }
+    },
+    "voice_fidelity": {
+      "haiku": {
+        "haiku": 0.825,
+        "sonnet": 0.73,
+        "opus": 0.81
+      },
+      "sonnet": {
+        "haiku": 0.885,
+        "sonnet": 0.845,
+        "opus": 0.92
+      },
+      "opus": {
+        "haiku": 0.875,
+        "sonnet": 0.85,
+        "opus": 0.905
+      }
+    }
+  },
+  "preference_deltas": [
+    {
+      "judge": "haiku",
+      "diagonal_score": 0.83,
+      "off_diagonal_mean": 0.885,
+      "delta": -0.05500000000000005,
+      "per_dim_delta": {
+        "grounded": -0.025000000000000022,
+        "distinctive": -0.09250000000000003,
+        "coherent": -0.025000000000000022,
+        "actionable": -0.04749999999999999,
+        "voice_fidelity": -0.05500000000000005
+      }
+    },
+    {
+      "judge": "sonnet",
+      "diagonal_score": 0.841,
+      "off_diagonal_mean": 0.8125,
+      "delta": 0.02849999999999997,
+      "per_dim_delta": {
+        "grounded": -0.02499999999999991,
+        "distinctive": 0.05750000000000011,
+        "coherent": 0.01749999999999996,
+        "actionable": 0.03749999999999998,
+        "voice_fidelity": 0.05499999999999994
+      }
+    },
+    {
+      "judge": "opus",
+      "diagonal_score": 0.906,
+      "off_diagonal_mean": 0.885,
+      "delta": 0.02100000000000002,
+      "per_dim_delta": {
+        "grounded": -0.030000000000000027,
+        "distinctive": 0.0625,
+        "coherent": 0.007499999999999951,
+        "actionable": 0.025000000000000022,
+        "voice_fidelity": 0.040000000000000036
+      }
+    }
+  ],
+  "debiasing_prior": {
+    "overall_bias": -0.0018333333333333535,
+    "bias_detected": false,
+    "judge_offsets": {
+      "haiku": -0.05500000000000005,
+      "sonnet": 0.02849999999999997,
+      "opus": 0.02100000000000002
+    }
+  },
+  "all_scores": [
+    {
+      "synthesizer": "haiku",
+      "judge": "haiku",
+      "overall": 0.82,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.78,
+        "coherent": 0.88,
+        "actionable": 0.85,
+        "voice_fidelity": 0.8
+      },
+      "rationale": "This persona is well-structured with solid evidence linkage (19 source citations with specific record IDs and 0.75-1.0 confidence scores), internally consistent across all dimensions, and actionable enough to guide product decisions. However, evidence citations reference only generic IDs (ga4_000, intercom_000, hubspot_000) without actual data samples shown, and the persona reads as a competent archetype rather than a vividly memorable individual with surprising quirks or contradictions that would make Marcus truly distinctive.",
+      "cost_usd": 0.004359,
+      "error": null
+    },
+    {
+      "synthesizer": "haiku",
+      "judge": "sonnet",
+      "overall": 0.794,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.72,
+        "coherent": 0.88,
+        "actionable": 0.81,
+        "voice_fidelity": 0.74
+      },
+      "rationale": "Marcus is well-grounded with specific record IDs and confidence scores tied to most claims, and the persona holds together coherently as a fintech DevOps engineer with consistent technical concerns; however, distinctiveness and voice fidelity are modestly limited because the quotes and vocabulary, while technically accurate, lean toward recognizable DevOps archetypes rather than a truly singular individual, and some claims (e.g., compliance pain, motivation around 'elegant integrations') rest on thin or single-source evidence that limits full confidence.",
+      "cost_usd": 0.012987,
+      "error": null
+    },
+    {
+      "synthesizer": "haiku",
+      "judge": "opus",
+      "overall": 0.84,
+      "dimensions": {
+        "grounded": 0.88,
+        "distinctive": 0.75,
+        "coherent": 0.92,
+        "actionable": 0.85,
+        "voice_fidelity": 0.8
+      },
+      "rationale": "The persona is well-grounded with 20 source evidence entries citing specific record IDs across multiple data sources (HubSpot, GA4, Intercom) with calibrated confidence scores. It is coherent\u2014demographics, firmographics, goals, pains, and vocabulary all consistently describe a senior DevOps engineer in fintech. Actionability is strong with specific objections (webhook SLAs, GraphQL maturity) and decision triggers that product teams can act on. It loses some distinctiveness because the profile, while specific to fintech DevOps, still reads somewhat like an archetype rather than a sharply individualized person; the quotes are good but could be more idiosyncratic. Voice fidelity is solid\u2014vocabulary and quotes align with a technically fluent infrastructure engineer\u2014though the quotes lean slightly polished rather than raw.",
+      "cost_usd": 0.07011,
+      "error": null
+    },
+    {
+      "synthesizer": "haiku",
+      "judge": "haiku",
+      "overall": 0.84,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.78,
+        "coherent": 0.88,
+        "actionable": 0.9,
+        "voice_fidelity": 0.85
+      },
+      "rationale": "Maya is well-grounded in source data with specific record linkages for most claims, though some inferences (peer communities, budget constraints) lack direct evidence. The persona is distinctive and actionable with concrete, hourly-billing-specific motivations and decision triggers; however, demographic sparsity and slightly generic creative-professional vocabulary prevent maximum distinctiveness. Internal consistency is strong across all dimensions.",
+      "cost_usd": 0.004448,
+      "error": null
+    },
+    {
+      "synthesizer": "haiku",
+      "judge": "sonnet",
+      "overall": 0.758,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.62,
+        "coherent": 0.85,
+        "actionable": 0.78,
+        "voice_fidelity": 0.72
+      },
+      "rationale": "The persona is well-grounded with specific record IDs and confidence scores attached to nearly every claim, and the goals, pains, and decision triggers are specific enough to drive real product decisions; however, the persona loses distinctiveness points for leaning on archetype-level generics ('Maya the Freelance Creative' is a common marketing trope), thin demographics (age range of 25 years, no location, no income), and quotes that, while on-brand, read more like polished marketing copy than verbatim user voice.",
+      "cost_usd": 0.013749,
+      "error": null
+    },
+    {
+      "synthesizer": "haiku",
+      "judge": "opus",
+      "overall": 0.864,
+      "dimensions": {
+        "grounded": 0.88,
+        "distinctive": 0.78,
+        "coherent": 0.95,
+        "actionable": 0.89,
+        "voice_fidelity": 0.82
+      },
+      "rationale": "The persona is well-grounded with 25 evidence entries citing specific record IDs (hubspot, intercom, ga4) with calibrated confidence scores, and goals/pains map cleanly to field paths. It is highly coherent\u2014the solo freelancer billing hourly, needing white-label and time savings, all reinforces one consistent narrative\u2014and actionable with specific triggers like '10 minutes per project,' 'onboarding < 15 minutes,' and ROI within 2-3 projects. Distinctiveness is good but not exceptional; while the hourly-billing freelancer angle is specific, the persona could apply to many solo creatives and lacks unique demographic or behavioral quirks. Voice fidelity is solid with quotes that sound natural and role-appropriate, though a couple lean slightly polished rather than raw.",
+      "cost_usd": 0.073995,
+      "error": null
+    },
+    {
+      "synthesizer": "sonnet",
+      "judge": "haiku",
+      "overall": 0.86,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.85,
+        "coherent": 0.88,
+        "actionable": 0.9,
+        "voice_fidelity": 0.87
+      },
+      "rationale": "This persona is exceptionally well-structured with comprehensive source linkage across goals, pains, and objections. The technical vocabulary, journey stages, and decision triggers are highly specific and actionable. Minor gaps exist in grounding (some claims like vendor lock-in concern map to only 3 records with 0.65 confidence, and demographic details like age/income lack explicit source IDs), but the overall evidence base is robust and the persona maintains strong internal consistency throughout.",
+      "cost_usd": 0.005317,
+      "error": null
+    },
+    {
+      "synthesizer": "sonnet",
+      "judge": "sonnet",
+      "overall": 0.846,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.78,
+        "coherent": 0.91,
+        "actionable": 0.88,
+        "voice_fidelity": 0.84
+      },
+      "rationale": "The persona is well-grounded with explicit record IDs and confidence scores for most claims, though the source pool is thin (a handful of ga4_, one intercom_, and one hubspot_ record) which limits true traceability depth. It is highly coherent and actionable\u2014the GraphQL, Terraform, and webhook specifics give a product team concrete targets\u2014while the quotes and vocabulary list are consistent and distinctive enough to avoid generic DevOps boilerplate, though the character stops just short of truly memorable individuality.",
+      "cost_usd": 0.016056,
+      "error": null
+    },
+    {
+      "synthesizer": "sonnet",
+      "judge": "opus",
+      "overall": 0.918,
+      "dimensions": {
+        "grounded": 0.88,
+        "distinctive": 0.91,
+        "coherent": 0.95,
+        "actionable": 0.93,
+        "voice_fidelity": 0.92
+      },
+      "rationale": "This persona is exceptionally well-constructed with detailed source evidence linking nearly every claim to specific record IDs with calibrated confidence scores, though some claims (e.g., vendor lock-in at 0.65, tool sprawl at 0.70) are more inferential than directly evidenced. The voice is highly distinctive and consistent\u2014quotes like 'If I can't Terraform it, it's not really production-ready for us' and the technical vocabulary are unmistakably from a DevOps engineer evaluating a platform's programmability. Goals, pains, and objections are specific enough to directly inform API documentation priorities, Terraform provider roadmap decisions, and webhook reliability improvements.",
+      "cost_usd": 0.082905,
+      "error": null
+    },
+    {
+      "synthesizer": "sonnet",
+      "judge": "haiku",
+      "overall": 0.91,
+      "dimensions": {
+        "grounded": 0.92,
+        "distinctive": 0.88,
+        "coherent": 0.93,
+        "actionable": 0.94,
+        "voice_fidelity": 0.9
+      },
+      "rationale": "This persona is exceptionally well-constructed with comprehensive source evidence linking nearly every claim to specific record IDs (intercom, GA4, HubSpot). The voice is consistent and specific to freelance designers, goals and pains are granular enough to drive product decisions, and the internal logic is tight across all dimensions. Minor deductions reflect modest confidence variance on a few motivation/objection claims and the generic nature of some demographic signals that could apply across creative freelancers.",
+      "cost_usd": 0.005027,
+      "error": null
+    },
+    {
+      "synthesizer": "sonnet",
+      "judge": "sonnet",
+      "overall": 0.836,
+      "dimensions": {
+        "grounded": 0.72,
+        "distinctive": 0.82,
+        "coherent": 0.91,
+        "actionable": 0.88,
+        "voice_fidelity": 0.85
+      },
+      "rationale": "The persona is internally consistent, vivid, and actionable \u2014 goals, pains, quotes, and vocabulary all coherently describe the same plausible solo designer \u2014 but groundedness is moderate because evidence links collapse to a thin base of only a few record IDs (primarily intercom_004 and a cluster of ga4_0xx entries), with no visibility into what those records actually contain, making the confidence scores unverifiable and the traceability more asserted than demonstrated.",
+      "cost_usd": 0.015021,
+      "error": null
+    },
+    {
+      "synthesizer": "sonnet",
+      "judge": "opus",
+      "overall": 0.918,
+      "dimensions": {
+        "grounded": 0.88,
+        "distinctive": 0.91,
+        "coherent": 0.95,
+        "actionable": 0.93,
+        "voice_fidelity": 0.92
+      },
+      "rationale": "The persona is exceptionally well-grounded with 20 source_evidence entries citing specific record IDs across multiple systems (HubSpot, Intercom, GA4) with calibrated confidence scores, though some claims like creative autonomy (0.75 confidence) are more inferential. Voice fidelity is strong \u2014 quotes are sharp, opinionated, and consistent with a cost-conscious solo designer who thinks in billable increments. The persona is highly actionable: white-label pricing, template library coverage, and time-to-value during trial are specific enough to drive product and pricing decisions immediately. Internal coherence is near-perfect with demographics, firmographics, pains, and goals all reinforcing the same individual archetype.",
+      "cost_usd": 0.079455,
+      "error": null
+    },
+    {
+      "synthesizer": "opus",
+      "judge": "haiku",
+      "overall": 0.88,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.88,
+        "coherent": 0.9,
+        "actionable": 0.92,
+        "voice_fidelity": 0.86
+      },
+      "rationale": "This persona is exceptionally well-constructed with strong internal consistency, vivid technical voice, and immediately actionable insights for product teams. The grounding is solid but relies on generic record IDs (ga4_000, intercom_000) without visible data samples; ideally, source evidence would include actual quote snippets or event timestamps to fully validate claims.",
+      "cost_usd": 0.005234,
+      "error": null
+    },
+    {
+      "synthesizer": "opus",
+      "judge": "sonnet",
+      "overall": 0.878,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.85,
+        "coherent": 0.93,
+        "actionable": 0.91,
+        "voice_fidelity": 0.88
+      },
+      "rationale": "The persona is strongly grounded with explicit record IDs and confidence scores across nearly every claim, and the vocabulary, quotes, and motivations cohere tightly around a single credible DevOps archetype. Minor deductions apply because the underlying source records are opaque (e.g., ga4_000 through ga4_009 are cited but never described), making independent verification impossible, and a few claims (e.g., the 'context switch' pain around team onboarding) rely on single low-confidence records with interpretive leaps.",
+      "cost_usd": 0.016272,
+      "error": null
+    },
+    {
+      "synthesizer": "opus",
+      "judge": "opus",
+      "overall": 0.918,
+      "dimensions": {
+        "grounded": 0.88,
+        "distinctive": 0.92,
+        "coherent": 0.95,
+        "actionable": 0.93,
+        "voice_fidelity": 0.91
+      },
+      "rationale": "This persona is exceptionally well-constructed with specific record IDs and confidence scores backing nearly every claim, strong internal consistency between the DevOps role and infrastructure-as-code philosophy, and highly actionable insights (e.g., Terraform provider need, GraphQL schema gaps, webhook reliability). The voice is distinctive and technically authentic\u2014quotes like 'If I can't Terraform it, it doesn't exist in my infrastructure' feel genuinely specific to this archetype. Minor deductions for some inferred claims (e.g., demographics, income bracket) that lack direct evidence and a few lower-confidence items that lean more interpretive than strictly data-grounded.",
+      "cost_usd": 0.08301,
+      "error": null
+    },
+    {
+      "synthesizer": "opus",
+      "judge": "haiku",
+      "overall": 0.89,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.88,
+        "coherent": 0.91,
+        "actionable": 0.93,
+        "voice_fidelity": 0.89
+      },
+      "rationale": "This persona is exceptionally well-constructed with robust evidence linkage, vivid and consistent voice, and highly specific, actionable insights. The primary weakness is that some claims rely on single record IDs (e.g., intercom_004 appears repeatedly), which slightly limits confidence in claim independence, though the 0.7\u20131.0 confidence scores across all evidence entries remain strong.",
+      "cost_usd": 0.005182,
+      "error": null
+    },
+    {
+      "synthesizer": "opus",
+      "judge": "sonnet",
+      "overall": 0.82,
+      "dimensions": {
+        "grounded": 0.72,
+        "distinctive": 0.78,
+        "coherent": 0.91,
+        "actionable": 0.87,
+        "voice_fidelity": 0.82
+      },
+      "rationale": "The persona is well-structured with source_evidence entries and record IDs for every major claim, though the underlying records (ga4_011, intercom_004, etc.) are opaque synthetic identifiers whose actual content cannot be verified, capping grounded at 0.72. Coherence, actionability, and voice fidelity are strong\u2014the white-label obsession, solo-pricing sensitivity, and billable-hours framing form a tight, consistent throughline that a product or marketing team could act on immediately.",
+      "cost_usd": 0.015921,
+      "error": null
+    },
+    {
+      "synthesizer": "opus",
+      "judge": "opus",
+      "overall": 0.894,
+      "dimensions": {
+        "grounded": 0.82,
+        "distinctive": 0.88,
+        "coherent": 0.95,
+        "actionable": 0.92,
+        "voice_fidelity": 0.9
+      },
+      "rationale": "The persona is exceptionally coherent and actionable, with specific objections (white-labeling, solo pricing tiers) and pains that directly inform product decisions. Source evidence is provided with record IDs and confidence scores for every major claim, though the record IDs themselves are opaque and cannot be independently verified, slightly limiting the grounded score. The voice is distinctive and consistent\u2014quotes sound like a real freelance designer obsessed with efficiency and professional presentation\u2014making this a highly usable persona.",
+      "cost_usd": 0.079005,
+      "error": null
+    }
+  ],
+  "total_cost_usd": 1.36446
+}

@@ -1,0 +1,82 @@
+
+====================================================================================================
+EXPERIMENT 5.03 — SELF-PREFERENCE BIAS — RESULTS
+====================================================================================================
+
+── PREFERENCE MATRIX (overall scores) ──
+  Personas per synthesizer: 2
+  Synth / Judge              haiku      sonnet        opus
+  --------------------------------------------------------
+  haiku                    0.830 *     0.776     0.852
+  sonnet                   0.885     0.841 *     0.918
+  opus                     0.885     0.849     0.906 *
+  (* = diagonal: judge scoring own model's output)
+
+── GROUNDED scores ──
+  Synth / Judge              haiku      sonnet        opus
+  --------------------------------------------------------
+  haiku                    0.820 *     0.820     0.880
+  sonnet                   0.870     0.770 *     0.880
+  opus                     0.820     0.770     0.850 *
+
+── DISTINCTIVE scores ──
+  Synth / Judge              haiku      sonnet        opus
+  --------------------------------------------------------
+  haiku                    0.780 *     0.670     0.765
+  sonnet                   0.865     0.800 *     0.910
+  opus                     0.880     0.815     0.900 *
+
+── COHERENT scores ──
+  Synth / Judge              haiku      sonnet        opus
+  --------------------------------------------------------
+  haiku                    0.880 *     0.865     0.935
+  sonnet                   0.905     0.910 *     0.950
+  opus                     0.905     0.920     0.950 *
+
+── ACTIONABLE scores ──
+  Synth / Judge              haiku      sonnet        opus
+  --------------------------------------------------------
+  haiku                    0.875 *     0.795     0.870
+  sonnet                   0.920     0.880 *     0.930
+  opus                     0.925     0.890     0.925 *
+
+── VOICE_FIDELITY scores ──
+  Synth / Judge              haiku      sonnet        opus
+  --------------------------------------------------------
+  haiku                    0.825 *     0.730     0.810
+  sonnet                   0.885     0.845 *     0.920
+  opus                     0.875     0.850     0.905 *
+
+── PREFERENCE DELTAS (positive = self-preference bias) ──
+  Judge              Diagonal    Off-diag       Delta     Bias?
+  -------------------------------------------------------------
+  haiku                 0.830       0.885     -0.0550        no
+  sonnet                0.841       0.812     +0.0285     maybe
+  opus                  0.906       0.885     +0.0210     maybe
+
+── PER-DIMENSION DELTAS ──
+  Judge              grounded  distinctiv    coherent  actionable  voice_fide
+  ---------------------------------------------------------------------------
+  haiku               -0.0250     -0.0925     -0.0250     -0.0475     -0.0550
+  sonnet              -0.0250     +0.0575     +0.0175     +0.0375     +0.0550
+  opus                -0.0300     +0.0625     +0.0075     +0.0250     +0.0400
+
+── DEBIASING PRIOR ──
+  Overall bias magnitude: -0.0018
+  Bias detected (threshold > 0.03): NO
+
+  Per-judge correction offsets (subtract from diagonal scores):
+    haiku: -0.0550 (deflates own output by 0.055)
+    sonnet: +0.0285 (inflates own output by 0.028)
+    opus: +0.0210 (inflates own output by 0.021)
+
+── SIGNAL ASSESSMENT ──
+
+  Signal: NULL RESULT
+  No self-preference detected: mean delta=-0.0018. Judges appear model-agnostic in their scoring.
+
+  Synthesis cost: $0.7764
+  Judging cost:   $0.5881
+  Total cost:     $1.3645
+
+====================================================================================================
