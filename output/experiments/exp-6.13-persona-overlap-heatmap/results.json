@@ -1,0 +1,53 @@
+{
+  "experiment_id": "6.13",
+  "title": "Persona overlap heatmap",
+  "group": 6,
+  "size": "S",
+  "hypothesis": "Pairwise persona similarity (via judge preference confidence) reveals clusters and overlaps in generated persona sets, exposing distinctiveness failures the eye misses.",
+  "control": "(measurement only \u2014 no comparison)",
+  "variant": "Pairwise comparison matrix using LLMJudge.pairwise()",
+  "sample_size": 4,
+  "metrics": {
+    "names": [
+      "Marcus, the Pragmatic Tech Lead",
+      "Engineering Manager Elena",
+      "Engineering Manager Alex",
+      "Engineering Manager Eva"
+    ],
+    "overlap_matrix": [
+      [
+        0.0,
+        0.5,
+        0.5,
+        0.5
+      ],
+      [
+        0.5,
+        0.0,
+        0.5,
+        0.5
+      ],
+      [
+        0.5,
+        0.5,
+        0.0,
+        0.5
+      ],
+      [
+        0.5,
+        0.5,
+        0.5,
+        0.0
+      ]
+    ],
+    "avg_overlap": 0.5
+  },
+  "result": "Avg overlap=0.500 across 4 personas",
+  "decision": "defer",
+  "config_diff": {},
+  "timestamp": "2026-04-10T16:35:23.901394",
+  "duration_ms": 164092,
+  "cost_usd": 0.2433,
+  "owner": "yash",
+  "tenant_id": "tenant_acme_corp"
+}
