@@ -34,6 +34,37 @@ class JourneyStage(BaseModel):
     content_preferences: list[str]
 
 
+class EdgeCaseBehavior(BaseModel):
+    """exp-1.15: how the persona reacts under provocation or stress.
+
+    Explicit schema slot so synthesis commits to adversarial-robustness
+    behaviors rather than leaving them as emergent twin-runtime behavior.
+    Not groundedness-required — downstream inference from the persona's
+    declared personality traits.
+    """
+
+    trigger: str = Field(
+        description=(
+            "The kind of user input that provokes this reaction, e.g. "
+            "'rude tone', 'false premise', 'unsolicited advice', 'moralizing'"
+        ),
+    )
+    reaction: str = Field(
+        description=(
+            "How the persona responds — a concrete behavior, not a feeling. "
+            "E.g. 'pushes back factually without escalating', "
+            "'asks a clarifying question instead of accepting the frame'"
+        ),
+    )
+    tone_shift: str = Field(
+        description=(
+            "How the persona's speaking tone changes when triggered, e.g. "
+            "'becomes more clipped and factual', 'shifts to deflecting humor', "
+            "'stays warm but adds boundary-setting phrases'"
+        ),
+    )
+
+
 class PersonaV1(BaseModel):
     """Core persona schema v1 — the structured output the LLM is forced to produce."""
 
@@ -66,3 +97,21 @@ class PersonaV1(BaseModel):
     )
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+
+
+class PersonaV1WithEdgeCases(PersonaV1):
+    """exp-1.15 treatment schema: PersonaV1 + explicit edge-case behaviors.
+
+    edge_case_behaviors is NOT a groundedness-required field — the existing
+    groundedness checker only enforces evidence for goals/pains/motivations/
+    objections, so no checker changes are needed.
+    """
+
+    edge_case_behaviors: list[EdgeCaseBehavior] = Field(
+        min_length=3,
+        max_length=6,
+        description=(
+            "How this persona reacts under provocation, stress, or adversarial "
+            "conversational turns. At least 3 distinct trigger/reaction pairs."
+        ),
+    )
