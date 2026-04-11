@@ -12,15 +12,27 @@
 
 ## Context
 
-### Experiment state (as of 2026-04-10)
+### Experiment state (as of 2026-04-11)
 
 | Batch | Experiments run | Strong adopts | PRs open |
 |-------|----------------|---------------|----------|
 | 1 | 4 (2.16, 2.17, 5.08, 6.09) | 3 | #1–4 |
 | 2 | 9 (2.18–6.14) | 3 | #5–13 |
 | 3 | 9 (1.12–6.17) | 8 | #14–22 |
+| 4 (partial) | 4 (1.07, 2.06, 5.05, 5.11) | 2 | — |
 
 Original 22-experiment queue is **fully exhausted**. Batch 4 requires new experiments designed from learnings.
+
+### Batch 4 experiment results (2026-04-11)
+
+| ID | Branch | Decision | Key Finding |
+|----|--------|----------|-------------|
+| 1.07 | exp-1.07-field-interdependence | **Adopt** | goals + sample_quotes load-bearing; channels/vocabulary/journey_stages decorative |
+| 2.06 | exp-2.06-temperature-sweep | **Adopt** | temp=0.0 saves 30% cost, 50% fewer retries, no quality loss |
+| 5.05 | exp-5.05-rubric-ablation | **Defer** | Ceiling effect; two-tier rubric structure discovered (anchor vs independent dims) |
+| 5.11 | exp-5.11-reference-vs-free-judging | **Reject** | Severe anchoring bias; few-shot calibration (exp-5.13) remains superior |
+
+See `docs/plans/2026-04-11-handoff-4-experiments.md` for full details.
 
 ### Why independent experiments first
 
