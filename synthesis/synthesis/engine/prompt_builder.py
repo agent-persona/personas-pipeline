@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from synthesis.models.cluster import ClusterData
-from synthesis.models.persona import PersonaV1
+from synthesis.models.persona import PersonaV1, SchemaWidth, SCHEMA_WIDTH_MAP
 
 SYSTEM_PROMPT = """\
 You are a persona synthesis expert. Your job is to analyze behavioral data from a \
@@ -38,15 +38,36 @@ Example source_evidence entry:
 """
 
 
-def build_tool_definition() -> dict:
-    """Build the Claude tool definition from the PersonaV1 JSON schema."""
+def build_tool_definition(
+    schema_width: SchemaWidth | None = None,
+) -> dict:
+    """Build the Claude tool definition from a persona JSON schema variant.
+
+    Args:
+        schema_width: Experiment 1.01 — selects which schema width to use.
+            None or 'current' = control (PersonaV1).
+    """
+    width = schema_width or "current"
+    schema_cls = SCHEMA_WIDTH_MAP[width]
+    description = (
+        "Create a structured persona from the analyzed cluster data. "
+        "All fields are required and must be grounded in the provided source records."
+    )
+    if width == "minimal":
+        description += (
+            " This is a minimal schema — focus on the most important fields only: "
+            "name, summary, goals, pains, and source_evidence."
+        )
+    elif width == "maximal":
+        description += (
+            " This is an expanded schema with additional fields for backstory, "
+            "daily routine, communication style, decision-making process, and more. "
+            "Fill every field with specific, grounded details."
+        )
     return {
         "name": "create_persona",
-        "description": (
-            "Create a structured persona from the analyzed cluster data. "
-            "All fields are required and must be grounded in the provided source records."
-        ),
-        "input_schema": PersonaV1.model_json_schema(),
+        "description": description,
+        "input_schema": schema_cls.model_json_schema(),
     }
 
 
