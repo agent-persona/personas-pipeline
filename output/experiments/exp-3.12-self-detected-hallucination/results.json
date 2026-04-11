@@ -1,0 +1,354 @@
+{
+  "experiment": "3.12",
+  "title": "Self-detected hallucination",
+  "provider": "openai",
+  "synthesis_model": "gpt-5-nano",
+  "judge_model": "gpt-5-nano",
+  "summary": {
+    "n_personas": 2,
+    "n_claims": 16,
+    "structural_grounded_rate": 1.0,
+    "entailment_entailed_rate": 0.0,
+    "hallucination_rate": 1.0,
+    "self_flag_rate": 0.75,
+    "precision": 1.0,
+    "recall": 0.75,
+    "f1": 0.8571428571428571,
+    "accuracy": 0.75,
+    "mean_confidence_score": 0.29375,
+    "mean_confidence_grounded": 0.0,
+    "mean_confidence_hallucinated": 0.29375,
+    "calibration_gap": 0.0,
+    "confidence_distribution": {
+      "MEDIUM": 4,
+      "LOW": 6,
+      "MADE_UP": 6
+    },
+    "entailment_distribution": {
+      "neutral": 16
+    }
+  },
+  "rows": [
+    {
+      "cluster_id": "clust_09a614361e7a",
+      "persona_name": "clust_09a614361e7a persona",
+      "field_path": "goals.0",
+      "claim": "Improve the workflow around api_setup",
+      "source_record_ids": [
+        "ga4_000",
+        "hubspot_000"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MEDIUM",
+      "self_confidence_score": 0.65,
+      "self_rationale": "Records show api_setup events and a note about plans to improve the API schema; explicit goal not stated, but improvement is plausible.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": false,
+      "label_match": false
+    },
+    {
+      "cluster_id": "clust_09a614361e7a",
+      "persona_name": "clust_09a614361e7a persona",
+      "field_path": "goals.1",
+      "claim": "Reduce friction in Project management tool for engineering teams",
+      "source_record_ids": [
+        "hubspot_000",
+        "ga4_001"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "LOW",
+      "self_confidence_score": 0.3,
+      "self_rationale": "No evidence in records about project management tools or friction reductions.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_09a614361e7a",
+      "persona_name": "clust_09a614361e7a persona",
+      "field_path": "pains.0",
+      "claim": "Struggles with api_setup",
+      "source_record_ids": [
+        "ga4_001",
+        "ga4_002"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "LOW",
+      "self_confidence_score": 0.3,
+      "self_rationale": "No explicit pain description related to api_setup; only general API-related activity and an edge note about GraphQL.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_09a614361e7a",
+      "persona_name": "clust_09a614361e7a persona",
+      "field_path": "pains.1",
+      "claim": "Wants fewer manual handoffs between tools",
+      "source_record_ids": [
+        "ga4_002",
+        "ga4_004"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "LOW",
+      "self_confidence_score": 0.3,
+      "self_rationale": "No evidence of a desire to reduce manual handoffs in the records.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_09a614361e7a",
+      "persona_name": "clust_09a614361e7a persona",
+      "field_path": "motivations.0",
+      "claim": "Wants automation that saves time",
+      "source_record_ids": [
+        "ga4_004",
+        "ga4_005"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MEDIUM",
+      "self_confidence_score": 0.65,
+      "self_rationale": "Automation-oriented activities (api_setup, terraform_setup, github_integration) suggest efficiency goals, though not explicitly stated.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": false,
+      "label_match": false
+    },
+    {
+      "cluster_id": "clust_09a614361e7a",
+      "persona_name": "clust_09a614361e7a persona",
+      "field_path": "motivations.1",
+      "claim": "Needs reliable integrations that do not break existing workflows",
+      "source_record_ids": [
+        "ga4_005",
+        "ga4_008"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "LOW",
+      "self_confidence_score": 0.3,
+      "self_rationale": "Multiple integrations exist, but reliability and non-breaking workflows are not explicitly described.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_09a614361e7a",
+      "persona_name": "clust_09a614361e7a persona",
+      "field_path": "objections.0",
+      "claim": "Concerned about setup effort",
+      "source_record_ids": [
+        "ga4_008",
+        "intercom_000"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "LOW",
+      "self_confidence_score": 0.3,
+      "self_rationale": "No explicit concern about setup effort in the records.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "Records show a Terraform setup event with a long session duration but do not express any concern about setup effort.",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_09a614361e7a",
+      "persona_name": "clust_09a614361e7a persona",
+      "field_path": "objections.1",
+      "claim": "Worried about edge cases and maintenance overhead",
+      "source_record_ids": [
+        "intercom_000",
+        "ga4_003"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "LOW",
+      "self_confidence_score": 0.3,
+      "self_rationale": "No explicit mention of edge cases or maintenance overhead in the records.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_2ddc966af43a",
+      "persona_name": "clust_2ddc966af43a persona",
+      "field_path": "goals.0",
+      "claim": "Improve the workflow around template_browsing",
+      "source_record_ids": [
+        "ga4_011",
+        "hubspot_004"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MEDIUM",
+      "self_confidence_score": 0.65,
+      "self_rationale": "Source records show template_browsing events (ga4_011, ga4_015) indicating focus on template_browsing, but no explicit statement about improving workflow.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": false,
+      "label_match": false
+    },
+    {
+      "cluster_id": "clust_2ddc966af43a",
+      "persona_name": "clust_2ddc966af43a persona",
+      "field_path": "goals.1",
+      "claim": "Reduce friction in Project management tool for engineering teams",
+      "source_record_ids": [
+        "hubspot_004",
+        "ga4_012"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MADE_UP",
+      "self_confidence_score": 0.05,
+      "self_rationale": "No evidence about engineering teams or project management tools in the provided records; claim not grounded.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "Records do not reference any project management tools or engineering teams; insufficient to entail or contradict the claim.",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_2ddc966af43a",
+      "persona_name": "clust_2ddc966af43a persona",
+      "field_path": "pains.0",
+      "claim": "Struggles with template_browsing",
+      "source_record_ids": [
+        "ga4_012",
+        "ga4_013"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MADE_UP",
+      "self_confidence_score": 0.05,
+      "self_rationale": "No explicit data about struggles with template_browsing; only usage events.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_2ddc966af43a",
+      "persona_name": "clust_2ddc966af43a persona",
+      "field_path": "pains.1",
+      "claim": "Wants fewer manual handoffs between tools",
+      "source_record_ids": [
+        "ga4_013",
+        "ga4_014"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MADE_UP",
+      "self_confidence_score": 0.05,
+      "self_rationale": "No data about manual handoffs between tools in the provided records.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_2ddc966af43a",
+      "persona_name": "clust_2ddc966af43a persona",
+      "field_path": "motivations.0",
+      "claim": "Wants automation that saves time",
+      "source_record_ids": [
+        "ga4_014",
+        "ga4_016"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MEDIUM",
+      "self_confidence_score": 0.65,
+      "self_rationale": "Intercom message expresses value of time savings (e.g., saving 10 minutes per project); automation intent inferred but not explicit.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "Records show events and session durations but do not mention automation or time-saving preferences.",
+      "hallucinated": true,
+      "self_flags_hallucination": false,
+      "label_match": false
+    },
+    {
+      "cluster_id": "clust_2ddc966af43a",
+      "persona_name": "clust_2ddc966af43a persona",
+      "field_path": "motivations.1",
+      "claim": "Needs reliable integrations that do not break existing workflows",
+      "source_record_ids": [
+        "ga4_016",
+        "ga4_019"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MADE_UP",
+      "self_confidence_score": 0.05,
+      "self_rationale": "No evidence about integrations stability or requirements in the records.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_2ddc966af43a",
+      "persona_name": "clust_2ddc966af43a persona",
+      "field_path": "objections.0",
+      "claim": "Concerned about setup effort",
+      "source_record_ids": [
+        "ga4_019",
+        "intercom_004"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MADE_UP",
+      "self_confidence_score": 0.05,
+      "self_rationale": "No explicit reference to setup effort in the records.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "Records indicate value in time savings (e.g., 10 minutes per project) but do not explicitly state concern about setup effort.",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    },
+    {
+      "cluster_id": "clust_2ddc966af43a",
+      "persona_name": "clust_2ddc966af43a persona",
+      "field_path": "objections.1",
+      "claim": "Worried about edge cases and maintenance overhead",
+      "source_record_ids": [
+        "intercom_004",
+        "ga4_015"
+      ],
+      "structurally_grounded": true,
+      "structural_score": 1.0,
+      "self_confidence": "MADE_UP",
+      "self_confidence_score": 0.05,
+      "self_rationale": "No explicit mention of edge cases or maintenance overhead in the records.",
+      "entailment_label": "neutral",
+      "entailment_rationale": "",
+      "hallucinated": true,
+      "self_flags_hallucination": true,
+      "label_match": true
+    }
+  ],
+  "duration_seconds": 195.5671423750464
+}
