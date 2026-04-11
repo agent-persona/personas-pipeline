@@ -1,0 +1,326 @@
+{
+  "experiment": "3.05",
+  "title": "Per-claim entailment",
+  "provider": "anthropic->openai",
+  "judge_provider": "anthropic->openai",
+  "synthesis_model": "heuristic",
+  "judge_model": "claude-sonnet-4-20250514",
+  "persona_summaries": [
+    {
+      "persona_name": "Api Setup Owner",
+      "cluster_id": "clust_085f12fe5871",
+      "judge_model": "claude-sonnet-4-20250514",
+      "n_claims": 7,
+      "n_entailed": 0,
+      "n_neutral": 7,
+      "n_contradicted": 0,
+      "entailment_rate": 0.0,
+      "neutral_rate": 1.0,
+      "contradiction_rate": 0.0,
+      "false_positive_grounding_rate": 1.0,
+      "structural_groundedness": 1.0,
+      "mean_judge_confidence": 0.3485714285714286,
+      "claim_coverage": 1.0
+    },
+    {
+      "persona_name": "Template Browsing Owner",
+      "cluster_id": "clust_9fdd1fd26bf3",
+      "judge_model": "claude-sonnet-4-20250514",
+      "n_claims": 7,
+      "n_entailed": 0,
+      "n_neutral": 7,
+      "n_contradicted": 0,
+      "entailment_rate": 0.0,
+      "neutral_rate": 1.0,
+      "contradiction_rate": 0.0,
+      "false_positive_grounding_rate": 1.0,
+      "structural_groundedness": 1.0,
+      "mean_judge_confidence": 0.35000000000000003,
+      "claim_coverage": 1.0
+    }
+  ],
+  "persona_evaluations": [
+    {
+      "cluster_id": "clust_085f12fe5871",
+      "persona_name": "Api Setup Owner",
+      "groundedness": 1.0,
+      "attempts": 0,
+      "cost_usd": 0.0,
+      "claims": [
+        {
+          "persona_name": "Api Setup Owner",
+          "cluster_id": "clust_085f12fe5871",
+          "field_name": "goals",
+          "field_index": 0,
+          "field_path": "goals.0",
+          "claim": "Keep api setup moving without extra back-and-forth",
+          "record_ids": [
+            "ga4_000"
+          ],
+          "evidence_context": "- record_id: ga4_000\n  source: ga4\n  payload: {\n  \"event\": \"api_setup\",\n  \"session_duration\": 2340\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.42,
+          "rationale": "The record only shows an api_setup event with a session duration; it does not mention keeping setup moving or any back-and-forth, so the claim is not supported nor contradicted.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Api Setup Owner",
+          "cluster_id": "clust_085f12fe5871",
+          "field_name": "goals",
+          "field_index": 1,
+          "field_path": "goals.1",
+          "claim": "Make technical role easier to manage across the team",
+          "record_ids": [
+            "hubspot_000"
+          ],
+          "evidence_context": "- record_id: hubspot_000\n  source: hubspot\n  payload: {\n  \"company_size\": \"50-200\",\n  \"contact_title\": \"Senior DevOps Engineer\",\n  \"industry\": \"fintech\"\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.0,
+          "rationale": "The cited record provides a job title and company size but does not address whether the Api Setup Owner goal of making technical roles easier to manage across the team is supported or refuted.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Api Setup Owner",
+          "cluster_id": "clust_085f12fe5871",
+          "field_name": "pains",
+          "field_index": 0,
+          "field_path": "pains.0",
+          "claim": "Deals with friction around api setup",
+          "record_ids": [
+            "ga4_001"
+          ],
+          "evidence_context": "- record_id: ga4_001\n  source: ga4\n  payload: {\n  \"event\": \"webhook_config\",\n  \"session_duration\": 1560\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.4,
+          "rationale": "The cited record shows a webhook_config event and session duration, but provides no information about friction or api setup challenges.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Api Setup Owner",
+          "cluster_id": "clust_085f12fe5871",
+          "field_name": "pains",
+          "field_index": 1,
+          "field_path": "pains.1",
+          "claim": "Loses time when tasks depend on manual follow-up",
+          "record_ids": [
+            "ga4_002"
+          ],
+          "evidence_context": "- record_id: ga4_002\n  source: ga4\n  payload: {\n  \"event\": \"github_integration\",\n  \"session_duration\": 980\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.4,
+          "rationale": "The record only notes a GitHub integration event with a session duration; it does not mention manual follow-up or time loss, so the claim cannot be confirmed or refuted from the given data.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Api Setup Owner",
+          "cluster_id": "clust_085f12fe5871",
+          "field_name": "motivations",
+          "field_index": 0,
+          "field_path": "motivations.0",
+          "claim": "Wants a dependable workflow that does not break under load",
+          "record_ids": [
+            "ga4_004"
+          ],
+          "evidence_context": "- record_id: ga4_004\n  source: ga4\n  payload: {\n  \"event\": \"custom_dashboard\",\n  \"session_duration\": 1980\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.4,
+          "rationale": "The cited record only shows a session_duration event for a custom_dashboard; there is no information about the persona's motivation to have a dependable workflow or about load handling.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Api Setup Owner",
+          "cluster_id": "clust_085f12fe5871",
+          "field_name": "motivations",
+          "field_index": 1,
+          "field_path": "motivations.1",
+          "claim": "Wants less operational noise and fewer surprises",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "evidence_context": "- record_id: ga4_005\n  source: ga4\n  payload: {\n  \"event\": \"team_invite\",\n  \"session_duration\": 420\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.4,
+          "rationale": "The cited record contains an unrelated event data point (team_invite) and does not reveal any motivation about wanting to reduce operational noise or surprises.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Api Setup Owner",
+          "cluster_id": "clust_085f12fe5871",
+          "field_name": "objections",
+          "field_index": 0,
+          "field_path": "objections.0",
+          "claim": "Will not adopt anything that adds brittle overhead",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "evidence_context": "- record_id: ga4_008\n  source: ga4\n  payload: {\n  \"event\": \"terraform_setup\",\n  \"session_duration\": 870\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.42,
+          "rationale": "The record only shows a terraform_setup event with session_duration; it provides no information about willingness to adopt or about overhead, so the claim is not entailed or contradicted.",
+          "judge_model": "claude-sonnet-4-20250514"
+        }
+      ]
+    },
+    {
+      "cluster_id": "clust_9fdd1fd26bf3",
+      "persona_name": "Template Browsing Owner",
+      "groundedness": 1.0,
+      "attempts": 0,
+      "cost_usd": 0.0,
+      "claims": [
+        {
+          "persona_name": "Template Browsing Owner",
+          "cluster_id": "clust_9fdd1fd26bf3",
+          "field_name": "goals",
+          "field_index": 0,
+          "field_path": "goals.0",
+          "claim": "Keep template browsing moving without extra back-and-forth",
+          "record_ids": [
+            "ga4_011"
+          ],
+          "evidence_context": "- record_id: ga4_011\n  source: ga4\n  payload: {\n  \"event\": \"template_browsing\",\n  \"session_duration\": 1820\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.4,
+          "rationale": "The record shows a template_browsing event with a duration, but does not provide any evidence about the goal to keep browsing moving without back-and-forth.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Template Browsing Owner",
+          "cluster_id": "clust_9fdd1fd26bf3",
+          "field_name": "goals",
+          "field_index": 1,
+          "field_path": "goals.1",
+          "claim": "Make creative role easier to manage across the team",
+          "record_ids": [
+            "hubspot_004"
+          ],
+          "evidence_context": "- record_id: hubspot_004\n  source: hubspot\n  payload: {\n  \"company_size\": \"1\",\n  \"contact_title\": \"Freelance Brand Designer\",\n  \"industry\": \"design_services\"\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.55,
+          "rationale": "The source describes a Freelance Brand Designer (solo) with company size 1; there is no information about managing creative roles across a team, so the claim is not supported or contradicted.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Template Browsing Owner",
+          "cluster_id": "clust_9fdd1fd26bf3",
+          "field_name": "pains",
+          "field_index": 0,
+          "field_path": "pains.0",
+          "claim": "Deals with friction around template browsing",
+          "record_ids": [
+            "ga4_012"
+          ],
+          "evidence_context": "- record_id: ga4_012\n  source: ga4\n  payload: {\n  \"event\": \"color_picker\",\n  \"session_duration\": 540\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.55,
+          "rationale": "The cited record contains only a color_picker event and session duration; it does not mention template browsing or friction related to it.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Template Browsing Owner",
+          "cluster_id": "clust_9fdd1fd26bf3",
+          "field_name": "pains",
+          "field_index": 1,
+          "field_path": "pains.1",
+          "claim": "Loses time when tasks depend on manual follow-up",
+          "record_ids": [
+            "ga4_013"
+          ],
+          "evidence_context": "- record_id: ga4_013\n  source: ga4\n  payload: {\n  \"event\": \"asset_export\",\n  \"session_duration\": 380\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.55,
+          "rationale": "The record shows an asset_export event and a session duration but provides no information about manual follow-up, task dependencies, or time loss, so the claim is not supported nor contradicted.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Template Browsing Owner",
+          "cluster_id": "clust_9fdd1fd26bf3",
+          "field_name": "motivations",
+          "field_index": 0,
+          "field_path": "motivations.0",
+          "claim": "Wants a dependable workflow that does not break under load",
+          "record_ids": [
+            "ga4_014"
+          ],
+          "evidence_context": "- record_id: ga4_014\n  source: ga4\n  payload: {\n  \"event\": \"client_share\",\n  \"session_duration\": 280\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.0,
+          "rationale": "The cited record includes only a client_share event with a session_duration; there is no information about the persona's motivations or need for a dependable workflow.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Template Browsing Owner",
+          "cluster_id": "clust_9fdd1fd26bf3",
+          "field_name": "motivations",
+          "field_index": 1,
+          "field_path": "motivations.1",
+          "claim": "Wants less operational noise and fewer surprises",
+          "record_ids": [
+            "ga4_016"
+          ],
+          "evidence_context": "- record_id: ga4_016\n  source: ga4\n  payload: {\n  \"event\": \"comment_threading\",\n  \"session_duration\": 920\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.0,
+          "rationale": "The cited record provides only an event type and session duration with no information about motivations; cannot infer the claimed motivation from the data.",
+          "judge_model": "claude-sonnet-4-20250514"
+        },
+        {
+          "persona_name": "Template Browsing Owner",
+          "cluster_id": "clust_9fdd1fd26bf3",
+          "field_name": "objections",
+          "field_index": 0,
+          "field_path": "objections.0",
+          "claim": "Will not adopt anything that adds brittle overhead",
+          "record_ids": [
+            "ga4_019"
+          ],
+          "evidence_context": "- record_id: ga4_019\n  source: ga4\n  payload: {\n  \"event\": \"brand_kit_creation\",\n  \"session_duration\": 1340\n}",
+          "structural_grounded": true,
+          "structural_groundedness": 1.0,
+          "label": "neutral",
+          "confidence": 0.4,
+          "rationale": "The record contains only a brand kit creation event with a session duration; it does not mention objections, adoption stance, or overhead.",
+          "judge_model": "claude-sonnet-4-20250514"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_personas": 2,
+    "total_claims": 14,
+    "mean_structural_groundedness": 1.0,
+    "mean_claim_entailment_rate": 0.0,
+    "mean_neutral_rate": 1.0,
+    "mean_contradiction_rate": 0.0,
+    "mean_false_positive_grounding_rate": 1.0,
+    "persona_groundedness_entailed_rate_corr": null,
+    "mean_judge_confidence": 0.3492857142857143
+  },
+  "duration_seconds": 241.2976789579261
+}
