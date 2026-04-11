@@ -4,11 +4,10 @@
 - **Branch**: exp-4.10-personality-strength-dial
 - **Date**: 2026-04-11
 - **Problem Space**: 4 (Twin behavior & expression)
-- **Signal**: **PARTIAL / DEFERRED** — structural manipulation works at the
-  high end, does not work at the low end, and the primary endpoint
-  (human-rated realism) has not been measured. A final ship/kill call
-  requires the human rating pass that this experiment was designed to
-  feed.
+- **Signal**: **DEFER** — core endpoint (human-rated realism) not
+  measured; structural manipulation works at the high end, does not
+  work at the low end. Recommend deferring ship/kill until the rating
+  pass completes and the n=2 sample is expanded.
 - **Run artifacts**: `persona_00.json`, `persona_01.json` in this dir
 - **Raw comparison**: `structural_comparison.log` in this dir
 
@@ -125,13 +124,181 @@ Unchanged (by design):
   - `Maya – The Time-Conscious Freelance Designer` — 2 attempts, 1.00, $0.0334
 - **Sweep**: 2 personas × 5 probes × 5 bands = 50 twin calls
 - **Twin sweep cost**: $0.0808 total ($0.0423 + $0.0385)
-- **Note on flakiness**: the first pipeline run failed 3/3 attempts on
-  synthesis of the first cluster with groundedness scores 0.70 / (validation)
-  / 0.88. Retry succeeded cleanly. This is a synthesis-stage flake,
-  unrelated to the intensity changes. Flagged for anyone chasing
-  pre-existing pipeline stability.
+- A separate default-config baseline run (per the README "Shared
+  harness" control requirement) was produced from pre-experiment
+  commit `12dfba3` in a git worktree and lives at
+  `baseline/persona_*.json`. See `### Baseline comparison` below.
+- **Note on flakiness**: both the experimental run and the separate
+  baseline run flaked on first-attempt synthesis. Experimental run:
+  3/3 attempts failed on the first cluster (scores 0.70 / validation /
+  0.88), retry cleared it. Baseline run: first attempts failed on
+  both clusters (scores 0.89, 0.55, 0.63), succeeded on attempt 2
+  for cluster 0 and attempt 3 for cluster 1. **The flakiness
+  reproduces in the pre-experiment code** — it is pre-existing and
+  unrelated to the intensity dial. Flagged for anyone chasing
+  pipeline stability.
+
+## Shared metrics (per README "Shared harness")
+
+The top-level `README.md` specifies the convention every experiment
+must satisfy:
+
+> Per `PRD_LAB_RESEARCH.md`, no experiment lands without:
+> 1. **A hypothesis** — written before the run.
+> 2. **A control** — a run on the same golden input with the default config.
+> 3. **A metric** — one of the shared metrics in `evaluation/metrics.py`
+>    (schema validity, groundedness, distinctiveness, judge score, drift, cost).
+> 4. **A result + decision** — adopt / reject / defer, written up in your space's
+>    results file.
+
+The shared metrics module at `evaluation/evaluation/metrics.py`
+currently implements three functions; the rest are stable signatures
+with TODO bodies owned by problem space 5. Computed on both the
+experimental run (`persona_00.json`, `persona_01.json`) and the
+separate default-config control run (`baseline/persona_00.json`,
+`baseline/persona_01.json`):
+
+| Shared metric | Experimental | Baseline (control) | Source |
+|---|---|---|---|
+| `schema_validity(persona_dicts, PersonaV1)` | **1.00** (2/2) | **1.00** (2/2) | `evaluation/metrics.py` |
+| `groundedness_rate(reports)` | **1.00** | **1.00** | `evaluation/metrics.py` |
+| `cost_per_persona(total_cost, n=2)` | **$0.0742** | **$0.0442** | `evaluation/metrics.py` |
+
+Metrics values verified by running
+`.venv/bin/python -m evaluation.metrics` against both artifact sets.
+The experimental run's higher per-persona cost is the twin-stage
+sweep (25 calls/persona vs. 1 call/persona in baseline) — expected
+and recoverable to baseline any time the dial is set to `balanced`
+and called once per persona.
+
+Notes on interpretation:
+
+- `cost_per_persona` at ~$0.074 is well under the experimental cap;
+  the recommended n≈10 followup would still leave plenty of headroom.
+- `schema_validity` and `groundedness_rate` are **proxy-only signals
+  for this experiment**. They tell us the synthesis stage is healthy
+  (both personas validated, both scored 1.00 on groundedness), not
+  whether the intensity dial affects twin realism. This experiment
+  is a twin-stage (space 4) manipulation; the synthesis-stage metrics
+  are reporting on input quality, not on the treatment itself.
+- The shared metrics that would actually close the primary endpoint
+  (human-rated realism and its automated analogues) are all TODO in
+  `metrics.py` and blocked on problem space 5:
+  - `turing_pass_rate` — the direct human-rated realism endpoint.
+  - `judge_rubric_score` — Opus-as-judge per-dimension realism rubric.
+  - `human_correlation` — Spearman between judge and human labels,
+    needed before trusting any automated realism proxy.
+  - `distinctiveness` — needed if we want to show the bands are
+    actually producing different outputs in embedding space rather
+    than only in surface vocabulary.
+  - `drift` — turn-N-vs-turn-1 stylometric drift, which would be the
+    natural multi-turn generalization of this experiment.
+- The ad-hoc structural metrics reported in `## Results` below
+  (word count, vocabulary count, vocab density per 100 words) are
+  **supplemental diagnostics, not substitutes for a shared metric**.
+  They are only informative in this writeup because the
+  realism-shaped shared metrics above are TODO; once those land,
+  the structural numbers should be demoted to a smoke-test appendix.
 
 ## Results
+
+### Baseline comparison (separate default-config run)
+
+Per the README "Shared harness" control requirement, a second
+pipeline run was produced from commit `12dfba3` (the parent of
+this branch, pre-experiment) in a git worktree with all other
+config held constant. Artifacts live at `baseline/persona_*.json`.
+The baseline run uses the old `stage_twin_chat` — one frustration
+question per persona, shape `{twin_demo_reply, twin_demo_cost}`
+with no `twin_intensity_sweep` key.
+
+**Matched slots, unmatched personas.** Both runs processed the
+same mock tenant (`tenant_acme_corp`), and both produced 2
+clusters that clearly correspond to the same behavioral
+archetypes (infra/devops + time-conscious designer). But the
+cluster IDs differ (`clust_c952277bda07` vs `clust_4c973b9e03fa`,
+`clust_5b86aa018d69` vs `clust_b14cacd128db`), and the synthesized
+personas are not the same:
+
+| slot | baseline persona | experimental persona |
+|---|---|---|
+| 0 | `Alex, the Infrastructure Automation Lead` | `Aiden Chen, DevOps Architect` |
+| 1 | `Maya the Time-Conscious Freelance Designer` | `Maya – The Time-Conscious Freelance Designer` |
+
+Slot 1 is essentially the same character in both runs (same
+tagline, same focus on billable-hour friction). Slot 0 is the
+same archetype with a different name and a different top
+frustration — baseline Alex leads with "manual team provisioning",
+experimental Aiden leads with "context switching". This is the
+same persona-drift confound exp-1.11 flagged: *"Baseline and
+experimental personas are two distinct Haiku runs on the same
+clusters. Names and content differ."*
+
+**Segmentation is not deterministic on cluster IDs.** An earlier
+version of the plan asserted segmentation was deterministic. The
+baseline run falsifies that: same input records, same parameters,
+different cluster IDs on both slots. The *content* of the clusters
+appears stable (same archetype in each slot), but the ID hashes
+differ. Either the clusterer has a stochastic component or the ID
+hash includes a seed/timestamp. This is a minor correction, not
+an experiment blocker — but worth knowing for anyone doing cluster
+ID-keyed comparisons across runs.
+
+**Frustration-probe content, baseline vs experimental-balanced:**
+
+- Baseline Alex (slot 0, pre-experiment code):
+  *"Manual team provisioning. Every time we hire, I'm still
+  clicking through invitation UIs instead of scripting it..."*
+- Experimental Aiden (slot 0, `balanced` band of the sweep):
+  *"Context switching. I'm constantly bouncing between my project
+  management UI, GitHub, Slack, and my terminal..."*
+
+These are different top frustrations. But because Alex and Aiden
+**have different persona dicts** (different `pains` lists from
+two distinct synthesis runs), this cannot be attributed to the
+twin code. The twin faithfully renders each persona's top
+frustration; the personas themselves just have different ones.
+Slot 1 (Maya) produces closer content in both runs, matching the
+near-identical persona dicts.
+
+**What the baseline run *does* demonstrate:**
+
+1. **Synthesis-stage flakiness is pre-existing**, not introduced
+   by the intensity changes. Both runs required retries, and the
+   baseline run (on `12dfba3` without any of our changes) needed
+   *more* retries (3 total vs. 2 in the experimental run). This
+   fully clears the intensity dial of any responsibility for the
+   flake.
+2. **Shared-metric parity holds**: `schema_validity` and
+   `groundedness_rate` are both 1.00 in both runs. The experiment
+   does not degrade synthesis quality.
+3. **Convention compliance**: the branch now has the `baseline/`
+   + main artifact layout prior experiments (exp-2.16, exp-2.17,
+   exp-5.08) established.
+
+**What the baseline run does NOT resolve:**
+
+- **Finding 5 (content drift on preference probe) is still open.**
+  A clean A/B on Finding 5 would require calling the pre-experiment
+  twin code against the *experimental persona dict* (Aiden) with
+  the preference question, to check whether pre-experiment code
+  on a fixed persona picks the same top tool as the `balanced`
+  slice of the sweep on the same persona. Because the baseline
+  run produced a different persona entirely (Alex), its
+  preference-probe answer cannot be compared to Aiden's. See the
+  "Recommendations" section for the targeted follow-up.
+- **Sampling-noise triangulation on the `balanced` slice.** Same
+  reason: the baseline run's default-config twin call was made
+  against a different persona, so it is not a second sample of
+  the same underlying distribution. Disentangling "dial effect"
+  from "temperature sampling noise" still requires a fixed-persona
+  repeat-sampling experiment.
+
+In short: the baseline run clears the intensity dial of
+synthesis-quality and flakiness concerns, satisfies the README
+control requirement, documents the persona-drift confound, and
+sharpens what the follow-up needs to look like — but it does not
+close the content-drift concern on its own.
 
 ### Verification (unit-level)
 - `intensity_label(0.0) == 'subtle'`, `0.25 == 'understated'`,
@@ -249,7 +416,12 @@ that is the intended behavior.
 To disentangle "dial corrupts content" from "model nondeterminism"
 we would need multiple samples per band (same persona, same probe,
 different seeds / non-zero temperature) or a lower temperature on
-the current runs.
+the current runs. The separate baseline run (see
+`### Baseline comparison` above) **cannot resolve this** because
+it produced a different persona entirely (Alex, not Aiden) — see
+the persona-drift confound there. A targeted follow-up that
+calls the pre-experiment twin code against the **experimental
+persona dict** is described in Recommendations.
 
 ### Semantic-drift audit (eyeball check, persona 0, preference + disagreement probes)
 Cross-band substantive claims are **consistent on disagreement** (all
@@ -275,12 +447,14 @@ human" clause are doing their job.
 |---|---|
 | Unit/integration tests | PASS |
 | Baseline parity (byte-equal) | PASS |
+| Shared metrics (`schema_validity`, `groundedness_rate`) | PASS — 1.00 in both experimental and baseline runs |
+| Separate default-config control run | PRESENT — clears dial of synthesis-quality and flakiness concerns |
 | High-end salience (vocab usage) | POSITIVE — monotone `balanced → strong → vivid` |
 | Low-end salience (vocab usage) | **NEGATIVE** — `subtle` ≥ `balanced` |
 | Catchphrase stuffing | NONE — guardrail holds |
 | Mood / caricature drift | NONE observed (eyeball, weak evidence) |
 | Length confound | PRESENT — `balanced` longest band |
-| Content drift | ONE observed case (preference probe, persona 0), cannot generalize from N=2 |
+| Content drift | ONE observed case (preference probe, persona 0), cannot generalize from N=2; baseline run cannot resolve (persona-drift confound) |
 | Human realism curve (core endpoint) | **NOT MEASURED** |
 
 ## Recommendations
@@ -313,11 +487,21 @@ human" clause are doing their job.
        visible above rater noise.
    Cost is ~$0.15 per run, so 5 more runs is ~$0.75.
 
-5. **Consider a lower-temperature rerun to test the content-drift
-   finding in isolation.** If `balanced` still picks Terraform and
-   `vivid` still picks GitHub at temperature 0, it's the dial.
-   If they collapse to the same answer, it's sampling noise and
-   the dial is probably safe on substantive content.
+5. **Targeted content-drift test on a fixed persona.** The
+   separate baseline run cannot resolve Finding 5 because it
+   produced a different persona (Alex, not Aiden). The clean
+   follow-up is to load the experimental Aiden persona dict,
+   call the **pre-experiment** `TwinChat.reply()` (from `12dfba3`)
+   with the preference probe directly, and compare its output to
+   the `balanced` slice of the existing sweep. Same persona, same
+   prompt, same config — the only difference is that one was
+   generated in isolation and the other inside a 25-call sweep
+   session. If the answers match, the embedded-control argument
+   holds. If they diverge, something about batching is affecting
+   the output and the `balanced` slice cannot stand in for a true
+   control. A temperature-0 variant of this same test would also
+   distinguish "dial effect" from "sampling noise" on the
+   GitHub-vs-Terraform flip.
 
 6. **Defer the `subtle` rewording to a followup experiment.**
    Specifically: test a probe set that includes genuinely
@@ -356,16 +540,31 @@ human" clause are doing their job.
   separate investigation.
 
 ## Cost
+
+### Experimental run
 - Synthesis (2 personas, 2 successful attempts each): $0.0675
   - `Aiden Chen, DevOps Architect`: $0.0341
   - `Maya – The Time-Conscious Freelance Designer`: $0.0334
 - Twin intensity sweep (50 calls, 2 personas × 25): $0.0808
   - Aiden sweep: $0.0423
   - Maya sweep: $0.0385
-- **Total successful run**: ~$0.148
+- **Experimental run total**: $0.1483
+- `cost_per_persona` (shared metric): **$0.0742**
+
+### Baseline run (separate default-config control, from `12dfba3`)
+- Synthesis (2 personas, 2/3 attempts): $0.0856
+  - `Alex, the Infrastructure Automation Lead`: $0.0336 (2 attempts)
+  - `Maya the Time-Conscious Freelance Designer`: $0.0520 (3 attempts)
+- Twin demo replies (2 calls, 1 per persona): $0.0027
+  - Alex: $0.0012
+  - Maya: $0.0015
+- **Baseline run total**: $0.0883
+- `cost_per_persona` (shared metric): **$0.0442**
+
+### Branch totals
 - Prior failed synthesis run (3/3 attempts, first cluster, retry
   resolved): not itemized, estimated ~$0.03.
-- **Total spent on branch**: ~$0.18
+- **Total spent on branch**: ~$0.27
 
 Well under the experimental cap, but the recommended followup
 (5 more pipeline runs to reach n≈10 personas) would bring total
