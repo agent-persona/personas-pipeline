@@ -1,9 +1,35 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Literal
 
 from anthropic import AsyncAnthropic
+
+# exp-4.13: length-matching modes for the twin's response-length instruction.
+#
+# - "fixed": current behavior — "Keep responses under 4 sentences unless asked to elaborate."
+# - "mirror": match the user's message length tightly.
+# - "mirror_with_floor": match the user's length but never drop below one full sentence.
+#
+# The relevant line is substituted into build_persona_system_prompt's "## Rules"
+# section so the model sees exactly one length instruction with no conflict.
+LengthMode = Literal["fixed", "mirror", "mirror_with_floor"]
+
+_LENGTH_RULES: dict[str, str] = {
+    "fixed": "Keep responses under 4 sentences unless asked to elaborate.",
+    "mirror": (
+        "Match the user's message length. If they send a single word, answer "
+        "in a single word. If they send a paragraph, match it with a paragraph. "
+        "Length is a social signal — don't over-explain when they're terse, and "
+        "don't under-explain when they're taking time to write."
+    ),
+    "mirror_with_floor": (
+        "Match the user's message length, but never drop below one complete sentence. "
+        "If they send a single word, still respond with at least one full sentence — "
+        "short but complete. If they send a paragraph, match the paragraph. "
+        "Length is a social signal; use it, but don't become a one-word bot."
+    ),
+}
 
 
 @dataclass
@@ -22,11 +48,18 @@ class TwinReply:
         return (self.input_tokens * 3 + self.output_tokens * 15) / 1_000_000
 
 
-def build_persona_system_prompt(persona: dict) -> str:
+def build_persona_system_prompt(
+    persona: dict,
+    length_mode: LengthMode = "fixed",
+) -> str:
     """Construct a system prompt that puts Claude in character as the persona.
 
     Accepts a persona dict (the output of `PersonaV1.model_dump()`) so the
     twin runtime has no compile-time dependency on the synthesis package.
+
+    exp-4.13: length_mode controls the response-length rule. "fixed" is the
+    current production behavior; "mirror" and "mirror_with_floor" are
+    experimental variants.
     """
     name = persona.get("name", "the persona")
     summary = persona.get("summary", "")
@@ -73,7 +106,7 @@ def build_persona_system_prompt(persona: dict) -> str:
         "## Rules",
         "- Answer in first person, in character.",
         "- Use your vocabulary naturally — don't sound like a chatbot.",
-        "- Keep responses under 4 sentences unless asked to elaborate.",
+        f"- {_LENGTH_RULES[length_mode]}",
         "- If asked something outside your knowledge or experience, react the way "
         "this persona would (curiosity, dismissal, deflection — whatever fits).",
         "- Do not break character to mention you are an AI.",
@@ -89,11 +122,13 @@ class TwinChat:
         persona: dict,
         client: AsyncAnthropic,
         model: str = "claude-haiku-4-5-20251001",
+        length_mode: LengthMode = "fixed",
     ) -> None:
         self.persona = persona
         self.client = client
         self.model = model
-        self.system_prompt = build_persona_system_prompt(persona)
+        self.length_mode = length_mode
+        self.system_prompt = build_persona_system_prompt(persona, length_mode=length_mode)
 
     async def reply(
         self,
