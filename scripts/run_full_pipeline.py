@@ -35,7 +35,7 @@ from synthesis.config import settings  # noqa: E402
 from synthesis.engine.model_backend import AnthropicBackend  # noqa: E402
 from synthesis.engine.synthesizer import synthesize  # noqa: E402
 from synthesis.models.cluster import ClusterData  # noqa: E402
-from twin import TwinChat  # noqa: E402
+from twin import TwinChat, intensity_label  # noqa: E402
 
 TENANT_ID = "tenant_acme_corp"
 TENANT_INDUSTRY = "B2B SaaS"
@@ -106,23 +106,58 @@ async def stage_synthesize(clusters: list[ClusterData]) -> list[dict]:
     return personas
 
 
+# Experiment 4.10 — personality strength dial sweep.
+# These live here (experiment config), not in twin/chat.py (library).
+INTENSITY_SWEEP = [0.0, 0.25, 0.5, 0.75, 1.0]
+
+# Probe set spans different conversational shapes so the realism curve is not
+# an artifact of a single complaint-shaped question. Keep these stable across
+# runs so sweep outputs are comparable.
+PROBE_QUESTIONS = [
+    ("frustration",  "What's the single biggest frustration you have with your current tools?"),
+    ("neutral",      "Walk me through what a normal Tuesday looks like for you at work."),
+    ("preference",   "If you could only keep one tool in your stack, which would it be and why?"),
+    ("disagreement", "Some people say your role is going to be automated away in a few years. What do you think?"),
+    ("reflective",   "Looking back on the last year, what's something you changed your mind about?"),
+]
+
+
 async def stage_twin_chat(personas: list[dict]) -> list[dict]:
-    """Demo: ask each twin one question to prove the persona feels alive."""
+    """Sweep each twin across 5 intensity bands × 5 probe questions.
+
+    Produces a rateable `twin_intensity_sweep` artifact per persona for
+    experiment 4.10 (personality strength dial).
+    """
     if not settings.anthropic_api_key:
         return personas
 
     client = AsyncAnthropic(api_key=settings.anthropic_api_key)
-    question = "What's the single biggest frustration you have with your current tools?"
 
-    print(f"\n  Q: {question}\n")
     for entry in personas:
         twin = TwinChat(entry["persona"], client=client, model=settings.default_model)
-        reply = await twin.reply(question)
-        entry["twin_demo_reply"] = reply.text
-        entry["twin_demo_cost"] = reply.estimated_cost_usd
-        print(f"  --- {entry['persona']['name']} ---")
-        print(f"  {reply.text}")
-        print(f"  (${reply.estimated_cost_usd:.4f})\n")
+        sweep: list[dict] = []
+        for probe_id, question in PROBE_QUESTIONS:
+            for intensity in INTENSITY_SWEEP:
+                reply = await twin.reply(question, intensity=intensity)
+                sweep.append({
+                    "probe_id": probe_id,
+                    "question": question,
+                    "intensity": intensity,
+                    "label": intensity_label(intensity),
+                    "text": reply.text,
+                    "cost_usd": reply.estimated_cost_usd,
+                })
+        entry["twin_intensity_sweep"] = sweep
+        entry["twin_demo_cost"] = sum(s["cost_usd"] for s in sweep)
+
+        print(f"\n  --- {entry['persona']['name']} ---")
+        for probe_id, question in PROBE_QUESTIONS:
+            print(f"  Q [{probe_id}]: {question}")
+            for s in sweep:
+                if s["probe_id"] != probe_id:
+                    continue
+                print(f"    [{s['label']:>11s} | {s['intensity']:.2f}] {s['text']}")
+            print()
 
     return personas
 
