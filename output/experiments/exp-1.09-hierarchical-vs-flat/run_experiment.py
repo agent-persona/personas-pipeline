@@ -9,7 +9,7 @@ Or via the unified runner:
     python -m scripts.experiments.run_yash_experiments 1.09
 
 Hypothesis:
-    Hierarchical schemas with semantic grouping (Demographics, Firmographics) produce higher coherence than flat schemas because the LLM can structure related fields together.
+    Hierarchical schemas with semantic grouping produce higher coherence than flat schemas because the LLM can structure related fields together.
 """
 from __future__ import annotations
 

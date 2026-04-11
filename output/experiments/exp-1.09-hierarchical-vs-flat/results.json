@@ -1,37 +1,41 @@
 {
   "experiment_id": "1.09",
-  "title": "Hierarchical vs flat schema",
+  "title": "Hierarchical vs flat schema (retest N=6)",
   "group": 1,
   "size": "S",
-  "hypothesis": "Hierarchical schemas with semantic grouping (Demographics, Firmographics) produce higher coherence than flat schemas because the LLM can structure related fields together.",
-  "control": "PersonaV1 hierarchical",
-  "variant": "Flat schema (all fields top-level)",
-  "sample_size": 2,
+  "hypothesis": "Hierarchical schemas with semantic grouping produce higher coherence than flat schemas because the LLM can structure related fields together.",
+  "control": "PersonaV1 hierarchical (6 runs)",
+  "variant": "Flat schema all fields top-level (6 runs)",
+  "sample_size": 12,
   "metrics": {
-    "judge_rubric_score_hierarchical": 0.86,
-    "judge_rubric_score_flat": 0.88,
-    "delta": -0.02,
-    "hierarchical_dims": {
-      "grounded": 0.9,
-      "distinctive": 0.8,
-      "coherent": 0.9,
-      "actionable": 0.8,
-      "voice_fidelity": 0.8
-    },
-    "flat_dims": {
-      "grounded": 0.9,
-      "distinctive": 0.8,
-      "coherent": 0.9,
-      "actionable": 0.8,
-      "voice_fidelity": 0.9
-    }
+    "hierarchical_scores": [
+      0.84,
+      0.84,
+      0.82,
+      0.88,
+      0.87,
+      0.82
+    ],
+    "flat_scores": [
+      0.84,
+      0.84,
+      0.78,
+      0.87,
+      0.78,
+      0.84
+    ],
+    "hier_mean": 0.845,
+    "flat_mean": 0.825,
+    "delta": 0.02,
+    "hier_std": 0.023,
+    "flat_std": 0.034
   },
-  "result": "Hierarchical=0.86 vs Flat=0.88, delta=-0.02",
+  "result": "Hierarchical mean=0.845 (N=6) vs Flat mean=0.825 (N=6), delta=+0.020",
   "decision": "defer",
   "config_diff": {},
-  "timestamp": "2026-04-10T15:20:41.966273",
-  "duration_ms": 44321,
-  "cost_usd": 0.0348,
+  "timestamp": "2026-04-11T10:24:18.221566",
+  "duration_ms": 272860,
+  "cost_usd": 0.2735,
   "owner": "yash",
   "tenant_id": "tenant_acme_corp"
 }
