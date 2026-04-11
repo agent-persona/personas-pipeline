@@ -1,0 +1,42 @@
+exp-4.10 structural comparison — raw data
+Personas:
+  - Aiden Chen, DevOps Architect (cluster clust_4c973b9e03fa)
+  - Maya – The Time-Conscious Freelance Designer (cluster clust_b14cacd128db)
+
+        band    n    words   sents   vocab   v/100w
+--------------------------------------------------------
+      subtle   10    102.0     5.4    1.90     2.18
+ understated   10    106.9     5.8    1.80     1.76
+    balanced   10    120.1     6.7    1.60     1.51
+      strong   10    108.0     4.8    2.50     2.56
+       vivid   10    115.4     5.3    2.90     2.46
+
+Deltas vs balanced baseline:
+        band   d_words   d_vocab   d_v/100w
+      subtle     -18.1     +0.30      +0.67
+ understated     -13.2     +0.20      +0.25
+    balanced      +0.0     +0.00      +0.00  <- baseline
+      strong     -12.1     +0.90      +1.06
+       vivid      -4.7     +1.30      +0.95
+
+Word count by band x probe (avg across 2 personas):
+        probe      subtle  understated    balanced      strong       vivid
+  frustration        66.5        84.5       106.0       106.0       117.5
+      neutral       172.5       157.5       190.5       129.0       157.5
+   preference        70.5        76.0        77.0        87.0        77.0
+ disagreement       125.5       111.0       139.5       107.0       125.0
+   reflective        75.0       105.5        87.5       111.0       100.0
+
+Catchphrase-stuffing check (any vocab word >=3x in same reply):
+        subtle: 0/10 replies
+   understated: 0/10 replies
+      balanced: 0/10 replies
+        strong: 1/10 replies
+         vivid: 0/10 replies
+
+Preference-probe content check (which tool does Aiden pick?):
+  [     subtle] GitHub, no question
+  [understated] Hands down, it's GitHub
+  [   balanced] Terraform, no question
+  [     strong] Without question, it's GitHub—and not just for version control
+  [      vivid] GitHub, without hesitation
