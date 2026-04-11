@@ -17,11 +17,11 @@ Periodic 'stay in character' reminders reduce drift on long conversations becaus
 
 ## Control
 
-No reinforcement reminders (default TwinChat)
+No reinforcement reminders, 25 turns
 
 ## Variant
 
-Reminder injected every 3 turns
+Reminder every 4 turns, 25 turns
 
 ## Method
 
@@ -33,11 +33,11 @@ Run via canonical `personas-pipeline` modules:
 
 Tenant: `tenant_acme_corp` from `evaluation.golden_set` (single stub tenant — full 20-tenant golden set blocked).
 
-Sample size: **20** personas.
+Sample size: **50** personas.
 
 ## Result
 
-> No reminders=0.89 vs With reminders=0.87, delta=-0.02
+> No reminders=0.89 vs With reminders=0.87 on 25-turn conversation, delta=-0.02
 
 ## Metrics
 
@@ -45,13 +45,14 @@ Sample size: **20** personas.
 |--------|-------|
 | `no_reinforcement` | 0.89 |
 | `with_reinforcement` | 0.87 |
+| `turns` | 25 |
 
 ## Cost & Latency
 
 | Metric | Value |
 |--------|-------|
-| Cost (USD) | $0.0741 |
-| Duration (ms) | 124366 |
+| Cost (USD) | $0.2047 |
+| Duration (ms) | 194389 |
 | Judge | gpt-4o (cross-model anti-bias) |
 
 ## Decision: `defer`
@@ -60,7 +61,7 @@ Sample size: **20** personas.
 
 **Why defer:** Inconclusive at this sample size — delta within ±0.05, synthesis ceiling effect, or pipeline failure.
 
-Result: `No reminders=0.89 vs With reminders=0.87, delta=-0.02`
+Result: `No reminders=0.89 vs With reminders=0.87 on 25-turn conversation, delta=-0.02`
 
 ## Limitations
 
