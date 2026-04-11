@@ -6,21 +6,16 @@ Goal: create and run 4 separate experiment branches for guide tasks 2.06, 1.07, 
 
 ---
 
-## Results Summary (2026-04-11)
+## Results
 
-| Branch | Decision | Key Finding |
-|--------|----------|-------------|
-| exp-1.07 field interdependence | **Adopt** | `goals` + `sample_quotes` are load-bearing (2+ dim drops); `channels`/`vocabulary`/`journey_stages` are decorative (zero impact) |
-| exp-2.06 temperature sweep | **Adopt** | `temperature=0.0` saves 30% cost ($0.027 vs $0.039), 50% fewer retries, no quality loss. top_p had no signal. |
-| exp-5.05 rubric ablation | **Defer** | Ceiling effect (all personas scored 4-5) prevents definitive correlation analysis. Discovered two-tier rubric: anchor dims (distinctive, actionable, voice_fidelity) vs independent dims (grounded, coherent). Need degraded personas for wider range. |
-| exp-5.11 reference vs free judging | **Reject** | 44% variance reduction but 100% anchoring bias — all reference-mode scores within 0.5 of proxy anchor. Spearman rho=0.657 shows rank flattening. Few-shot calibration (exp-5.13) remains superior. |
+See **[batch4-experiment-results.md](2026-04-11-batch4-experiment-results.md)** for full analysis, interpretation, caveats, and next steps.
 
-### Actionable next steps
-
-1. **Adopt temp=0.0**: Set as production default in `AnthropicBackend` (exp-2.06)
-2. **Prioritize goals + quotes in QA**: Field interdependence confirms these are load-bearing; channels/vocabulary/journey_stages can be deprioritized in cost-constrained scenarios (exp-1.07)
-3. **Retain 5-dim rubric as-is**: No redundant dimensions found, but follow up with intentionally degraded personas to get wider quality range (exp-5.05)
-4. **Do not adopt reference-mode judging**: Anchoring bias is severe; stick with few-shot calibration from exp-5.13 (exp-5.11)
+| Branch | Decision | Confidence |
+|--------|----------|------------|
+| exp-1.07 field interdependence | **Adopt** | Narrow (1 tenant, coarse scores) |
+| exp-2.06 temperature sweep | **Adopt** | Moderate (2 clusters, one 429 noise) |
+| exp-5.11 reference vs free judging | **Reject** | High (clearest negative) |
+| exp-5.05 rubric ablation | **Defer** | Low (ceiling effect, degenerate stats) |
 
 ---
 
