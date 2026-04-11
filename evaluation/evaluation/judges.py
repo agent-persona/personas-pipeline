@@ -19,8 +19,12 @@ Researcher #5 owns:
 
 from __future__ import annotations
 
+import json
+import logging
 from dataclasses import dataclass, field
 from typing import Protocol
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -37,10 +41,36 @@ class JudgeScore:
     dimensions: dict[str, float] = field(default_factory=dict)
     rationale: str = ""
     judge_model: str = ""
+    confidences: dict[str, float] = field(default_factory=dict)
 
 
 class JudgeBackend(Protocol):
     async def score(self, prompt: str) -> str: ...
+
+
+RUBRIC_PROMPT = """\
+You are an expert persona quality evaluator. You will be given a synthesized user persona in JSON format. \
+Evaluate it on the following five dimensions. For each dimension, provide:
+- A score from 1 to 5 (integer)
+- A confidence from 0.0 to 1.0 (how confident you are in your score)
+
+Dimensions:
+1. **grounded**: Are the persona's claims, demographics, and behaviors traceable to plausible source data? (1=fabricated, 5=fully grounded)
+2. **distinctive**: Does the persona feel like a specific individual rather than a generic average? (1=generic, 5=highly distinctive)
+3. **coherent**: Is the persona internally consistent across all fields (goals, pains, vocabulary, quotes)? (1=contradictory, 5=perfectly coherent)
+4. **actionable**: Are the goals and pain points sharp enough to drive real product decisions? (1=vague, 5=immediately actionable)
+5. **voice_fidelity**: Do the sample quotes sound like one consistent, authentic speaker? (1=robotic/inconsistent, 5=authentic voice)
+
+Respond with ONLY valid JSON in this exact format:
+{
+  "grounded": {"score": <1-5>, "confidence": <0.0-1.0>},
+  "distinctive": {"score": <1-5>, "confidence": <0.0-1.0>},
+  "coherent": {"score": <1-5>, "confidence": <0.0-1.0>},
+  "actionable": {"score": <1-5>, "confidence": <0.0-1.0>},
+  "voice_fidelity": {"score": <1-5>, "confidence": <0.0-1.0>},
+  "rationale": "<brief justification for your scores>"
+}
+"""
 
 
 class LLMJudge:
@@ -50,15 +80,12 @@ class LLMJudge:
     Space 5 experiments swap the rubric, the backend, or the debiasing and
     compare against human labels.
 
-    Default rubric (TODO: finalize in space 5.5 rubric ablation):
+    Default rubric:
       - grounded       : claims traceable to source data
       - distinctive    : persona feels like an individual, not a generic average
       - coherent       : internal consistency across fields
       - actionable     : goals / pains sharp enough to drive product decisions
       - voice_fidelity : sample quotes sound like one consistent speaker
-
-    TODO(space-5): implement `score()` against the real Anthropic client.
-    Today it returns a placeholder JudgeScore so dependent code is runnable.
     """
 
     DEFAULT_DIMENSIONS = (
@@ -74,19 +101,75 @@ class LLMJudge:
         backend: JudgeBackend | None = None,
         model: str = "claude-opus-4-6",
         dimensions: tuple[str, ...] = DEFAULT_DIMENSIONS,
+        client: object | None = None,
     ) -> None:
         self.backend = backend
         self.model = model
         self.dimensions = dimensions
+        self._client = client  # AsyncAnthropic client for direct use
 
     async def score_persona(self, persona: dict) -> JudgeScore:
         """Score a single persona JSON against the default rubric."""
-        # TODO(space-5): build a rubric prompt, call self.backend, parse.
+        persona_text = json.dumps(persona, indent=2, default=str)
+        prompt = f"{RUBRIC_PROMPT}\n\nPersona to evaluate:\n{persona_text}"
+
+        # Use direct Anthropic client if available, otherwise fall back to backend
+        if self._client is not None:
+            response = await self._client.messages.create(
+                model=self.model,
+                max_tokens=1024,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            raw_text = response.content[0].text
+        elif self.backend is not None:
+            raw_text = await self.backend.score(prompt)
+        else:
+            logger.warning("No backend or client configured; returning NaN scores")
+            return JudgeScore(
+                overall=float("nan"),
+                dimensions={d: float("nan") for d in self.dimensions},
+                rationale="No backend configured",
+                judge_model=self.model,
+            )
+
+        # Parse JSON response
+        try:
+            # Strip markdown code fences if present
+            text = raw_text.strip()
+            if text.startswith("```"):
+                text = text.split("\n", 1)[1]
+                text = text.rsplit("```", 1)[0]
+            parsed = json.loads(text)
+        except json.JSONDecodeError:
+            logger.error("Failed to parse judge response: %s", raw_text[:200])
+            return JudgeScore(
+                overall=float("nan"),
+                dimensions={d: float("nan") for d in self.dimensions},
+                rationale=f"Parse error: {raw_text[:200]}",
+                judge_model=self.model,
+            )
+
+        dimensions: dict[str, float] = {}
+        confidences: dict[str, float] = {}
+        for dim in self.dimensions:
+            if dim in parsed and isinstance(parsed[dim], dict):
+                dimensions[dim] = float(parsed[dim].get("score", 0)) / 5.0
+                confidences[dim] = float(parsed[dim].get("confidence", 0.5))
+            else:
+                dimensions[dim] = float("nan")
+                confidences[dim] = 0.5
+
+        overall = sum(v for v in dimensions.values() if v == v) / max(
+            sum(1 for v in dimensions.values() if v == v), 1
+        )
+        rationale = parsed.get("rationale", "")
+
         return JudgeScore(
-            overall=float("nan"),
-            dimensions={d: float("nan") for d in self.dimensions},
-            rationale="TODO: implement in evaluation/judges.py",
+            overall=overall,
+            dimensions=dimensions,
+            rationale=rationale,
             judge_model=self.model,
+            confidences=confidences,
         )
 
     async def score_transcript(
