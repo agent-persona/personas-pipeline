@@ -6,18 +6,18 @@
 **Group**: 5
 **Size**: L STAR
 **Due**: Sat 2026-04-11
-**Signal**: STRONG
-**Recommendation**: adopt
+**Signal**: WEAK
+**Recommendation**: defer
 
 ---
 
 ## Hypothesis
 
-LLM judges (GPT-4o, Claude Sonnet) achieve Spearman correlation >= 0.7 with human quality judgments across rubric dimensions, validating LLM-as-judge as a scalable replacement for human eval.
+LLM judges (GPT-4o, Claude Sonnet) achieve Spearman correlation >= 0.7 with human quality judgments across rubric dimensions when the human proxy has meaningful variance.
 
 ## Control
 
-Human ground-truth proxy (Claude Sonnet at temp=0.1, senior UX researcher persona)
+Human ground-truth proxy (Claude Sonnet as senior UX researcher) with forced variance
 
 ## Variant
 
@@ -33,38 +33,39 @@ Run via canonical `personas-pipeline` modules:
 
 Tenant: `tenant_acme_corp` from `evaluation.golden_set` (single stub tenant — full 20-tenant golden set blocked).
 
-Sample size: **4** personas.
+Sample size: **10** personas.
 
 ## Result
 
-> Best judge-human Spearman=1.00, cross-judge=-0.40
+> N=10. Best judge-human Spearman=0.297 (gpt=0.297, claude=0.200), cross-judge=0.152
 
 ## Metrics
 
 | Metric | Value |
 |--------|-------|
-| `gpt_scores` | 0.88, 0.86, 0.8, 0.87 |
-| `claude_scores` | 0.6, 0.86, 0.86, 0.86 |
-| `human_proxy` | 0.7, 0.7, 0.7, 0.7 |
-| `gpt_vs_human_spearman` | -0.4 |
-| `claude_vs_human_spearman` | 1.0 |
-| `cross_judge_spearman` | -0.4 |
+| `gpt_scores` | 0.88, 0.84, 0.88, 0.82, 0.84, 0.88, 0.88, 0.84, 0.84, 0.84 |
+| `claude_scores` | 0.86, 0.86, 0.86, 0.86, 0.86, 0.86, 0.86, 0.86, 0.86, 0.86 |
+| `human_proxy` | 0.7, 0.6, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.6, 0.6 |
+| `human_proxy_range` | 0.60..0.70 |
+| `gpt_vs_human_spearman` | 0.297 |
+| `claude_vs_human_spearman` | 0.2 |
+| `cross_judge_spearman` | 0.152 |
 
 ## Cost & Latency
 
 | Metric | Value |
 |--------|-------|
-| Cost (USD) | $0.1983 |
-| Duration (ms) | 241660 |
+| Cost (USD) | $0.4650 |
+| Duration (ms) | 550836 |
 | Judge | gpt-4o (cross-model anti-bias) |
 
-## Decision: `adopt`
+## Decision: `defer`
 
 **Threshold:** ≥0.05 delta on judge-rubric score, or hypothesis directly confirmed/falsified.
 
-**Why adopt:** Variant outperformed control or hypothesis was directly confirmed.
+**Why defer:** Inconclusive at this sample size — delta within ±0.05, synthesis ceiling effect, or pipeline failure.
 
-Result: `Best judge-human Spearman=1.00, cross-judge=-0.40`
+Result: `N=10. Best judge-human Spearman=0.297 (gpt=0.297, claude=0.200), cross-judge=0.152`
 
 ## Limitations
 

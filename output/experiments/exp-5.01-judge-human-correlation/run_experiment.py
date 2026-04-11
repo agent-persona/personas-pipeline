@@ -9,7 +9,7 @@ Or via the unified runner:
     python -m scripts.experiments.run_yash_experiments 5.01
 
 Hypothesis:
-    LLM judges (GPT-4o, Claude Sonnet) achieve Spearman correlation >= 0.7 with human quality judgments across rubric dimensions, validating LLM-as-judge as a scalable replacement for human eval.
+    LLM judges (GPT-4o, Claude Sonnet) achieve Spearman correlation >= 0.7 with human quality judgments across rubric dimensions when the human proxy has meaningful variance.
 """
 from __future__ import annotations
 
