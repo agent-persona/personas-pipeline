@@ -1,22 +1,23 @@
 {
   "experiment_id": "4.02",
-  "title": "RAG over persona",
+  "title": "RAG over persona (retest 15-turn)",
   "group": 4,
   "size": "M",
-  "hypothesis": "Per-turn field retrieval (RAG) produces better consistency than full persona in system prompt because it reduces context dilution on long conversations.",
-  "control": "Full persona JSON in system prompt (default TwinChat)",
-  "variant": "Per-turn relevant-field retrieval based on question content",
-  "sample_size": 10,
+  "hypothesis": "Per-turn field retrieval (RAG) produces better consistency than full persona in system prompt on long conversations because it reduces context dilution.",
+  "control": "Full persona JSON in system prompt, 15 turns",
+  "variant": "Per-turn field retrieval based on question content, 15 turns",
+  "sample_size": 30,
   "metrics": {
-    "full_prompt_overall": 0.89,
-    "rag_overall": 0.87
+    "full_overall": 0.91,
+    "rag_overall": 0.87,
+    "turns": 15
   },
-  "result": "Full prompt=0.89 vs RAG=0.87, delta=-0.02",
+  "result": "Full=0.91 vs RAG=0.87 on 15-turn conversation, delta=-0.04",
   "decision": "defer",
   "config_diff": {},
-  "timestamp": "2026-04-10T16:42:20.085249",
-  "duration_ms": 71742,
-  "cost_usd": 0.0556,
+  "timestamp": "2026-04-11T10:31:01.302180",
+  "duration_ms": 162566,
+  "cost_usd": 0.1386,
   "owner": "yash",
   "tenant_id": "tenant_acme_corp"
 }

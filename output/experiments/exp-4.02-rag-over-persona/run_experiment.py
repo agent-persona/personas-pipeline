@@ -9,7 +9,7 @@ Or via the unified runner:
     python -m scripts.experiments.run_yash_experiments 4.02
 
 Hypothesis:
-    Per-turn field retrieval (RAG) produces better consistency than full persona in system prompt because it reduces context dilution on long conversations.
+    Per-turn field retrieval (RAG) produces better consistency than full persona in system prompt on long conversations because it reduces context dilution.
 """
 from __future__ import annotations
 

@@ -13,15 +13,15 @@
 
 ## Hypothesis
 
-Per-turn field retrieval (RAG) produces better consistency than full persona in system prompt because it reduces context dilution on long conversations.
+Per-turn field retrieval (RAG) produces better consistency than full persona in system prompt on long conversations because it reduces context dilution.
 
 ## Control
 
-Full persona JSON in system prompt (default TwinChat)
+Full persona JSON in system prompt, 15 turns
 
 ## Variant
 
-Per-turn relevant-field retrieval based on question content
+Per-turn field retrieval based on question content, 15 turns
 
 ## Method
 
@@ -33,25 +33,26 @@ Run via canonical `personas-pipeline` modules:
 
 Tenant: `tenant_acme_corp` from `evaluation.golden_set` (single stub tenant — full 20-tenant golden set blocked).
 
-Sample size: **10** personas.
+Sample size: **30** personas.
 
 ## Result
 
-> Full prompt=0.89 vs RAG=0.87, delta=-0.02
+> Full=0.91 vs RAG=0.87 on 15-turn conversation, delta=-0.04
 
 ## Metrics
 
 | Metric | Value |
 |--------|-------|
-| `full_prompt_overall` | 0.89 |
+| `full_overall` | 0.91 |
 | `rag_overall` | 0.87 |
+| `turns` | 15 |
 
 ## Cost & Latency
 
 | Metric | Value |
 |--------|-------|
-| Cost (USD) | $0.0556 |
-| Duration (ms) | 71742 |
+| Cost (USD) | $0.1386 |
+| Duration (ms) | 162566 |
 | Judge | gpt-4o (cross-model anti-bias) |
 
 ## Decision: `defer`
@@ -60,7 +61,7 @@ Sample size: **10** personas.
 
 **Why defer:** Inconclusive at this sample size — delta within ±0.05, synthesis ceiling effect, or pipeline failure.
 
-Result: `Full prompt=0.89 vs RAG=0.87, delta=-0.02`
+Result: `Full=0.91 vs RAG=0.87 on 15-turn conversation, delta=-0.04`
 
 ## Limitations
 
