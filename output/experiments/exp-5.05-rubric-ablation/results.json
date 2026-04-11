@@ -1,13 +1,435 @@
 {
   "experiment": "5.05",
   "title": "Rubric ablation",
-  "status": "harness_ready_not_run",
-  "reason": "ANTHROPIC_API_KEY not available at experiment time",
   "hypothesis": "Some rubric dimensions are redundant (r > 0.95) or inert (removal doesn't change rankings)",
   "config": {
     "tenant": "tenant_acme_corp",
     "synthesis_repeats": 3,
-    "dimensions": ["grounded", "distinctive", "coherent", "actionable", "voice_fidelity"],
-    "judge_model": "claude-haiku-4-5-20251001"
-  }
+    "n_personas": 5,
+    "n_clusters": 2,
+    "judge_model": "claude-haiku-4-5-20251001",
+    "dimensions": [
+      "grounded",
+      "distinctive",
+      "coherent",
+      "actionable",
+      "voice_fidelity"
+    ]
+  },
+  "pairwise_correlations": {
+    "grounded": {
+      "grounded": 1.0,
+      "distinctive": null,
+      "coherent": null,
+      "actionable": null,
+      "voice_fidelity": null
+    },
+    "distinctive": {
+      "grounded": null,
+      "distinctive": 1.0,
+      "coherent": null,
+      "actionable": null,
+      "voice_fidelity": null
+    },
+    "coherent": {
+      "grounded": null,
+      "distinctive": null,
+      "coherent": 1.0,
+      "actionable": null,
+      "voice_fidelity": null
+    },
+    "actionable": {
+      "grounded": null,
+      "distinctive": null,
+      "coherent": null,
+      "actionable": 1.0,
+      "voice_fidelity": null
+    },
+    "voice_fidelity": {
+      "grounded": null,
+      "distinctive": null,
+      "coherent": null,
+      "actionable": null,
+      "voice_fidelity": 1.0
+    }
+  },
+  "ranking_stability": {
+    "grounded": 0.0,
+    "distinctive": 0.0,
+    "coherent": 0.0,
+    "actionable": 0.0,
+    "voice_fidelity": 0.0
+  },
+  "score_shifts": {
+    "grounded": {
+      "distinctive": 0.0,
+      "coherent": 0.0,
+      "actionable": 0.0,
+      "voice_fidelity": 0.0
+    },
+    "distinctive": {
+      "grounded": -0.4,
+      "coherent": -0.4,
+      "actionable": 0.0,
+      "voice_fidelity": -0.2
+    },
+    "coherent": {
+      "grounded": 0.0,
+      "distinctive": 0.0,
+      "actionable": 0.0,
+      "voice_fidelity": 0.0
+    },
+    "actionable": {
+      "grounded": -0.4,
+      "distinctive": 0.0,
+      "coherent": -0.4,
+      "voice_fidelity": -0.4
+    },
+    "voice_fidelity": {
+      "grounded": -0.4,
+      "distinctive": 0.0,
+      "coherent": -0.2,
+      "actionable": -0.2
+    }
+  },
+  "redundant_dimensions": [],
+  "inert_dimensions": [],
+  "per_persona": [
+    {
+      "persona_id": "clust_f9becdf0b34f_rep0",
+      "persona_name": "Marcus, the Platform Integration Architect",
+      "control": {
+        "scores": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0
+        },
+        "overall": 4.6,
+        "rationale": "Marcus is a well-constructed persona with strong internal consistency, vivid technical specificity, and highly actionable insights. Source evidence is comprehensive with traceable record IDs (ga4_*, hubspot_*, intercom_*), though confidence scores occasionally drop to 0.75, suggesting minor gaps in grounding. The vocabulary, quotes, and journey stages feel authentic to a Senior DevOps Engineer in fintech. The persona avoids generic platitudes and delivers precise pain points and decision triggers that would drive product prioritization. The primary weakness is that while record IDs exist, we cannot independently verify their authenticity\u2014they appear plausible but lack external confirmation. This prevents a perfect 5 on grounded but does not materially impact utility."
+      },
+      "ablated": {
+        "drop_grounded": {
+          "scores": {
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.75,
+          "rationale": "Marcus is a highly specific, well-researched persona with excellent internal consistency across demographics, firmographics, goals, and pains. The technical vocabulary is precise and contextually appropriate (webhook config, declarative config, GraphQL schema). Sample quotes sound authentically like a Senior DevOps Engineer in fintech with consistent concerns about APIs, compliance, and automation. Goals and pains are granular and directly actionable (e.g., 'GraphQL endpoint inconsistencies,' 'Terraform support requirement'). The journey stages are well-detailed with specific key actions tied to technical decision-making. Source evidence is comprehensive with high confidence scores. Minor deduction from perfect score: the persona could include one or two slightly more distinctive personality traits or memorable details beyond technical priorities (e.g., a specific pain point story or friction moment that makes him uniquely memorable), though this is a minor gap for an already strong technical persona."
+        },
+        "drop_distinctive": {
+          "scores": {
+            "grounded": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.75,
+          "rationale": "Marcus is a well-constructed persona with strong internal consistency and highly actionable insights. Source evidence is comprehensive with specific record IDs (ga4_*, hubspot_*, intercom_*) and confidence scores ranging 0.75-1.0, grounding most claims. The only minor grounding weakness is that some record IDs appear generic (hubspot_000 reused frequently) and we cannot verify these sources externally, preventing a perfect 5. Demographics, firmographics, goals, pains, and vocabulary are perfectly aligned\u2014all reinforce the senior DevOps engineer archetype in fintech. The sample quotes sound authentically Marcus (technical, compliance-focused, skeptical of vendor lock-in). Goals and pains are specific enough to drive product roadmap decisions (e.g., \"GraphQL endpoint inconsistencies,\" \"Terraform IaC support required\"). The journey stages map logically from API documentation browsing to webhook configuration to SLA validation. Voice is consistent throughout\u2014technical, direct, regulatory-minded. No contradictions detected across any dimension."
+        },
+        "drop_coherent": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "Marcus is a well-constructed persona with strong grounding in source evidence (31 claims with record IDs and confidence scores). Most claims are traceable and specific (ga4_000-ga4_009, hubspot_000, intercom_000), though some record IDs appear generic and confidence scores occasionally seem inflated (e.g., 1.0 for a single Intercom comment). The persona is distinctive\u2014vivid technical details (GraphQL endpoint issues, Terraform configurations, fintech compliance constraints) make him feel like a real engineer, not a template. Goals and pains are highly actionable, driving specific product decisions around API robustness, webhook support, and RBAC. Voice is excellent and consistent: technical vocabulary (webhook config, declarative config, schema), direct communication style, and sample quotes authentically reflect a senior DevOps engineer's perspective. Minor weakness: record IDs lack obvious patterns or contextual metadata that would strengthen confidence in data provenance. Overall a publication-ready persona suitable for product strategy."
+        },
+        "drop_actionable": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "Marcus is a well-constructed persona with strong internal consistency and distinctive voice. Source evidence is extensive with appropriate record IDs (ga4_*, hubspot_*, intercom_*) and reasonable confidence scores (0.75-1.0). Goals, pains, and motivations align tightly with the Senior DevOps Engineer role in fintech. Sample quotes are authentic and specific\u2014they read like a real engineer's concerns about GraphQL schemas, Terraform automation, and compliance. Demographics and firmographics are coherent and realistic. Minor gap: some source evidence links are generic (e.g., multiple ga4 events without field-level detail), and one claim (vendor lock-in objection, 0.75 confidence) is slightly weaker. The journey stages are particularly strong with concrete, role-appropriate actions. Overall publication-ready with minor grounding refinements needed."
+        },
+        "drop_voice_fidelity": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This is a high-quality persona with strong internal consistency and highly specific, actionable insights. Source evidence is comprehensive with plausible record IDs (GA4, HubSpot, Intercom) and reasonable confidence scores. The persona feels like a real individual with vivid technical vocabulary, authentic pain points, and memorable quotes directly sourced. Goals and pains are specific enough to drive immediate product decisions around API design, compliance features, and integration capabilities. Minor grounding deduction: some record IDs appear only once (intercom_000, ga4_005, ga4_009) which creates slight traceability questions, though confidence scores are appropriately calibrated. The fintech context, DevOps expertise, and integration architecture focus distinguish Marcus from generic PM tool personas."
+        }
+      }
+    },
+    {
+      "persona_id": "clust_ea9222caaacd_rep0",
+      "persona_name": "Maya, the Time-Conscious Creative Entrepreneur",
+      "control": {
+        "scores": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0
+        },
+        "overall": 4.6,
+        "rationale": "Maya is a well-constructed, highly specific persona with strong internal consistency and vivid voice. Source evidence is comprehensive with reasonable record IDs (hubspot, intercom, ga4 signals align with stated behaviors). Motivations, pains, and goals are tightly interconnected around the time=money equation. Sample quotes feel authentic and distinctive. Minor grounding gaps: some GA4 record IDs lack specificity (ga4_011 etc. aren't validated as real), and the 'likely female' demographic inference, while defensible, relies on naming assumptions rather than confirmed data. Goals and decision triggers are highly actionable (white-label capability, specific time-save metrics, pricing alignment). The persona avoids generic boilerplate\u2014Maya's constraints (solo practice scaling, hourly billing model, multi-tool overhead) create a coherent, memorable profile that would drive specific product decisions."
+      },
+      "ablated": {
+        "drop_grounded": {
+          "scores": {
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.75,
+          "rationale": "Maya is a well-researched, internally consistent persona with strong grounding in behavioral data (GA4, Intercom, HubSpot). The time-equals-money core motivation drives all goals, pains, and objections coherently. Sample quotes are authentic and role-appropriate; vocabulary is specialized and consistent. Goals and decision triggers are specific enough to guide product roadmap decisions (e.g., white-label feature prioritization, onboarding friction reduction). The only minor gap preventing a perfect score: while distinctive overall, the persona could be slightly more vivid with sensory details (e.g., how does she work, what's her workspace like?) or a memorable anecdote. The persona is publication-ready and immediately actionable for product, marketing, and sales teams."
+        },
+        "drop_distinctive": {
+          "scores": {
+            "grounded": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.75,
+          "rationale": "This is a high-quality persona with strong internal consistency and clear actionability. All major claims are traceable to source evidence (hubspot, intercom, GA4 records) with reasonable confidence scores (0.65-1.0). Demographics, goals, pains, and vocabulary align perfectly around the core insight: time = money for hourly-billing freelancers. Sample quotes sound authentic and role-specific. Journey stages map logically to decision criteria. Minor grounding deduction (-1 point) reflects that some secondary claims rely on GA4 behavioral inference (0.75-0.85 confidence) rather than direct statements, which is appropriate for this data type. The persona immediately suggests product decisions (white-label prioritization, onboarding speed, time-savings messaging, pricing models). Voice is distinctive and consistent throughout."
+        },
+        "drop_coherent": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This persona demonstrates strong grounding with specific record IDs (hubspot_004, intercom_004, ga4_011-020) and confidence scores mostly in the 0.75\u20131.0 range, though some claims (e.g., vendor lock-in objection at 0.65) rely on lighter evidence. The voice is vivid and consistent\u2014direct, business-minded, time-conscious language that authentically reflects a freelancer's perspective. Goals and pains are highly actionable, tied directly to concrete pain points (20+ min overhead, hourly billing model, white-label requirements) that drive product decisions. The persona feels distinctive rather than generic: the hourly-billing lens, white-label obsession, and solo-practice constraints create a memorable, specific character. Minor deductions: some objectives like 'creative autonomy' and 'vendor lock-in concerns' are inferred with moderate confidence rather than directly evidenced, and the gender distribution note ('likely female based on name') is a soft demographic assumption. Overall, this is a well-constructed, publication-ready persona with strong narrative coherence and clear product implications."
+        },
+        "drop_actionable": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This persona is exceptionally well-constructed with strong internal consistency and distinctive voice. All major claims are traceable to specific record IDs (HubSpot, Intercom, GA4) with documented confidence scores. The vocabulary, quotes, and motivations align cohesively around the core insight: time=revenue for a solo designer. The sample quotes sound authentically like one person (direct, pragmatic, efficiency-focused). Minor grounding gaps exist in lower-confidence claims (e.g., vendor lock-in concern at 0.65 confidence), and some demographic fields lack direct evidence (e.g., age range, gender distribution are inferred rather than sourced). However, these don't undermine the overall solidity. The persona avoids generic tropes\u2014it's specific to hourly-billed freelancers, white-label needs, and the exact pain point of tool sprawl. Highly usable for product decisions."
+        },
+        "drop_voice_fidelity": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This persona is exceptionally well-constructed with strong internal consistency and clear, specific insights. The source evidence is comprehensive and well-mapped, though some claims (e.g., 'vendor lock-in concerns') rely on inferred behavior rather than direct quotes. The persona moves beyond generic 'creative freelancer' tropes by centering the hourly-billing mechanic that makes time savings directly translate to revenue\u2014a distinctive insight that permeates goals, pains, and decision triggers. Goals and objections are specific enough to immediately inform product decisions (white-label requirements, onboarding friction, time-savings ROI calculators). Minor weaknesses: a few lower-confidence source mappings (0.65\u20130.75) suggest some inferences, and the 'gender_distribution: likely female' caveat introduces minor uncertainty. Overall, publication-ready with actionable specificity."
+        }
+      }
+    },
+    {
+      "persona_id": "clust_f9becdf0b34f_rep1",
+      "persona_name": "Raj, The Infrastructure-First DevOps Architect",
+      "control": {
+        "scores": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0
+        },
+        "overall": 4.6,
+        "rationale": "This is a strong, well-constructed persona with excellent internal consistency and actionable depth. All claims are traceable to source evidence with realistic record IDs (ga4_*, hubspot_*, intercom_*) and confidence scores ranging 0.75\u20130.9, suggesting genuine data synthesis. The vocabulary, quotes, and motivations are highly specific to DevOps/fintech contexts and feel authentic to the role. Journey stages are detailed and map cleanly to decision triggers. Minor grounding deduction because while record IDs exist, they appear synthetic rather than directly inspectable; confidence scores are reasonable but no direct quote attribution is shown. The persona avoids generic boilerplate\u2014Raj's infrastructure-first mindset, fintech compliance concerns, and API-first demands are distinctive and memorable. All goals and pains are specific enough to drive product decisions (e.g., 'bidirectional GitHub integration,' 'immutable webhook payloads'). Voice is consistent across quotes: technically precise, skeptical of simple solutions, and focused on control and automation."
+      },
+      "ablated": {
+        "drop_grounded": {
+          "scores": {
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.75,
+          "rationale": "This is an exceptionally well-constructed persona. It achieves distinctive character through specific technical demands (bidirectional GitHub sync, webhook immutability, GraphQL schema quality) and fintech-specific compliance concerns that differentiate Raj from generic DevOps personas. Coherence is perfect\u2014demographics, role, tech stack, vocabulary, and quoted speech all reinforce the same archetype consistently. Actionability is excellent: every goal, pain, and decision trigger maps directly to product decisions (API maturity, integration depth, dashboard customization, audit trails). Voice fidelity is distinctive and consistent\u2014the sample quotes sound like one opinionated, technically rigorous engineer with consistent priorities (API-first, automation-driven, compliance-aware). The journey stages and source evidence add credibility. Minor: the persona could benefit from a specific company or team size example, but this is a minor gap in an otherwise publication-ready artifact."
+        },
+        "drop_distinctive": {
+          "scores": {
+            "grounded": 2.0,
+            "coherent": 4.0,
+            "actionable": 5.0,
+            "voice_fidelity": 4.0
+          },
+          "overall": 3.75,
+          "rationale": "The persona is exceptionally well-structured and actionable, with specific goals, pains, and decision triggers that would directly inform product strategy. Voice is consistent and technically authentic. However, grounding is weak: record IDs (ga4_000, intercom_000, etc.) appear plausible but lack actual URLs, timestamps, or verifiable provenance. The source_evidence section references these IDs but provides no way to validate they exist or map to real customer interactions. Confidence scores (0.75\u20130.9) suggest synthetic inference rather than direct evidence. Without traceable source data, claims\u2014however well-articulated\u2014remain unverified. Coherence is strong: demographics, tech stack, vocabulary, and quote voice align consistently. Actionability is excellent: specific API requirements, GitHub integration needs, and decision triggers could immediately shape product roadmap. This is a well-synthesized persona that reads as credible and useful, but lacks the grounding rigor for publication-ready status."
+        },
+        "drop_coherent": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This persona is exceptionally well-structured with strong technical specificity and authentic voice. Grounding is solid\u2014source_evidence maps claims to record IDs with reasonable confidence scores (0.75\u20130.9), though the actual GA4/HubSpot/Intercom records aren't shown, limiting full verification. Distinctive: Raj feels like a specific archetype (infrastructure-first DevOps lead in fintech) with consistent motivations (automation, compliance, tool consolidation) that differentiate him from generic PM users. Actionable: Goals, pains, and decision triggers are precise enough to drive API, integration, and dashboard features directly. Voice fidelity is excellent\u2014quotes and vocabulary (webhook payloads, GraphQL schema, immutable audit logs, rate limits) are coherent, role-appropriate, and consistent throughout. Minor weakness: source record IDs lack transparency into actual data, and some claims could benefit from higher confidence thresholds (0.75 is borderline). Otherwise publication-ready and immediately usable for product planning."
+        },
+        "drop_actionable": {
+          "scores": {
+            "grounded": 2.0,
+            "distinctive": 4.0,
+            "coherent": 4.0,
+            "voice_fidelity": 4.0
+          },
+          "overall": 3.5,
+          "rationale": "The persona is vivid, internally consistent, and has excellent voice fidelity with distinctive technical vocabulary and realistic DevOps priorities. However, the grounding is weak: record IDs (ga4_000, intercom_000, hubspot_000) appear fabricated\u2014they lack specificity, follow no documented format, and are not traceable. The source_evidence section claims high confidence (0.75\u20130.9) for assertions backed by vague IDs, which undermines credibility. If these IDs referenced real data sources (actual GA4 events, Intercom conversations, HubSpot records), grounding would be strong; as presented, they appear invented to simulate rigor. The persona would be stronger with either genuine source citations or honest removal of the evidence section."
+        },
+        "drop_voice_fidelity": {
+          "scores": {
+            "grounded": 2.0,
+            "distinctive": 4.0,
+            "coherent": 4.0,
+            "actionable": 4.0
+          },
+          "overall": 3.5,
+          "rationale": "The persona is vivid, internally consistent, and highly actionable with specific technical requirements and decision triggers. However, grounding is weak: record IDs (ga4_000, intercom_000, hubspot_000) are generic placeholders without verifiable source context, confidence scores lack justification, and there's no way to audit whether claims trace to real customer data. The field_path references are consistent but don't prove the underlying evidence exists. The persona feels like a well-researched archetype rather than a synthesized individual. For publication, source evidence needs actual interview IDs, conversation snippets, or data point links."
+        }
+      }
+    },
+    {
+      "persona_id": "clust_ea9222caaacd_rep1",
+      "persona_name": "Rachel the Resourceful Freelance Designer",
+      "control": {
+        "scores": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0
+        },
+        "overall": 4.6,
+        "rationale": "This is a well-constructed persona with strong internal consistency and actionable insights. Grounding is solid with specific record IDs and confidence scores, though some claims reference only 1-2 records (goals.2, pains.2, pains.4) which slightly weakens evidentiary support. The persona is distinctive\u2014Rachel's specific focus on billable hours, white-labeling, and solo scaling creates a vivid, memorable character rather than generic template. Demographics/firmographics/vocabulary align perfectly with the designer-freelancer context. Goals and pains are highly specific and actionable (e.g., 'saves 10 minutes per project'). Sample quotes ring authentic and show consistent voice: direct, metrics-focused, pragmatic. Journey stages add depth. Minor weakness: location_signals and education_level are null, which slightly reduces completeness, and a few pains could benefit from additional source corroboration."
+      },
+      "ablated": {
+        "drop_grounded": {
+          "scores": {
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.75,
+          "rationale": "This is a well-constructed persona with strong internal consistency across demographics, goals, pains, and motivations. Rachel's character is grounded in the specific economics of hourly billing, and her pain points (color variations, client feedback fragmentation, asset export) directly connect to her workflow. The sample quotes are distinctive and authentic\u2014they reflect a real freelancer's constraints and priorities. Goals and decision triggers are highly actionable (specific time-savings thresholds, white-label requirements, integration needs). The three-stage journey is detailed and credible. Minor deductions: age range (28-42) is somewhat broad, and location_signals/education_level are null, which slightly reduce specificity. The persona could benefit from one or two small idiosyncrasies or contextual details (e.g., a specific pain point unique to her niche) to push it from 'good' to 'exceptional,' but it's publication-ready and immediately useful for product decisions."
+        },
+        "drop_distinctive": {
+          "scores": {
+            "grounded": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.75,
+          "rationale": "Excellent persona with strong internal consistency, distinctive voice, and highly actionable insights. Source evidence is well-documented with appropriate confidence scores, though record IDs appear synthetic (no way to verify actual HubSpot/GA4 data). All claims are traceable to evidence entries with reasonable confidence levels (0.7\u20131.0). Quotes feel authentic to a time-conscious freelancer with hourly billing incentives. Demographics, goals, pains, and journey stages align perfectly. Vocabulary is industry-specific and consistent. The only minor limitation is that we cannot independently verify the record IDs exist in actual systems, but the evidence structure itself is rigorous and believable."
+        },
+        "drop_coherent": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This persona is well-constructed with strong grounding in source evidence (record IDs provided for nearly all claims, confidence scores reasonable). It's distinctive\u2014Rachel emerges as a specific archetype with clear financial motivations tied to hourly billing, not generic. The goals and pains are highly actionable (e.g., 'saves 10 minutes per project = direct revenue impact'), and the sample quotes are consistent, natural, and industry-authentic. Minor deduction on grounded: some claims have only single-source evidence (e.g., ga4_014 for goal #2, intercom_004 for objection #2), and confidence scores occasionally low (0.7\u20130.75), suggesting some inference. The decision triggers and journey stages are exceptional, moving beyond persona basics into tactical product alignment. Overall, publication-ready with minor evidence consolidation needed."
+        },
+        "drop_actionable": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This is a well-constructed persona with strong internal consistency and authentic voice. All claims are traced to record IDs with reasonable confidence scores (0.7\u20131.0), though the actual source records aren't provided for independent verification\u2014a minor limitation. The character feels distinctive through specific, relatable details (hourly billing model, white-label concerns, color management pain). The vocabulary is consistently professional yet conversational, and sample quotes sound genuinely like one person with recurring priorities (time savings, client-facing polish). Goals, pains, and motivations align coherently with the freelance solo designer context. The journey stages are thoughtfully mapped with appropriate mindsets and content preferences. Minor deduction from perfect scores: source records are referenced but not fully auditable, and a few motivations (work-life balance) are inferred rather than directly evidenced. Overall, this is publication-ready and ready for targeted outreach."
+        },
+        "drop_voice_fidelity": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This persona is well-executed with strong coherence and actionable insights. Source evidence is present with plausible record IDs (ga4_*, hubspot_*, intercom_*) and reasonable confidence scores (0.7-1.0), though the actual source documents aren't provided for verification\u2014a limitation that prevents a perfect score. The persona feels distinctive and real: Rachel's hourly billing model, specific pain points (color variations, asset export tedium), and decision triggers (10-minute ROI calculation) create a vivid, recognizable individual rather than generic boilerplate. Goals, pains, and motivations are tightly coherent and directly address workflow efficiency with specific features (white-labeling, brand kits, threaded comments). The journey stages and decision triggers are immediately actionable for product positioning. Minor weakness: demographics are sparse (no location, education level, or detailed income), and confidence scores skew high relative to single-record backing for some claims\u2014this suggests either excellent data synthesis or slight over-confidence in attribution. Overall, publication-ready quality with strong product utility."
+        }
+      }
+    },
+    {
+      "persona_id": "clust_ea9222caaacd_rep2",
+      "persona_name": "Maya, the Hourly-Billed Freelance Designer",
+      "control": {
+        "scores": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0
+        },
+        "overall": 4.6,
+        "rationale": "This is a well-constructed persona with strong internal consistency and clear actionability. Source evidence is provided with record IDs (intercom, GA4, HubSpot) that appear plausible, though the evaluator cannot independently verify them. The hourly-billing economic model creates a coherent throughline connecting all goals, pains, and motivations. Vocabulary is distinctive and role-appropriate (billable hours, white-label, brand kit, asset export). Sample quotes sound authentically like a solo designer managing multiple clients under time pressure. Journey stages are detailed with specific behavioral triggers. Minor weakness: some source evidence confidence scores dip to 0.65-0.7, suggesting a few claims (objections particularly) may have thinner grounding. Location signals and education are appropriately left unspecified rather than fabricated. The persona balances specificity (multi-project brand management, hourly billing economics) with realistic uncertainty (objection about tool switching costs)."
+      },
+      "ablated": {
+        "drop_grounded": {
+          "scores": {
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.75,
+          "rationale": "Maya is a highly specific, well-grounded persona with strong internal consistency across all dimensions. The hourly-billing economic model is the unifying thread that drives every goal, pain, and decision. Goals are concrete and tied to revenue impact; pains are precise and measurable; vocabulary is specialist and coherent; quotes sound authentically like one person with consistent priorities and concerns. Source evidence is robust and well-distributed. Minor gap: demographics lack granularity (age 25-45 is broad, location/income unspecified), but this doesn't undermine the overall quality since the firmographic and behavioral data are so specific. The journey stages and decision triggers are immediately actionable for product and marketing teams. This is publication-ready work."
+        },
+        "drop_distinctive": {
+          "scores": {
+            "grounded": 4.0,
+            "coherent": 4.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This persona is exceptionally well-constructed with strong internal consistency and immediately actionable insights. The hourly-billing economic model creates a coherent through-line connecting pains, goals, and decision triggers. Source evidence is documented with record IDs and confidence scores, though some confidence levels are moderate (0.65-0.75), and the actual source data is not visible for full verification. Sample quotes are distinctive and authentic to a solo designer's perspective. The only minor weakness is that some source records lack complete traceability detail, preventing a perfect 5 on grounded. This is publication-ready and would drive effective go-to-market decisions."
+        },
+        "drop_coherent": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "actionable": 5.0,
+            "voice_fidelity": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "This persona is exceptionally well-constructed with strong grounding in source evidence (record IDs provided with confidence scores), highly actionable insights tied directly to hourly billing economics, and distinctive voice that comes through clearly in quotes and vocabulary. The sample quotes are authentic and consistent with a freelancer's perspective. Minor gaps: demographics lack specificity (age range is broad, location signals empty, income bracket unknown), and while record IDs exist, their reliability cannot be independently verified. The journey stages are detailed and realistic. Overall, this is a publication-ready persona with strong strategic utility for product decisions around white-labeling, templating, and time-saving features."
+        },
+        "drop_actionable": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "coherent": 4.0,
+            "voice_fidelity": 4.0
+          },
+          "overall": 4.0,
+          "rationale": "This persona is well-constructed with strong internal consistency and distinctive details. Evidence citations exist with reasonable confidence scores (0.65-0.95), though record IDs are generic placeholders (intercom_004, ga4_012, etc.) that don't reveal actual data sources\u2014they plausibly reference real system types but lack verifiable specificity. The voice is consistent across quotes, vocabulary is specialized and coherent with the freelance designer role, and Maya feels like a specific archetype rather than generic boilerplate. Goals, pains, and motivations align tightly around the hourly-billing economic model. Minor weaknesses: demographics lack specificity (age range broad, gender/location/income null), and the assumption that one Intercom ticket (intercom_004) grounds multiple distinct claims is slightly thin. Otherwise, this reads as research-informed and ready for use."
+        },
+        "drop_voice_fidelity": {
+          "scores": {
+            "grounded": 4.0,
+            "distinctive": 4.0,
+            "coherent": 5.0,
+            "actionable": 5.0
+          },
+          "overall": 4.5,
+          "rationale": "Grounded (4): Source evidence is traceable with specific record IDs (intercom_004, ga4_012\u2013020, hubspot_004) and confidence scores 0.65\u20130.95, though we cannot independently verify these records exist or match claims\u2014minor gap. Distinctive (4): Maya feels like a real person with specific pain points (hourly billing economics, multi-client brand switching) and vivid quotes, but the 25\u201345 age range and missing location/income data reduce specificity slightly. Coherent (5): Demographics, motivations, vocabulary, and journey stages align perfectly\u2014hourly-billing mindset, white-labeling obsession, and asset-export friction are internally consistent throughout. Actionable (5): Goals and pains are specific enough to drive product decisions immediately (white-label capability, template reusability, asset export automation, ROI calculators). Overall strong persona with excellent internal logic and decision triggers; slight grounding uncertainty prevents a perfect score."
+        }
+      }
+    }
+  ],
+  "duration_seconds": 585.9320249170996
 }
