@@ -1,0 +1,32 @@
+{
+  "experiment": "2.06",
+  "title": "Temperature sweep",
+  "hypothesis": "Lower temp produces better groundedness; higher temp increases diversity",
+  "model": "claude-haiku-4-5-20251001",
+  "sweep_grid": {"temperatures": [0.0, 0.4, 0.7, 1.0], "top_ps": [0.8, 0.9]},
+  "summary": {
+    "control": {"groundedness": 0.952, "validity": 1.0, "retry_rate": 1.0, "avg_cost": 0.039},
+    "temp_0.0": {"groundedness": 1.0, "validity": 1.0, "retry_rate": 0.5, "avg_cost": 0.027},
+    "temp_0.4": {"groundedness": 1.0, "validity": 0.5, "retry_rate": 1.0, "avg_cost": 0.055, "note": "1 cluster hit 429 rate limit"},
+    "temp_0.7": {"groundedness": 1.0, "validity": 1.0, "retry_rate": 1.0, "avg_cost": 0.036},
+    "temp_1.0": {"groundedness": 1.0, "validity": 1.0, "retry_rate": 1.0, "avg_cost": 0.044},
+    "top_p_0.8": {"groundedness": 1.0, "validity": 1.0, "retry_rate": 1.0, "avg_cost": 0.048},
+    "top_p_0.9": {"groundedness": 1.0, "validity": 1.0, "retry_rate": 1.0, "avg_cost": 0.034}
+  },
+  "results": [
+    {"variant": "control (API defaults)", "temperature": null, "top_p": null, "cluster_id": "clust_06bf67a47582", "persona_name": "DevOps-Forward Engineering Lead", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.038126, "attempts": 2},
+    {"variant": "control (API defaults)", "temperature": null, "top_p": null, "cluster_id": "clust_385d829bf143", "persona_name": "Sophia, the Time-Conscious Brand Freelancer", "groundedness_score": 0.905, "schema_valid": true, "cost_usd": 0.039758, "attempts": 2},
+    {"variant": "temp=0.0", "temperature": 0.0, "top_p": null, "cluster_id": "clust_06bf67a47582", "persona_name": "Marcus, the Infrastructure-First Engineering Lead", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.034853, "attempts": 2},
+    {"variant": "temp=0.0", "temperature": 0.0, "top_p": null, "cluster_id": "clust_385d829bf143", "persona_name": "Creative Freelancer Seeking Efficiency", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.019655, "attempts": 1},
+    {"variant": "temp=0.4", "temperature": 0.4, "top_p": null, "cluster_id": "clust_06bf67a47582", "persona_name": "", "groundedness_score": 0.0, "schema_valid": false, "cost_usd": 0.0, "attempts": 0, "error": "Rate limit 429"},
+    {"variant": "temp=0.4", "temperature": 0.4, "top_p": null, "cluster_id": "clust_385d829bf143", "persona_name": "Sofia, the Time-Conscious Brand Designer", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.054960, "attempts": 3},
+    {"variant": "temp=0.7", "temperature": 0.7, "top_p": null, "cluster_id": "clust_06bf67a47582", "persona_name": "Marcus, the Infrastructure-First Engineering Lead", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.036304, "attempts": 2},
+    {"variant": "temp=0.7", "temperature": 0.7, "top_p": null, "cluster_id": "clust_385d829bf143", "persona_name": "Sarah, the Efficiency-Driven Freelance Designer", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.036304, "attempts": 2},
+    {"variant": "temp=1.0", "temperature": 1.0, "top_p": null, "cluster_id": "clust_06bf67a47582", "persona_name": "Marcus, The API-First DevOps Engineer", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.051800, "attempts": 3},
+    {"variant": "temp=1.0", "temperature": 1.0, "top_p": null, "cluster_id": "clust_385d829bf143", "persona_name": "The Billable Creative: Designer-Entrepreneur", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.036410, "attempts": 2},
+    {"variant": "top_p=0.8", "temperature": null, "top_p": 0.8, "cluster_id": "clust_06bf67a47582", "persona_name": "Marcus Chen, Senior DevOps Engineer", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.037023, "attempts": 2},
+    {"variant": "top_p=0.8", "temperature": null, "top_p": 0.8, "cluster_id": "clust_385d829bf143", "persona_name": "Sophia the Freelance Brand Strategist", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.059025, "attempts": 3},
+    {"variant": "top_p=0.9", "temperature": null, "top_p": 0.9, "cluster_id": "clust_06bf67a47582", "persona_name": "Alex, the Infrastructure-First DevOps Lead", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.035389, "attempts": 2},
+    {"variant": "top_p=0.9", "temperature": null, "top_p": 0.9, "cluster_id": "clust_385d829bf143", "persona_name": "Alex the Service-Focused Designer", "groundedness_score": 1.0, "schema_valid": true, "cost_usd": 0.032048, "attempts": 2}
+  ]
+}
