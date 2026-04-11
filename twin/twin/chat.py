@@ -82,24 +82,40 @@ def build_persona_system_prompt(persona: dict) -> str:
 
 
 class TwinChat:
-    """Stateless persona-driven chat. Caller manages history."""
+    """Persona-driven chat with optional emotional state tracking.
+
+    When `emotional_state` is provided, it is updated after each user
+    message and appended to the system prompt for more nuanced responses.
+    """
 
     def __init__(
         self,
         persona: dict,
         client: AsyncAnthropic,
         model: str = "claude-haiku-4-5-20251001",
+        emotional_state: Any | None = None,
     ) -> None:
         self.persona = persona
         self.client = client
         self.model = model
-        self.system_prompt = build_persona_system_prompt(persona)
+        self.emotional_state = emotional_state
+        self._base_system_prompt = build_persona_system_prompt(persona)
+
+    @property
+    def system_prompt(self) -> str:
+        if self.emotional_state is not None:
+            return self._base_system_prompt + self.emotional_state.prompt_section()
+        return self._base_system_prompt
 
     async def reply(
         self,
         message: str,
         history: list[dict] | None = None,
     ) -> TwinReply:
+        # Update emotional state before generating reply
+        if self.emotional_state is not None:
+            self.emotional_state.update(message)
+
         history = history or []
         messages = history + [{"role": "user", "content": message}]
         response = await self.client.messages.create(
