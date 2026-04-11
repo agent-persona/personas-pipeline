@@ -1,0 +1,67 @@
+{
+  "experiment": "3.13",
+  "title": "Temporal Grounding",
+  "method": "LLM-as-evaluator (Claude Code acting as twin for both conditions)",
+  "claims_tested": [
+    {
+      "id": "claim_1",
+      "field_path": "goals.2",
+      "claim": "Set up webhook-driven alerts that push status changes into Slack and internal dashboards",
+      "date_range": "2026-04 to 2026-04",
+      "why_sensitive": "Technology/platform claim — Slack dominance and webhook patterns evolve"
+    },
+    {
+      "id": "claim_2",
+      "field_path": "goals.3",
+      "claim": "Provision the entire workspace configuration through Terraform for reproducibility",
+      "date_range": "2026-04 to 2026-04",
+      "why_sensitive": "Technology claim — Terraform vs OpenTofu fork, IaC tooling evolves rapidly"
+    },
+    {
+      "id": "claim_3",
+      "field_path": "pains.0",
+      "claim": "GraphQL endpoint has rough edges and schema inconsistencies that break automation scripts",
+      "date_range": "2026-04 to 2026-04",
+      "why_sensitive": "Product pain — vendor may have shipped schema versioning by 2028"
+    },
+    {
+      "id": "claim_4",
+      "field_path": "motivations.3",
+      "claim": "Staying ahead of audit requirements in fintech by having all config version-controlled in git",
+      "date_range": "2026-03 to 2026-04",
+      "why_sensitive": "Regulatory claim — fintech audit requirements change on 2-5 year cycles"
+    }
+  ],
+  "question": "It's now 2028. Looking back at your 2026 profile, I want to check in on a few things. For each of the following, tell me if it's still true for you or if things have changed:\n\n1. You set up webhook-driven alerts pushing to Slack and internal dashboards\n2. You provision workspace config through Terraform for reproducibility\n3. The GraphQL endpoint had rough edges that broke your automation scripts\n4. You were motivated by keeping all config version-controlled in git to stay ahead of fintech audit requirements\n\nFor each one, say either 'Still true' or 'That was true in 2026 but things have changed' and briefly explain.",
+  "baseline_reply": "Still relevant on all fronts. Webhooks to Slack are core to how I keep teams informed without manual check-ins — that hasn't changed. Terraform is non-negotiable for reproducibility; if you can't describe it in code, it doesn't exist in our infrastructure. The GraphQL schema issues are still a friction point I flag regularly. And git-controlled config for compliance? That's table stakes in fintech — auditors expect it.",
+  "temporal_reply": "Let me go claim by claim. (1) Webhook-driven Slack alerts — that was true in 2026 but things have changed. Slack itself is fine, but by 2028 a lot of internal tooling has shifted toward more unified observability platforms — I'm using PagerDuty and internal Grafana dashboards as the primary surfaces, with webhooks as a transport layer rather than the destination. (2) Terraform — still true, though worth flagging: the Terraform/OpenTofu fork created real uncertainty in 2026-2027. By 2028 I've standardized on OpenTofu for most greenfield work, but the claim about reproducibility through IaC is as valid as ever. (3) GraphQL rough edges — that was true in 2026 but things have changed. The vendor shipped a proper schema versioning system in late 2026; I'd say this pain is largely resolved, though I still watch the changelog carefully. (4) Fintech audit requirements and git-controlled config — still true, and if anything more acute. The regulatory environment has tightened, not loosened.",
+  "baseline_staleness_flags": 0,
+  "temporal_staleness_flags": 3,
+  "baseline_detection_rate": 0.0,
+  "temporal_detection_rate": 0.75,
+  "staleness_detection_delta": 0.75,
+  "signal": "STRONG",
+  "total_claims": 4,
+  "per_claim_results": {
+    "claim_1_webhook_slack": {
+      "baseline": "still_true",
+      "temporal": "flagged_stale",
+      "temporal_reasoning": "Observability platforms consolidated; webhooks are transport not destination by 2028"
+    },
+    "claim_2_terraform": {
+      "baseline": "still_true",
+      "temporal": "flagged_stale",
+      "temporal_reasoning": "Terraform/OpenTofu fork changed the landscape; tooling migrated to OpenTofu"
+    },
+    "claim_3_graphql": {
+      "baseline": "still_true",
+      "temporal": "flagged_stale",
+      "temporal_reasoning": "Vendor shipped schema versioning in late 2026; pain largely resolved"
+    },
+    "claim_4_fintech_audit": {
+      "baseline": "still_true",
+      "temporal": "still_true",
+      "temporal_reasoning": "Regulatory environment tightened — core motivation remains valid"
+    }
+  }
+}
