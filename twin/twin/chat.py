@@ -82,18 +82,38 @@ def build_persona_system_prompt(persona: dict) -> str:
 
 
 class TwinChat:
-    """Stateless persona-driven chat. Caller manages history."""
+    """Persona-driven chat with optional memory backend.
+
+    When no memory is provided, behaves identically to the original
+    stateless implementation (caller manages history). When a memory
+    backend is provided, it is consulted for cross-session context and
+    turns are stored after each exchange.
+    """
 
     def __init__(
         self,
         persona: dict,
         client: AsyncAnthropic,
         model: str = "claude-haiku-4-5-20251001",
+        memory: Any | None = None,
+        session_id: str = "",
     ) -> None:
         self.persona = persona
         self.client = client
         self.model = model
-        self.system_prompt = build_persona_system_prompt(persona)
+        self.memory = memory
+        self.session_id = session_id
+        self._base_system_prompt = build_persona_system_prompt(persona)
+
+    @property
+    def system_prompt(self) -> str:
+        """System prompt with memory context appended if available."""
+        if self.memory is None or not self.session_id:
+            return self._base_system_prompt
+        memory_context = self.memory.get_context(self.session_id)
+        if memory_context:
+            return self._base_system_prompt + memory_context
+        return self._base_system_prompt
 
     async def reply(
         self,
@@ -112,9 +132,30 @@ class TwinChat:
             (block.text for block in response.content if block.type == "text"),
             "",
         )
+
+        # Store turns in memory if configured
+        if self.memory is not None and self.session_id:
+            import time as _time
+            from .memory import Turn
+
+            now = _time.time()
+            self.memory.store_turn(Turn(
+                role="user", content=message,
+                session_id=self.session_id, timestamp=now,
+            ))
+            self.memory.store_turn(Turn(
+                role="assistant", content=text_block,
+                session_id=self.session_id, timestamp=now,
+            ))
+
         return TwinReply(
             text=text_block,
             input_tokens=response.usage.input_tokens,
             output_tokens=response.usage.output_tokens,
             model=self.model,
         )
+
+    def end_session(self) -> None:
+        """Signal the memory backend that this session has ended."""
+        if self.memory is not None and self.session_id:
+            self.memory.end_session(self.session_id)
