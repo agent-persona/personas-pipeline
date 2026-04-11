@@ -66,3 +66,49 @@ class PersonaV1(BaseModel):
     )
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+
+
+class PersonaV1VoiceFirst(BaseModel):
+    """exp-2.07 variant: vocabulary and sample_quotes declared FIRST.
+
+    Pydantic v2 preserves declaration order in model_json_schema(); the
+    Anthropic tool-use API fills fields in that order during structured
+    output. So reordering the class declaration is the cleanest possible
+    test of whether anchoring voice before demographics reduces stereotyping.
+
+    All field constraints, types, and descriptions are identical to PersonaV1 —
+    ONLY the order changes. No prompt changes, no model changes, no temperature
+    changes. If distinctiveness differs, it is causally attributable to order.
+    """
+
+    schema_version: Literal["1.0"] = "1.0"
+    name: str = Field(description="A memorable, descriptive name for this persona")
+    summary: str = Field(
+        description="2-3 sentence overview of who this persona is",
+    )
+    # --- VOICE FIRST ---
+    vocabulary: list[str] = Field(
+        min_length=3,
+        max_length=15,
+        description="Words and phrases this persona uses",
+    )
+    sample_quotes: list[str] = Field(
+        min_length=2,
+        max_length=5,
+        description="Things this persona might say, in their own voice",
+    )
+    # --- then everything else ---
+    demographics: Demographics
+    firmographics: Firmographics
+    goals: list[str] = Field(min_length=2, max_length=8)
+    pains: list[str] = Field(min_length=2, max_length=8)
+    motivations: list[str] = Field(min_length=2, max_length=6)
+    objections: list[str] = Field(min_length=1, max_length=6)
+    channels: list[str] = Field(
+        min_length=1,
+        max_length=8,
+        description="Where they spend time online/offline",
+    )
+    decision_triggers: list[str] = Field(min_length=1, max_length=6)
+    journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
+    source_evidence: list[SourceEvidence] = Field(min_length=3)

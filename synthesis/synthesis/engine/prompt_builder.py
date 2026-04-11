@@ -38,15 +38,21 @@ Example source_evidence entry:
 """
 
 
-def build_tool_definition() -> dict:
-    """Build the Claude tool definition from the PersonaV1 JSON schema."""
+def build_tool_definition(schema_cls: type = PersonaV1) -> dict:
+    """Build the Claude tool definition from a persona schema class.
+
+    exp-2.07: pass `PersonaV1VoiceFirst` to run the voice-first field-order
+    variant. The schema class determines the field order Claude emits during
+    tool-use structured output, since Pydantic v2 preserves class-level
+    declaration order in model_json_schema().
+    """
     return {
         "name": "create_persona",
         "description": (
             "Create a structured persona from the analyzed cluster data. "
             "All fields are required and must be grounded in the provided source records."
         ),
-        "input_schema": PersonaV1.model_json_schema(),
+        "input_schema": schema_cls.model_json_schema(),
     }
 
 
