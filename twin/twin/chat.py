@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Callable
 
 from anthropic import AsyncAnthropic
 
@@ -12,6 +13,10 @@ class TwinReply:
     input_tokens: int
     output_tokens: int
     model: str
+    # exp-4.14: wall-clock timing so callers can measure perceived latency
+    model_latency_ms: int = 0  # time spent inside the Anthropic API call
+    artificial_delay_ms: int = 0  # additional sleep injected before return
+    total_latency_ms: int = 0  # model_latency_ms + artificial_delay_ms
 
     @property
     def estimated_cost_usd(self) -> float:
@@ -82,39 +87,66 @@ def build_persona_system_prompt(persona: dict) -> str:
 
 
 class TwinChat:
-    """Stateless persona-driven chat. Caller manages history."""
+    """Stateless persona-driven chat. Caller manages history.
+
+    exp-4.14: supports an `artificial_delay_ms` parameter that injects a
+    pre-return sleep so the caller experiences a configurable total latency.
+    Accepts either an int (constant delay) or a callable
+    (reply_text, output_tokens) -> int for length-scaled delays.
+    """
 
     def __init__(
         self,
         persona: dict,
         client: AsyncAnthropic,
         model: str = "claude-haiku-4-5-20251001",
+        artificial_delay_ms: int | Callable[[str, int], int] | None = None,
     ) -> None:
         self.persona = persona
         self.client = client
         self.model = model
+        self.artificial_delay_ms = artificial_delay_ms
         self.system_prompt = build_persona_system_prompt(persona)
+
+    def _resolve_delay_ms(self, text: str, output_tokens: int) -> int:
+        d = self.artificial_delay_ms
+        if d is None:
+            return 0
+        if callable(d):
+            return max(0, int(d(text, output_tokens)))
+        return max(0, int(d))
 
     async def reply(
         self,
         message: str,
         history: list[dict] | None = None,
     ) -> TwinReply:
+        import time
+
         history = history or []
         messages = history + [{"role": "user", "content": message}]
+        t0 = time.monotonic()
         response = await self.client.messages.create(
             model=self.model,
             max_tokens=512,
             system=self.system_prompt,
             messages=messages,
         )
+        t1 = time.monotonic()
         text_block = next(
             (block.text for block in response.content if block.type == "text"),
             "",
         )
+        delay_ms = self._resolve_delay_ms(text_block, response.usage.output_tokens)
+        if delay_ms > 0:
+            await asyncio.sleep(delay_ms / 1000.0)
+        t2 = time.monotonic()
         return TwinReply(
             text=text_block,
             input_tokens=response.usage.input_tokens,
             output_tokens=response.usage.output_tokens,
             model=self.model,
+            model_latency_ms=int((t1 - t0) * 1000),
+            artificial_delay_ms=delay_ms,
+            total_latency_ms=int((t2 - t0) * 1000),
         )
