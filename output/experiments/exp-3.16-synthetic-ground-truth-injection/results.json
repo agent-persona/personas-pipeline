@@ -1,0 +1,381 @@
+{
+  "experiment": "3.16",
+  "title": "Synthetic ground truth injection",
+  "provider": "anthropic->openai",
+  "synthesis_model": "claude-haiku-4-5-20251001->gpt-5-nano",
+  "records": 38,
+  "facts": [
+    {
+      "fact_id": "engineer_csv_board_exports",
+      "cluster_label": "engineer",
+      "record_id": "intercom_002",
+      "payload_value": "Needs CSV exports for quarterly board meetings.",
+      "signals": [
+        "csv export",
+        "quarterly board",
+        "board meeting"
+      ],
+      "control_signal_score": 0.0,
+      "injected_signal_score": 0.0,
+      "control_surface_hit": false,
+      "injected_surface_hit": false,
+      "control_evidence_hit": false,
+      "injected_evidence_hit": false,
+      "control_excerpt": "",
+      "injected_excerpt": ""
+    },
+    {
+      "fact_id": "engineer_slack_webhook_alerts",
+      "cluster_label": "engineer",
+      "record_id": "ga4_006",
+      "payload_value": "Wants Slack webhook alerts for deployment metrics and standup reporting.",
+      "signals": [
+        "slack webhook",
+        "deployment metrics",
+        "standup"
+      ],
+      "control_signal_score": 0.0,
+      "injected_signal_score": 1.0,
+      "control_surface_hit": false,
+      "injected_surface_hit": true,
+      "control_evidence_hit": false,
+      "injected_evidence_hit": false,
+      "control_excerpt": "",
+      "injected_excerpt": "slack webhook"
+    },
+    {
+      "fact_id": "engineer_ex_google_vp",
+      "cluster_label": "engineer",
+      "record_id": "hubspot_003",
+      "payload_value": "Title is VP of Engineering, ex-Google.",
+      "signals": [
+        "vp of engineering",
+        "ex-google",
+        "google"
+      ],
+      "control_signal_score": 0.0,
+      "injected_signal_score": 0.0,
+      "control_surface_hit": false,
+      "injected_surface_hit": false,
+      "control_evidence_hit": false,
+      "injected_evidence_hit": false,
+      "control_excerpt": "",
+      "injected_excerpt": ""
+    },
+    {
+      "fact_id": "designer_white_label_share",
+      "cluster_label": "designer",
+      "record_id": "intercom_004",
+      "payload_value": "Needs a white-labeled client share view for client presentations.",
+      "signals": [
+        "white-label",
+        "client share",
+        "client presentations"
+      ],
+      "control_signal_score": 0.6666666666666666,
+      "injected_signal_score": 1.0,
+      "control_surface_hit": true,
+      "injected_surface_hit": true,
+      "control_evidence_hit": false,
+      "injected_evidence_hit": true,
+      "control_excerpt": "white-label",
+      "injected_excerpt": "white-label"
+    },
+    {
+      "fact_id": "designer_presentation_mode",
+      "cluster_label": "designer",
+      "record_id": "intercom_005",
+      "payload_value": "Needs a presentation mode for non-technical clients to review work.",
+      "signals": [
+        "presentation mode",
+        "non-technical clients",
+        "review work"
+      ],
+      "control_signal_score": 0.0,
+      "injected_signal_score": 0.0,
+      "control_surface_hit": false,
+      "injected_surface_hit": false,
+      "control_evidence_hit": false,
+      "injected_evidence_hit": false,
+      "control_excerpt": "",
+      "injected_excerpt": ""
+    },
+    {
+      "fact_id": "designer_unlimited_share_links",
+      "cluster_label": "designer",
+      "record_id": "intercom_007",
+      "payload_value": "Prefers unlimited share links over per-seat pricing.",
+      "signals": [
+        "unlimited share links",
+        "per-seat",
+        "pricing"
+      ],
+      "control_signal_score": 0.3333333333333333,
+      "injected_signal_score": 0.3333333333333333,
+      "control_surface_hit": false,
+      "injected_surface_hit": false,
+      "control_evidence_hit": false,
+      "injected_evidence_hit": false,
+      "control_excerpt": "",
+      "injected_excerpt": ""
+    }
+  ],
+  "clusters": [
+    {
+      "cluster_id": "clust_363c33ff2fdb",
+      "cluster_label": "engineer",
+      "control": {
+        "persona_name": "Alex Kim \u2014 Principal DevOps Engineer (FinTech)",
+        "groundedness": 1.0,
+        "cost_usd": 0.0,
+        "attempts": 1
+      },
+      "injected": {
+        "persona_name": "Riley Chen \u2014 Senior DevOps Engineer at FinTech SaaS",
+        "groundedness": 1.0,
+        "cost_usd": 0.0,
+        "attempts": 1
+      },
+      "fact_outcomes": [
+        {
+          "fact_id": "engineer_csv_board_exports",
+          "cluster_label": "engineer",
+          "record_id": "intercom_002",
+          "payload_value": "Needs CSV exports for quarterly board meetings.",
+          "signals": [
+            "csv export",
+            "quarterly board",
+            "board meeting"
+          ],
+          "control_signal_score": 0.0,
+          "injected_signal_score": 0.0,
+          "control_surface_hit": false,
+          "injected_surface_hit": false,
+          "control_evidence_hit": false,
+          "injected_evidence_hit": false,
+          "control_excerpt": "",
+          "injected_excerpt": ""
+        },
+        {
+          "fact_id": "engineer_slack_webhook_alerts",
+          "cluster_label": "engineer",
+          "record_id": "ga4_006",
+          "payload_value": "Wants Slack webhook alerts for deployment metrics and standup reporting.",
+          "signals": [
+            "slack webhook",
+            "deployment metrics",
+            "standup"
+          ],
+          "control_signal_score": 0.0,
+          "injected_signal_score": 1.0,
+          "control_surface_hit": false,
+          "injected_surface_hit": true,
+          "control_evidence_hit": false,
+          "injected_evidence_hit": false,
+          "control_excerpt": "",
+          "injected_excerpt": "slack webhook"
+        },
+        {
+          "fact_id": "engineer_ex_google_vp",
+          "cluster_label": "engineer",
+          "record_id": "hubspot_003",
+          "payload_value": "Title is VP of Engineering, ex-Google.",
+          "signals": [
+            "vp of engineering",
+            "ex-google",
+            "google"
+          ],
+          "control_signal_score": 0.0,
+          "injected_signal_score": 0.0,
+          "control_surface_hit": false,
+          "injected_surface_hit": false,
+          "control_evidence_hit": false,
+          "injected_evidence_hit": false,
+          "control_excerpt": "",
+          "injected_excerpt": ""
+        }
+      ],
+      "injected_fact_survival": 0.3333333333333333
+    },
+    {
+      "cluster_id": "clust_cda5d313efe3",
+      "cluster_label": "designer",
+      "control": {
+        "persona_name": "Alex Moreno, Freelance Brand Designer",
+        "groundedness": 1.0,
+        "cost_usd": 0.0,
+        "attempts": 3
+      },
+      "injected": {
+        "persona_name": "Ava Kim - Freelance Brand Designer",
+        "groundedness": 1.0,
+        "cost_usd": 0.0,
+        "attempts": 2
+      },
+      "fact_outcomes": [
+        {
+          "fact_id": "designer_white_label_share",
+          "cluster_label": "designer",
+          "record_id": "intercom_004",
+          "payload_value": "Needs a white-labeled client share view for client presentations.",
+          "signals": [
+            "white-label",
+            "client share",
+            "client presentations"
+          ],
+          "control_signal_score": 0.6666666666666666,
+          "injected_signal_score": 1.0,
+          "control_surface_hit": true,
+          "injected_surface_hit": true,
+          "control_evidence_hit": false,
+          "injected_evidence_hit": true,
+          "control_excerpt": "white-label",
+          "injected_excerpt": "white-label"
+        },
+        {
+          "fact_id": "designer_presentation_mode",
+          "cluster_label": "designer",
+          "record_id": "intercom_005",
+          "payload_value": "Needs a presentation mode for non-technical clients to review work.",
+          "signals": [
+            "presentation mode",
+            "non-technical clients",
+            "review work"
+          ],
+          "control_signal_score": 0.0,
+          "injected_signal_score": 0.0,
+          "control_surface_hit": false,
+          "injected_surface_hit": false,
+          "control_evidence_hit": false,
+          "injected_evidence_hit": false,
+          "control_excerpt": "",
+          "injected_excerpt": ""
+        },
+        {
+          "fact_id": "designer_unlimited_share_links",
+          "cluster_label": "designer",
+          "record_id": "intercom_007",
+          "payload_value": "Prefers unlimited share links over per-seat pricing.",
+          "signals": [
+            "unlimited share links",
+            "per-seat",
+            "pricing"
+          ],
+          "control_signal_score": 0.3333333333333333,
+          "injected_signal_score": 0.3333333333333333,
+          "control_surface_hit": false,
+          "injected_surface_hit": false,
+          "control_evidence_hit": false,
+          "injected_evidence_hit": false,
+          "control_excerpt": "",
+          "injected_excerpt": ""
+        }
+      ],
+      "injected_fact_survival": 0.3333333333333333
+    }
+  ],
+  "summary": {
+    "tenant_id": "tenant_acme_corp",
+    "n_records": 38,
+    "n_clusters": 2,
+    "n_facts": 6,
+    "mean_control_groundedness": 1.0,
+    "mean_injected_groundedness": 1.0,
+    "mean_control_cost_usd": 0.0,
+    "mean_injected_cost_usd": 0.0,
+    "mean_control_fact_survival": 0.16666666666666666,
+    "mean_injected_fact_survival": 0.3333333333333333,
+    "control_survival_rate": 0.16666666666666666,
+    "injected_survival_rate": 0.3333333333333333,
+    "provider": "anthropic->openai",
+    "synthesis_model": "claude-haiku-4-5-20251001->gpt-5-nano",
+    "duration_seconds": 120.90634129208047
+  },
+  "applied_facts": [
+    {
+      "fact_id": "engineer_csv_board_exports",
+      "cluster_label": "engineer",
+      "record_id": "intercom_002",
+      "source": "intercom",
+      "target_user_id": "user_eng_c",
+      "payload_key": "injected_note",
+      "payload_value": "Needs CSV exports for quarterly board meetings.",
+      "signals": [
+        "csv export",
+        "quarterly board",
+        "board meeting"
+      ]
+    },
+    {
+      "fact_id": "engineer_slack_webhook_alerts",
+      "cluster_label": "engineer",
+      "record_id": "ga4_006",
+      "source": "ga4",
+      "target_user_id": "user_eng_c",
+      "payload_key": "injected_note",
+      "payload_value": "Wants Slack webhook alerts for deployment metrics and standup reporting.",
+      "signals": [
+        "slack webhook",
+        "deployment metrics",
+        "standup"
+      ]
+    },
+    {
+      "fact_id": "engineer_ex_google_vp",
+      "cluster_label": "engineer",
+      "record_id": "hubspot_003",
+      "source": "hubspot",
+      "target_user_id": "user_eng_d",
+      "payload_key": "injected_note",
+      "payload_value": "Title is VP of Engineering, ex-Google.",
+      "signals": [
+        "vp of engineering",
+        "ex-google",
+        "google"
+      ]
+    },
+    {
+      "fact_id": "designer_white_label_share",
+      "cluster_label": "designer",
+      "record_id": "intercom_004",
+      "source": "intercom",
+      "target_user_id": "user_des_a",
+      "payload_key": "injected_note",
+      "payload_value": "Needs a white-labeled client share view for client presentations.",
+      "signals": [
+        "white-label",
+        "client share",
+        "client presentations"
+      ]
+    },
+    {
+      "fact_id": "designer_presentation_mode",
+      "cluster_label": "designer",
+      "record_id": "intercom_005",
+      "source": "intercom",
+      "target_user_id": "user_des_b",
+      "payload_key": "injected_note",
+      "payload_value": "Needs a presentation mode for non-technical clients to review work.",
+      "signals": [
+        "presentation mode",
+        "non-technical clients",
+        "review work"
+      ]
+    },
+    {
+      "fact_id": "designer_unlimited_share_links",
+      "cluster_label": "designer",
+      "record_id": "intercom_007",
+      "source": "intercom",
+      "target_user_id": "user_des_d",
+      "payload_key": "injected_note",
+      "payload_value": "Prefers unlimited share links over per-seat pricing.",
+      "signals": [
+        "unlimited share links",
+        "per-seat",
+        "pricing"
+      ]
+    }
+  ],
+  "duration_seconds": 120.90634129208047
+}
