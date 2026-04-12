@@ -14,6 +14,7 @@ from .prompt_builder import (
     SYSTEM_PROMPT,
     build_messages,
     build_retry_messages,
+    build_system_prompt,
     build_tool_definition,
 )
 
@@ -55,6 +56,7 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    few_shot_count: int = 0,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
@@ -62,6 +64,7 @@ async def synthesize(
     groundedness, and retries with error context on failure.
     """
     tool = build_tool_definition()
+    system_prompt = build_system_prompt(few_shot_count)
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
     first_attempt_cost: float | None = None
@@ -78,7 +81,7 @@ async def synthesize(
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
+            system=system_prompt,
             messages=messages,
             tool=tool,
         )
