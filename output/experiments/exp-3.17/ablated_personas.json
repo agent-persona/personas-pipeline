@@ -1,0 +1,1456 @@
+[
+  {
+    "ablation_pct": 0,
+    "n_records_remaining": 12,
+    "status": "failed",
+    "error": "Synthesis failed after 3 attempts",
+    "cost_usd": 0.048016
+  },
+  {
+    "ablation_pct": 10,
+    "n_records_remaining": 11,
+    "status": "ok",
+    "persona_name": "Marcus, the Infrastructure-First DevOps Architect",
+    "persona": {
+      "schema_version": "1.0",
+      "name": "Marcus, the Infrastructure-First DevOps Architect",
+      "summary": "A Senior DevOps Engineer at a mid-sized fintech firm who treats project management tools as integration hubs rather than standalone apps. Marcus spends significant time setting up webhooks, configuring APIs, and building custom dashboards that connect GitHub commits to deployment pipelines\u2014he views engineering tooling as a system that must speak to everything else.",
+      "demographics": {
+        "age_range": "35-50",
+        "gender_distribution": "predominantly male",
+        "location_signals": [
+          "US-based",
+          "fintech hub"
+        ],
+        "education_level": "Bachelor's degree in Computer Science or equivalent",
+        "income_bracket": "$120k-$180k"
+      },
+      "firmographics": {
+        "company_size": "50-200 employees",
+        "industry": "fintech",
+        "role_titles": [
+          "Senior DevOps Engineer",
+          "Infrastructure Engineer",
+          "Platform Engineer"
+        ],
+        "tech_stack_signals": [
+          "GitHub",
+          "Terraform",
+          "webhook infrastructure",
+          "GraphQL/REST APIs",
+          "custom CI/CD pipelines"
+        ]
+      },
+      "goals": [
+        "Create seamless bi-directional data flow between project planning and GitHub to eliminate manual status updates and commit log searching",
+        "Build automated deployment gates that trigger based on project milestones and pull request reviews, reducing manual release coordination",
+        "Establish a single source of truth that bridges project planning, GitHub commits, and deployment events",
+        "Reduce onboarding friction for new team members by automating infrastructure setup through IaC and API-driven configuration",
+        "Enable the team to correlate planning intent with production outcomes in real-time"
+      ],
+      "pains": [
+        "Frustrated by the time spent manually connecting disparate tools and writing custom glue code instead of shipping features",
+        "Exhausted by constantly context-switching between the project management UI and GitHub to piece together the full story of a change",
+        "Concerned that current tooling silos prevent the team from understanding the full lifecycle of a change from planning to production",
+        "Stressed by the operational burden of maintaining multiple API authentication tokens and credentials across systems",
+        "Anxious about the brittleness of custom integrations that break when dependent tools push unexpected updates",
+        "Irritated by lack of clear API versioning or deprecation timelines, making future-proofing of custom code nearly impossible",
+        "Worried that without proper API guarantees, switching platforms mid-migration could strand custom integrations"
+      ],
+      "motivations": [
+        "Drive toward consolidating engineering workflows so the team thinks in terms of 'changes' rather than 'tasks in one tool and code in another'",
+        "Desire to reduce operational toil and free engineering capacity for higher-impact work like improving system reliability and performance",
+        "Commitment to keeping deployment pipelines safe and reliable while enabling rapid iteration",
+        "Pride in building elegant infrastructure solutions that scale across the organization without constant manual intervention"
+      ],
+      "objections": [
+        "Skeptical of platforms that promise easy integration but lack robust API documentation or have limited GraphQL/REST support",
+        "Concerned about the long-term stability of custom integrations if the platform changes its roadmap or pricing",
+        "Wary of vendor lock-in that forces adoption of proprietary webhooks or custom protocols instead of standard HTTP/REST patterns",
+        "Worried that switching to a new tool mid-cycle will create weeks of rework and credential rotation across multiple systems"
+      ],
+      "channels": [
+        "API and webhook documentation pages",
+        "GitHub integration flows",
+        "Team Slack channels for DevOps discussions",
+        "Internal engineering wikis and Terraform repositories",
+        "Conference talks on CI/CD and deployment platforms",
+        "Technical community forums and Stack Overflow"
+      ],
+      "vocabulary": [
+        "single source of truth",
+        "end-to-end visibility",
+        "API-driven",
+        "webhook configuration",
+        "custom integration",
+        "infrastructure as code",
+        "deployment pipeline",
+        "toolchain orchestration",
+        "operational overhead",
+        "lifecycle tracking",
+        "GraphQL queries",
+        "credential management",
+        "platform stability"
+      ],
+      "decision_triggers": [
+        "Confirmation that the platform offers stable, versioned REST and GraphQL APIs with long-term support guarantees",
+        "Demonstration of working GitHub integration that automatically syncs commits, PRs, and deployments without custom code",
+        "Clear deprecation policy and API roadmap that protects existing custom integrations for at least 12 months",
+        "Proof that webhook payloads include rich context (deployment status, commit hashes, author info) to reduce downstream queries",
+        "Evidence that other infrastructure-heavy organizations have successfully migrated without major rework"
+      ],
+      "sample_quotes": [
+        "We need the tool to integrate *into* our workflow, not force us to rewrite the workflow around the tool.",
+        "If I have to maintain a custom webhook handler for months because the platform's API doesn't expose what we need, that's a no-go.",
+        "Show me the API guarantees. If you can't promise that this endpoint stays stable for 18 months, we're building elsewhere.",
+        "The real win is when a deployment happens and the status automatically flows back to the project without anyone touching the keyboard.",
+        "We've burned too many hours writing glue code. We need a platform that speaks GraphQL, REST, and webhooks fluently."
+      ],
+      "journey_stages": [
+        {
+          "stage": "awareness",
+          "mindset": "Skeptical but curious\u2014has heard that this tool supports GitHub integration, but wants to confirm it's not just UI-level copy-paste",
+          "key_actions": [
+            "Visits /api/docs and /api/reference pages immediately to assess API maturity",
+            "Reviews webhook_config documentation to understand payload structure",
+            "Checks integrations page to see what's officially supported vs. community-built"
+          ],
+          "content_preferences": [
+            "Technical API documentation with code examples",
+            "Architecture diagrams showing how webhooks integrate with existing CI/CD",
+            "Case studies from fintech or other regulated industries showing deployment safety"
+          ]
+        },
+        {
+          "stage": "consideration",
+          "mindset": "Willing to pilot if the integration story is sound, but needs concrete proof of stability and team adoption",
+          "key_actions": [
+            "Sets up github_integration to see payload content and latency",
+            "Configures webhooks in a dev environment to test reliability over 1\u20132 weeks",
+            "Builds a custom_dashboard that mimics the 'change lifecycle' view needed by the team",
+            "Uses Terraform or IaC to codify the integration setup so it's reproducible"
+          ],
+          "content_preferences": [
+            "Step-by-step integration walkthroughs with expected payloads",
+            "Performance benchmarks and uptime SLAs for webhook delivery",
+            "Documentation on API rate limits and how to handle auth token refresh",
+            "Community examples and open-source Terraform modules from other users"
+          ]
+        },
+        {
+          "stage": "decision",
+          "mindset": "Ready to commit if the platform can prove it won't become technical debt, and if the team can be onboarded without painful credential rotation",
+          "key_actions": [
+            "Invites team members via team_invite to validate the UX from a user perspective",
+            "Runs api_setup and terraform_setup to automate initial configuration",
+            "Documents the integration in the team wiki and creates runbooks for troubleshooting",
+            "Sets success metrics: reduction in time spent manually syncing statuses, increase in deployment frequency"
+          ],
+          "content_preferences": [
+            "Onboarding guides tailored to DevOps workflows",
+            "Troubleshooting docs and a responsive support channel (Slack, email)",
+            "API deprecation and change policy in writing, signed by product leadership",
+            "Migration playbooks showing how to export data if switching platforms later"
+          ]
+        }
+      ],
+      "source_evidence": [
+        {
+          "claim": "Senior DevOps Engineer role at fintech company with 50-200 employees",
+          "record_ids": [
+            "hubspot_000"
+          ],
+          "field_path": "firmographics.role_titles.0",
+          "confidence": 1.0
+        },
+        {
+          "claim": "Spends extended time configuring webhooks (1560 seconds typical session)",
+          "record_ids": [
+            "ga4_001",
+            "ga4_006"
+          ],
+          "field_path": "goals.0",
+          "confidence": 0.95
+        },
+        {
+          "claim": "Sets up GitHub integration to automate data flow between planning and code",
+          "record_ids": [
+            "ga4_002",
+            "ga4_009"
+          ],
+          "field_path": "goals.0",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Builds custom dashboards to track project-to-deployment lifecycle (1980 seconds session)",
+          "record_ids": [
+            "ga4_004"
+          ],
+          "field_path": "goals.1",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Uses Terraform to codify infrastructure setup automatically",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "field_path": "goals.3",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Establishes single source of truth via API-driven integration of planning, GitHub, and deployments",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "goals.2",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Spends significant time on api_setup (2340, 1820, 1240 second sessions) indicating integration complexity",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.0",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Multiple webhook and GitHub integration sessions indicate tool fragmentation problem",
+          "record_ids": [
+            "ga4_001",
+            "ga4_002",
+            "ga4_006",
+            "ga4_009"
+          ],
+          "field_path": "pains.1",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Custom dashboard building (1980 second session) to bridge disparate systems",
+          "record_ids": [
+            "ga4_004"
+          ],
+          "field_path": "pains.2",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Multiple API setup sessions indicate credential and auth complexity",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.3",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Extensive webhook configuration sessions suggest concerns about integration brittleness",
+          "record_ids": [
+            "ga4_001",
+            "ga4_006"
+          ],
+          "field_path": "pains.4",
+          "confidence": 0.7
+        },
+        {
+          "claim": "Long API documentation review sessions (2340+ seconds) indicate need for clear API documentation",
+          "record_ids": [
+            "ga4_000"
+          ],
+          "field_path": "pains.5",
+          "confidence": 0.8
+        },
+        {
+          "claim": "High-frequency API and webhook setup sessions indicate switching costs and mid-migration concerns",
+          "record_ids": [
+            "ga4_000",
+            "ga4_001",
+            "ga4_003",
+            "ga4_006",
+            "ga4_007"
+          ],
+          "field_path": "pains.6",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Visits /api/docs and /api/reference pages to evaluate integration capability",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "motivations.0",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Spends time on webhook and GitHub integration to reduce manual operational toil",
+          "record_ids": [
+            "ga4_001",
+            "ga4_002",
+            "ga4_006",
+            "ga4_009"
+          ],
+          "field_path": "motivations.1",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Uses Terraform and custom dashboards to enable safe, scalable deployment pipelines",
+          "record_ids": [
+            "ga4_004",
+            "ga4_008"
+          ],
+          "field_path": "motivations.2",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Extensive API and Terraform setup indicates desire to build elegant, scalable infrastructure",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007",
+            "ga4_008"
+          ],
+          "field_path": "motivations.3",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Extended API documentation review sessions indicate skepticism about integration promises",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "objections.0",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Multiple long sessions setting up integrations indicate concern about platform roadmap stability",
+          "record_ids": [
+            "ga4_001",
+            "ga4_006"
+          ],
+          "field_path": "objections.1",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Use of Terraform and custom webhooks indicates wariness of proprietary integration patterns",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "field_path": "objections.2",
+          "confidence": 0.7
+        },
+        {
+          "claim": "Multiple api_setup, webhook_config, and GitHub sessions indicate switching costs concern",
+          "record_ids": [
+            "ga4_000",
+            "ga4_001",
+            "ga4_002",
+            "ga4_003",
+            "ga4_006",
+            "ga4_007"
+          ],
+          "field_path": "objections.3",
+          "confidence": 0.8
+        }
+      ]
+    },
+    "structural_groundedness": 0.95,
+    "judge_groundedness": 4,
+    "judge_depth": 5,
+    "judge_rationale": "The persona's core attributes (Senior DevOps Engineer, fintech, mid-sized company) are directly supported by HubSpot data, and the technical focus on webhooks, APIs, custom dashboards, and infrastructure (Terraform) is heavily corroborated by GA4 event patterns showing repeated sessions in these exact areas. The goals, pains, and vocabulary are deeply specific and actionable, with memorable quotes that clearly articulate infrastructure-first philosophy and integration-driven frustrations\u2014though some pains (API versioning guarantees, platform stability concerns) go slightly beyond what the event data explicitly proves, they are reasonable extrapolations from observed behavior.",
+    "cost_usd": 0.057395,
+    "attempts": 3
+  },
+  {
+    "ablation_pct": 25,
+    "n_records_remaining": 9,
+    "status": "ok",
+    "persona_name": "Alex Chen, The DevOps-Minded Engineering Lead",
+    "persona": {
+      "schema_version": "1.0",
+      "name": "Alex Chen, The DevOps-Minded Engineering Lead",
+      "summary": "Alex is a technical engineering leader who prioritizes automation, scalability, and seamless team collaboration through APIs and integrations. They spend significant time configuring webhooks, setting up GitHub integrations, and building custom dashboards\u2014approaching project management as a systems engineer rather than a traditional user.",
+      "demographics": {
+        "age_range": "28-40",
+        "gender_distribution": "unknown",
+        "location_signals": [
+          "US-based, likely tech hub"
+        ],
+        "education_level": "Bachelor's in Computer Science or related field",
+        "income_bracket": null
+      },
+      "firmographics": {
+        "company_size": "Growth-stage tech company (50-250 employees)",
+        "industry": "B2B SaaS",
+        "role_titles": [
+          "Engineering Lead",
+          "Technical Lead",
+          "DevOps Engineer",
+          "Platform Engineer"
+        ],
+        "tech_stack_signals": [
+          "GitHub",
+          "Terraform",
+          "GraphQL",
+          "Webhooks",
+          "APIs"
+        ]
+      },
+      "goals": [
+        "Build a unified view of team progress by connecting GitHub and project management data through APIs",
+        "Automate routine workflow tasks and reduce manual data sync between tools using webhooks and integrations",
+        "Pride in building elegant, scalable technical solutions that scale with team growth",
+        "Enable the broader engineering team by creating seamless integrations that eliminate tool friction",
+        "Set up self-serve infrastructure that team members can configure without engineering overhead"
+      ],
+      "pains": [
+        "Scattered context across multiple tools (GitHub, Slack, project management platform) creates friction for the team",
+        "Struggling to keep GitHub and project management data synchronized across multiple tools",
+        "Manual data entry and updates between systems are time-consuming and error-prone",
+        "Complex onboarding process for new team members when introducing new integrations",
+        "Lack of visibility into real-time project status without jumping between platforms",
+        "Fragmented tooling landscape creating context-switching overhead for the engineering team"
+      ],
+      "motivations": [
+        "Desire to eliminate manual overhead and create automated, self-sustaining workflows",
+        "Passion for systems thinking\u2014viewing project management as infrastructure, not just a tool",
+        "Pride in building elegant, scalable technical solutions that scale with team growth",
+        "Desire to be the person who 'makes things work' and enables the broader team",
+        "Want to reduce cognitive load on the team through intelligent automation and integration"
+      ],
+      "objections": [
+        "Concerns about tight integration lock-in that limits flexibility to swap tools later",
+        "Worries that API-first integrations may lack necessary business logic layers for non-technical teammates",
+        "Concerns about reliability and uptime when critical team workflows depend on integrations",
+        "Vendor lock-in or inability to export data programmatically raises red flags",
+        "Fear that complex setup will create technical debt if not properly documented and maintained"
+      ],
+      "channels": [
+        "API documentation and reference materials",
+        "GitHub and version control workflows",
+        "Slack for team communication",
+        "Product settings and configuration pages",
+        "Internal engineering documentation and wikis"
+      ],
+      "vocabulary": [
+        "API setup",
+        "webhook configuration",
+        "GitHub integration",
+        "data synchronization",
+        "custom dashboards",
+        "team onboarding",
+        "context-switching",
+        "automated workflows",
+        "infrastructure",
+        "scalability",
+        "Terraform",
+        "GraphQL",
+        "integrations",
+        "data export"
+      ],
+      "decision_triggers": [
+        "Proven track record of stable, uptime-focused integrations with SLAs clearly defined",
+        "Transparent API documentation showing exactly how data flows and can be exported",
+        "Quick wins: ability to set up a GitHub sync or custom dashboard in under 30 minutes",
+        "Strong community or open-source ecosystem showing how others have extended the platform",
+        "Clear migration path and data export guarantees if switching providers"
+      ],
+      "sample_quotes": [
+        "I don't want to babysit tool integrations\u2014they need to just work and scale with us.",
+        "If it can't be automated, it shouldn't be a manual process in the first place.",
+        "Give me a solid API and good docs, and I can enable the whole team without constantly being the bottleneck.",
+        "We need single source of truth for project data, not data scattered across five different systems.",
+        "The best tool is one that gets out of the way and lets engineers focus on shipping."
+      ],
+      "journey_stages": [
+        {
+          "stage": "awareness",
+          "mindset": "Recognizing tool fragmentation is slowing down the team; searching for integration solutions",
+          "key_actions": [
+            "Reading API documentation",
+            "Exploring webhook capabilities",
+            "Checking integration options"
+          ],
+          "content_preferences": [
+            "Technical deep-dives",
+            "Architecture diagrams",
+            "Integration case studies",
+            "API reference materials"
+          ]
+        },
+        {
+          "stage": "consideration",
+          "mindset": "Evaluating whether this platform can be the central hub for project + GitHub data; testing integrations",
+          "key_actions": [
+            "Setting up GitHub integration",
+            "Configuring webhooks",
+            "Building custom dashboards",
+            "Testing Terraform support"
+          ],
+          "content_preferences": [
+            "Step-by-step setup guides",
+            "Integration examples",
+            "Terraform modules",
+            "GraphQL documentation",
+            "Reliability/uptime guarantees"
+          ]
+        },
+        {
+          "stage": "decision",
+          "mindset": "Ready to commit if the platform proves it can handle mission-critical integrations and data export needs",
+          "key_actions": [
+            "Inviting team members",
+            "Configuring team-wide integrations",
+            "Setting up production webhooks",
+            "Creating onboarding docs"
+          ],
+          "content_preferences": [
+            "Security and compliance documentation",
+            "Data export/migration guides",
+            "Team management best practices",
+            "Production deployment guidelines"
+          ]
+        }
+      ],
+      "source_evidence": [
+        {
+          "claim": "Spends extended time setting up GitHub integrations and webhooks",
+          "record_ids": [
+            "ga4_009",
+            "ga4_001",
+            "ga4_006"
+          ],
+          "field_path": "goals.0",
+          "confidence": 0.95
+        },
+        {
+          "claim": "Builds custom dashboards to unify data from multiple sources",
+          "record_ids": [
+            "ga4_004"
+          ],
+          "field_path": "goals.1",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Uses Terraform and Infrastructure-as-Code for scalable setup",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "field_path": "goals.4",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Handles team onboarding and integration management responsibilities",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "field_path": "goals.2",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Extensive time spent on API setup indicates core frustration with tool fragmentation",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.0",
+          "confidence": 0.9
+        },
+        {
+          "claim": "GitHub integration setup and webhook configuration directly addresses data synchronization pain",
+          "record_ids": [
+            "ga4_009",
+            "ga4_001",
+            "ga4_006"
+          ],
+          "field_path": "pains.1",
+          "confidence": 0.88
+        },
+        {
+          "claim": "Extended API and webhook sessions indicate manual integration work is time-consuming",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_001"
+          ],
+          "field_path": "pains.2",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Team invite activity (ga4_005) reflects challenges in onboarding team members to new integrations",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "field_path": "pains.3",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Multi-tool integration setup (GitHub, custom dashboards, webhooks, Terraform) indicates context-switching pain",
+          "record_ids": [
+            "ga4_009",
+            "ga4_004",
+            "ga4_001",
+            "ga4_008",
+            "ga4_006"
+          ],
+          "field_path": "pains.5",
+          "confidence": 0.87
+        },
+        {
+          "claim": "Consistent API setup and Terraform configuration sessions show drive to automate workflows",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007",
+            "ga4_008"
+          ],
+          "field_path": "motivations.0",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Infrastructure-as-Code and systems-level integration approach indicates systems thinking mindset",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "field_path": "motivations.1",
+          "confidence": 0.82
+        },
+        {
+          "claim": "Extended time on complex API and webhook configs shows commitment to scalable solutions",
+          "record_ids": [
+            "ga4_000",
+            "ga4_001",
+            "ga4_003",
+            "ga4_006"
+          ],
+          "field_path": "motivations.2",
+          "confidence": 0.86
+        },
+        {
+          "claim": "Leading team onboarding and integration setup reflects desire to enable broader team",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "field_path": "motivations.3",
+          "confidence": 0.78
+        },
+        {
+          "claim": "Thorough API and webhook exploration reduces team cognitive load through integration",
+          "record_ids": [
+            "ga4_000",
+            "ga4_001",
+            "ga4_003",
+            "ga4_006"
+          ],
+          "field_path": "motivations.4",
+          "confidence": 0.83
+        },
+        {
+          "claim": "Concerns about lock-in align with technical lead focus on flexibility and data portability",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "objections.0",
+          "confidence": 0.72
+        },
+        {
+          "claim": "API-first approach may concern non-technical team members during onboarding",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "field_path": "objections.1",
+          "confidence": 0.7
+        },
+        {
+          "claim": "Critical workflows depend on integrations and webhooks\u2014uptime concerns are primary",
+          "record_ids": [
+            "ga4_001",
+            "ga4_006",
+            "ga4_009"
+          ],
+          "field_path": "objections.2",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Extended API exploration indicates need for clear data export and programmatic access",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "objections.3",
+          "confidence": 0.81
+        },
+        {
+          "claim": "Complex Terraform and webhook setup creates technical debt if not properly maintained",
+          "record_ids": [
+            "ga4_008",
+            "ga4_001",
+            "ga4_006"
+          ],
+          "field_path": "objections.4",
+          "confidence": 0.76
+        }
+      ]
+    },
+    "structural_groundedness": 0.9047619047619048,
+    "judge_groundedness": 4,
+    "judge_depth": 4,
+    "judge_rationale": "Nearly all claims are directly traceable to source events: API setup (3 sessions), webhook configuration (2 sessions), custom dashboards, GitHub integration, and Terraform setup are all documented; vocabulary and goals align closely with observed behaviors. Goals and pains are specific and actionable rather than generic, with concrete technical pain points (data sync friction, context-switching) and measurable objectives (unified views, automation), though quotes lack source attribution which slightly reduces perfect groundedness.",
+    "cost_usd": 0.033988000000000004,
+    "attempts": 2
+  },
+  {
+    "ablation_pct": 50,
+    "n_records_remaining": 6,
+    "status": "ok",
+    "persona_name": "Dev Ops Engineer - Infrastructure as Code Evangelist",
+    "persona": {
+      "schema_version": "1.0",
+      "name": "Dev Ops Engineer - Infrastructure as Code Evangelist",
+      "summary": "A technically skilled infrastructure engineer who deeply values automation and infrastructure-as-code practices. This persona spends significant time configuring APIs, webhooks, and deployment integrations while leading multi-team initiatives that require strong governance and audit trails.",
+      "demographics": {
+        "age_range": "28-40",
+        "gender_distribution": "predominantly male",
+        "location_signals": [
+          "San Francisco Bay Area",
+          "Seattle",
+          "Austin",
+          "remote-first tech hubs"
+        ],
+        "education_level": "Bachelor's degree in Computer Science or related field",
+        "income_bracket": "$90K-$140K"
+      },
+      "firmographics": {
+        "company_size": "SMB to mid-market (50-500 employees)",
+        "industry": "B2B SaaS, fintech, or enterprise software",
+        "role_titles": [
+          "DevOps Engineer",
+          "Infrastructure Engineer",
+          "Platform Engineer",
+          "Site Reliability Engineer (SRE)"
+        ],
+        "tech_stack_signals": [
+          "Terraform",
+          "GitHub",
+          "GraphQL",
+          "Webhooks",
+          "API-first architectures",
+          "CI/CD pipelines"
+        ]
+      },
+      "goals": [
+        "Set up robust API integrations and webhooks to automate team workflows and reduce manual processes",
+        "Implement infrastructure-as-code solutions that scale across multiple teams and environments",
+        "Demonstrate ROI and efficiency gains to leadership through measurable automation improvements",
+        "Establish 'set it and forget it' automation that requires minimal ongoing configuration",
+        "Create custom dashboards and governance frameworks for cross-functional team visibility"
+      ],
+      "pains": [
+        "Spending hours manually configuring tools and systems instead of automating them",
+        "Lack of clarity on API capabilities and integration options during initial setup",
+        "Difficulty managing permissions and governance across multiple teams without proper audit trails",
+        "Tools requiring constant point-and-click configuration instead of declarative, code-based approaches",
+        "Integration complexity that overwhelms team capacity and requires external consulting",
+        "Absence of structured webhooks or event-driven architecture for real-time updates"
+      ],
+      "motivations": [
+        "Love of solving complex technical problems with elegant, scalable solutions",
+        "Need to demonstrate ROI and efficiency gains to leadership",
+        "Preference for 'set it and forget it' automation over point-and-click configuration",
+        "Drive to enable team productivity by removing manual, repetitive work",
+        "Desire to build robust, auditable systems that satisfy compliance and governance requirements"
+      ],
+      "objections": [
+        "Concern that the platform may lack the depth of API documentation or webhook flexibility needed for advanced use cases",
+        "Skepticism about whether the tool can truly replace manual configuration with infrastructure-as-code",
+        "Worry that integration complexity might exceed team capacity or require external help",
+        "Fear of vendor lock-in or inability to export configuration as code",
+        "Need for strong governance and audit trails in multi-team environments"
+      ],
+      "channels": [
+        "API documentation and reference sites",
+        "GitHub repositories and version control platforms",
+        "Slack and team communication channels",
+        "Technical blog posts and whitepapers on DevOps practices",
+        "Community forums and Stack Overflow",
+        "Direct product integration pages"
+      ],
+      "vocabulary": [
+        "Infrastructure as Code (IaC)",
+        "API-first",
+        "Webhook",
+        "Terraform",
+        "Declarative configuration",
+        "GitOps",
+        "Automation",
+        "Governance",
+        "Audit trail",
+        "Event-driven",
+        "Configuration management",
+        "Idempotent",
+        "Scalability"
+      ],
+      "decision_triggers": [
+        "Discovery of comprehensive API documentation with real-world integration examples",
+        "Ability to manage configuration through code commits and version control",
+        "Clear audit trails and compliance-friendly permission management",
+        "Demonstrated ROI through case studies showing time saved and error reduction",
+        "Support for webhooks and event-driven workflows",
+        "Endorsement from respected DevOps leaders or successful customer testimonials"
+      ],
+      "sample_quotes": [
+        "I want to define our entire integration setup in Terraform files and push it through CI/CD\u2014no manual UI clicks.",
+        "Show me the API docs first. If the webhooks are well-designed, everything else is possible.",
+        "We have three teams using this now. I need bulletproof audit logs to prove to compliance what changed and when.",
+        "Manual configuration doesn't scale. We need something that lets us say 'here's the config, deploy it everywhere.'",
+        "Before we invest heavily, I need to understand the full scope of integration complexity\u2014will my team be able to handle it?"
+      ],
+      "journey_stages": [
+        {
+          "stage": "awareness",
+          "mindset": "Actively searching for tools that support infrastructure-as-code and API-driven workflows",
+          "key_actions": [
+            "Browsing API documentation",
+            "Exploring GitHub integration capabilities",
+            "Evaluating webhook support",
+            "Reviewing technical architecture pages"
+          ],
+          "content_preferences": [
+            "Technical specification documents",
+            "API reference guides",
+            "Architecture diagrams",
+            "Developer-focused product overviews"
+          ]
+        },
+        {
+          "stage": "consideration",
+          "mindset": "Comparing the tool against internal requirements for automation depth, governance, and team scalability",
+          "key_actions": [
+            "Setting up API connections",
+            "Configuring webhooks to test event-driven workflows",
+            "Inviting team members for collaborative evaluation",
+            "Creating custom dashboards to assess visibility",
+            "Asking GraphQL-related questions about data query flexibility"
+          ],
+          "content_preferences": [
+            "Integration guides and best practices",
+            "Case studies showing multi-team governance setups",
+            "Video demos focused on automation workflows",
+            "FAQ and troubleshooting documents"
+          ]
+        },
+        {
+          "stage": "decision",
+          "mindset": "Ready to commit if the tool proves it can replace manual configuration with declarative, auditable IaC approaches",
+          "key_actions": [
+            "Piloting Terraform-based configuration",
+            "Running extended API and webhook tests across mock environments",
+            "Drafting governance policies and audit requirements",
+            "Building proof-of-concept dashboards"
+          ],
+          "content_preferences": [
+            "Implementation guides and playbooks",
+            "Cost-benefit analysis templates",
+            "Migration strategies from legacy systems",
+            "Support documentation and SLA terms"
+          ]
+        }
+      ],
+      "source_evidence": [
+        {
+          "claim": "Set up robust API integrations and webhooks to automate team workflows",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_006"
+          ],
+          "field_path": "goals.0",
+          "confidence": 0.95
+        },
+        {
+          "claim": "Implement infrastructure-as-code solutions that scale across multiple teams and environments",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "field_path": "goals.1",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Demonstrate ROI and efficiency gains to leadership through measurable automation improvements",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_006",
+            "ga4_008"
+          ],
+          "field_path": "goals.2",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Establish 'set it and forget it' automation that requires minimal ongoing configuration",
+          "record_ids": [
+            "ga4_008",
+            "ga4_006"
+          ],
+          "field_path": "goals.3",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Create custom dashboards and governance frameworks for cross-functional team visibility",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "field_path": "goals.4",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Spending hours manually configuring tools and systems instead of automating them",
+          "record_ids": [
+            "ga4_006",
+            "ga4_000"
+          ],
+          "field_path": "pains.0",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Lack of clarity on API capabilities and integration options during initial setup",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003"
+          ],
+          "field_path": "pains.1",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Difficulty managing permissions and governance across multiple teams without proper audit trails",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "field_path": "pains.2",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Tools requiring constant point-and-click configuration instead of declarative, code-based approaches",
+          "record_ids": [
+            "ga4_006",
+            "ga4_008"
+          ],
+          "field_path": "pains.3",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Integration complexity that overwhelms team capacity and requires external consulting",
+          "record_ids": [
+            "ga4_006",
+            "ga4_000"
+          ],
+          "field_path": "pains.4",
+          "confidence": 0.7
+        },
+        {
+          "claim": "Absence of structured webhooks or event-driven architecture for real-time updates",
+          "record_ids": [
+            "ga4_006"
+          ],
+          "field_path": "pains.5",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Love of solving complex technical problems with elegant, scalable solutions",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_008"
+          ],
+          "field_path": "motivations.0",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Need to demonstrate ROI and efficiency gains to leadership",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_008"
+          ],
+          "field_path": "motivations.1",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Preference for 'set it and forget it' automation over point-and-click configuration",
+          "record_ids": [
+            "ga4_008",
+            "ga4_006"
+          ],
+          "field_path": "motivations.2",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Drive to enable team productivity by removing manual, repetitive work",
+          "record_ids": [
+            "ga4_005",
+            "ga4_006"
+          ],
+          "field_path": "motivations.3",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Desire to build robust, auditable systems that satisfy compliance and governance requirements",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "field_path": "motivations.4",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Concern that the platform may lack the depth of API documentation or webhook flexibility",
+          "record_ids": [
+            "ga4_000",
+            "ga4_006"
+          ],
+          "field_path": "objections.0",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Skepticism about whether the tool can truly replace manual configuration with IaC",
+          "record_ids": [
+            "ga4_008",
+            "ga4_006"
+          ],
+          "field_path": "objections.1",
+          "confidence": 0.75
+        },
+        {
+          "claim": "Worry that integration complexity might exceed team capacity or require external help",
+          "record_ids": [
+            "ga4_000",
+            "ga4_006"
+          ],
+          "field_path": "objections.2",
+          "confidence": 0.7
+        },
+        {
+          "claim": "Fear of vendor lock-in or inability to export configuration as code",
+          "record_ids": [
+            "ga4_008"
+          ],
+          "field_path": "objections.3",
+          "confidence": 0.7
+        },
+        {
+          "claim": "Need for strong governance and audit trails in multi-team environments",
+          "record_ids": [
+            "ga4_005"
+          ],
+          "field_path": "objections.4",
+          "confidence": 0.8
+        }
+      ]
+    },
+    "structural_groundedness": 1.0,
+    "judge_groundedness": 2,
+    "judge_depth": 4,
+    "judge_rationale": "The persona's technical vocabulary, goals, and pains are internally consistent and specific, but most claims lack direct traceability to source records. Only api_setup, webhook_config, and terraform_setup events are verifiable; there is no evidence of multi-team governance work, audit trail concerns, compliance requirements, leadership ROI discussions, or the stated intensity of manual configuration pain. The quotes and specific pain points feel inferred rather than extracted from behavioral data.",
+    "cost_usd": 0.03862,
+    "attempts": 2
+  },
+  {
+    "ablation_pct": 75,
+    "n_records_remaining": 3,
+    "status": "ok",
+    "persona_name": "DevOps-Forward Engineering Lead",
+    "persona": {
+      "schema_version": "1.0",
+      "name": "DevOps-Forward Engineering Lead",
+      "summary": "An infrastructure-minded engineering leader who wants to automate and version-control project management workflows. They spend significant time setting up APIs and webhooks, prefer declarative configuration over UI workflows, and are actively exploring how modern tools like Terraform and GraphQL can make their team's development pipeline more transparent and standardized.",
+      "demographics": {
+        "age_range": "28-40",
+        "gender_distribution": "predominantly male",
+        "location_signals": [
+          "San Francisco Bay Area",
+          "Seattle",
+          "New York"
+        ],
+        "education_level": "Bachelor's degree in Computer Science or related field",
+        "income_bracket": "$110,000\u2013$180,000"
+      },
+      "firmographics": {
+        "company_size": "SMB to mid-market (50-500 employees)",
+        "industry": "B2B SaaS / Technology",
+        "role_titles": [
+          "Engineering Lead",
+          "DevOps Engineer",
+          "Platform Engineer",
+          "Tech Lead"
+        ],
+        "tech_stack_signals": [
+          "Terraform",
+          "GraphQL",
+          "GitHub",
+          "API-first architecture",
+          "Webhook infrastructure"
+        ]
+      },
+      "goals": [
+        "Set up robust API integrations that pull real-time development signals into project management",
+        "Reduce time spent on manual webhook configuration and re-configuration across environments",
+        "Reduce manual configuration overhead through infrastructure-as-code practices",
+        "Streamline GitHub integration to centralize development signals in project management",
+        "Enable team visibility into how external tools (GitHub, Slack, CI/CD) feed data into the project management system",
+        "Document and standardize integration patterns so new team members can adopt them quickly"
+      ],
+      "pains": [
+        "Current webhook setup requires too many manual steps and lacks automation",
+        "Lack of visibility into how different tools communicate with the project management system",
+        "Difficulty setting up granular custom dashboards without coding",
+        "Onboarding team members on custom integrations and dashboard logic",
+        "No way to version-control project management configuration like infrastructure code",
+        "Scattered data across multiple tools makes it difficult to enforce team standards for monitoring and alerting"
+      ],
+      "motivations": [
+        "Move away from manual, UI-driven configuration toward code-as-configuration",
+        "Enable the team to work with better data visibility and real-time synchronization",
+        "Establish infrastructure patterns that become team standards",
+        "Use modern tools (Terraform, GraphQL) that align with best practices",
+        "Reduce toil and free up engineering time for higher-value work",
+        "Create a repeatable, scalable system for integrating development tools"
+      ],
+      "objections": [
+        "Too much UI clicking required\u2014would prefer declarative config or API-first approach",
+        "Lack of Terraform provider or IaC support limits ability to version-control configuration",
+        "Webhook setup requires multiple steps when it could be automated",
+        "Limited GraphQL query examples for common use cases (GitHub data, PR status, cycle time)",
+        "Concern that custom dashboards won't scale as team grows"
+      ],
+      "channels": [
+        "API documentation pages",
+        "GitHub (integration points, CI/CD automation)",
+        "Slack (team communication, bot notifications)",
+        "Internal Terraform/IaC repositories",
+        "API reference and GraphQL explorer",
+        "Settings and integrations UI (reluctantly)"
+      ],
+      "vocabulary": [
+        "infrastructure-as-code",
+        "declarative configuration",
+        "webhook automation",
+        "real-time synchronization",
+        "API-first",
+        "Terraform provider",
+        "GitOps",
+        "data visibility",
+        "custom dashboards",
+        "development signals",
+        "CI/CD pipeline"
+      ],
+      "decision_triggers": [
+        "Availability of a Terraform provider or native IaC support",
+        "Demonstration of automated webhook provisioning (no manual UI clicks)",
+        "Native GitHub integration that pulls PR/issue metadata without custom setup",
+        "GraphQL API with rich examples for common engineering queries",
+        "Ability to version-control dashboards and alert rules in Git"
+      ],
+      "sample_quotes": [
+        "We spend too much time clicking around settings when we should be able to define everything in Terraform.",
+        "If you can't version-control the integration logic, it's not production-ready for our team.",
+        "Real-time data from GitHub into our project management system is worth the setup complexity, but not if it takes 30 minutes of clicking.",
+        "We want GraphQL endpoints that let us pull exactly the data we need without building custom scrapers.",
+        "Our engineers are already working in code all day\u2014why force them back to the UI for configuration?"
+      ],
+      "journey_stages": [
+        {
+          "stage": "awareness",
+          "mindset": "Curious about modern tooling and API capabilities; exploring whether the platform can support infrastructure-as-code workflows",
+          "key_actions": [
+            "Visit API documentation",
+            "Review webhook setup options",
+            "Browse integration capabilities"
+          ],
+          "content_preferences": [
+            "API reference docs",
+            "Integration architecture diagrams",
+            "GraphQL schema and example queries",
+            "Terraform provider status or roadmap"
+          ]
+        },
+        {
+          "stage": "consideration",
+          "mindset": "Evaluating whether the platform's current automation capabilities and API design can reduce manual configuration work",
+          "key_actions": [
+            "Set up test webhooks",
+            "Explore custom dashboard creation",
+            "Review GitHub integration details",
+            "Check for Terraform provider availability"
+          ],
+          "content_preferences": [
+            "Step-by-step API setup guides",
+            "Webhook automation best practices",
+            "Case studies from engineering-focused teams",
+            "Comparison of IaC tooling support"
+          ]
+        },
+        {
+          "stage": "decision",
+          "mindset": "Ready to commit if the platform offers declarative configuration, native IaC support, and reduces toil compared to alternatives",
+          "key_actions": [
+            "Provision API keys for team",
+            "Automate webhook configuration",
+            "Build custom GitHub/Slack integration",
+            "Define dashboard as code"
+          ],
+          "content_preferences": [
+            "Implementation guides for Terraform",
+            "GraphQL examples for common queries",
+            "Runbooks for CI/CD integration",
+            "Best practices for scaling integrations"
+          ]
+        }
+      ],
+      "source_evidence": [
+        {
+          "claim": "Set up robust API integrations that pull real-time development signals into project management",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "goals.0",
+          "confidence": 0.95
+        },
+        {
+          "claim": "Reduce time spent on manual webhook configuration and re-configuration across environments",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "goals.1",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Reduce manual configuration overhead through infrastructure-as-code practices",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "goals.2",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Streamline GitHub integration to centralize development signals in project management",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "goals.3",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Enable team visibility into how external tools (GitHub, Slack, CI/CD) feed data into the project management system",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "goals.4",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Document and standardize integration patterns so new team members can adopt them quickly",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "goals.5",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Current webhook setup requires too many manual steps and lacks automation",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.0",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Lack of visibility into how different tools communicate with the project management system",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.1",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Difficulty setting up granular custom dashboards without coding",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.2",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Onboarding team members on custom integrations and dashboard logic",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.3",
+          "confidence": 0.8
+        },
+        {
+          "claim": "No way to version-control project management configuration like infrastructure code",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.4",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Scattered data across multiple tools makes it difficult to enforce team standards for monitoring and alerting",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "pains.5",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Move away from manual, UI-driven configuration toward code-as-configuration",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "motivations.0",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Enable the team to work with better data visibility and real-time synchronization",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "motivations.1",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Establish infrastructure patterns that become team standards",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "motivations.2",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Use modern tools (Terraform, GraphQL) that align with best practices",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "motivations.3",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Reduce toil and free up engineering time for higher-value work",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "motivations.4",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Create a repeatable, scalable system for integrating development tools",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "motivations.5",
+          "confidence": 0.85
+        },
+        {
+          "claim": "Too much UI clicking required\u2014would prefer declarative config or API-first approach",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "objections.0",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Lack of Terraform provider or IaC support limits ability to version-control configuration",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "objections.1",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Webhook setup requires multiple steps when it could be automated",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "objections.2",
+          "confidence": 0.9
+        },
+        {
+          "claim": "Limited GraphQL query examples for common use cases (GitHub data, PR status, cycle time)",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "objections.3",
+          "confidence": 0.8
+        },
+        {
+          "claim": "Concern that custom dashboards won't scale as team grows",
+          "record_ids": [
+            "ga4_000",
+            "ga4_003",
+            "ga4_007"
+          ],
+          "field_path": "objections.4",
+          "confidence": 0.75
+        }
+      ]
+    },
+    "structural_groundedness": 1.0,
+    "judge_groundedness": 1,
+    "judge_depth": 4,
+    "judge_rationale": "The source records only show three 'api_setup' events with session durations\u2014there is no evidence supporting the specific goals, pains, vocabulary, quotes, or even the role/title. The persona appears largely fabricated relative to available data. However, the persona itself is well-constructed with specific, actionable details, technical vocabulary, and realistic pain points that would be memorable to a product team, making it high in depth despite being unsupported.",
+    "cost_usd": 0.033865,
+    "attempts": 2
+  }
+]
