@@ -34,6 +34,19 @@ class JourneyStage(BaseModel):
     content_preferences: list[str]
 
 
+class Stylometrics(BaseModel):
+    """exp-1.24: measurable writing-style anchors for voice consistency."""
+
+    avg_sentence_length: str = Field(description="e.g. 'short (5-10 words)' or 'long (20+ words)'")
+    formality_register: str = Field(description="e.g. 'casual', 'formal', 'technical'")
+    hedge_frequency: str = Field(description="e.g. 'high — hedges often with maybe/probably/I think'")
+    discourse_markers: list[str] = Field(
+        min_length=2, max_length=6,
+        description="Characteristic connectors: 'look,', 'honestly,', 'so basically,', 'right?'",
+    )
+    pronoun_preference: str = Field(description="e.g. 'heavy I-focus', 'we-oriented', 'you-directed'")
+
+
 class PersonaV1(BaseModel):
     """Core persona schema v1 — the structured output the LLM is forced to produce."""
 
@@ -66,3 +79,11 @@ class PersonaV1(BaseModel):
     )
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+
+
+class PersonaV1WithStylometrics(PersonaV1):
+    """exp-1.24 treatment schema: PersonaV1 + explicit stylometric anchors."""
+
+    stylometrics: Stylometrics = Field(
+        description="How this persona writes — measurable style anchors for voice consistency",
+    )

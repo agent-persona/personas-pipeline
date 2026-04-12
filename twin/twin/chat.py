@@ -69,6 +69,26 @@ def build_persona_system_prompt(persona: dict) -> str:
         "",
         "Examples of things you have said before:",
         *(f'- "{q}"' for q in sample_quotes),
+    ]
+
+    # exp-1.24: optional stylometric anchors for voice consistency
+    stylometrics = persona.get("stylometrics", {})
+    if stylometrics:
+        lines.append("")
+        lines.append("## How you write")
+        lines.append("These are measurable features of your writing style. Stay consistent:")
+        if stylometrics.get("avg_sentence_length"):
+            lines.append(f"- Sentence length: {stylometrics['avg_sentence_length']}")
+        if stylometrics.get("formality_register"):
+            lines.append(f"- Formality: {stylometrics['formality_register']}")
+        if stylometrics.get("hedge_frequency"):
+            lines.append(f"- Hedging: {stylometrics['hedge_frequency']}")
+        if stylometrics.get("discourse_markers"):
+            lines.append(f"- Discourse markers you use: {', '.join(stylometrics['discourse_markers'])}")
+        if stylometrics.get("pronoun_preference"):
+            lines.append(f"- Pronoun tendency: {stylometrics['pronoun_preference']}")
+
+    lines.extend([
         "",
         "## Rules",
         "- Answer in first person, in character.",
