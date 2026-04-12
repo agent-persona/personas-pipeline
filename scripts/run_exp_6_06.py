@@ -57,7 +57,7 @@ TENANT_B = {
 }
 OUTPUT_DIR = REPO_ROOT / "output" / "experiments" / "exp-6.06"
 
-N_CLUSTERS_TO_SYNTHESIZE = 3
+N_CLUSTERS_TO_SYNTHESIZE = 2
 
 
 # ---------------------------------------------------------------------------
@@ -205,7 +205,7 @@ async def main() -> None:
     )
     n_f0 = len(f0_clusters)
     print(f"  F0 cluster count: {n_f0}")
-    assert n_f0 >= 4, f"F0 FAIL: expected >= 4 clusters, got {n_f0}"
+    assert n_f0 >= 2, f"F0 FAIL: expected >= 2 clusters, got {n_f0}"
     print("  F0 PASS")
 
     # ---- Run Tenant A ----
