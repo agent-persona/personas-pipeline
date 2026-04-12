@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json as _json
+from pathlib import Path
+
 from synthesis.models.cluster import ClusterData
 from synthesis.models.persona import PersonaV1
 
@@ -37,16 +40,62 @@ Example source_evidence entry:
 }
 """
 
+_SYNTHETIC_PRIORS_DIR = Path(__file__).parent.parent / "fixtures" / "synthetic_priors"
 
-def build_tool_definition() -> dict:
-    """Build the Claude tool definition from the PersonaV1 JSON schema."""
+
+def _load_synthetic_priors() -> list[dict]:
+    """Load all synthetic prior persona files."""
+    priors = []
+    if _SYNTHETIC_PRIORS_DIR.exists():
+        for f in sorted(_SYNTHETIC_PRIORS_DIR.glob("*.json")):
+            with open(f) as fh:
+                priors.append(_json.load(fh))
+    return priors
+
+
+def _render_prior(prior: dict) -> str:
+    """Render one synthetic prior as compact prose."""
+    parts = [
+        f"**{prior['archetype']}** ({prior.get('industry', 'unknown')})",
+        prior.get("summary", ""),
+        f"Goals: {'; '.join(prior.get('goals', []))}",
+        f"Pains: {'; '.join(prior.get('pains', []))}",
+        f"Vocabulary: {', '.join(prior.get('vocabulary', []))}",
+        f"Quotes: " + " | ".join(f'"{q}"' for q in prior.get("sample_quotes", [])),
+    ]
+    return "\n".join(parts)
+
+
+def build_warmstart_system_prompt(few_shot_count: int = 0) -> str:
+    """Return SYSTEM_PROMPT with synthetic priors prepended as contextual warmstart.
+
+    The priors are from a DIFFERENT industry than the test tenant, providing
+    structural examples of what good personas look like without leaking
+    domain-specific content.
+    """
+    priors = _load_synthetic_priors()
+    if not priors:
+        return SYSTEM_PROMPT
+
+    warmstart = "## Synthetic Context (reference personas from other industries)\n\n"
+    warmstart += "The following are example personas from unrelated industries. They show the "
+    warmstart += "level of specificity and structural completeness expected. **Do NOT copy their "
+    warmstart += "content** — use them only as style/depth references.\n\n"
+    warmstart += "\n\n---\n\n".join(_render_prior(p) for p in priors)
+    warmstart += "\n\n---\n\n"
+
+    return warmstart + SYSTEM_PROMPT
+
+
+def build_tool_definition(schema_cls: type = PersonaV1) -> dict:
+    """Build the Claude tool definition from a persona schema's JSON schema."""
     return {
         "name": "create_persona",
         "description": (
             "Create a structured persona from the analyzed cluster data. "
             "All fields are required and must be grounded in the provided source records."
         ),
-        "input_schema": PersonaV1.model_json_schema(),
+        "input_schema": schema_cls.model_json_schema(),
     }
 
 

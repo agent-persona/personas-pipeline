@@ -55,13 +55,20 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    schema_cls: type = PersonaV1,
+    system_prompt: str | None = None,
+    few_shot_count: int = 0,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
     Calls the LLM with tool-use forcing, validates with Pydantic, checks
     groundedness, and retries with error context on failure.
+
+    If system_prompt is provided, it is used instead of building one from
+    few_shot_count. This allows the runner to pass a warmstart prompt.
     """
-    tool = build_tool_definition()
+    tool = build_tool_definition(schema_cls)
+    effective_system_prompt = system_prompt if system_prompt is not None else SYSTEM_PROMPT
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
     first_attempt_cost: float | None = None
@@ -78,7 +85,7 @@ async def synthesize(
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
+            system=effective_system_prompt,
             messages=messages,
             tool=tool,
         )
@@ -100,7 +107,7 @@ async def synthesize(
         # Validate with Pydantic
         errors_for_retry = []
         try:
-            persona = PersonaV1.model_validate(llm_result.tool_input)
+            persona = schema_cls.model_validate(llm_result.tool_input)
         except ValidationError as e:
             record.validation_errors = [
                 f"{err['loc']}: {err['msg']}" for err in e.errors()
