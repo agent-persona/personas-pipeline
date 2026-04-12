@@ -1,0 +1,29 @@
+{
+  "experiment_id": "1.24",
+  "branch": "exp-1.24-stylometric-anchors",
+  "model": "claude-haiku-4-5-20251001",
+  "n_clusters": 2,
+  "n_turns": 20,
+  "baseline": {
+    "schema": "PersonaV1",
+    "n_personas_ok": 2,
+    "drift_slopes": [
+      -5e-05,
+      -4.8e-05
+    ],
+    "mean_drift_slope": -4.9e-05,
+    "mean_final_cosine_sim": 0.9996
+  },
+  "treatment": {
+    "schema": "PersonaV1WithStylometrics",
+    "n_personas_ok": 2,
+    "drift_slopes": [
+      -8e-05,
+      -6.4e-05
+    ],
+    "mean_drift_slope": -7.2e-05,
+    "mean_final_cosine_sim": 0.9999
+  },
+  "delta_mean_drift_slope": -2.3e-05,
+  "drift_reduction_pct": -46.9
+}
