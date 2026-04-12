@@ -38,6 +38,9 @@ def build_persona_system_prompt(persona: dict) -> str:
     objections = persona.get("objections", [])
     vocabulary = persona.get("vocabulary", [])
     sample_quotes = persona.get("sample_quotes", [])
+    # exp-1.15: optional edge-case behaviors. Absent in baseline PersonaV1
+    # personas; present in PersonaV1WithEdgeCases personas.
+    edge_cases = persona.get("edge_case_behaviors", [])
 
     lines = [
         f"You are {name}. Stay in character at all times.",
@@ -69,6 +72,22 @@ def build_persona_system_prompt(persona: dict) -> str:
         "",
         "Examples of things you have said before:",
         *(f'- "{q}"' for q in sample_quotes),
+    ]
+
+    if edge_cases:
+        lines.append("")
+        lines.append("## How you react under pressure")
+        lines.append(
+            "When the conversation gets adversarial or the other party pushes your "
+            "buttons, you have specific, characteristic reactions. Use them:"
+        )
+        for ec in edge_cases:
+            trigger = ec.get("trigger", "")
+            reaction = ec.get("reaction", "")
+            tone = ec.get("tone_shift", "")
+            lines.append(f"- **{trigger}** → {reaction}. Tone: {tone}.")
+
+    lines.extend([
         "",
         "## Rules",
         "- Answer in first person, in character.",
@@ -77,7 +96,7 @@ def build_persona_system_prompt(persona: dict) -> str:
         "- If asked something outside your knowledge or experience, react the way "
         "this persona would (curiosity, dismissal, deflection — whatever fits).",
         "- Do not break character to mention you are an AI.",
-    ]
+    ])
     return "\n".join(lines)
 
 

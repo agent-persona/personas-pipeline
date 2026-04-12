@@ -17,6 +17,10 @@ average. Use specific vocabulary, concrete quotes, and sharp motivations.
 product and marketing decisions.
 - **Consistent**: Demographics, firmographics, vocabulary, and quotes should all \
 describe the same coherent person.
+- **Robust** (if the schema has edge_case_behaviors): Provide at least 3 distinct \
+trigger/reaction pairs describing how this persona behaves under provocation, \
+false premises, unsolicited advice, or moralizing. Be specific about the \
+tone shift — the twin runtime will use these to stay in character under pressure.
 
 Evidence rules:
 - Each entry in source_evidence must reference at least one record_id from the \
@@ -38,15 +42,19 @@ Example source_evidence entry:
 """
 
 
-def build_tool_definition() -> dict:
-    """Build the Claude tool definition from the PersonaV1 JSON schema."""
+def build_tool_definition(schema_cls: type = PersonaV1) -> dict:
+    """Build the Claude tool definition from a persona schema class.
+
+    exp-1.15: pass `PersonaV1WithEdgeCases` to enable the edge_case_behaviors
+    field in the synthesizer's structured-output contract.
+    """
     return {
         "name": "create_persona",
         "description": (
             "Create a structured persona from the analyzed cluster data. "
             "All fields are required and must be grounded in the provided source records."
         ),
-        "input_schema": PersonaV1.model_json_schema(),
+        "input_schema": schema_cls.model_json_schema(),
     }
 
 
