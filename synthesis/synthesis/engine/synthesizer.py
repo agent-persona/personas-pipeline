@@ -55,30 +55,29 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    system_prompt: str | None = None,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
-    Calls the LLM with tool-use forcing, validates with Pydantic, checks
-    groundedness, and retries with error context on failure.
+    If system_prompt is provided, it overrides the default SYSTEM_PROMPT.
     """
     tool = build_tool_definition()
+    effective_prompt = system_prompt if system_prompt is not None else SYSTEM_PROMPT
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
     first_attempt_cost: float | None = None
     errors_for_retry: list[str] = []
 
-    for attempt_num in range(1, max_retries + 2):  # +2 because max_retries is retry count
+    for attempt_num in range(1, max_retries + 2):
         record = AttemptRecord(attempt=attempt_num)
 
-        # Build messages (with error context on retries)
         if errors_for_retry:
             messages = build_retry_messages(cluster, errors_for_retry)
         else:
             messages = build_messages(cluster)
 
-        # Call the LLM
         llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
+            system=effective_prompt,
             messages=messages,
             tool=tool,
         )
@@ -89,7 +88,6 @@ async def synthesize(
         if first_attempt_cost is None:
             first_attempt_cost = record.cost_usd
 
-        # Cost safety: abort if we've spent too much
         if total_cost > first_attempt_cost * COST_SAFETY_MULTIPLIER * (max_retries + 1):
             attempts.append(record)
             raise SynthesisError(
@@ -97,7 +95,6 @@ async def synthesize(
                 attempts=attempts,
             )
 
-        # Validate with Pydantic
         errors_for_retry = []
         try:
             persona = PersonaV1.model_validate(llm_result.tool_input)
@@ -114,7 +111,6 @@ async def synthesize(
             attempts.append(record)
             continue
 
-        # Check groundedness
         groundedness = check_groundedness(persona, cluster)
         if not groundedness.passed:
             record.groundedness_violations = groundedness.violations
@@ -128,15 +124,8 @@ async def synthesize(
             attempts.append(record)
             continue
 
-        # Success
         record.success = True
         attempts.append(record)
-        logger.info(
-            "Synthesis succeeded on attempt %d (cost=$%.4f, groundedness=%.2f)",
-            attempt_num,
-            total_cost,
-            groundedness.score,
-        )
         return SynthesisResult(
             persona=persona,
             groundedness=groundedness,
@@ -145,7 +134,6 @@ async def synthesize(
             attempts=attempt_num,
         )
 
-    # All attempts exhausted
     raise SynthesisError(
         f"Synthesis failed after {max_retries + 1} attempts",
         attempts=attempts,
