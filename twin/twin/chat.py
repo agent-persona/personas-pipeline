@@ -89,10 +89,12 @@ class TwinChat:
         persona: dict,
         client: AsyncAnthropic,
         model: str = "claude-haiku-4-5-20251001",
+        warmup_turns: list[dict] | None = None,
     ) -> None:
         self.persona = persona
         self.client = client
         self.model = model
+        self.warmup_turns = warmup_turns or []
         self.system_prompt = build_persona_system_prompt(persona)
 
     async def reply(
@@ -100,8 +102,7 @@ class TwinChat:
         message: str,
         history: list[dict] | None = None,
     ) -> TwinReply:
-        history = history or []
-        messages = history + [{"role": "user", "content": message}]
+        messages = list(self.warmup_turns) + (history or []) + [{"role": "user", "content": message}]
         response = await self.client.messages.create(
             model=self.model,
             max_tokens=512,
