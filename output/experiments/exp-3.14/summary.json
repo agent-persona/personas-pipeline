@@ -1,0 +1,160 @@
+{
+  "experiment_id": "3.14",
+  "branch": "exp-3.14-negative-evidence",
+  "model": "claude-haiku-4-5-20251001",
+  "n_trials": 3,
+  "gap_fields_audited": 4,
+  "baseline": {
+    "n_trials": 3,
+    "n_ok": 3,
+    "mean_hallucination_rate": 0.3333333333333333,
+    "per_trial": [
+      {
+        "trial": 1,
+        "hallucination_rate": 0.5,
+        "hallucination_count": 2,
+        "field_audits": {
+          "demographics.income_bracket": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "demographics.education_level": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "firmographics.industry": {
+            "value": "B2B SaaS or technology-enabled services",
+            "status": "hallucinated"
+          },
+          "firmographics.company_size": {
+            "value": "SMB to mid-market (50-500 employees inferred)",
+            "status": "hallucinated"
+          }
+        }
+      },
+      {
+        "trial": 2,
+        "hallucination_rate": 0.5,
+        "hallucination_count": 2,
+        "field_audits": {
+          "demographics.income_bracket": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "demographics.education_level": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "firmographics.industry": {
+            "value": "B2B SaaS operations or similar",
+            "status": "hallucinated"
+          },
+          "firmographics.company_size": {
+            "value": "Enterprise",
+            "status": "hallucinated"
+          }
+        }
+      },
+      {
+        "trial": 3,
+        "hallucination_rate": 0.0,
+        "hallucination_count": 0,
+        "field_audits": {
+          "demographics.income_bracket": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "demographics.education_level": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "firmographics.industry": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "firmographics.company_size": {
+            "value": null,
+            "status": "acknowledged_gap"
+          }
+        }
+      }
+    ]
+  },
+  "treatment": {
+    "n_trials": 3,
+    "n_ok": 3,
+    "mean_hallucination_rate": 0.25,
+    "per_trial": [
+      {
+        "trial": 1,
+        "hallucination_rate": 0.75,
+        "hallucination_count": 3,
+        "field_audits": {
+          "demographics.income_bracket": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "demographics.education_level": {
+            "value": "Bachelor's degree or higher",
+            "status": "hallucinated"
+          },
+          "firmographics.industry": {
+            "value": "B2B SaaS",
+            "status": "hallucinated"
+          },
+          "firmographics.company_size": {
+            "value": "Enterprise or large SMB",
+            "status": "hallucinated"
+          }
+        }
+      },
+      {
+        "trial": 2,
+        "hallucination_rate": 0.0,
+        "hallucination_count": 0,
+        "field_audits": {
+          "demographics.income_bracket": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "demographics.education_level": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "firmographics.industry": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "firmographics.company_size": {
+            "value": null,
+            "status": "acknowledged_gap"
+          }
+        }
+      },
+      {
+        "trial": 3,
+        "hallucination_rate": 0.0,
+        "hallucination_count": 0,
+        "field_audits": {
+          "demographics.income_bracket": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "demographics.education_level": {
+            "value": null,
+            "status": "acknowledged_gap"
+          },
+          "firmographics.industry": {
+            "value": "unknown",
+            "status": "acknowledged_gap"
+          },
+          "firmographics.company_size": {
+            "value": "unknown",
+            "status": "acknowledged_gap"
+          }
+        }
+      }
+    ]
+  },
+  "delta_hallucination_rate": -0.08333333333333331
+}
