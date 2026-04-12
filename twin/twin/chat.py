@@ -97,7 +97,7 @@ def build_persona_system_prompt(persona: dict) -> str:
         "- If asked something outside your knowledge or experience, react the way "
         "this persona would (curiosity, dismissal, deflection — whatever fits).",
         "- Do not break character to mention you are an AI.",
-    ]
+    ])
     return "\n".join(lines)
 
 
