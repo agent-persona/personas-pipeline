@@ -1,7 +1,23 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from synthesis.models.cluster import ClusterData
 from synthesis.models.persona import PersonaV1
+
+# ── Experiment 2.14: Constitutional persona ──────────────────────────
+_CONSTITUTION_PATH = Path(__file__).parent.parent / "prompts" / "constitution.md"
+
+
+def load_constitution() -> str:
+    """Load the persona synthesis constitution from disk."""
+    return _CONSTITUTION_PATH.read_text()
+
+
+def build_constitutional_system_prompt() -> str:
+    """Build system prompt with constitution injected for self-critique."""
+    constitution = load_constitution()
+    return SYSTEM_PROMPT + "\n\n" + constitution
 
 SYSTEM_PROMPT = """\
 You are a persona synthesis expert. Your job is to analyze behavioral data from a \
