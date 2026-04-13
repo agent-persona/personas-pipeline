@@ -19,7 +19,7 @@ from .prompt_builder import (
 
 logger = logging.getLogger(__name__)
 
-MAX_RETRIES = 2
+MAX_RETRIES = 4
 COST_SAFETY_MULTIPLIER = 3.0
 
 
