@@ -13,20 +13,15 @@ class TestSystemPrompt:
     def test_mentions_moral_framework(self) -> None:
         assert "moral_framework" in SYSTEM_PROMPT
 
-    def test_requires_evidence_for_psychological_fields(self) -> None:
-        assert (
-            "moral_framework.core_values" in SYSTEM_PROMPT
-            or "moral_framework.ethical_stance" in SYSTEM_PROMPT
-        )
-        assert (
-            "emotional_profile.stress_triggers" in SYSTEM_PROMPT
-            or "emotional_profile.baseline_mood" in SYSTEM_PROMPT
-        )
+    def test_requires_evidence_for_psychological_fields_when_filled(self) -> None:
+        # Psych sub-objects are optional; when filled they should be grounded.
+        lower = SYSTEM_PROMPT.lower()
+        assert "source_evidence entry rooted in that sub-object".lower() in lower
 
-    def test_warns_against_fabrication(self) -> None:
+    def test_discourages_fabrication(self) -> None:
         lower = SYSTEM_PROMPT.lower()
         assert (
-            "do not fabricate" in lower
-            or "do not invent" in lower
-            or "must be grounded" in lower
+            "rather than guessing" in lower
+            or "do not fabricate" in lower
+            or "omit" in lower
         )

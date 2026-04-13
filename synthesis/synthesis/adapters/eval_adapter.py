@@ -90,7 +90,9 @@ def persona_v1_to_eval(persona: PersonaV1, persona_id: str) -> EvalPersona:
                 seen_actions.add(action)
                 behaviors.append(action)
 
-    expertise_level = _VOCAB_TO_EXPERTISE.get(comm.vocabulary_level.lower(), "")
+    expertise_level = (
+        _VOCAB_TO_EXPERTISE.get(comm.vocabulary_level.lower(), "") if comm else ""
+    )
 
     extra: dict = {
         "age_range": demo.age_range,
@@ -127,23 +129,23 @@ def persona_v1_to_eval(persona: PersonaV1, persona_id: str) -> EvalPersona:
         # Mirrored from core_values — some scorers (weird_bias) read both
         # `values` and `moral_framework.core_values`; others (schema_compliance)
         # read only `values`. Populating both is required, not redundant.
-        values=list(moral.core_values),
+        values=list(moral.core_values) if moral else [],
         communication_style=EvalCommunicationStyle(
             tone=comm.tone,
             formality=comm.formality,
             vocabulary_level=comm.vocabulary_level,
             preferred_channels=list(comm.preferred_channels),
-        ),
+        ) if comm else EvalCommunicationStyle(),
         emotional_profile=EvalEmotionalProfile(
             baseline_mood=emo.baseline_mood,
             stress_triggers=list(emo.stress_triggers),
             coping_mechanisms=list(emo.coping_mechanisms),
-        ),
+        ) if emo else EvalEmotionalProfile(),
         moral_framework=EvalMoralFramework(
             core_values=list(moral.core_values),
             ethical_stance=moral.ethical_stance,
             moral_foundations=dict(moral.moral_foundations),
-        ),
+        ) if moral else EvalMoralFramework(),
         source_ids=source_ids,
         extra=extra,
     )

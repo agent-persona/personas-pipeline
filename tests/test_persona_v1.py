@@ -29,6 +29,7 @@ def _minimal_persona_kwargs() -> dict:
         pains=["pain one", "pain two"],
         motivations=["motivation one", "motivation two"],
         objections=["objection one"],
+        not_this=["wouldn't use jargon sarcastically", "wouldn't skip post-mortems"],
         channels=["Slack"],
         vocabulary=["alpha", "beta", "gamma"],
         decision_triggers=["trigger one"],
@@ -78,20 +79,20 @@ class TestPersonaV1Psychological:
         assert p.emotional_profile.baseline_mood == "calm"
         assert p.moral_framework.ethical_stance == "utilitarian"
 
-    def test_communication_style_is_required(self) -> None:
+    def test_communication_style_is_optional(self) -> None:
         kwargs = _minimal_persona_kwargs()
         del kwargs["communication_style"]
-        with pytest.raises(ValidationError):
-            PersonaV1(**kwargs)
+        p = PersonaV1(**kwargs)
+        assert p.communication_style is None
 
-    def test_emotional_profile_is_required(self) -> None:
+    def test_emotional_profile_is_optional(self) -> None:
         kwargs = _minimal_persona_kwargs()
         del kwargs["emotional_profile"]
-        with pytest.raises(ValidationError):
-            PersonaV1(**kwargs)
+        p = PersonaV1(**kwargs)
+        assert p.emotional_profile is None
 
-    def test_moral_framework_is_required(self) -> None:
+    def test_moral_framework_is_optional(self) -> None:
         kwargs = _minimal_persona_kwargs()
         del kwargs["moral_framework"]
-        with pytest.raises(ValidationError):
-            PersonaV1(**kwargs)
+        p = PersonaV1(**kwargs)
+        assert p.moral_framework is None
