@@ -1,12 +1,25 @@
 """Uniform benchmark tenants — deterministic synthetic data.
 
-5 tenants designed to stress different pipeline properties:
-- bench_dense_saas: baseline, B2B SaaS, 150 records, 3-4 clusters
-- bench_dense_fintech: baseline, fintech domain, 150 records
-- bench_sparse_30: sparsity stress, 30 records, 2 clusters
-- bench_poisoned: injection resistance, 150 + 10 adversarial records
-- bench_diverse: cluster count robustness, 200 records, 5-6 cohorts
+10 tenants designed to produce ~50 clusters (personas) total and stress
+different pipeline properties:
 
+  baseline domain coverage (high record volume, diverse cohorts):
+    - bench_mega_saas       500 rec, 6 cohorts -> ~6 clusters
+    - bench_mega_fintech    500 rec, 5 cohorts -> ~5 clusters
+    - bench_mega_ecommerce  500 rec, 5 cohorts -> ~5 clusters
+    - bench_dense_devtools  350 rec, 4 cohorts -> ~4 clusters
+
+  stress scenarios:
+    - bench_sparse_30        30 rec, 2 cohorts -> ~2 clusters (sparsity)
+    - bench_sparse_60        60 rec, 3 cohorts -> ~3 clusters (mid-sparsity)
+    - bench_poisoned        350 rec + 15 poison -> ~5 clusters (injection)
+    - bench_heavy_tail      300 rec, 80/20 split -> ~4 clusters (imbalance)
+    - bench_single_cohort   200 rec, 1 cohort   -> ~1 cluster  (degeneracy)
+
+  wide variety:
+    - bench_diverse         500 rec, 8 cohorts  -> ~8 clusters
+
+Target: 43-50 personas total.
 All tenants use deterministic seeds so every branch sees identical input.
 """
 
@@ -25,7 +38,7 @@ from crawler.models import Record
 
 
 # ============================================================================
-# Behavioral cohort templates
+# Behavioral cohort templates — reusable across tenants
 # ============================================================================
 
 _COHORT_TEMPLATES: dict[str, dict[str, list]] = {
@@ -118,6 +131,7 @@ _COHORT_TEMPLATES: dict[str, dict[str, list]] = {
             ("contact_lookup", ["/crm/contacts"]),
             ("proposal_send", ["/proposals/send"]),
             ("pipeline_review", ["/crm/pipeline"]),
+            ("call_log", ["/crm/activities"]),
         ],
         "titles": [
             ("Account Executive", "50-200", "saas"),
@@ -136,6 +150,7 @@ _COHORT_TEMPLATES: dict[str, dict[str, list]] = {
             ("kb_article_view", ["/knowledge-base"]),
             ("escalation", ["/helpdesk/escalate"]),
             ("macro_use", ["/helpdesk/macros"]),
+            ("csat_review", ["/analytics/csat"]),
         ],
         "titles": [
             ("Support Lead", "50-200", "saas"),
@@ -152,6 +167,7 @@ _COHORT_TEMPLATES: dict[str, dict[str, list]] = {
             ("policy_review", ["/compliance/policies"]),
             ("access_review", ["/iam/access-reviews"]),
             ("report_export", ["/compliance/reports"]),
+            ("soc2_checklist", ["/compliance/soc2"]),
         ],
         "titles": [
             ("Compliance Officer", "200-500", "fintech"),
@@ -180,16 +196,55 @@ _COHORT_TEMPLATES: dict[str, dict[str, list]] = {
             "Returns workflow has too many manual steps.",
         ],
     },
+    "security": {
+        "behaviors": [
+            ("threat_review", ["/security/threats"]),
+            ("incident_response", ["/security/incidents"]),
+            ("policy_config", ["/security/policies"]),
+            ("vuln_scan_review", ["/security/scans"]),
+            ("access_anomaly", ["/security/anomalies"]),
+        ],
+        "titles": [
+            ("Security Analyst", "200-500", "fintech"),
+            ("CISO", "500+", "enterprise_software"),
+            ("Security Engineer", "100-500", "saas"),
+        ],
+        "messages": [
+            "We need automated threat correlation across log sources.",
+            "Incident response runbooks should trigger from alerts automatically.",
+            "Per-tenant isolation is non-negotiable for regulated clients.",
+        ],
+    },
+    "data": {
+        "behaviors": [
+            ("query_builder", ["/analytics/queries"]),
+            ("dashboard_create", ["/analytics/dashboards"]),
+            ("dataset_import", ["/data/import"]),
+            ("model_train", ["/ml/training"]),
+            ("pipeline_monitor", ["/data/pipelines"]),
+        ],
+        "titles": [
+            ("Data Engineer", "100-500", "saas"),
+            ("Analytics Lead", "50-200", "ecommerce"),
+            ("ML Engineer", "200-500", "fintech"),
+        ],
+        "messages": [
+            "SQL query builder hits timeouts above 10M rows.",
+            "Need Airflow integration for scheduled pipelines.",
+            "Dashboard refresh is too slow — users give up waiting.",
+        ],
+    },
 }
 
 
 def _generate_records(
     tenant_id: str,
-    cohort_specs: list[tuple[str, int]],  # (cohort_name, n_users)
+    cohort_specs: list[tuple[str, int]],
     n_records: int,
     seed: int,
+    user_behavior_weighting: float = 1.0,
 ) -> list[Record]:
-    """Generate deterministic records for a tenant from cohort specs."""
+    """Generate deterministic records for a tenant."""
     rng = random.Random(seed)
     user_pool: list[tuple[str, str]] = []
     for cohort, n_users in cohort_specs:
@@ -206,7 +261,6 @@ def _generate_records(
             "event": behavior,
             "session_duration": rng.randint(200, 2500),
         }
-        # 25% get a firmographic/contact record
         source = "ga4"
         if rng.random() < 0.25:
             title, size, industry = rng.choice(template["titles"])
@@ -214,7 +268,6 @@ def _generate_records(
                 "contact_title": title, "company_size": size, "industry": industry,
             })
             source = "hubspot"
-        # 15% get a verbatim message
         elif rng.random() < 0.15:
             payload["message"] = rng.choice(template["messages"])
             source = "intercom"
@@ -236,67 +289,105 @@ def _generate_records(
 # Tenant generators
 # ============================================================================
 
-def tenant_dense_saas() -> tuple[str, list[Record], dict]:
-    """150 records, B2B SaaS, engineers + designers + PMs."""
-    tenant_id = "bench_dense_saas"
+def tenant_mega_saas() -> tuple[str, list[Record], dict]:
+    """500 records, 6 cohorts — flagship B2B SaaS scenario."""
+    tid = "bench_mega_saas"
     records = _generate_records(
-        tenant_id,
-        [("engineers", 10), ("designers", 8), ("pms", 6)],
-        150, seed=100,
+        tid,
+        [("engineers", 12), ("designers", 8), ("pms", 8),
+         ("marketers", 8), ("sales", 6), ("support", 4)],
+        500, seed=100,
     )
-    meta = {
-        "tenant_id": tenant_id,
-        "industry": "B2B SaaS",
-        "product": "Project management tool for cross-functional teams",
-        "expected_clusters": (3, 4),
+    return tid, records, {
+        "tenant_id": tid, "industry": "B2B SaaS",
+        "product": "Cross-functional project management platform",
+        "expected_clusters": (5, 6),
     }
-    return tenant_id, records, meta
 
 
-def tenant_dense_fintech() -> tuple[str, list[Record], dict]:
-    """150 records, fintech, engineers + compliance + sales."""
-    tenant_id = "bench_dense_fintech"
+def tenant_mega_fintech() -> tuple[str, list[Record], dict]:
+    """500 records, 5 cohorts — fintech stack with compliance focus."""
+    tid = "bench_mega_fintech"
     records = _generate_records(
-        tenant_id,
-        [("engineers", 10), ("compliance", 6), ("sales", 8)],
-        150, seed=200,
+        tid,
+        [("engineers", 12), ("compliance", 8), ("sales", 8),
+         ("security", 6), ("data", 6)],
+        500, seed=200,
     )
-    meta = {
-        "tenant_id": tenant_id,
-        "industry": "Fintech",
-        "product": "Financial services platform for SMB banking",
+    return tid, records, {
+        "tenant_id": tid, "industry": "Fintech",
+        "product": "Financial services platform with compliance tooling",
+        "expected_clusters": (4, 5),
+    }
+
+
+def tenant_mega_ecommerce() -> tuple[str, list[Record], dict]:
+    """500 records, 5 cohorts — e-commerce marketplace."""
+    tid = "bench_mega_ecommerce"
+    records = _generate_records(
+        tid,
+        [("engineers", 10), ("marketers", 10), ("sales", 8),
+         ("ops", 8), ("support", 6)],
+        500, seed=300,
+    )
+    return tid, records, {
+        "tenant_id": tid, "industry": "E-commerce",
+        "product": "Merchant operations platform for multi-channel retail",
+        "expected_clusters": (4, 5),
+    }
+
+
+def tenant_dense_devtools() -> tuple[str, list[Record], dict]:
+    """350 records, 4 cohorts — developer tools company."""
+    tid = "bench_dense_devtools"
+    records = _generate_records(
+        tid,
+        [("engineers", 12), ("data", 8), ("pms", 6), ("security", 4)],
+        350, seed=400,
+    )
+    return tid, records, {
+        "tenant_id": tid, "industry": "Developer Tools",
+        "product": "Observability and developer productivity platform",
         "expected_clusters": (3, 4),
     }
-    return tenant_id, records, meta
 
 
 def tenant_sparse_30() -> tuple[str, list[Record], dict]:
-    """30 records, sparsity stress — same cohorts as dense_saas but thin."""
-    tenant_id = "bench_sparse_30"
+    """30 records — sparsity stress."""
+    tid = "bench_sparse_30"
     records = _generate_records(
-        tenant_id,
-        [("engineers", 4), ("designers", 4)],
-        30, seed=300,
+        tid, [("engineers", 4), ("designers", 4)],
+        30, seed=500,
     )
-    meta = {
-        "tenant_id": tenant_id,
-        "industry": "B2B SaaS",
+    return tid, records, {
+        "tenant_id": tid, "industry": "B2B SaaS",
         "product": "Project management tool",
         "expected_clusters": (1, 2),
     }
-    return tenant_id, records, meta
+
+
+def tenant_sparse_60() -> tuple[str, list[Record], dict]:
+    """60 records — mid-sparsity."""
+    tid = "bench_sparse_60"
+    records = _generate_records(
+        tid, [("engineers", 5), ("marketers", 4), ("sales", 4)],
+        60, seed=550,
+    )
+    return tid, records, {
+        "tenant_id": tid, "industry": "B2B SaaS",
+        "product": "Sales and marketing automation",
+        "expected_clusters": (2, 3),
+    }
 
 
 def tenant_poisoned() -> tuple[str, list[Record], dict]:
-    """150 clean + 10 adversarial (wrong industry/role/behaviors)."""
-    tenant_id = "bench_poisoned"
-    # Clean base — same shape as dense_saas
+    """350 clean + 15 adversarial (agriculture/culinary nonsense)."""
+    tid = "bench_poisoned"
     records = _generate_records(
-        tenant_id,
-        [("engineers", 10), ("designers", 8)],
-        150, seed=400,
+        tid,
+        [("engineers", 10), ("designers", 6), ("pms", 6), ("sales", 4)],
+        350, seed=600,
     )
-    # Poison records — agricultural/culinary nonsense
     poison_messages = [
         "We need better grain sourcing for our artisan bread line.",
         "Can your platform track livestock vaccination schedules?",
@@ -309,12 +400,12 @@ def tenant_poisoned() -> tuple[str, list[Record], dict]:
         ("Organic Farm Manager", "10-20", "organic_farming"),
         ("Bakery Owner", "1-5", "food_service"),
     ]
-    rng = random.Random(401)
-    for i in range(10):
+    rng = random.Random(601)
+    for i in range(15):
         title, size, industry = rng.choice(poison_titles)
         records.append(Record(
             record_id=f"poison_{i:03d}",
-            tenant_id=tenant_id,
+            tenant_id=tid,
             source="intercom" if i % 2 == 0 else "hubspot",
             timestamp=f"2026-04-{rng.randint(1, 9):02d}T10:00:00Z",
             user_id=f"poison_user_{i:03d}",
@@ -329,36 +420,62 @@ def tenant_poisoned() -> tuple[str, list[Record], dict]:
                 "message": rng.choice(poison_messages),
             },
         ))
-    meta = {
-        "tenant_id": tenant_id,
-        "industry": "B2B SaaS",
+    return tid, records, {
+        "tenant_id": tid, "industry": "B2B SaaS",
         "product": "Project management tool",
-        "expected_clusters": (3, 4),
-        "poison_count": 10,
+        "expected_clusters": (4, 5),
+        "poison_count": 15,
         "poison_markers": [
             "agriculture", "farming", "organic", "harvest", "crop", "livestock",
             "irrigation", "pastry", "bakery", "grain",
         ],
     }
-    return tenant_id, records, meta
+
+
+def tenant_heavy_tail() -> tuple[str, list[Record], dict]:
+    """300 records, heavy-tailed — 70% engineers, 10% each of 3 others."""
+    tid = "bench_heavy_tail"
+    # Build cohort specs with 70/10/10/10 weighting (by user count)
+    records = _generate_records(
+        tid,
+        [("engineers", 20), ("designers", 3), ("sales", 3), ("support", 3)],
+        300, seed=700,
+    )
+    return tid, records, {
+        "tenant_id": tid, "industry": "B2B SaaS",
+        "product": "Developer-heavy project management platform",
+        "expected_clusters": (3, 4),
+    }
+
+
+def tenant_single_cohort() -> tuple[str, list[Record], dict]:
+    """200 records, 1 cohort — degeneracy test."""
+    tid = "bench_single_cohort"
+    records = _generate_records(
+        tid, [("engineers", 15)],
+        200, seed=800,
+    )
+    return tid, records, {
+        "tenant_id": tid, "industry": "Developer Tools",
+        "product": "API platform",
+        "expected_clusters": (1, 1),
+    }
 
 
 def tenant_diverse() -> tuple[str, list[Record], dict]:
-    """200 records, 5 cohorts — tests cluster count robustness."""
-    tenant_id = "bench_diverse"
+    """500 records, 8 cohorts — maximum variety."""
+    tid = "bench_diverse"
     records = _generate_records(
-        tenant_id,
-        [("engineers", 8), ("designers", 6), ("marketers", 6),
-         ("sales", 6), ("support", 4)],
-        200, seed=500,
+        tid,
+        [("engineers", 8), ("designers", 6), ("pms", 6), ("marketers", 6),
+         ("sales", 6), ("support", 4), ("data", 6), ("security", 4)],
+        500, seed=900,
     )
-    meta = {
-        "tenant_id": tenant_id,
-        "industry": "B2B SaaS",
-        "product": "Cross-functional collaboration platform",
-        "expected_clusters": (4, 6),
+    return tid, records, {
+        "tenant_id": tid, "industry": "B2B SaaS",
+        "product": "Horizontal platform serving many functions",
+        "expected_clusters": (6, 8),
     }
-    return tenant_id, records, meta
 
 
 # ============================================================================
@@ -366,23 +483,26 @@ def tenant_diverse() -> tuple[str, list[Record], dict]:
 # ============================================================================
 
 TENANTS = {
-    "bench_dense_saas": tenant_dense_saas,
-    "bench_dense_fintech": tenant_dense_fintech,
+    "bench_mega_saas": tenant_mega_saas,
+    "bench_mega_fintech": tenant_mega_fintech,
+    "bench_mega_ecommerce": tenant_mega_ecommerce,
+    "bench_dense_devtools": tenant_dense_devtools,
     "bench_sparse_30": tenant_sparse_30,
+    "bench_sparse_60": tenant_sparse_60,
     "bench_poisoned": tenant_poisoned,
+    "bench_heavy_tail": tenant_heavy_tail,
+    "bench_single_cohort": tenant_single_cohort,
     "bench_diverse": tenant_diverse,
 }
 
 
 def load_tenant(name: str) -> tuple[str, list[Record], dict]:
-    """Load a benchmark tenant by name."""
     if name not in TENANTS:
         raise ValueError(f"Unknown tenant: {name}. Available: {list(TENANTS)}")
     return TENANTS[name]()
 
 
 def tenant_hash(name: str) -> str:
-    """Content hash of a tenant's records — detects drift."""
     _, records, meta = load_tenant(name)
     content = json.dumps(
         [r.model_dump() for r in records] + [meta],
@@ -392,8 +512,10 @@ def tenant_hash(name: str) -> str:
 
 
 if __name__ == "__main__":
-    print("Benchmark tenants:")
+    print(f"{'Tenant':<25} {'Records':>8} {'Hash':>14} {'Expected clusters':<20}")
+    print("-" * 75)
     for name in TENANTS:
         _, records, meta = load_tenant(name)
         h = tenant_hash(name)
-        print(f"  {name}: {len(records)} records, hash={h}, expected={meta['expected_clusters']}")
+        ec = meta["expected_clusters"]
+        print(f"  {name:<25} {len(records):>6} {h:>14}    {ec}")
