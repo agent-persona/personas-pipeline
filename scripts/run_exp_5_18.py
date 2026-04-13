@@ -48,7 +48,7 @@ from synthesis.config import settings  # noqa: E402
 from synthesis.engine.model_backend import AnthropicBackend  # noqa: E402
 from synthesis.engine.synthesizer import SynthesisError, synthesize  # noqa: E402
 from synthesis.models.cluster import ClusterData  # noqa: E402
-from evals.human_protocols.agreement import cohen_kappa  # noqa: E402
+from human_protocols.agreement import cohen_kappa  # noqa: E402
 
 TENANT_ID = "tenant_acme_corp"
 TENANT_INDUSTRY = "B2B SaaS"
