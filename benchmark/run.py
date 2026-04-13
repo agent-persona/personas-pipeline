@@ -45,9 +45,9 @@ sys.path.insert(0, str(REPO_ROOT / "benchmark"))
 from tenants import load_tenant, tenant_hash, TENANTS
 
 # Concurrency limit per tenant (stay under Anthropic rate limits)
-CLUSTER_CONCURRENCY = 5
+CLUSTER_CONCURRENCY = 3
 # Concurrency limit across tenants within a run
-TENANT_CONCURRENCY = 3
+TENANT_CONCURRENCY = 2
 
 
 @dataclass
@@ -98,23 +98,39 @@ async def _synth_one(
     )
     async with semaphore:
         t0 = time.monotonic()
-        try:
-            r = await synthesize(cluster, backend)
-            result.persona_name = r.persona.name
-            result.persona_json = r.persona.model_dump(mode="json")
-            result.groundedness = r.groundedness.score
-            result.attempts = r.attempts
-            result.cost_usd = r.total_cost_usd
-        except SynthesisError as e:
-            result.failed = True
-            result.error = str(e)[:200]
-            result.attempts = len(e.attempts)
-            result.cost_usd = sum(a.cost_usd for a in e.attempts)
-        except Exception as e:
-            result.failed = True
-            result.error = f"{type(e).__name__}: {e}"[:200]
-        finally:
-            result.latency_s = time.monotonic() - t0
+        # Retry on rate-limit errors
+        max_retries = 4
+        for attempt in range(max_retries):
+            try:
+                r = await synthesize(cluster, backend)
+                result.persona_name = r.persona.name
+                result.persona_json = r.persona.model_dump(mode="json")
+                result.groundedness = r.groundedness.score
+                result.attempts = r.attempts
+                result.cost_usd = r.total_cost_usd
+                break
+            except SynthesisError as e:
+                is_rate = any("429" in str(a.validation_errors) + str(a.groundedness_violations)
+                              or "rate_limit" in (str(a.validation_errors) + str(a.groundedness_violations)).lower()
+                              for a in e.attempts)
+                if is_rate and attempt < max_retries - 1:
+                    await asyncio.sleep(5 * (2 ** attempt))
+                    continue
+                result.failed = True
+                result.error = str(e)[:200]
+                result.attempts = len(e.attempts)
+                result.cost_usd = sum(a.cost_usd for a in e.attempts)
+                break
+            except Exception as e:
+                err_str = str(e).lower()
+                is_rate = "429" in err_str or "rate_limit" in err_str or "overloaded" in err_str
+                if is_rate and attempt < max_retries - 1:
+                    await asyncio.sleep(5 * (2 ** attempt))
+                    continue
+                result.failed = True
+                result.error = f"{type(e).__name__}: {e}"[:200]
+                break
+        result.latency_s = time.monotonic() - t0
     return result
 
 
