@@ -8,14 +8,26 @@ from synthesis.models.persona import PersonaV1
 # Fields that require at least one source_evidence entry
 EVIDENCE_REQUIRED_FIELDS = ("goals", "pains", "motivations", "objections")
 
+# Sub-objects that require at least one evidence entry rooted in them
+PSYCHOLOGICAL_REQUIRED_PREFIXES = (
+    "communication_style",
+    "emotional_profile",
+    "moral_framework",
+)
+
 
 @dataclass
 class GroundednessReport:
     score: float
     violations: list[str] = field(default_factory=list)
+    missing_psychological_prefixes: list[str] = field(default_factory=list)
 
     @property
     def passed(self) -> bool:
+        # Gating: missing psychological evidence is a hard fail regardless of score,
+        # because those sub-objects are categorically required per the synthesis prompt.
+        if self.missing_psychological_prefixes:
+            return False
         return self.score >= 0.9
 
 
@@ -65,9 +77,30 @@ def check_groundedness(
                     f"No valid source_evidence entry for {path}: {items[idx]!r}"
                 )
 
+    # Check 3: Each psychological sub-object must have at least one valid evidence entry
+    missing_psychological_prefixes: list[str] = []
+    for prefix in PSYCHOLOGICAL_REQUIRED_PREFIXES:
+        total_required += 1
+        has_valid_evidence = any(
+            path == prefix or path.startswith(f"{prefix}.")
+            for path in valid_evidence_paths
+        )
+        if has_valid_evidence:
+            covered += 1
+        else:
+            missing_psychological_prefixes.append(prefix)
+            violations.append(
+                f"No valid source_evidence entry rooted in {prefix!r} — "
+                f"psychological fields must be grounded in source records"
+            )
+
     if total_required == 0:
         score = 1.0
     else:
         score = covered / total_required
 
-    return GroundednessReport(score=score, violations=violations)
+    return GroundednessReport(
+        score=score,
+        violations=violations,
+        missing_psychological_prefixes=missing_psychological_prefixes,
+    )
