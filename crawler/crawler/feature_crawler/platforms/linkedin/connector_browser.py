@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from hashlib import sha256
+import logging
 import re
 from typing import Any, Iterable
 
@@ -18,6 +19,8 @@ from ...core.models import (
     ThreadRecord,
 )
 from .connector_profile import LinkedInProfileConnector, _clean_space, _cookie_from_env
+
+logger = logging.getLogger(__name__)
 
 
 def _stable_id(*parts: str) -> str:
@@ -197,9 +200,19 @@ class LinkedInBrowserConnector(CommunityConnector):
         context: CrawlContext,
         since: str | None = None,
     ) -> Iterable[Record]:
-        records = list(self.profile_connector.fetch(target=target, context=context, since=since))
-        if not target.metadata.get("include_network"):
-            return records
+        include_network = bool(target.metadata.get("include_network"))
+        records: list[Record] = []
+        if include_network:
+            try:
+                records = list(self.profile_connector.fetch(target=target, context=context, since=since))
+            except Exception as exc:
+                logger.warning(
+                    "linkedin session-browser profile prefetch failed; continuing with network crawl: %s",
+                    exc,
+                )
+                records = []
+        else:
+            return list(self.profile_connector.fetch(target=target, context=context, since=since))
 
         payload = self.browser_client.fetch_connections()
         profile_snapshot = next(
@@ -214,7 +227,7 @@ class LinkedInBrowserConnector(CommunityConnector):
             profile_snapshot.fields.get("public_identifier")
             if isinstance(profile_snapshot, ProfileSnapshotRecord)
             else target.target_id
-        ) or target.target_id
+        ) or target.target_id or _public_identifier_from_url(target.url, "linkedin-viewer")
         source_user_id = f"linkedin-user-{source_public_identifier}"
         community_id = target.target_id or source_public_identifier
         records.extend(

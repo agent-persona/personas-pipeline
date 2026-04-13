@@ -185,3 +185,53 @@ class LinkedInProfileConnectorTest(unittest.TestCase):
         )
         self.assertEqual(network_thread["metadata"]["source_mode"], "session-browser")
         self.assertEqual(network_thread["metadata"]["connection_count"], 2)
+
+    def test_session_browser_connector_falls_back_when_profile_prefetch_fails(self) -> None:
+        target = CrawlTarget(
+            platform="linkedin",
+            target_id="jane-builder",
+            url="https://www.linkedin.com/in/jane-builder/",
+            community_name="Jane Builder",
+            collection_basis="consented",
+            metadata={"include_network": True},
+        )
+        context = CrawlContext(
+            crawl_run_id="run_test_li_006",
+            observed_at="2026-04-11T18:00:00Z",
+        )
+        profile_connector = type(
+            "ProfileConnectorFailStub",
+            (),
+            {
+                "fetch": lambda _self, target, context, since=None: (_ for _ in ()).throw(RuntimeError("302 loop")),
+            },
+        )()
+        browser_client = type(
+            "BrowserClientStub",
+            (),
+            {
+                "fetch_connections": lambda _self: BrowserConnectionsPayload(
+                    source_url="https://www.linkedin.com/mynetwork/invite-connect/connections/",
+                    connection_count=1,
+                    connections=[
+                        {
+                            "name": "Pat Example",
+                            "headline": "Founder at Example Co",
+                            "profile_url": "https://www.linkedin.com/in/pat-example/",
+                        },
+                    ],
+                )
+            },
+        )()
+        connector = LinkedInBrowserConnector(
+            profile_connector=profile_connector,
+            browser_client=browser_client,
+        )
+
+        records = list(connector.fetch(target=target, context=context))
+        record_types = [record.record_type for record in records]
+        self.assertEqual(record_types.count("thread"), 1)
+        self.assertEqual(record_types.count("account"), 1)
+        self.assertEqual(record_types.count("profile_snapshot"), 1)
+        self.assertEqual(record_types.count("message"), 1)
+        self.assertEqual(record_types.count("interaction"), 1)
