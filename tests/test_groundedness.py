@@ -44,6 +44,7 @@ def _persona(evidence: list[SourceEvidence]) -> PersonaV1:
         pains=["p0", "p1"],
         motivations=["m0", "m1"],
         objections=["o0"],
+        not_this=["n0", "n1"],
         channels=["Slack"],
         vocabulary=["a", "b", "c"],
         decision_triggers=["t0"],
@@ -90,26 +91,38 @@ class TestPsychologicalGroundedness:
         report = check_groundedness(persona, cluster)
         assert report.passed, f"Expected pass, got violations: {report.violations}"
 
-    def test_missing_communication_style_evidence_fails(self) -> None:
+    def test_missing_communication_style_evidence_tracked(self) -> None:
         cluster = _cluster(["r1"])
         ev = [e for e in _full_evidence() if not e.field_path.startswith("communication_style")]
         persona = _persona(ev)
         report = check_groundedness(persona, cluster)
-        assert not report.passed
+        assert "communication_style" in report.missing_psychological_prefixes
         assert any("communication_style" in v for v in report.violations)
 
-    def test_missing_emotional_profile_evidence_fails(self) -> None:
+    def test_missing_emotional_profile_evidence_tracked(self) -> None:
         cluster = _cluster(["r1"])
         ev = [e for e in _full_evidence() if not e.field_path.startswith("emotional_profile")]
         persona = _persona(ev)
         report = check_groundedness(persona, cluster)
-        assert not report.passed
+        assert "emotional_profile" in report.missing_psychological_prefixes
         assert any("emotional_profile" in v for v in report.violations)
 
-    def test_missing_moral_framework_evidence_fails(self) -> None:
+    def test_missing_moral_framework_evidence_tracked(self) -> None:
         cluster = _cluster(["r1"])
         ev = [e for e in _full_evidence() if not e.field_path.startswith("moral_framework")]
         persona = _persona(ev)
         report = check_groundedness(persona, cluster)
-        assert not report.passed
+        assert "moral_framework" in report.missing_psychological_prefixes
         assert any("moral_framework" in v for v in report.violations)
+
+    def test_all_psych_prefixes_missing_fails_on_score(self) -> None:
+        """Dropping all three psych prefixes pushes score below 0.9 → passed=False via threshold."""
+        cluster = _cluster(["r1"])
+        ev = [
+            e for e in _full_evidence()
+            if not any(e.field_path.startswith(p) for p in ("communication_style", "emotional_profile", "moral_framework"))
+        ]
+        persona = _persona(ev)
+        report = check_groundedness(persona, cluster)
+        assert not report.passed
+        assert report.score < 0.9

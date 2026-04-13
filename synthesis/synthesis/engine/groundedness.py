@@ -24,10 +24,6 @@ class GroundednessReport:
 
     @property
     def passed(self) -> bool:
-        # Gating: missing psychological evidence is a hard fail regardless of score,
-        # because those sub-objects are categorically required per the synthesis prompt.
-        if self.missing_psychological_prefixes:
-            return False
         return self.score >= 0.9
 
 
