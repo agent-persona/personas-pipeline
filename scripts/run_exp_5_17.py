@@ -42,7 +42,7 @@ load_dotenv(REPO_ROOT / "synthesis" / ".env")
 from anthropic import AsyncAnthropic  # noqa: E402
 
 from crawler import fetch_all  # noqa: E402
-from evals.human_protocols.agreement import krippendorff_alpha  # noqa: E402
+from human_protocols.agreement import krippendorff_alpha  # noqa: E402
 from segmentation.models.record import RawRecord  # noqa: E402
 from segmentation.pipeline import segment  # noqa: E402
 from synthesis.config import settings  # noqa: E402
