@@ -9,7 +9,7 @@ from persona_eval.schemas import Persona as EvalPersona
 from synthesis.adapters.eval_adapter import persona_v1_to_eval
 from synthesis.models.persona import PersonaV1
 
-OUTPUT_DIR = Path(__file__).resolve().parents[1] / "output"
+FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 
 FIXTURES = [
     "persona_00.json",
@@ -19,7 +19,7 @@ FIXTURES = [
 
 @pytest.mark.parametrize("filename", FIXTURES)
 def test_fixture_roundtrip(filename: str) -> None:
-    path = OUTPUT_DIR / filename
+    path = FIXTURES_DIR / filename
     data = json.loads(path.read_text())
 
     # 1. PersonaV1 validates (proves fixture was regenerated with psych fields)

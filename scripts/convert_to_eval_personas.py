@@ -44,7 +44,11 @@ def main(argv: list[str] | None = None) -> int:
 
     for src in src_files:
         dst = convert_file(src, args.output_dir)
-        print(f"  {src.name} → {dst.relative_to(args.input_dir.parent)}")
+        try:
+            shown = dst.relative_to(Path.cwd())
+        except ValueError:
+            shown = dst
+        print(f"  {src.name} -> {shown}")
 
     print(f"\nConverted {len(src_files)} persona(s) to {args.output_dir}")
     return 0
