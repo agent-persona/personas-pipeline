@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from .evidence import SourceEvidence
 
@@ -34,6 +34,74 @@ class JourneyStage(BaseModel):
     content_preferences: list[str]
 
 
+class CommunicationStyle(BaseModel):
+    """How this persona expresses themselves — matches persona_eval.CommunicationStyle."""
+
+    tone: str = Field(
+        description="Dominant emotional register, e.g. 'direct', 'warm', 'enthusiastic', 'analytical', 'skeptical'",
+    )
+    formality: str = Field(
+        description="e.g. 'casual', 'professional', 'formal'",
+    )
+    vocabulary_level: str = Field(
+        description="'basic', 'intermediate', or 'advanced' — based on technical sophistication of their language",
+    )
+    preferred_channels: list[str] = Field(
+        min_length=1,
+        description="Channels where this persona actually communicates (Slack, email, Intercom, forums, etc.)",
+    )
+
+
+class EmotionalProfile(BaseModel):
+    """Emotional baseline + triggers + coping — matches persona_eval.EmotionalProfile."""
+
+    baseline_mood: str = Field(
+        description="Dominant emotional baseline — 'calm', 'anxious', 'optimistic', 'frustrated', 'enthusiastic', etc.",
+    )
+    stress_triggers: list[str] = Field(
+        min_length=1,
+        max_length=6,
+        description="What reliably makes this persona stressed or frustrated, grounded in source records",
+    )
+    coping_mechanisms: list[str] = Field(
+        min_length=1,
+        max_length=6,
+        description="How this persona handles frustration — 'files support ticket', 'writes automation', 'vents on Twitter', etc.",
+    )
+
+
+class MoralFramework(BaseModel):
+    """Values and ethical stance — matches persona_eval.MoralFramework."""
+
+    core_values: list[str] = Field(
+        min_length=2,
+        max_length=6,
+        description="The values this persona treats as non-negotiable — 'fairness', 'autonomy', 'efficiency', etc.",
+    )
+    ethical_stance: str = Field(
+        description=(
+            "Best-fit label, e.g. 'utilitarian', 'virtue ethics', 'deontological', "
+            "'principlist', 'care ethics'. Open-ended — prefer one of these if the "
+            "language fits, otherwise use a short descriptive label."
+        ),
+    )
+    moral_foundations: dict[str, float] = Field(
+        description=(
+            "Moral Foundations Theory weights in [0.0, 1.0]. "
+            "Keys: care, fairness, loyalty, authority, sanctity, liberty. "
+            "Not all keys required — include only those with clear evidence."
+        ),
+    )
+
+    @field_validator("moral_foundations")
+    @classmethod
+    def _weights_in_range(cls, v: dict[str, float]) -> dict[str, float]:
+        for k, weight in v.items():
+            if not 0.0 <= weight <= 1.0:
+                raise ValueError(f"moral_foundations[{k}] = {weight} must be in [0.0, 1.0]")
+        return v
+
+
 class PersonaV1(BaseModel):
     """Core persona schema v1 — the structured output the LLM is forced to produce."""
 
@@ -48,6 +116,15 @@ class PersonaV1(BaseModel):
     pains: list[str] = Field(min_length=2, max_length=8)
     motivations: list[str] = Field(min_length=2, max_length=6)
     objections: list[str] = Field(min_length=1, max_length=6)
+    not_this: list[str] = Field(
+        min_length=2,
+        max_length=6,
+        description=(
+            "Identity-level negatives — things this persona would NOT do, say, "
+            "or believe. Distinct from objections (which are sales pushback). "
+            "Use these as the scaffolding for authentic out-of-character refusals."
+        ),
+    )
     channels: list[str] = Field(
         min_length=1,
         max_length=8,
@@ -64,5 +141,60 @@ class PersonaV1(BaseModel):
         max_length=5,
         description="Things this persona might say, in their own voice",
     )
+    journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
+    communication_style: CommunicationStyle = Field(
+        description="How this persona speaks and writes. Derived from their verbatim messages in source data.",
+    )
+    emotional_profile: EmotionalProfile = Field(
+        description="Emotional baseline, stress triggers, and coping mechanisms. Grounded in support tickets, complaints, and behavioral signals.",
+    )
+    moral_framework: MoralFramework = Field(
+        description="Core values and ethical stance. Inferred from what this persona cares about — language of fairness, autonomy, efficiency, etc.",
+    )
+    source_evidence: list[SourceEvidence] = Field(min_length=3)
+
+
+class PersonaV1VoiceFirst(BaseModel):
+    """exp-2.07 variant: vocabulary and sample_quotes declared FIRST.
+
+    Pydantic v2 preserves declaration order in model_json_schema(); the
+    Anthropic tool-use API fills fields in that order during structured
+    output. So reordering the class declaration is the cleanest possible
+    test of whether anchoring voice before demographics reduces stereotyping.
+
+    All field constraints, types, and descriptions are identical to PersonaV1 —
+    ONLY the order changes. No prompt changes, no model changes, no temperature
+    changes. If distinctiveness differs, it is causally attributable to order.
+    """
+
+    schema_version: Literal["1.0"] = "1.0"
+    name: str = Field(description="A memorable, descriptive name for this persona")
+    summary: str = Field(
+        description="2-3 sentence overview of who this persona is",
+    )
+    # --- VOICE FIRST ---
+    vocabulary: list[str] = Field(
+        min_length=3,
+        max_length=15,
+        description="Words and phrases this persona uses",
+    )
+    sample_quotes: list[str] = Field(
+        min_length=2,
+        max_length=5,
+        description="Things this persona might say, in their own voice",
+    )
+    # --- then everything else ---
+    demographics: Demographics
+    firmographics: Firmographics
+    goals: list[str] = Field(min_length=2, max_length=8)
+    pains: list[str] = Field(min_length=2, max_length=8)
+    motivations: list[str] = Field(min_length=2, max_length=6)
+    objections: list[str] = Field(min_length=1, max_length=6)
+    channels: list[str] = Field(
+        min_length=1,
+        max_length=8,
+        description="Where they spend time online/offline",
+    )
+    decision_triggers: list[str] = Field(min_length=1, max_length=6)
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
     source_evidence: list[SourceEvidence] = Field(min_length=3)

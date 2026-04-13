@@ -55,7 +55,10 @@ from anthropic import AsyncAnthropic
 from twin import TwinChat
 
 async def main():
-    persona = json.loads(open("output/persona_00.json").read())["persona"]
+    # tests/fixtures/persona_00.json is the committed fixture — always present.
+    # For a live persona, point at output/persona_00.json after running
+    # scripts/run_full_pipeline.py.
+    persona = json.loads(open("tests/fixtures/persona_00.json").read())["persona"]
     client = AsyncAnthropic()  # uses ANTHROPIC_API_KEY from env
     twin = TwinChat(persona, client=client, model="claude-haiku-4-5-20251001")
     reply = await twin.reply("What's the biggest frustration with your tools?")

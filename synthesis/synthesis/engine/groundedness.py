@@ -8,11 +8,19 @@ from synthesis.models.persona import PersonaV1
 # Fields that require at least one source_evidence entry
 EVIDENCE_REQUIRED_FIELDS = ("goals", "pains", "motivations", "objections")
 
+# Sub-objects that require at least one evidence entry rooted in them
+PSYCHOLOGICAL_REQUIRED_PREFIXES = (
+    "communication_style",
+    "emotional_profile",
+    "moral_framework",
+)
+
 
 @dataclass
 class GroundednessReport:
     score: float
     violations: list[str] = field(default_factory=list)
+    missing_psychological_prefixes: list[str] = field(default_factory=list)
 
     @property
     def passed(self) -> bool:
@@ -65,9 +73,31 @@ def check_groundedness(
                     f"No valid source_evidence entry for {path}: {items[idx]!r}"
                 )
 
+    # Check 3: Track whether each psychological sub-object has a rooted evidence
+    # entry. This is informational — it does NOT contribute to the score or
+    # affect `passed`. Empirically Haiku rarely emits evidence rooted under
+    # these prefixes, so including them in the score denominator collapsed
+    # reliability. Violations are still recorded for visibility.
+    missing_psychological_prefixes: list[str] = []
+    for prefix in PSYCHOLOGICAL_REQUIRED_PREFIXES:
+        has_valid_evidence = any(
+            path == prefix or path.startswith(f"{prefix}.")
+            for path in valid_evidence_paths
+        )
+        if not has_valid_evidence:
+            missing_psychological_prefixes.append(prefix)
+            violations.append(
+                f"No valid source_evidence entry rooted in {prefix!r} — "
+                f"psychological fields should be grounded in source records"
+            )
+
     if total_required == 0:
         score = 1.0
     else:
         score = covered / total_required
 
-    return GroundednessReport(score=score, violations=violations)
+    return GroundednessReport(
+        score=score,
+        violations=violations,
+        missing_psychological_prefixes=missing_psychological_prefixes,
+    )

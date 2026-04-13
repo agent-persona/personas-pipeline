@@ -1,0 +1,1506 @@
+{
+  "tenant_id": "bench_dense_devtools",
+  "tenant_hash": "627e97b9e522",
+  "industry": "Developer Tools",
+  "product": "Observability and developer productivity platform",
+  "n_records": 350,
+  "n_clusters": 4,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_445b7569ccd4",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00004",
+        "bench_00000",
+        "bench_00031",
+        "bench_00033",
+        "bench_00081",
+        "bench_00029",
+        "bench_00035",
+        "bench_00015",
+        "bench_00006",
+        "bench_00010",
+        "bench_00024",
+        "bench_00025"
+      ],
+      "persona_name": "Alex Chen, Platform Engineering Architect",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Alex Chen, Platform Engineering Architect",
+        "summary": "Alex is a Staff/Senior Engineer at a mid-scale SaaS company who treats observability infrastructure as a critical lever for team enablement. They're deeply technical, infrastructure-focused, and driven by the desire to reduce toil through automation and standardization\u2014willing to spend hours configuring complex integrations if it saves their team manual work downstream.",
+        "demographics": {
+          "age_range": "28-40",
+          "gender_distribution": "unknown",
+          "location_signals": [
+            "tech hub urban area",
+            "US-based SaaS ecosystem"
+          ],
+          "education_level": "Bachelor's degree in Computer Science or equivalent professional experience",
+          "income_bracket": "$120k-$180k"
+        },
+        "firmographics": {
+          "company_size": "200-500 employees",
+          "industry": "SaaS",
+          "role_titles": [
+            "Staff Engineer",
+            "Platform Engineer",
+            "Infrastructure Engineer"
+          ],
+          "tech_stack_signals": [
+            "Terraform",
+            "CI/CD pipelines",
+            "GitHub",
+            "GraphQL/REST APIs",
+            "Webhooks",
+            "SDK-based instrumentation"
+          ]
+        },
+        "goals": [
+          "Configure webhooks to trigger automated incident response workflows without manual intervention",
+          "Implement Infrastructure-as-Code (Terraform) for reproducible observability setup across environments",
+          "Export and process large datasets (500k+ rows) for analysis without performance degradation",
+          "Build custom dashboards that surface only the metrics that matter to their team",
+          "Integrate observability deeply into CI/CD pipelines so observability is embedded, not bolted-on",
+          "Standardize observability tooling across teams so junior engineers can self-serve without platform team bottlenecks"
+        ],
+        "pains": [
+          "GraphQL API has rough edges and inconsistencies compared to REST, forcing workarounds",
+          "REST API is functional but lacks polish needed for production-grade integrations",
+          "Manual dashboard setup and metric selection is repetitive across teams",
+          "Lack of native IaC (Terraform) support forces workarounds and drift issues",
+          "Limited webhook configuration options reduce ability to trigger automated incident response",
+          "Bulk export timeouts on large datasets (500k+) block data analysis workflows",
+          "Lack of self-service observability setup forces platform team to manually configure for each new service",
+          "Tool sprawl and inconsistent workflows make it hard to prove ROI of observability investment"
+        ],
+        "motivations": [
+          "Wants to eliminate repetitive manual observability configuration so teams can move faster",
+          "Driven to standardize tooling and workflows so teams can self-serve without infrastructure involvement",
+          "Seeks to prove ROI of observability by correlating data with business outcomes",
+          "Motivated by reducing on-call burden through better alerting and incident response automation",
+          "Motivated by technical elegance and clean abstractions in developer tools",
+          "Values shipping velocity and wants observability to be invisible plumbing, not friction"
+        ],
+        "objections": [
+          "Requires REST API to be production-ready and consistent before investing heavily in integrations",
+          "Concerned about lock-in if the tool doesn't support standard infrastructure-as-code patterns",
+          "Won't invest time if the learning curve is steep or documentation is shallow",
+          "Skeptical of tools that can't scale to their dataset volumes without custom workarounds"
+        ],
+        "not_this": [
+          "Wouldn't use a tool that requires clicking through a UI every time a new service goes live\u2014that's anti-automation",
+          "Doesn't trust point-in-time solutions or single-vendor lock-in; always designs for switching costs",
+          "Won't champion a tool internally if the docs are incomplete or assume no DevOps background",
+          "Doesn't care about vanity metrics\u2014only cares about tooling that moves the business needle"
+        ],
+        "channels": [
+          "Documentation and API references",
+          "GitHub integration workflows",
+          "Slack/team communication channels",
+          "Technical blogs and platform engineering communities",
+          "In-product settings and configuration UI",
+          "Direct API exploration and SDK testing"
+        ],
+        "vocabulary": [
+          "self-serve",
+          "infrastructure-as-code",
+          "automation",
+          "toil reduction",
+          "observability drift",
+          "incident response",
+          "scaling",
+          "integration",
+          "platform enablement",
+          "standardization",
+          "abstraction",
+          "production-ready",
+          "vendor lock-in",
+          "developer experience (DX)"
+        ],
+        "decision_triggers": [
+          "Demo showing Terraform support that eliminates manual dashboard config",
+          "Evidence that webhooks can trigger real incident response workflows in their CI/CD",
+          "Proof that bulk export handles 500k+ rows without timeout",
+          "Clear migration path from competing tools without data loss",
+          "Native GitHub and CI integration that doesn't require custom scripts",
+          "Public roadmap showing commitment to API stability and GraphQL polish"
+        ],
+        "sample_quotes": [
+          "Your REST API is solid but the GraphQL endpoint has some rough edges.",
+          "We need the bulk export to handle 500k rows without timing out.",
+          "If it requires manual setup for each team, it's not a solution\u2014it's just moved the toil.",
+          "I'm looking for a tool that my junior engineers can integrate themselves, without waiting on me to configure it.",
+          "Show me it plays nicely with Terraform and I'll know you understand how we actually build infrastructure."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether this tool can replace manual observability workflows and integrate cleanly into existing infrastructure",
+            "key_actions": [
+              "Testing REST and GraphQL API stability",
+              "Configuring webhooks to explore incident response automation",
+              "Running bulk export tests to verify performance at scale",
+              "Exploring Terraform/IaC options"
+            ],
+            "content_preferences": [
+              "API documentation and reference materials",
+              "Technical case studies on observability automation",
+              "Performance benchmarks for large datasets",
+              "Integration guides (Terraform, CI/CD, GitHub)"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if the tool proves it won't create lock-in, scales to their data volumes, and reduces toil significantly",
+            "key_actions": [
+              "Deep-dive testing on production-like data volumes",
+              "Proof-of-concept on Terraform setup with their CI/CD",
+              "Team alignment on dashboard standardization",
+              "Cost-benefit analysis comparing to current scattered tools"
+            ],
+            "content_preferences": [
+              "Success metrics and ROI documentation",
+              "Security and compliance details",
+              "Hands-on workshops or pair sessions",
+              "Competitive comparison on feature parity"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Configure webhooks to trigger automated incident response workflows without manual intervention",
+            "record_ids": [
+              "bench_00004",
+              "bench_00006",
+              "bench_00010"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Implement Infrastructure-as-Code (Terraform) for reproducible observability setup across environments",
+            "record_ids": [
+              "bench_00033"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Export and process large datasets (500k+ rows) for analysis without performance degradation",
+            "record_ids": [
+              "bench_00031",
+              "bench_00025"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Build custom dashboards that surface only the metrics that matter to their team",
+            "record_ids": [
+              "bench_00000",
+              "bench_00024",
+              "bench_00025"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Integrate observability deeply into CI/CD pipelines so observability is embedded, not bolted-on",
+            "record_ids": [
+              "bench_00081",
+              "bench_00029"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Standardize observability tooling across teams so junior engineers can self-serve without platform team bottlenecks",
+            "record_ids": [
+              "bench_00033",
+              "bench_00081"
+            ],
+            "field_path": "goals.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "GraphQL API has rough edges and inconsistencies compared to REST, forcing workarounds",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "REST API is functional but lacks polish needed for production-grade integrations",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Manual dashboard setup and metric selection is repetitive across teams",
+            "record_ids": [
+              "bench_00000",
+              "bench_00024"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Lack of native IaC (Terraform) support forces workarounds and drift issues",
+            "record_ids": [
+              "bench_00033"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Limited webhook configuration options reduce ability to trigger automated incident response",
+            "record_ids": [
+              "bench_00004",
+              "bench_00006",
+              "bench_00010"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Bulk export timeouts on large datasets (500k+) block data analysis workflows",
+            "record_ids": [
+              "bench_00025",
+              "bench_00031"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Lack of self-service observability setup forces platform team to manually configure for each new service",
+            "record_ids": [
+              "bench_00081",
+              "bench_00029"
+            ],
+            "field_path": "pains.6",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Tool sprawl and inconsistent workflows make it hard to prove ROI of observability investment",
+            "record_ids": [
+              "bench_00024",
+              "bench_00025"
+            ],
+            "field_path": "pains.7",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Wants to eliminate repetitive manual observability configuration so teams can move faster",
+            "record_ids": [
+              "bench_00000",
+              "bench_00024",
+              "bench_00025"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Driven to standardize tooling and workflows so teams can self-serve without infrastructure involvement",
+            "record_ids": [
+              "bench_00081",
+              "bench_00029"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Seeks to prove ROI of observability by correlating data with business outcomes",
+            "record_ids": [
+              "bench_00031"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Motivated by reducing on-call burden through better alerting and incident response automation",
+            "record_ids": [
+              "bench_00004",
+              "bench_00006",
+              "bench_00010"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivated by technical elegance and clean abstractions in developer tools",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Values shipping velocity and wants observability to be invisible plumbing, not friction",
+            "record_ids": [
+              "bench_00081",
+              "bench_00029"
+            ],
+            "field_path": "motivations.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Requires REST API to be production-ready and consistent before investing heavily in integrations",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Concerned about lock-in if the tool doesn't support standard infrastructure-as-code patterns",
+            "record_ids": [
+              "bench_00033"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Won't invest time if the learning curve is steep or documentation is shallow",
+            "record_ids": [
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Skeptical of tools that can't scale to their dataset volumes without custom workarounds",
+            "record_ids": [
+              "bench_00025",
+              "bench_00031"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.038083,
+      "latency_s": 44.734999999869615,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 5.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 5.0
+      }
+    },
+    {
+      "cluster_id": "clust_33c8d35f4517",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00007",
+        "bench_00065",
+        "bench_00001",
+        "bench_00040",
+        "bench_00019",
+        "bench_00020",
+        "bench_00021",
+        "bench_00027",
+        "bench_00028",
+        "bench_00039",
+        "bench_00061",
+        "bench_00062"
+      ],
+      "persona_name": "Marcus\u2014The Security-First Operations Guardian",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Marcus\u2014The Security-First Operations Guardian",
+        "summary": "Marcus is a Security Analyst at a mid-sized fintech firm who lives in the trenches of threat detection and incident response. He spends hours reviewing vulnerabilities, anomalies, and policy configurations to keep his organization's security posture ironclad\u2014and he's deeply skeptical of tools that compromise on data isolation or add complexity to his already-taxing workflows.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "fintech hubs",
+            "regulated industry markets"
+          ],
+          "education_level": "bachelor's degree in computer science or related field",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "200-500 employees",
+          "industry": "fintech",
+          "role_titles": [
+            "Security Analyst",
+            "Security Engineer",
+            "Incident Response Specialist"
+          ],
+          "tech_stack_signals": [
+            "threat detection systems",
+            "vulnerability scanning tools",
+            "policy management platforms",
+            "observability platforms"
+          ]
+        },
+        "goals": [
+          "Rapidly triage and respond to security incidents with full visibility into threat vectors",
+          "Maintain continuous vulnerability scanning and policy compliance across all systems",
+          "Detect and investigate access anomalies before they escalate to breaches",
+          "Centralize security monitoring without compromising per-tenant data isolation in regulated environments"
+        ],
+        "pains": [
+          "Context-switching between multiple security tools drains time and introduces blind spots",
+          "Lengthy session reviews (30-40 minutes) indicate friction in current workflows and slow decision-making",
+          "Vulnerability scan backlogs pile up when tools lack intuitive filtering or triage automation",
+          "Regulatory compliance pressure in fintech makes data residency and isolation non-negotiable",
+          "False positives in anomaly detection generate alert fatigue and distract from real threats"
+        ],
+        "motivations": [
+          "Prevent breaches and protect customer data\u2014the core of his professional identity",
+          "Streamline incident response to reduce mean time to detection (MTTD) and mean time to resolution (MTTR)",
+          "Demonstrate compliance to auditors and regulators with clear, auditable security actions",
+          "Reduce toil and manual review work so the team can focus on strategic security initiatives"
+        ],
+        "objections": [
+          "Won't adopt tools that blur data boundaries or risk regulatory non-compliance in fintech",
+          "Skeptical of security platforms that require deep vendor lock-in or don't integrate with existing security stacks",
+          "Resists tools that add layers of configuration complexity instead of reducing operational overhead",
+          "Won't trust solutions without clear audit trails and compliance certifications for regulated industries"
+        ],
+        "not_this": [
+          "Wouldn't sacrifice security for convenience or speed\u2014compliance trumps UX simplicity",
+          "Isn't chasing the latest fancy tools; he picks proven, battle-tested solutions that integrate well",
+          "Doesn't believe in 'set it and forget it'\u2014he actively reviews, tunes, and validates security controls",
+          "Won't settle for tools that hide the underlying security logic or abstract away critical context"
+        ],
+        "channels": [
+          "HubSpot CRM/email outreach from security vendors",
+          "GA4 behavior on product pages (hands-on product exploration)",
+          "Intercom in-product chat for technical setup and compliance questions",
+          "Security community forums and compliance blogs",
+          "Direct vendor demos and proof-of-concept evaluations"
+        ],
+        "vocabulary": [
+          "threat review",
+          "incident response",
+          "vulnerability scan",
+          "access anomaly",
+          "policy configuration",
+          "per-tenant isolation",
+          "audit trail",
+          "compliance",
+          "regulated clients",
+          "mean time to detection",
+          "triage",
+          "false positive",
+          "data residency"
+        ],
+        "decision_triggers": [
+          "Proof of per-tenant data isolation and compliance certifications (SOC 2, ISO 27001)",
+          "Demonstration of faster incident triage and response workflows compared to current tools",
+          "Clear integration with existing security stack (SIEM, endpoint detection, threat intelligence)",
+          "Transparent audit logging and compliance reporting capabilities for regulatory reviews",
+          "Successful reference customer in regulated fintech environment with similar risk profile"
+        ],
+        "sample_quotes": [
+          "Per-tenant isolation is non-negotiable for regulated clients.",
+          "We need to triage threats in minutes, not hours. Every second counts when an incident breaks.",
+          "Show me the audit trail. If I can't prove what we did and why, auditors won't sign off.",
+          "I'm not buying another tool that requires six weeks of configuration. We need something that works out of the box.",
+          "Alert fatigue is killing us. I need a platform that gets the signal-to-noise ratio right."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Security challenges are urgent and constant; hunting for tools that reduce friction without introducing risk",
+            "key_actions": [
+              "Browsing security vendor pages and reading product documentation",
+              "Evaluating how tools handle threat review and vulnerability scanning",
+              "Checking compliance and data isolation capabilities on product sites"
+            ],
+            "content_preferences": [
+              "Technical whitepapers on data isolation and compliance",
+              "Case studies from fintech/regulated industry peers",
+              "Security feature breakdowns and architecture overviews"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Deep due diligence on compliance and integration fit; vendor credibility is paramount",
+            "key_actions": [
+              "Requesting detailed security audits and compliance documentation",
+              "Testing incident response and vulnerability triage workflows in sandbox/PoC",
+              "Interviewing vendor references in regulated industries"
+            ],
+            "content_preferences": [
+              "SOC 2/ISO 27001 audit reports and certifications",
+              "Integration guides for SIEM, EDR, and threat intelligence platforms",
+              "Customer testimonials and reference calls with similar-sized fintech firms"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if vendor proves compliance maturity, performance, and seamless integration",
+            "key_actions": [
+              "Finalizing contract terms with emphasis on data residency and audit logging",
+              "Planning pilot rollout with security team and compliance stakeholders",
+              "Setting up integration with existing security stack and baseline metrics"
+            ],
+            "content_preferences": [
+              "Onboarding guides and implementation timelines",
+              "Training materials for security team",
+              "Compliance reporting templates and audit documentation samples"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Rapidly triage and respond to security incidents with full visibility into threat vectors",
+            "record_ids": [
+              "bench_00065",
+              "bench_00007",
+              "bench_00028"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Maintain continuous vulnerability scanning and policy compliance across all systems",
+            "record_ids": [
+              "bench_00001",
+              "bench_00020",
+              "bench_00019"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Detect and investigate access anomalies before they escalate to breaches",
+            "record_ids": [
+              "bench_00040",
+              "bench_00062"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Centralize security monitoring without compromising per-tenant data isolation in regulated environments",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Context-switching between multiple security tools drains time and introduces blind spots",
+            "record_ids": [
+              "bench_00007",
+              "bench_00065",
+              "bench_00001"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Lengthy session reviews (30-40 minutes) indicate friction in current workflows and slow decision-making",
+            "record_ids": [
+              "bench_00007",
+              "bench_00065",
+              "bench_00001",
+              "bench_00019",
+              "bench_00039"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Regulatory compliance pressure in fintech makes data residency and isolation non-negotiable",
+            "record_ids": [
+              "bench_00061",
+              "bench_00020",
+              "bench_00028"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "False positives in anomaly detection generate alert fatigue and distract from real threats",
+            "record_ids": [
+              "bench_00040",
+              "bench_00062"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Prevent breaches and protect customer data\u2014the core of his professional identity",
+            "record_ids": [
+              "bench_00007",
+              "bench_00065",
+              "bench_00001",
+              "bench_00040"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Streamline incident response to reduce mean time to detection (MTTD) and mean time to resolution (MTTR)",
+            "record_ids": [
+              "bench_00065",
+              "bench_00007"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Demonstrate compliance to auditors and regulators with clear, auditable security actions",
+            "record_ids": [
+              "bench_00061",
+              "bench_00020",
+              "bench_00028"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Reduce toil and manual review work so the team can focus on strategic security initiatives",
+            "record_ids": [
+              "bench_00001",
+              "bench_00019",
+              "bench_00020"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Won't adopt tools that blur data boundaries or risk regulatory non-compliance in fintech",
+            "record_ids": [
+              "bench_00061",
+              "bench_00020"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Skeptical of security platforms that require deep vendor lock-in or don't integrate with existing security stacks",
+            "record_ids": [
+              "bench_00020",
+              "bench_00028",
+              "bench_00039"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Resists tools that add layers of configuration complexity instead of reducing operational overhead",
+            "record_ids": [
+              "bench_00019",
+              "bench_00061"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Won't trust solutions without clear audit trails and compliance certifications for regulated industries",
+            "record_ids": [
+              "bench_00061",
+              "bench_00020"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 0.9411764705882353,
+      "attempts": 1,
+      "cost_usd": 0.01864,
+      "latency_s": 21.109999999869615,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 5.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 5.0
+      }
+    },
+    {
+      "cluster_id": "clust_3cd64a65d943",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00003",
+        "bench_00017",
+        "bench_00011",
+        "bench_00034",
+        "bench_00052",
+        "bench_00005",
+        "bench_00013",
+        "bench_00014",
+        "bench_00018",
+        "bench_00023",
+        "bench_00030",
+        "bench_00036"
+      ],
+      "persona_name": "Sarah the Data Stack Consolidator",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Sarah the Data Stack Consolidator",
+        "summary": "Sarah is a mid-level data engineer or analytics lead at a growth-stage SaaS/ecommerce company (50\u2013500 employees) who spends extended sessions building queries, monitoring pipelines, and training models. She's productivity-focused and frustrated by tool fragmentation, performance bottlenecks, and the need for Airflow integration\u2014she wants a unified, observable data platform that eliminates workflow switching and scales reliably with her team's growing data volume.",
+        "demographics": {
+          "age_range": "28-40",
+          "gender_distribution": "likely female",
+          "location_signals": [
+            "San Francisco Bay Area",
+            "remote-first tech hubs"
+          ],
+          "education_level": "Bachelor's in STEM or bootcamp equivalent",
+          "income_bracket": "$90k-$150k"
+        },
+        "firmographics": {
+          "company_size": "50\u2013500 employees",
+          "industry": "SaaS / E-commerce",
+          "role_titles": [
+            "Data Engineer",
+            "Analytics Lead",
+            "Analytics Engineer"
+          ],
+          "tech_stack_signals": [
+            "Airflow",
+            "SQL-based query builders",
+            "dashboard tools",
+            "ML frameworks"
+          ]
+        },
+        "goals": [
+          "Build and maintain reliable, observable data pipelines that integrate with Airflow for scheduled workloads",
+          "Create performant dashboards and queries that users won't abandon due to slow refresh times",
+          "Train and iterate on ML models while maintaining data quality",
+          "Reduce context switching by consolidating pipeline monitoring, querying, and model training into a single platform"
+        ],
+        "pains": [
+          "Dashboard refresh times are too slow, causing users to give up waiting and eroding trust in analytics",
+          "Lack of native Airflow integration forces manual pipeline orchestration workarounds",
+          "Switching between multiple tools to manage data pipelines, queries, and models breaks workflow continuity",
+          "Limited visibility into pipeline health and bottlenecks; monitoring feels reactive rather than proactive",
+          "Uncertainty about whether the platform will scale as data volumes grow"
+        ],
+        "motivations": [
+          "Deep engagement with the platform\u2014long session times (20\u201340 min) show she invests heavily when the tool solves her problems",
+          "Values speed and responsiveness; long sessions reflect her willingness to spend time when she has momentum",
+          "Seeks seamless workflow continuity; dislikes tool-switching overhead",
+          "Pride in model accuracy and insights; wants the platform to empower her data science work",
+          "Pragmatism: wants foundational stability (pipelines, data quality) before advanced features"
+        ],
+        "objections": [
+          "If dashboard refresh times don't improve, users will keep asking 'Is the data stale?' and trust the tool less",
+          "I need guarantees that query performance will scale as our data volumes grow",
+          "If I can't monitor pipeline health in one place, we'll end up juggling multiple tools anyway",
+          "ML training features are nice-to-have; data quality and pipeline stability come first"
+        ],
+        "not_this": [
+          "Wouldn't adopt a tool that locks her into a proprietary DAG syntax\u2014she values Airflow compatibility and open standards",
+          "Wouldn't settle for 'good enough' pipeline monitoring; she demands observability, not guesswork",
+          "Wouldn't skip data quality checks to chase flashy ML features\u2014she's pragmatic about priorities",
+          "Wouldn't accept a tool that requires constant tab-switching; seamless workflow is non-negotiable",
+          "Wouldn't trust a platform that can't clearly explain performance trade-offs or scaling limits"
+        ],
+        "channels": [
+          "Google Analytics (product exploration)",
+          "Intercom (support and feature requests)",
+          "HubSpot CRM (sales outreach and nurture)",
+          "Slack communities (data engineering groups, Airflow forums)",
+          "Technical documentation and blog posts on observability"
+        ],
+        "vocabulary": [
+          "pipeline health",
+          "workflow continuity",
+          "integration",
+          "observability",
+          "refresh time",
+          "bottleneck",
+          "data quality",
+          "scheduled workload",
+          "tool-switching overhead",
+          "scalability",
+          "reactive monitoring",
+          "unified platform"
+        ],
+        "decision_triggers": [
+          "Demo showing native Airflow integration with real-time pipeline monitoring",
+          "Proof that dashboard refresh times meet SLA targets (< 5 sec for 100M rows)",
+          "Case study from a similar SaaS/ecommerce company showing scale from 50 to 500 employees",
+          "Comparison showing 'queries + dashboards + pipelines + ML in one interface' vs. her current 4-tool stack",
+          "Free pilot with her team to measure actual adoption and time-savings vs. current workflow"
+        ],
+        "sample_quotes": [
+          "Dashboard refresh is too slow \u2014 users give up waiting.",
+          "Need Airflow integration for scheduled pipelines.",
+          "If I'm jumping between query builders, pipeline monitors, and ML trainers all day, I'm losing hours to context switching.",
+          "I need to see the full picture of where data is bottlenecking, not guess based on user complaints.",
+          "Show me it scales. My data volume is doubling every year, and I can't afford to rebuild this stack."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Frustrated by tool fragmentation and slow dashboards; searching for alternatives",
+            "key_actions": [
+              "Exploring query builders and pipeline monitoring pages",
+              "Reading blogs on observability"
+            ],
+            "content_preferences": [
+              "Problem-focused content ('Why Dashboard Refresh Fails')",
+              "Architecture diagrams showing unified stacks",
+              "Short technical comparisons"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether this platform can replace her multi-tool setup without losing data quality guarantees",
+            "key_actions": [
+              "Deep product testing (long sessions on query_builder, pipeline_monitor, model_train)",
+              "Asking about Airflow integration and scaling limits",
+              "Requesting case studies from similar companies"
+            ],
+            "content_preferences": [
+              "Webinars with Q&A on scaling",
+              "Technical deep-dives on integration architecture",
+              "ROI calculators ('hours saved by consolidation')",
+              "Customer testimonials from analytics leads at growth-stage companies"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if she gets proof of Airflow compatibility, monitoring visibility, and performance at scale",
+            "key_actions": [
+              "Pilot with team",
+              "Negotiating contract terms around SLA and scaling",
+              "Planning migration timeline"
+            ],
+            "content_preferences": [
+              "Implementation guides",
+              "Success metrics and KPIs",
+              "On-boarding training materials",
+              "SLA documentation"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Deep engagement with platform\u2014long session times (20\u201340 min) show investment in solving problems",
+            "record_ids": [
+              "bench_00003",
+              "bench_00013",
+              "bench_00034",
+              "bench_00052"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Dashboard refresh times are too slow, causing users to give up waiting and eroding trust",
+            "record_ids": [
+              "bench_00017"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Lack of native Airflow integration forces manual pipeline orchestration workarounds",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Switching between multiple tools to manage data pipelines, queries, and models breaks workflow continuity",
+            "record_ids": [
+              "bench_00003",
+              "bench_00011",
+              "bench_00034",
+              "bench_00052"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Limited visibility into pipeline health and bottlenecks; monitoring feels reactive rather than proactive",
+            "record_ids": [
+              "bench_00011",
+              "bench_00018",
+              "bench_00030",
+              "bench_00036"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Values speed and responsiveness; long sessions reflect her willingness to spend time when she has momentum",
+            "record_ids": [
+              "bench_00003",
+              "bench_00013",
+              "bench_00018",
+              "bench_00034"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Seeks seamless workflow continuity; dislikes tool-switching overhead",
+            "record_ids": [
+              "bench_00003",
+              "bench_00011",
+              "bench_00034",
+              "bench_00052"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Pride in model accuracy and insights; wants the platform to empower her data science work",
+            "record_ids": [
+              "bench_00052"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Pragmatism: wants foundational stability (pipelines, data quality) before advanced features",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "If dashboard refresh times don't improve, users will keep asking 'Is the data stale?' and trust erodes",
+            "record_ids": [
+              "bench_00017"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "I need guarantees that query performance will scale as our data volumes grow",
+            "record_ids": [
+              "bench_00005",
+              "bench_00013"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "If I can't monitor pipeline health in one place, we'll end up juggling multiple tools anyway",
+            "record_ids": [
+              "bench_00011",
+              "bench_00018",
+              "bench_00030",
+              "bench_00036"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "ML training features are nice-to-have; data quality and pipeline stability come first",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034",
+              "bench_00052"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Build and maintain reliable, observable data pipelines that integrate with Airflow",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "goals.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Create performant dashboards and queries that users won't abandon",
+            "record_ids": [
+              "bench_00017",
+              "bench_00023"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Train and iterate on ML models while maintaining data quality",
+            "record_ids": [
+              "bench_00052"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Consolidate pipeline monitoring, querying, and model training into a single platform",
+            "record_ids": [
+              "bench_00003",
+              "bench_00011",
+              "bench_00034",
+              "bench_00052"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 0.9444444444444444,
+      "attempts": 2,
+      "cost_usd": 0.038117,
+      "latency_s": 48.32899999991059,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    },
+    {
+      "cluster_id": "clust_a9b04c94014f",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00009",
+        "bench_00002",
+        "bench_00008",
+        "bench_00044",
+        "bench_00090",
+        "bench_00012",
+        "bench_00016",
+        "bench_00022",
+        "bench_00026",
+        "bench_00043",
+        "bench_00047",
+        "bench_00048"
+      ],
+      "persona_name": "Alexandra, the Product Roadmap Owner",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Alexandra, the Product Roadmap Owner",
+        "summary": "Alexandra is a Senior Product Manager or Head of Product at a mid-sized SaaS or ecommerce company who lives at the intersection of planning and execution. She uses observability and developer tools to bridge the gap between engineering roadmaps, feature rollouts, and stakeholder expectations\u2014spending significant time reviewing roadmaps, configuring feature flags, gathering user feedback, and preparing reports for her leadership team.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "mixed",
+          "location_signals": [
+            "North America (US-based SaaS and ecommerce hubs)"
+          ],
+          "education_level": "Bachelor's degree or higher",
+          "income_bracket": "$100K-$200K+"
+        },
+        "firmographics": {
+          "company_size": "100-500 employees",
+          "industry": "SaaS and ecommerce",
+          "role_titles": [
+            "Senior Product Manager",
+            "Head of Product"
+          ],
+          "tech_stack_signals": [
+            "Feature flag management",
+            "Observability platforms",
+            "Sprint planning tools",
+            "Roadmap management systems"
+          ]
+        },
+        "goals": [
+          "Control feature rollouts with confidence through feature flag management",
+          "Align engineering delivery with stakeholder expectations via clear roadmap communication",
+          "Make data-driven product decisions by collecting and analyzing user feedback",
+          "Demonstrate product impact and business value to leadership through executive reports",
+          "Coordinate sprint execution and resource prioritization with the team"
+        ],
+        "pains": [
+          "Difficulty tracking which features are actually being used by customers post-launch",
+          "Miscommunication between product vision and engineering execution leads to misalignment",
+          "Pressure to show ROI on product investments to non-technical stakeholders",
+          "Manual processes for gathering, organizing, and acting on user feedback",
+          "Risk of shipping features that don't solve real customer problems",
+          "Lack of visibility into how feature flags are performing in production"
+        ],
+        "motivations": [
+          "Want to be seen as a strategic leader who delivers products customers actually want",
+          "Drive operational excellence by reducing guesswork in feature prioritization",
+          "Build trust with both engineering teams and executive leadership through transparency",
+          "Minimize shipping failures and rework by validating assumptions early",
+          "Own the narrative around product success through data-backed storytelling"
+        ],
+        "objections": [
+          "Won't adopt tools that require constant manual updates or high engineering overhead",
+          "Skeptical of solutions that don't integrate cleanly with existing planning workflows",
+          "Concerned about tooling complexity that requires extensive training",
+          "Hesitant to invest in systems that don't show quick ROI or reduce time-to-insight",
+          "Wary of black-box analytics that don't explain *why* customers are doing something"
+        ],
+        "not_this": [
+          "Would never ship a feature to all customers without validating it first\u2014that's reckless",
+          "Doesn't operate on gut feel; everything is backed by data and customer evidence",
+          "Won't settle for siloed tools; cross-functional visibility is non-negotiable",
+          "Isn't interested in vanity metrics\u2014she cares about outcomes that move the business",
+          "Wouldn't let engineers define the product roadmap without product input"
+        ],
+        "channels": [
+          "Observability and developer tools platform (primary)",
+          "Internal Slack channels with engineering and design teams",
+          "Executive dashboards and reporting tools",
+          "Product management communities and newsletters",
+          "One-on-one stakeholder meetings and roadmap reviews"
+        ],
+        "vocabulary": [
+          "feature flags",
+          "rollout strategy",
+          "customer validation",
+          "stakeholder alignment",
+          "roadmap transparency",
+          "data-driven decision",
+          "time-to-value",
+          "user feedback loop",
+          "sprint cadence",
+          "business impact",
+          "observability",
+          "de-risk"
+        ],
+        "decision_triggers": [
+          "Evidence that a tool reduces time spent on roadmap communication and reviews",
+          "Proof that feature flag management reduces rollout risk or accelerates time-to-market",
+          "Demo showing how feedback is automatically aggregated and surfaced to decision-makers",
+          "Clear integration with existing sprint planning and reporting workflows",
+          "Case study from a similar-sized company showing measurable reduction in shipping failures",
+          "Executive dashboard that makes it easy to show product ROI to leadership"
+        ],
+        "sample_quotes": [
+          "I need to see exactly which features are resonating with customers and which are sitting unused.",
+          "If I'm going to ask engineering to build something, I need to back it up with data from real users.",
+          "The hardest part of my job is keeping everyone\u2014engineers, design, leadership\u2014on the same page about what we're building and why.",
+          "Rolling out a feature isn't the finish line; it's the beginning of learning whether we actually solved the problem.",
+          "I can't just tell executives 'trust me'\u2014I need numbers and evidence."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Recognizing that current tools are scattered and insights are siloed",
+            "key_actions": [
+              "Browsing feature flag solutions",
+              "Reading case studies on observability",
+              "Asking peers about their stack"
+            ],
+            "content_preferences": [
+              "Product comparisons",
+              "Industry benchmarks",
+              "Customer testimonials"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether a platform can actually improve decision velocity and reduce coordination overhead",
+            "key_actions": [
+              "Reviewing roadmaps in the tool",
+              "Running feature flag experiments",
+              "Pulling stakeholder reports",
+              "Gathering internal feedback on usability"
+            ],
+            "content_preferences": [
+              "Deep-dive demos",
+              "ROI calculators",
+              "Integration documentation",
+              "Customer success stories"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if the tool proves it saves time, integrates seamlessly, and provides clear business value",
+            "key_actions": [
+              "Negotiating contract terms",
+              "Planning rollout with team",
+              "Setting up initial reporting dashboards"
+            ],
+            "content_preferences": [
+              "Implementation guides",
+              "Training materials",
+              "Success metrics definitions"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Senior Product Manager or Head of Product role",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022",
+              "bench_00047",
+              "bench_00044",
+              "bench_00048"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Works at companies with 100-500 employees",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022",
+              "bench_00047",
+              "bench_00044",
+              "bench_00048"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Operates in SaaS and ecommerce industries",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022",
+              "bench_00047",
+              "bench_00044",
+              "bench_00048"
+            ],
+            "field_path": "firmographics.industry",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Regularly gathers and reviews user feedback to inform product decisions",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Uses feature flags for controlled rollouts and testing",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016",
+              "bench_00026",
+              "bench_00043"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Actively manages and reviews product roadmaps",
+            "record_ids": [
+              "bench_00044",
+              "bench_00047",
+              "bench_00048"
+            ],
+            "field_path": "goals.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Creates stakeholder reports to demonstrate product impact",
+            "record_ids": [
+              "bench_00008",
+              "bench_00012"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Coordinates sprint planning and execution",
+            "record_ids": [
+              "bench_00090"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Struggles with tracking feature usage post-launch",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016",
+              "bench_00026",
+              "bench_00043"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Faces alignment challenges between product vision and engineering execution",
+            "record_ids": [
+              "bench_00044",
+              "bench_00047",
+              "bench_00048",
+              "bench_00090"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Needs to demonstrate ROI to leadership",
+            "record_ids": [
+              "bench_00008",
+              "bench_00012"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Spends time managing feedback collection and organization",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Worries about shipping features that don't address real customer needs",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Lacks visibility into feature flag performance in production",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016",
+              "bench_00026",
+              "bench_00043"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Driven to be seen as a strategic, data-driven leader",
+            "record_ids": [
+              "bench_00008",
+              "bench_00012"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated to reduce guesswork in prioritization",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022",
+              "bench_00047"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Wants to build trust through transparency with both teams and leadership",
+            "record_ids": [
+              "bench_00008",
+              "bench_00012",
+              "bench_00044",
+              "bench_00048"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.88
+          },
+          {
+            "claim": "Focused on minimizing shipping failures through early validation",
+            "record_ids": [
+              "bench_00043",
+              "bench_00026",
+              "bench_00002"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Wants to own the narrative around product success",
+            "record_ids": [
+              "bench_00008",
+              "bench_00012"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Won't adopt tools with high engineering overhead or manual maintenance burden",
+            "record_ids": [
+              "bench_00090"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Skeptical of solutions that don't integrate with existing workflows",
+            "record_ids": [
+              "bench_00044",
+              "bench_00047",
+              "bench_00090"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Concerned about tool complexity requiring extensive training",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Hesitant about tools without clear ROI or fast time-to-insight",
+            "record_ids": [
+              "bench_00008",
+              "bench_00012"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.82
+          },
+          {
+            "claim": "Wary of black-box analytics without clear reasoning",
+            "record_ids": [
+              "bench_00009",
+              "bench_00022"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.75
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.020483,
+      "latency_s": 23.937000000150874,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    }
+  ],
+  "total_cost_usd": 0.115323,
+  "total_latency_s": 48.32899999991059,
+  "mean_groundedness": 0.9714052287581699,
+  "success_rate": 1.0,
+  "error": ""
+}

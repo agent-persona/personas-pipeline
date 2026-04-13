@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from pydantic import ValidationError
 
 from synthesis.models.cluster import ClusterData
-from synthesis.models.persona import PersonaV1
+from synthesis.models.persona import PersonaV1, PersonaV1VoiceFirst
 
 from .groundedness import GroundednessReport, check_groundedness
 from .model_backend import LLMResult, ModelBackend
@@ -19,7 +19,7 @@ from .prompt_builder import (
 
 logger = logging.getLogger(__name__)
 
-MAX_RETRIES = 2
+MAX_RETRIES = 4
 COST_SAFETY_MULTIPLIER = 3.0
 
 
@@ -44,24 +44,34 @@ class AttemptRecord:
 
 @dataclass
 class SynthesisResult:
-    persona: PersonaV1
+    persona: PersonaV1 | PersonaV1VoiceFirst
     groundedness: GroundednessReport
     total_cost_usd: float
     model_used: str
     attempts: int
+    schema_cls_name: str = "PersonaV1"
 
 
 async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    schema_cls: type = PersonaV1,
+    existing_personas: list[dict] | None = None,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
     Calls the LLM with tool-use forcing, validates with Pydantic, checks
     groundedness, and retries with error context on failure.
+
+    exp-2.07: pass schema_cls=PersonaV1VoiceFirst to run the voice-first
+    variant. All validation, groundedness, and retry logic is schema-agnostic.
+
+    exp-6.04: when `existing_personas` is provided, a contrast block is
+    injected into the prompt instructing the LLM to differentiate from
+    personas 1..N.
     """
-    tool = build_tool_definition()
+    tool = build_tool_definition(schema_cls)
     attempts: list[AttemptRecord] = []
     total_cost = 0.0
     first_attempt_cost: float | None = None
@@ -72,9 +82,9 @@ async def synthesize(
 
         # Build messages (with error context on retries)
         if errors_for_retry:
-            messages = build_retry_messages(cluster, errors_for_retry)
+            messages = build_retry_messages(cluster, errors_for_retry, existing_personas=existing_personas)
         else:
-            messages = build_messages(cluster)
+            messages = build_messages(cluster, existing_personas=existing_personas)
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(
@@ -100,7 +110,7 @@ async def synthesize(
         # Validate with Pydantic
         errors_for_retry = []
         try:
-            persona = PersonaV1.model_validate(llm_result.tool_input)
+            persona = schema_cls.model_validate(llm_result.tool_input)
         except ValidationError as e:
             record.validation_errors = [
                 f"{err['loc']}: {err['msg']}" for err in e.errors()
@@ -143,6 +153,7 @@ async def synthesize(
             total_cost_usd=total_cost,
             model_used=llm_result.model,
             attempts=attempt_num,
+            schema_cls_name=schema_cls.__name__,
         )
 
     # All attempts exhausted
