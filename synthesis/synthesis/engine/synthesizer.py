@@ -57,6 +57,7 @@ async def synthesize(
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
     schema_cls: type = PersonaV1,
+    existing_personas: list[dict] | None = None,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
@@ -65,6 +66,10 @@ async def synthesize(
 
     exp-2.07: pass schema_cls=PersonaV1VoiceFirst to run the voice-first
     variant. All validation, groundedness, and retry logic is schema-agnostic.
+
+    exp-6.04: when `existing_personas` is provided, a contrast block is
+    injected into the prompt instructing the LLM to differentiate from
+    personas 1..N.
     """
     tool = build_tool_definition(schema_cls)
     attempts: list[AttemptRecord] = []
@@ -77,9 +82,9 @@ async def synthesize(
 
         # Build messages (with error context on retries)
         if errors_for_retry:
-            messages = build_retry_messages(cluster, errors_for_retry)
+            messages = build_retry_messages(cluster, errors_for_retry, existing_personas=existing_personas)
         else:
-            messages = build_messages(cluster)
+            messages = build_messages(cluster, existing_personas=existing_personas)
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(

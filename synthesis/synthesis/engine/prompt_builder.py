@@ -63,8 +63,16 @@ def build_tool_definition(schema_cls: type = PersonaV1) -> dict:
     }
 
 
-def build_user_message(cluster: ClusterData) -> str:
-    """Build the user message containing all cluster data for the LLM."""
+def build_user_message(
+    cluster: ClusterData,
+    existing_personas: list[dict] | None = None,
+) -> str:
+    """Build the user message containing all cluster data for the LLM.
+
+    When `existing_personas` is provided (list of persona dicts with at least
+    name, summary, goals, pains, vocabulary), a contrast block is injected
+    instructing the LLM to differentiate the new persona on specific axes.
+    """
     sections: list[str] = []
 
     # Tenant context
@@ -141,6 +149,42 @@ def build_user_message(cluster: ClusterData) -> str:
         + ", ".join(cluster.all_record_ids)
     )
 
+    # Contrast block: inject existing personas so the LLM differentiates
+    if existing_personas:
+        sections.append("\n## Existing Personas — You MUST Differ From These")
+        sections.append(
+            "The following personas have already been created for this tenant. "
+            "Your new persona must be **clearly distinguishable** from each of them. "
+            "Specifically:"
+        )
+        sections.append(
+            "- **Goals**: Do not repeat their goals. Find the behavioral niche they don't cover."
+        )
+        sections.append(
+            "- **Pains**: Identify frictions unique to this cluster's data, not already captured."
+        )
+        sections.append(
+            "- **Vocabulary**: Use different terminology. If they say 'pipeline', you find another word."
+        )
+        sections.append(
+            "- **Voice**: Sample quotes must sound like a different person — different cadence, "
+            "different concerns, different attitude."
+        )
+        sections.append(
+            "- **Still grounded**: Distinctiveness does NOT mean inventing claims. "
+            "Every goal, pain, and motivation must still trace to record IDs from this cluster's data."
+        )
+        for i, p in enumerate(existing_personas):
+            sections.append(f"\n### Existing Persona {i + 1}: {p.get('name', 'Unknown')}")
+            if p.get("summary"):
+                sections.append(f"- Summary: {p['summary']}")
+            if p.get("goals"):
+                sections.append(f"- Goals: {', '.join(p['goals'][:4])}")
+            if p.get("pains"):
+                sections.append(f"- Pains: {', '.join(p['pains'][:4])}")
+            if p.get("vocabulary"):
+                sections.append(f"- Vocabulary: {', '.join(p['vocabulary'][:8])}")
+
     sections.append(
         "\nSynthesize a single persona from this data. "
         "Use the create_persona tool to structure your output."
@@ -149,19 +193,23 @@ def build_user_message(cluster: ClusterData) -> str:
     return "\n".join(sections)
 
 
-def build_messages(cluster: ClusterData) -> list[dict]:
+def build_messages(
+    cluster: ClusterData,
+    existing_personas: list[dict] | None = None,
+) -> list[dict]:
     """Build the full message list for the Anthropic API call."""
     return [
-        {"role": "user", "content": build_user_message(cluster)},
+        {"role": "user", "content": build_user_message(cluster, existing_personas=existing_personas)},
     ]
 
 
 def build_retry_messages(
     cluster: ClusterData,
     errors: list[str],
+    existing_personas: list[dict] | None = None,
 ) -> list[dict]:
     """Build messages for a retry attempt, including previous errors."""
-    user_msg = build_user_message(cluster)
+    user_msg = build_user_message(cluster, existing_personas=existing_personas)
     error_section = "\n## Previous Attempt Errors\n"
     error_section += "Your previous attempt had these issues. Please fix them:\n"
     for err in errors:
