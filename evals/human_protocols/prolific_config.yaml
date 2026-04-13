@@ -1,0 +1,76 @@
+# exp-5.06 Prolific study configuration template.
+# Fill in the <REPLACE_ME> fields before launching. DO NOT commit any
+# study keys or participant-identifying info into this file.
+
+studies:
+  - protocol_id: a
+    name: "Personas pilot — blind matching"
+    description: |
+      You'll read a short chat transcript and pick which of 3 described
+      personas drove the bot side of the conversation. ~8 minutes.
+    stimuli_file: output/experiments/exp-5.06/stimuli_protocol_a.csv
+    n_participants: 5
+    reward_gbp: 1.20  # ~£9/hr at 8 min/study
+    max_participant_time_minutes: 12
+    eligibility:
+      language: en
+      approval_rate_min: 95
+      previous_submissions_min: 10
+    screener_questions:
+      - "Have you ever worked in product research or UX research?"
+    attention_check:
+      insert_every_n_items: 10
+      expected_response: "c"  # an obvious-right-answer item
+    # Operator fills in after creating the study in Prolific's UI:
+    prolific_study_id: <REPLACE_ME_AFTER_CREATION>
+
+  - protocol_id: b
+    name: "Personas pilot — pairwise preference"
+    description: |
+      You'll read a persona description and two candidate chat replies to
+      the same prompt, then pick which reply feels more like that persona.
+      ~6 minutes.
+    stimuli_file: output/experiments/exp-5.06/stimuli_protocol_b.csv
+    n_participants: 5
+    reward_gbp: 0.90
+    max_participant_time_minutes: 10
+    eligibility:
+      language: en
+      approval_rate_min: 95
+      previous_submissions_min: 10
+    screener_questions:
+      - "Have you ever worked in product research or UX research?"
+    attention_check:
+      insert_every_n_items: 10
+      expected_response: "a_better"
+    prolific_study_id: <REPLACE_ME_AFTER_CREATION>
+
+  - protocol_id: c
+    name: "Personas pilot — forced-choice persona ID"
+    description: |
+      You'll read one short chat reply and four candidate persona cards,
+      then pick which persona wrote the reply. ~6 minutes.
+    stimuli_file: output/experiments/exp-5.06/stimuli_protocol_c.csv
+    n_participants: 5
+    reward_gbp: 0.90
+    max_participant_time_minutes: 10
+    eligibility:
+      language: en
+      approval_rate_min: 95
+      previous_submissions_min: 10
+    screener_questions:
+      - "Have you ever worked in product research or UX research?"
+    attention_check:
+      insert_every_n_items: 10
+      expected_response: "1"
+    prolific_study_id: <REPLACE_ME_AFTER_CREATION>
+
+# Total budget estimate at current values:
+#   A: 60 items × 5 raters × £0.20/item = £60
+#   B: 60 items × 5 raters × £0.15/item = £45
+#   C: 60 items × 5 raters × £0.15/item = £45
+#   Total: ~£150 for the pilot
+# (The earlier £675 estimate in 2026-04-11-batch5-guide2-research-strategy.md
+# assumed per-judgment pricing; this config uses per-participant pricing
+# which is how Prolific actually charges. Update the strategy doc when you
+# launch for real.)
