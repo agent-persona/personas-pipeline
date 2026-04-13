@@ -46,10 +46,25 @@ def persona_v1_to_eval(persona: PersonaV1, persona_id: str) -> EvalPersona:
     emo = persona.emotional_profile
     moral = persona.moral_framework
 
+    # Deduplicate source ids while preserving order
+    seen_ids: set[str] = set()
+    source_ids: list[str] = []
+    for ev in persona.source_evidence:
+        for rid in ev.record_ids:
+            if rid not in seen_ids:
+                seen_ids.add(rid)
+                source_ids.append(rid)
+
     extra: dict = {
         "age_range": demo.age_range,
         "gender_distribution": demo.gender_distribution,
         "location_signals": list(demo.location_signals),
+        "vocabulary": list(persona.vocabulary),
+        "channels": list(persona.channels),
+        "decision_triggers": list(persona.decision_triggers),
+        "sample_quotes": list(persona.sample_quotes),
+        "journey_stages": [js.model_dump() for js in persona.journey_stages],
+        "source_evidence": [ev.model_dump() for ev in persona.source_evidence],
     }
     if firm.company_size is not None:
         extra["company_size"] = firm.company_size
@@ -87,5 +102,6 @@ def persona_v1_to_eval(persona: PersonaV1, persona_id: str) -> EvalPersona:
             ethical_stance=moral.ethical_stance,
             moral_foundations=dict(moral.moral_foundations),
         ),
+        source_ids=source_ids,
         extra=extra,
     )

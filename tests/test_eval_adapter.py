@@ -188,3 +188,46 @@ class TestAdapterPsychologicalCopy:
     def test_core_values_mirrored_into_values(self) -> None:
         out = persona_v1_to_eval(_fully_populated_persona(), persona_id="c1")
         assert out.values == ["efficiency", "reliability"]
+
+
+class TestAdapterEvidenceAndExtras:
+    def test_source_ids_from_evidence_deduped(self) -> None:
+        from synthesis.models.evidence import SourceEvidence
+        p = _fully_populated_persona()
+        p.source_evidence.append(
+            SourceEvidence(claim="extra", record_ids=["r1", "r2"], field_path="goals.1", confidence=0.8)
+        )
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.source_ids == ["r1", "r2"]  # deduped, order preserved
+
+    def test_journey_stages_in_extra(self) -> None:
+        out = persona_v1_to_eval(_fully_populated_persona(), persona_id="c1")
+        stages = out.extra["journey_stages"]
+        assert isinstance(stages, list)
+        assert stages[0]["stage"] == "evaluation"
+
+    def test_sample_quotes_in_extra(self) -> None:
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.extra["sample_quotes"] == p.sample_quotes
+
+    def test_decision_triggers_in_extra(self) -> None:
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.extra["decision_triggers"] == p.decision_triggers
+
+    def test_channels_in_extra(self) -> None:
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.extra["channels"] == p.channels
+
+    def test_vocabulary_in_extra(self) -> None:
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.extra["vocabulary"] == p.vocabulary
+
+    def test_source_evidence_preserved_in_extra(self) -> None:
+        out = persona_v1_to_eval(_fully_populated_persona(), persona_id="c1")
+        dumped = out.extra["source_evidence"]
+        assert isinstance(dumped, list)
+        assert dumped[0]["claim"] == "c1"
