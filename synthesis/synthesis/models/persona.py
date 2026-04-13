@@ -129,4 +129,13 @@ class PersonaV1(BaseModel):
         description="Things this persona might say, in their own voice",
     )
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
+    communication_style: CommunicationStyle = Field(
+        description="How this persona speaks and writes. Derived from their verbatim messages in source data.",
+    )
+    emotional_profile: EmotionalProfile = Field(
+        description="Emotional baseline, stress triggers, and coping mechanisms. Grounded in support tickets, complaints, and behavioral signals.",
+    )
+    moral_framework: MoralFramework = Field(
+        description="Core values and ethical stance. Inferred from what this persona cares about — language of fairness, autonomy, efficiency, etc.",
+    )
     source_evidence: list[SourceEvidence] = Field(min_length=3)
