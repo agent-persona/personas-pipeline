@@ -231,3 +231,33 @@ class TestAdapterEvidenceAndExtras:
         dumped = out.extra["source_evidence"]
         assert isinstance(dumped, list)
         assert dumped[0]["claim"] == "c1"
+
+    def test_empty_moral_foundations_round_trip(self) -> None:
+        """Empty moral_foundations is valid per 'omit rather than guess' rule."""
+        p = _fully_populated_persona()
+        p.moral_framework.moral_foundations = {}
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.moral_framework.moral_foundations == {}
+
+    def test_source_ids_dedup_within_single_evidence_entry(self) -> None:
+        """Dedup must also collapse repeats *within* a single evidence entry's record_ids."""
+        from synthesis.models.evidence import SourceEvidence
+        p = _fully_populated_persona()
+        p.source_evidence.append(
+            SourceEvidence(
+                claim="dup-within",
+                record_ids=["r9", "r9", "r10"],
+                field_path="goals.1",
+                confidence=0.8,
+            )
+        )
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.source_ids.count("r9") == 1
+        assert out.source_ids.count("r10") == 1
+
+    def test_extra_journey_stages_is_independent_copy(self) -> None:
+        """Mutating out.extra shouldn't mutate the source PersonaV1 — aliasing defence."""
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        out.extra["journey_stages"][0]["stage"] = "MUTATED"
+        assert p.journey_stages[0].stage == "evaluation"

@@ -3,6 +3,18 @@
 Pure field-mapping adapter — no LLM calls. Assumes PersonaV1 already
 carries psychological depth (communication_style, emotional_profile,
 moral_framework).
+
+Directional contract: PersonaV1 enforces stricter bounds than
+persona_eval.Persona (e.g. `preferred_channels` min_length=1 here, unconstrained
+there). That's intentional — strict producer, lenient consumer — so the adapter
+never needs to pad or default; it only passes data through.
+
+Known completeness gap: persona_eval.Persona has `behaviors`, `habits`,
+`personality_traits`, `interests`, `lifestyle`, `expertise_level`, `ethnicity`,
+`marital_status`, `experience_years` fields that PersonaV1 doesn't carry. They
+default to empty/None here. Scorers like `structural/completeness.py` will
+under-score converted personas on these dimensions until PersonaV1 grows them
+or a richer adapter derives them (e.g. expertise_level from vocabulary_level).
 """
 from __future__ import annotations
 
@@ -85,6 +97,9 @@ def persona_v1_to_eval(persona: PersonaV1, persona_id: str) -> EvalPersona:
         motivations=list(persona.motivations),
         pain_points=list(persona.pains),
         frustrations=list(persona.objections),
+        # Mirrored from core_values — some scorers (weird_bias) read both
+        # `values` and `moral_framework.core_values`; others (schema_compliance)
+        # read only `values`. Populating both is required, not redundant.
         values=list(moral.core_values),
         communication_style=EvalCommunicationStyle(
             tone=comm.tone,
