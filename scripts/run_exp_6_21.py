@@ -151,7 +151,7 @@ async def main():
         sparse = subsample_cluster(cluster, 3)
         print(f"  [{i+1}/{len(clusters)}] {sparse.cluster_id}...")
         try:
-            r = await synthesize(sparse, backend)
+            r = await synthesize(sparse, backend, max_retries=4)
             p = r.persona.model_dump(mode="json")
             baseline_personas.append(p)
             baseline_cost += r.total_cost_usd
@@ -167,7 +167,7 @@ async def main():
     for i, cluster in enumerate(clusters):
         print(f"  [{i+1}/{len(clusters)}] {cluster.cluster_id}...")
         try:
-            r = await synthesize(cluster, backend)
+            r = await synthesize(cluster, backend, max_retries=4)
             p = r.persona.model_dump(mode="json")
             treatment_personas.append(p)
             treatment_cost += r.total_cost_usd
