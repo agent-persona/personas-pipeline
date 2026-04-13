@@ -141,3 +141,50 @@ class TestAdapterIdentityAndDemographics:
         out = persona_v1_to_eval(p, persona_id="clust_abc")
         assert out.gender == "non-binary"
         assert out.extra["gender_distribution"] == "non-binary"
+
+
+class TestAdapterBehavioralLists:
+    def test_goals_direct_copy(self) -> None:
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.goals == p.goals
+
+    def test_motivations_direct_copy(self) -> None:
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.motivations == p.motivations
+
+    def test_pains_become_pain_points(self) -> None:
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.pain_points == p.pains
+
+    def test_objections_become_frustrations(self) -> None:
+        p = _fully_populated_persona()
+        out = persona_v1_to_eval(p, persona_id="c1")
+        assert out.frustrations == p.objections
+
+
+class TestAdapterPsychologicalCopy:
+    def test_communication_style_round_trip(self) -> None:
+        out = persona_v1_to_eval(_fully_populated_persona(), persona_id="c1")
+        assert out.communication_style.tone == "direct"
+        assert out.communication_style.formality == "professional"
+        assert out.communication_style.vocabulary_level == "advanced"
+        assert out.communication_style.preferred_channels == ["Intercom", "GitHub"]
+
+    def test_emotional_profile_round_trip(self) -> None:
+        out = persona_v1_to_eval(_fully_populated_persona(), persona_id="c1")
+        assert out.emotional_profile.baseline_mood == "pragmatic"
+        assert out.emotional_profile.stress_triggers == ["schema drift", "silent webhook drops"]
+        assert out.emotional_profile.coping_mechanisms == ["writes automation", "files detailed tickets"]
+
+    def test_moral_framework_round_trip(self) -> None:
+        out = persona_v1_to_eval(_fully_populated_persona(), persona_id="c1")
+        assert out.moral_framework.core_values == ["efficiency", "reliability"]
+        assert out.moral_framework.ethical_stance == "utilitarian"
+        assert out.moral_framework.moral_foundations == {"care": 0.4, "fairness": 0.7, "liberty": 0.8}
+
+    def test_core_values_mirrored_into_values(self) -> None:
+        out = persona_v1_to_eval(_fully_populated_persona(), persona_id="c1")
+        assert out.values == ["efficiency", "reliability"]

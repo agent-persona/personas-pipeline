@@ -42,6 +42,10 @@ def persona_v1_to_eval(persona: PersonaV1, persona_id: str) -> EvalPersona:
     demo = persona.demographics
     firm = persona.firmographics
 
+    comm = persona.communication_style
+    emo = persona.emotional_profile
+    moral = persona.moral_framework
+
     extra: dict = {
         "age_range": demo.age_range,
         "gender_distribution": demo.gender_distribution,
@@ -62,5 +66,26 @@ def persona_v1_to_eval(persona: PersonaV1, persona_id: str) -> EvalPersona:
         occupation=firm.role_titles[0] if firm.role_titles else "",
         industry=firm.industry or "",
         knowledge_domains=list(firm.tech_stack_signals),
+        goals=list(persona.goals),
+        motivations=list(persona.motivations),
+        pain_points=list(persona.pains),
+        frustrations=list(persona.objections),
+        values=list(moral.core_values),
+        communication_style=EvalCommunicationStyle(
+            tone=comm.tone,
+            formality=comm.formality,
+            vocabulary_level=comm.vocabulary_level,
+            preferred_channels=list(comm.preferred_channels),
+        ),
+        emotional_profile=EvalEmotionalProfile(
+            baseline_mood=emo.baseline_mood,
+            stress_triggers=list(emo.stress_triggers),
+            coping_mechanisms=list(emo.coping_mechanisms),
+        ),
+        moral_framework=EvalMoralFramework(
+            core_values=list(moral.core_values),
+            ethical_stance=moral.ethical_stance,
+            moral_foundations=dict(moral.moral_foundations),
+        ),
         extra=extra,
     )
