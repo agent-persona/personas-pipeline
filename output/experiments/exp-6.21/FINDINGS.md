@@ -3,11 +3,20 @@
 **Branch:** `exp-6.21-population-turing-test`
 **Guide:** Guide 6 — Population Distinctiveness & Coverage
 **Date:** 2026-04-12
-**Status:** FAIL — Both baseline and treatment sets score 0% pass rate. Judges unanimously identify both as AI-generated due to set-level composition issues (2 personas, persona-product misalignment).
+**Status:** FAIL — Both conditions score 0% pass rate; judges unanimously identify both sets as AI-generated due to set-level composition issues
 
 ## Hypothesis
 
-A treatment persona set (full-cluster synthesis) passes the population Turing test ≥70% of the time, while the baseline set (sparse 3-record clusters) passes ≤40%.
+A treatment persona set (full-cluster synthesis) passes the population Turing test >=70% of the time, while the baseline set (sparse 3-record clusters) passes <=40%.
+
+## Control (shared baseline)
+
+Default pipeline run (`scripts/run_baseline_control.py`):
+- 2 personas from 2 clusters (12 records each)
+- schema_validity: 1.00, groundedness_rate: 1.00, cost_per_persona: $0.0209
+- Personas: "Alex, the Infrastructure-First Engineering Lead", "Carla the Client-Focused Freelancer"
+
+The shared baseline confirms the pipeline produces valid, grounded individual personas. The Turing test evaluates whether these personas, presented as a SET, are perceived as representing a real customer base. Individual quality (per `evaluation/metrics.py`) does not guarantee set-level credibility.
 
 ## Method
 
@@ -27,7 +36,7 @@ Backend: Haiku 4.5. 4 synthesis calls + 20 judge calls.
 
 ### Quantitative
 
-| Metric | Baseline (sparse) | Treatment (full) | Δ |
+| Metric | Baseline (sparse) | Treatment (full) | Delta |
 |---|---|---|---|
 | Turing pass rate | **0%** (0/10) | **0%** (0/10) | 0 |
 | Mean perceived coverage | 16% | 25% | **+9%** |
@@ -36,25 +45,19 @@ Backend: Haiku 4.5. 4 synthesis calls + 20 judge calls.
 
 ### Key findings
 
-1. **Both conditions fail unanimously.** All 20 judgments (10 baseline + 10 treatment) returned "AI-generated." Data richness (3 vs 12 records) has zero effect on set-level perception.
-
-2. **Coverage is the only dimension that moves.** Treatment set perceived coverage (25%) exceeds baseline (16%), a +9pp delta. Judges noticed the full-cluster personas had somewhat more plausible detail, but this didn't help overall authenticity.
-
-3. **The failure is structural, not synthesis quality.** Judges consistently flag:
-   - Only 2 personas for a B2B engineering product (should be 4-6+)
-   - One persona (design freelancer) misaligned with the stated product
-   - Missing core roles: engineering managers, tech leads, QA, product managers
-
-4. **Individual quality ≠ set quality.** "Kai — The Infrastructure Automation Engineer" (treatment) is individually credible, but the set fails because composition is wrong.
+1. **Both conditions fail unanimously.** All 20 judgments returned "AI-generated." Data richness (3 vs 12 records) has zero effect on set-level perception.
+2. **Coverage is the only dimension that moves.** Treatment set perceived coverage (25%) exceeds baseline (16%), a +9pp delta. Judges noticed the full-cluster personas had somewhat more plausible detail, but this did not help overall authenticity.
+3. **The failure is structural, not synthesis quality.** Judges consistently flag: only 2 personas for a B2B engineering product (should be 4-6+), one persona (design freelancer) misaligned with the stated product, and missing core roles (engineering managers, tech leads, QA, product managers).
+4. **Individual quality does not equal set quality.** Well-scored individual personas still fail the population-level test when the portfolio composition is wrong.
 
 ## Recommendation
 
-**DEFER** — The population Turing test is a valuable metric, but cannot pass with only 2 clusters from mock data. The failure is in **segmentation coverage**, not in **synthesis quality**.
+FAIL — The population Turing test is a valuable metric, but cannot pass with only 2 clusters from mock data. The failure is in segmentation coverage, not synthesis quality.
 
 **Re-test when:**
-- Segmentation produces ≥5 diverse clusters aligned to the product's actual user base
+- Segmentation produces >=5 diverse clusters aligned to the product's actual user base
 - Using production data with genuine behavioral diversity across roles
-- Comparing a baseline PersonaV1 set against a PersonaV1 + batch-3 schema additions set (the original design)
+- Comparing a baseline PersonaV1 set against a PersonaV1 + batch-3 schema additions set
 
 ## Cost
 
