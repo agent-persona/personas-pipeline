@@ -1,19 +1,11 @@
 """exp-5.07 — Time-to-detect curve.
 
-Measures how many conversational turns it takes for LLM-simulated "raters"
-to detect that a TwinChat persona is AI rather than human.
+Baseline vs Treatment: synthesize personas from sparse (3-record) vs full
+clusters, run 15-turn TwinChat conversations, then use 5 independent LLM
+judges per turn to measure how quickly they detect the responder is AI.
 
-Hypothesis: High-quality personas evade detection 2-3x longer than baseline
-personas. We simulate "human raters" with multiple independent LLM judge calls.
-
-Approach:
-  1. Fetch + segment + synthesize personas from first 3 clusters.
-  2. For each persona, run a 15-turn conversation via TwinChat.
-  3. At judge turns (1, 3, 5, 7, 10, 15), ask 5 independent LLM judges:
-     "Is this responder a real person or an AI? Rate confidence 1-5."
-  4. Detection point: first turn where verdict="AI" and confidence >= 4.
-  5. Compute mean turns-to-detection per persona.
-  6. Realism score: 1 - (1 / mean_turns_to_detect).
+Hypothesis: Full-cluster (treatment) personas evade detection 2-3× longer
+than sparse-cluster (baseline) personas.
 
 Usage:
     python scripts/run_exp_5_07.py
@@ -23,6 +15,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import random
 import re
 import sys
 from pathlib import Path
@@ -33,7 +26,6 @@ sys.path.insert(0, str(REPO_ROOT / "segmentation"))
 sys.path.insert(0, str(REPO_ROOT / "synthesis"))
 sys.path.insert(0, str(REPO_ROOT / "orchestration"))
 sys.path.insert(0, str(REPO_ROOT / "twin"))
-sys.path.insert(0, str(REPO_ROOT / "evals"))
 
 from dotenv import load_dotenv
 
@@ -55,9 +47,8 @@ TENANT_INDUSTRY = "B2B SaaS"
 TENANT_PRODUCT = "Project management tool for engineering teams"
 OUTPUT_DIR = REPO_ROOT / "output" / "experiments" / "exp-5.07"
 
-N_CLUSTERS = 3
 N_RATERS = 5
-JUDGE_TURNS = [1, 3, 5, 7, 10, 15]  # 1-indexed turn numbers to judge
+JUDGE_TURNS = [1, 3, 5, 7, 10, 15]
 
 CONVERSATION_PROMPTS = [
     "Tell me about the biggest challenge you're facing at work right now.",
@@ -78,9 +69,19 @@ CONVERSATION_PROMPTS = [
 ]
 
 
-# ---------------------------------------------------------------------------
-# Judge
-# ---------------------------------------------------------------------------
+def subsample_cluster(cluster: ClusterData, target_size: int, seed: int = 42) -> ClusterData:
+    """Create a sparse cluster by random subsampling."""
+    records = list(cluster.sample_records)
+    if len(records) <= target_size:
+        return cluster
+    rng = random.Random(seed)
+    sample = rng.sample(records, target_size)
+    sub = cluster.model_copy(deep=True)
+    sub.sample_records = sample
+    sub.summary.cluster_size = target_size
+    sub.cluster_id = f"{cluster.cluster_id}_n{target_size}"
+    return sub
+
 
 async def judge_turn_detection(
     turns_shown: list[dict],
@@ -88,7 +89,6 @@ async def judge_turn_detection(
     model: str,
     rater_seed: int,
 ) -> dict:
-    """Simulate one rater judging whether the responder is human or AI."""
     transcript = ""
     for t in turns_shown:
         transcript += f"User: {t['prompt']}\nResponder: {t['reply']}\n\n"
@@ -105,11 +105,10 @@ Think carefully. Consider: specificity of examples, natural hesitation/filler, c
 Respond with STRICT JSON only:
 {{"verdict": "human" or "AI", "confidence": <int 1-5 where 5=very confident>, "rationale": "<1 sentence>"}}"""
 
-    # Add rater variation by tweaking temperature
     resp = await client.messages.create(
         model=model,
         max_tokens=200,
-        temperature=0.8,  # variation between "raters"
+        temperature=0.8,
         messages=[{"role": "user", "content": judge_prompt}],
     )
     text = next(b.text for b in resp.content if b.type == "text")
@@ -122,20 +121,10 @@ Respond with STRICT JSON only:
     }
 
 
-# ---------------------------------------------------------------------------
-# Conversation runner
-# ---------------------------------------------------------------------------
-
-async def run_conversation(
-    persona_dict: dict,
-    client: AsyncAnthropic,
-    model: str,
-) -> list[dict]:
-    """Run a 15-turn conversation with a TwinChat persona."""
+async def run_conversation(persona_dict, client, model):
     twin = TwinChat(persona_dict, client=client, model=model)
-    history: list[dict] = []
-    turns: list[dict] = []
-
+    history = []
+    turns = []
     for i, prompt in enumerate(CONVERSATION_PROMPTS):
         reply = await twin.reply(prompt, history=history)
         turns.append({
@@ -146,24 +135,12 @@ async def run_conversation(
         })
         history.append({"role": "user", "content": prompt})
         history.append({"role": "assistant", "content": reply.text})
-
     return turns
 
 
-# ---------------------------------------------------------------------------
-# Detection analysis
-# ---------------------------------------------------------------------------
-
-def compute_detection_stats(
-    judge_results: dict[int, list[dict]],
-) -> dict:
-    """Compute per-rater detection point and mean TTD.
-
-    judge_results: {turn_number: [rater_0_result, rater_1_result, ...]}
-    """
-    rater_ttd: dict[int, int | None] = {}
+def compute_detection_stats(judge_results):
+    rater_ttd = {}
     sorted_turns = sorted(judge_results.keys())
-
     for rater_idx in range(N_RATERS):
         detected_at = None
         for turn in sorted_turns:
@@ -176,173 +153,164 @@ def compute_detection_stats(
         rater_ttd[rater_idx] = detected_at
 
     detected_turns = [v for v in rater_ttd.values() if v is not None]
-    mean_ttd = sum(detected_turns) / len(detected_turns) if detected_turns else 16.0  # 16 = never detected
+    mean_ttd = sum(detected_turns) / len(detected_turns) if detected_turns else 16.0
     realism_score = 1.0 - (1.0 / mean_ttd) if mean_ttd > 0 else 0.0
-    detection_rate = len(detected_turns) / N_RATERS
 
     return {
         "rater_ttd": {str(k): v for k, v in rater_ttd.items()},
         "mean_ttd": mean_ttd,
         "realism_score": realism_score,
-        "detection_rate": detection_rate,
+        "detection_rate": len(detected_turns) / N_RATERS,
         "n_detected": len(detected_turns),
         "n_raters": N_RATERS,
     }
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+async def run_condition(label, persona_dict, client, model):
+    """Run conversation + judge pipeline for one persona condition."""
+    name = persona_dict["name"]
+    print(f"\n  [{label}] Conversing with {name}...")
+    turns = await run_conversation(persona_dict, client, model)
+    conv_cost = sum(t["cost_usd"] for t in turns)
+    print(f"    {len(turns)} turns, cost=${conv_cost:.4f}")
 
-async def main() -> None:
+    print(f"  [{label}] Judging...")
+    judgments = {}
+    for judge_turn in JUDGE_TURNS:
+        if judge_turn > len(turns):
+            continue
+        turns_shown = turns[:judge_turn]
+        rater_results = await asyncio.gather(*[
+            judge_turn_detection(turns_shown, client, model, r)
+            for r in range(N_RATERS)
+        ])
+        judgments[judge_turn] = list(rater_results)
+        verdicts = [r.get("verdict", "?") for r in rater_results]
+        print(f"    Turn {judge_turn:2d}: {verdicts}")
+
+    stats = compute_detection_stats(judgments)
+    print(f"    mean_TTD={stats['mean_ttd']:.1f}  realism={stats['realism_score']:.3f}  "
+          f"detected={stats['n_detected']}/{N_RATERS}")
+
+    return {
+        "label": label,
+        "persona_name": name,
+        "turns": turns,
+        "judgments": {str(k): v for k, v in judgments.items()},
+        **stats,
+        "conversation_cost_usd": conv_cost,
+    }
+
+
+async def main():
     print("=" * 72)
-    print("exp-5.07 -- Time-to-detect curve")
+    print("exp-5.07 — Time-to-detect curve (baseline vs treatment)")
     print("=" * 72)
 
     if not settings.anthropic_api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY not set in synthesis/.env")
+        raise RuntimeError("ANTHROPIC_API_KEY not set")
 
     client = AsyncAnthropic(api_key=settings.anthropic_api_key)
     backend = AnthropicBackend(client=client, model=settings.default_model)
+    model = settings.default_model
 
-    # ---- Step 1: Fetch + segment + synthesize ----
-    print("\n[1/4] Fetching and segmenting records...")
+    # ---- Step 1: Fetch + segment ----
+    print("\n[1/4] Fetching and segmenting...")
     raw_records = fetch_all(TENANT_ID)
     records = [RawRecord.model_validate(r.model_dump()) for r in raw_records]
     cluster_dicts = segment(
-        records,
-        tenant_industry=TENANT_INDUSTRY,
-        tenant_product=TENANT_PRODUCT,
-        existing_persona_names=[],
-        similarity_threshold=0.15,
-        min_cluster_size=2,
+        records, tenant_industry=TENANT_INDUSTRY, tenant_product=TENANT_PRODUCT,
+        existing_persona_names=[], similarity_threshold=0.15, min_cluster_size=2,
     )
     clusters = sorted(
         [ClusterData.model_validate(c) for c in cluster_dicts],
-        key=lambda c: c.cluster_id,
+        key=lambda c: len(c.sample_records), reverse=True,
     )
-    print(f"  Got {len(clusters)} clusters, using first {N_CLUSTERS}")
-    synth_clusters = clusters[:N_CLUSTERS]
+    base_cluster = clusters[0]
+    print(f"  Largest cluster: {base_cluster.cluster_id} ({len(base_cluster.sample_records)} records)")
 
-    personas: list[dict] = []
-    synth_results: list[dict] = []
-    for i, cluster in enumerate(synth_clusters):
-        print(f"  [{i + 1}/{len(synth_clusters)}] Synthesizing {cluster.cluster_id}...")
-        try:
-            r = await synthesize(cluster, backend)
-            p_dict = r.persona.model_dump(mode="json")
-            personas.append(p_dict)
-            synth_results.append({
-                "cluster_id": cluster.cluster_id,
-                "name": p_dict["name"],
-                "status": "ok",
-                "cost_usd": r.total_cost_usd,
-                "groundedness": r.groundedness.score,
-            })
-            print(f"    [OK] {p_dict['name']}  cost=${r.total_cost_usd:.4f}  grounded={r.groundedness.score:.2f}")
-        except SynthesisError as e:
-            total_cost = sum(a.cost_usd for a in e.attempts)
-            synth_results.append({
-                "cluster_id": cluster.cluster_id,
-                "status": "failed",
-                "error": str(e),
-                "cost_usd": total_cost,
-            })
-            print(f"    [FAIL] {e}  cost=${total_cost:.4f}")
+    # ---- Step 2: Synthesize baseline (sparse) and treatment (full) ----
+    print("\n[2/4] Synthesizing baseline (3-record sparse) and treatment (full cluster)...")
 
-    if not personas:
-        raise RuntimeError("No personas synthesized successfully")
+    sparse_cluster = subsample_cluster(base_cluster, 3)
+    print(f"  Baseline cluster: {sparse_cluster.cluster_id} ({len(sparse_cluster.sample_records)} records)")
 
-    # ---- Step 2: Run 15-turn conversations ----
-    print(f"\n[2/4] Running 15-turn conversations for {len(personas)} personas...")
-    all_conversations: dict[str, list[dict]] = {}
-    for p in personas:
-        name = p["name"]
-        print(f"  Conversing with {name}...")
-        turns = await run_conversation(p, client, settings.default_model)
-        all_conversations[name] = turns
-        conv_cost = sum(t["cost_usd"] for t in turns)
-        print(f"    Done: {len(turns)} turns, cost=${conv_cost:.4f}")
+    synth_cost = 0.0
+    try:
+        r_baseline = await synthesize(sparse_cluster, backend)
+        baseline_persona = r_baseline.persona.model_dump(mode="json")
+        synth_cost += r_baseline.total_cost_usd
+        print(f"    [OK baseline] {baseline_persona['name']}  cost=${r_baseline.total_cost_usd:.4f}")
+    except SynthesisError as e:
+        raise RuntimeError(f"Baseline synthesis failed: {e}")
 
-    # ---- Step 3: Judge at selected turns ----
-    print(f"\n[3/4] Running judges at turns {JUDGE_TURNS} with {N_RATERS} raters each...")
-    all_judgments: dict[str, dict] = {}  # persona_name -> {turn: [rater_results]}
-    total_judge_cost = 0.0
+    try:
+        r_treatment = await synthesize(base_cluster, backend)
+        treatment_persona = r_treatment.persona.model_dump(mode="json")
+        synth_cost += r_treatment.total_cost_usd
+        print(f"    [OK treatment] {treatment_persona['name']}  cost=${r_treatment.total_cost_usd:.4f}")
+    except SynthesisError as e:
+        raise RuntimeError(f"Treatment synthesis failed: {e}")
 
-    for p in personas:
-        name = p["name"]
-        turns = all_conversations[name]
-        print(f"  Judging {name}...")
-        persona_judgments: dict[int, list[dict]] = {}
+    # ---- Step 3: Run conversations + judges for both conditions ----
+    print("\n[3/4] Running conversations and judges...")
+    baseline_result = await run_condition("baseline (sparse)", baseline_persona, client, model)
+    treatment_result = await run_condition("treatment (full)", treatment_persona, client, model)
 
-        for judge_turn in JUDGE_TURNS:
-            if judge_turn > len(turns):
-                continue
-            turns_shown = turns[:judge_turn]
-            rater_tasks = [
-                judge_turn_detection(turns_shown, client, settings.default_model, rater_seed=r)
-                for r in range(N_RATERS)
-            ]
-            rater_results = await asyncio.gather(*rater_tasks)
-            persona_judgments[judge_turn] = list(rater_results)
+    # ---- Step 4: Compare ----
+    print("\n[4/4] Comparing baseline vs treatment...")
+    b_ttd = baseline_result["mean_ttd"]
+    t_ttd = treatment_result["mean_ttd"]
+    ttd_ratio = t_ttd / b_ttd if b_ttd > 0 else None
 
-            # Summarize this turn
-            verdicts = [r.get("verdict", "?") for r in rater_results]
-            print(f"    Turn {judge_turn:2d}: {verdicts}")
+    print(f"  Baseline  TTD: {b_ttd:.1f}  realism: {baseline_result['realism_score']:.3f}")
+    print(f"  Treatment TTD: {t_ttd:.1f}  realism: {treatment_result['realism_score']:.3f}")
+    print(f"  TTD ratio (treatment/baseline): {ttd_ratio:.2f}x" if ttd_ratio else "  TTD ratio: N/A")
 
-        all_judgments[name] = {str(k): v for k, v in persona_judgments.items()}
-
-    # ---- Step 4: Compute detection stats ----
-    print("\n[4/4] Computing detection statistics...")
-    persona_stats: dict[str, dict] = {}
-    for p in personas:
-        name = p["name"]
-        # Convert string keys back to int for compute
-        jdata = {int(k): v for k, v in all_judgments[name].items()}
-        stats = compute_detection_stats(jdata)
-        persona_stats[name] = stats
-        print(
-            f"  {name}: mean_TTD={stats['mean_ttd']:.1f}  "
-            f"realism={stats['realism_score']:.3f}  "
-            f"detection_rate={stats['detection_rate']:.0%}"
-        )
-
-    # ---- Compute aggregate stats ----
-    all_ttds = [s["mean_ttd"] for s in persona_stats.values()]
-    all_realism = [s["realism_score"] for s in persona_stats.values()]
-    overall_mean_ttd = sum(all_ttds) / len(all_ttds) if all_ttds else 0
-    overall_realism = sum(all_realism) / len(all_realism) if all_realism else 0
-
-    total_synth_cost = sum(r.get("cost_usd", 0) for r in synth_results)
-    total_conv_cost = sum(
-        sum(t["cost_usd"] for t in turns) for turns in all_conversations.values()
-    )
+    hypothesis_pass = ttd_ratio is not None and ttd_ratio >= 2.0
 
     summary = {
         "experiment_id": "5.07",
         "branch": "exp-5.07-time-to-detect",
-        "model": settings.default_model,
-        "n_personas": len(personas),
+        "model": model,
         "n_turns": len(CONVERSATION_PROMPTS),
         "n_raters": N_RATERS,
         "judge_turns": JUDGE_TURNS,
-        "per_persona": persona_stats,
-        "overall_mean_ttd": overall_mean_ttd,
-        "overall_realism_score": overall_realism,
-        "total_synth_cost_usd": total_synth_cost,
-        "total_conversation_cost_usd": total_conv_cost,
-        "total_cost_usd": total_synth_cost + total_conv_cost,
+        "baseline": {
+            "condition": "sparse (3 records)",
+            "persona_name": baseline_result["persona_name"],
+            "mean_ttd": b_ttd,
+            "realism_score": baseline_result["realism_score"],
+            "detection_rate": baseline_result["detection_rate"],
+        },
+        "treatment": {
+            "condition": f"full ({len(base_cluster.sample_records)} records)",
+            "persona_name": treatment_result["persona_name"],
+            "mean_ttd": t_ttd,
+            "realism_score": treatment_result["realism_score"],
+            "detection_rate": treatment_result["detection_rate"],
+        },
+        "ttd_ratio": ttd_ratio,
+        "hypothesis": {
+            "description": "Treatment personas evade detection >= 2x longer than baseline",
+            "target_ratio": 2.0,
+            "actual_ratio": ttd_ratio,
+            "pass": hypothesis_pass,
+        },
+        "total_synth_cost_usd": synth_cost,
+        "total_cost_usd": synth_cost + baseline_result["conversation_cost_usd"] + treatment_result["conversation_cost_usd"],
     }
 
-    # ---- Write outputs ----
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUTPUT_DIR / "summary.json").write_text(json.dumps(summary, indent=2))
-    (OUTPUT_DIR / "conversations.json").write_text(
-        json.dumps(all_conversations, indent=2, default=str)
-    )
-    (OUTPUT_DIR / "judgments.json").write_text(
-        json.dumps(all_judgments, indent=2, default=str)
-    )
+    (OUTPUT_DIR / "conversations.json").write_text(json.dumps({
+        "baseline": baseline_result["turns"],
+        "treatment": treatment_result["turns"],
+    }, indent=2, default=str))
+    (OUTPUT_DIR / "judgments.json").write_text(json.dumps({
+        "baseline": baseline_result["judgments"],
+        "treatment": treatment_result["judgments"],
+    }, indent=2, default=str))
 
     print("\n" + "=" * 72)
     print("SUMMARY")
