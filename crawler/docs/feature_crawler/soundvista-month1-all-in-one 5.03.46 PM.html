@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sound Vista Month 1 All-in-One</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #10120e;
+      --panel: #181c15;
+      --panel-2: #21271e;
+      --panel-3: #f8f7f2;
+      --line: rgba(255,255,255,0.1);
+      --line-light: #e7e4d9;
+      --ink: #f4f6ef;
+      --ink-dark: #171915;
+      --muted: #aeb7a6;
+      --muted-dark: #666b62;
+      --green: #69fa84;
+      --green-deep: #033f2c;
+      --yellow: #fffd78;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --ok: #16a34a;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+      --shadow-light: 0 8px 30px rgba(0, 0, 0, 0.06);
+      --font-sans: "PP Telegraf", "IBM Plex Sans", sans-serif;
+      --font-serif: "Fraunces", Georgia, serif;
+      --font-mono: "JetBrains Mono", monospace;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top, rgba(105,250,132,0.12), transparent 24%),
+        linear-gradient(180deg, #0d0f0b 0%, var(--bg) 100%);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    .page {
+      width: min(1280px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 18px 0 28px;
+    }
+    .shell {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(24,28,21,0.96), rgba(16,18,14,0.98));
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 28px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(33,39,30,0.92), rgba(24,28,21,0.88));
+    }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { margin: 0; }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.3rem, 4vw, 3.8rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 0.98;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+    .tabbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+    }
+    .tab {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 120ms ease;
+    }
+    .tab.active {
+      background: var(--green);
+      color: #091009;
+      border-color: var(--green);
+    }
+    .pane {
+      display: none;
+      padding: 28px;
+      min-height: 72vh;
+    }
+    .pane.active { display: block; }
+    .light {
+      background: var(--panel-3);
+      color: var(--ink-dark);
+    }
+    .light p { color: var(--muted-dark); }
+    .dark {
+      background: linear-gradient(180deg, rgba(24,28,21,0.98), rgba(12,14,11,1));
+      color: var(--ink);
+    }
+    .dark p { color: var(--muted); }
+    .section-head {
+      margin-bottom: 18px;
+    }
+    .section-head h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+      font-weight: 400;
+      line-height: 1.04;
+      margin-bottom: 8px;
+    }
+    .mini-eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: inherit;
+      opacity: 0.56;
+    }
+    .grid-2, .grid-3, .journey, .kanban {
+      display: grid;
+      gap: 16px;
+    }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .journey { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .kanban { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card {
+      border-radius: var(--radius);
+      padding: 18px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line-light);
+      box-shadow: var(--shadow-light);
+    }
+    .dark .card {
+      background: linear-gradient(180deg, rgba(35,39,29,0.9), rgba(24,26,20,0.94));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: none;
+    }
+    .card h3 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .chips, .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid rgba(3,63,44,0.12);
+      background: rgba(3,63,44,0.06);
+      color: var(--green-deep);
+    }
+    .dark .chip {
+      border-color: rgba(255,253,120,0.24);
+      background: rgba(255,253,120,0.1);
+      color: var(--yellow);
+    }
+    .rule-list {
+      display: grid;
+      gap: 12px;
+    }
+    .rule {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line-light);
+    }
+    .rule-num, .step-num {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13px;
+      background: var(--green-deep);
+      color: white;
+    }
+    .quote {
+      padding: 18px 20px;
+      border-left: 4px solid var(--green);
+      border-radius: 0 18px 18px 0;
+      background: rgba(105,250,132,0.08);
+      margin-bottom: 18px;
+    }
+    .dark .quote {
+      background: rgba(105,250,132,0.08);
+    }
+    .step {
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      min-height: 156px;
+    }
+    .step .step-num {
+      margin-bottom: 12px;
+      background: var(--green);
+      color: #071008;
+    }
+    .priority {
+      display: grid;
+      gap: 10px;
+    }
+    .priority-row {
+      display: grid;
+      grid-template-columns: 94px 1fr;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .priority-row code, code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: rgba(3,63,44,0.08);
+      color: var(--green-deep);
+    }
+    .dark code {
+      background: rgba(255,255,255,0.08);
+      color: var(--yellow);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+    .priority-row code {
+      text-align: center;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 6px 8px;
+    }
+    .build-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .node, .col, .mini {
+      background: white;
+      border: 1px solid var(--line-light);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .node h3, .col h3, .mini h3 {
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .node p, .col p, .mini li {
+      color: var(--muted-dark);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .node.good { border-color: rgba(22,163,74,0.24); background: #f0fdf4; }
+    .node.warn { border-color: rgba(217,119,6,0.24); background: #fffbeb; }
+    .node.err { border-color: rgba(220,38,38,0.24); background: #fef2f2; }
+    .col .task {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line-light);
+      background: #faf9f5;
+      margin-bottom: 10px;
+    }
+    .col .task:last-child { margin-bottom: 0; }
+    .col .task strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .strip {
+      display: flex;
+      gap: 0;
+      border: 2px solid var(--ink-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      background: white;
+      margin: 18px 0;
+    }
+    .state {
+      flex: 1;
+      padding: 12px 8px;
+      text-align: center;
+      border-right: 1px solid var(--line-light);
+      position: relative;
+    }
+    .state:last-child { border-right: 0; }
+    .state:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -7px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      font-weight: 700;
+      color: #b7bbb3;
+      background: white;
+      padding: 2px;
+    }
+    .state-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      margin: 0 auto 6px;
+      border: 2px solid #adb4a8;
+      background: var(--green-deep);
+    }
+    .state-name {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .state-desc {
+      margin-top: 4px;
+      font-size: 10px;
+      color: var(--muted-dark);
+      line-height: 1.3;
+    }
+    .mini ul {
+      padding-left: 16px;
+    }
+    .mini li {
+      margin: 6px 0;
+    }
+    .handoff-block {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(180deg, rgba(33,39,30,0.92), rgba(20,23,18,0.96));
+      padding: 20px;
+    }
+    .design-grid, .signal-grid, .token-band {
+      display: grid;
+      gap: 16px;
+    }
+    .design-grid { grid-template-columns: 1.1fr 0.9fr; }
+    .signal-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .token-band { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .embed-card {
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(28,32,25,0.96), rgba(14,16,13,0.98));
+      box-shadow: var(--shadow);
+    }
+    .embed-copy {
+      padding: 18px 18px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .embed-copy h3 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .embed-copy p,
+    .embed-copy li,
+    .design-note p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .embed-copy ul {
+      padding-left: 18px;
+      margin-top: 12px;
+    }
+    .embed-copy li {
+      margin: 8px 0;
+    }
+    .design-note {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .design-lede {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .design-export {
+      display: grid;
+      gap: 16px;
+    }
+    .design-export__frame {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      box-shadow: var(--shadow);
+    }
+    .design-export__frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #0c0f0d;
+    }
+    .design-export__meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      font-size: 12px;
+      color: rgba(255,255,255,0.72);
+    }
+    .design-export__meta strong {
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .shot {
+      padding: 22px;
+      background:
+        radial-gradient(circle at top left, rgba(105,250,132,0.12), transparent 22%),
+        linear-gradient(180deg, #141913 0%, #0f130f 100%);
+    }
+    .flow-shot,
+    .dashboard-shot {
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+    }
+    .flow-shot__top,
+    .dashboard-shot__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+    }
+    .flow-shot__brand,
+    .dashboard-shot__brand {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--yellow);
+    }
+    .flow-shot__chips,
+    .dashboard-shot__chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .flow-shot__chip,
+    .dashboard-shot__chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+      font-size: 11px;
+      color: rgba(255,255,255,0.72);
+    }
+    .flow-shot__body {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+    }
+    .flow-line {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .flow-node {
+      position: relative;
+      min-height: 96px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+    }
+    .flow-node strong,
+    .prompt-card strong,
+    .metric strong,
+    .vault-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .flow-node p,
+    .prompt-card p,
+    .metric p,
+    .vault-card p,
+    .detail-card p {
+      font-size: 12px;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.66);
+    }
+    .flow-node::after {
+      content: "→";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.34);
+      font-weight: 800;
+    }
+    .flow-line .flow-node:last-child::after { display: none; }
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 12px;
+    }
+    .prompt-card,
+    .vault-card,
+    .metric,
+    .detail-card {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      padding: 16px;
+    }
+    .prompt-list {
+      display: grid;
+      gap: 10px;
+    }
+    .prompt-list div {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+      line-height: 1.4;
+      color: rgba(255,255,255,0.72);
+    }
+    .dashboard-shot__body {
+      display: grid;
+      grid-template-columns: 220px 1fr 260px;
+      gap: 14px;
+      padding: 18px;
+    }
+    .dash-nav {
+      display: grid;
+      gap: 10px;
+    }
+    .dash-nav a {
+      display: block;
+      padding: 11px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+    }
+    .dash-nav a.active {
+      background: rgba(105,250,132,0.14);
+      color: var(--ink);
+      border-color: rgba(105,250,132,0.42);
+    }
+    .dash-main {
+      display: grid;
+      gap: 12px;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .hero-detail {
+      min-height: 220px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 12px;
+    }
+    .art-panel {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,253,120,0.18), transparent 20%),
+        radial-gradient(circle at 80% 30%, rgba(105,250,132,0.24), transparent 24%),
+        linear-gradient(135deg, #1b211b, #101411 60%, #171d18);
+      min-height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .art-panel::before {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 62%);
+    }
+    .detail-card h4 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .detail-card ul {
+      padding-left: 16px;
+      margin: 12px 0 0;
+    }
+    .detail-card li {
+      margin: 7px 0;
+      color: rgba(255,255,255,0.74);
+      font-size: 12px;
+    }
+    .token {
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+    }
+    .swatch {
+      width: 100%;
+      height: 96px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 12px;
+    }
+    .token code {
+      display: inline-block;
+      margin-top: 8px;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.62;
+      color: var(--ink);
+      background: rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 18px;
+      overflow: auto;
+      margin-top: 14px;
+    }
+    a {
+      color: var(--yellow);
+      text-underline-offset: 3px;
+    }
+    .light a { color: var(--green-deep); }
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .journey, .kanban, .build-grid, .priority-row, .design-grid, .signal-grid, .token-band { grid-template-columns: 1fr; }
+      .strip { flex-wrap: wrap; }
+      .state:not(:last-child)::after { display: none; }
+      .pane { padding: 18px; }
+      .flow-line,
+      .prompt-grid,
+      .dashboard-shot__body,
+      .metrics,
+      .hero-detail { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="shell">
+      <header class="hero">
+        <span class="eyebrow">Sound Vista · Month 1 All-in-One</span>
+        <h1>One HTML file. Top tabs. No split packet.</h1>
+        <p>Requirements, live design references, PRD, planning flow, and handoff are all inline here. This is the single file to open for month-1 planning.</p>
+      </header>
+
+      <nav class="tabbar" aria-label="Month 1 tabs">
+        <button class="tab active" data-tab="requirements">Requirements</button>
+        <button class="tab" data-tab="designs">Designs</button>
+        <button class="tab" data-tab="prd">PRD</button>
+        <button class="tab" data-tab="planning">Planning Flow</button>
+        <button class="tab" data-tab="handoff">Handoff</button>
+      </nav>
+
+      <section class="pane light active" data-pane="requirements">
+        <div class="section-head">
+          <span class="mini-eyebrow">Month 1 Requirements</span>
+          <h2>Lock the front-end foundation before the platform expands.</h2>
+          <p>Month 1 is the scope-freeze milestone: stabilize the 3D lobby, expose meaningful room navigation, move cards to reusable mock data, and make playback reliable enough for a walkthrough demo.</p>
+          <div class="chips">
+            <span class="chip">3D lobby</span>
+            <span class="chip">3+ routes</span>
+            <span class="chip">mock-data cards</span>
+            <span class="chip">player controls</span>
+            <span class="chip">no month-2 creep</span>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-bottom:18px;">
+          <article class="card"><h3>SOW authority</h3><p><code>docs/plans/SOW_v4_scope_freeze.md</code> defines Month 1 as core platform, not full V1.</p></article>
+          <article class="card"><h3>Broader direction</h3><p><code>docs/plans/sow_v4.html</code> confirms the larger roadmap and that approved Figma screens are the UI authority.</p></article>
+          <article class="card"><h3>Visual basis</h3><p>Figma API node reads now resolve for the core research canvas and dashboard frame, and those designs are embedded in the <strong>Designs</strong> tab below.</p></article>
+        </div>
+
+        <div class="quote">Month 1 direction is now anchored to both the scope-freeze SOW and the live Figma canvases: the UX architecture canvas defines flow logic and the dashboard canvas defines visual tone, shell layout, and collectible detail expectations.</div>
+
+        <div class="rule-list">
+          <div class="rule">
+            <div class="rule-num">R1</div>
+            <div><h3>Integrate the actual 3D lobby into the active app shell</h3><p>The active route tree cannot stay disconnected from the richer 3D experience living under <code>src/component/</code>.</p></div>
+          </div>
+          <div class="rule">
+            <div class="rule-num">R2</div>
+            <div><h3>Deliver three meaningful destinations</h3><p><code>/</code>, <code>/browse</code>, and <code>/radio</code> cannot all render the same page. Each room needs distinct state and content.</p></div>
+          </div>
+          <div class="rule">
+            <div class="rule-num">R3</div>
+            <div><h3>Extract mock content from presentation components</h3><p>Inline arrays in <code>MainContent.jsx</code> and <code>Sidebar.jsx</code> must move into a dedicated mock-data layer.</p></div>
+          </div>
+          <div class="rule">
+            <div class="rule-num">R4</div>
+            <div><h3>Unify player behavior</h3><p>The player must support open, play, pause, scrub, close, and return without depending on fragile isolated flows.</p></div>
+          </div>
+          <div class="rule">
+            <div class="rule-num">R5</div>
+            <div><h3>Ship proof, not just code</h3><p>Desktop, tablet, and mobile screenshots are part of acceptance.</p></div>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top:28px;">
+          <span class="mini-eyebrow">Current Gaps</span>
+          <h2>What the repo still does not prove</h2>
+        </div>
+        <div class="grid-2">
+          <article class="card"><h3>Route duplication</h3><p><code>src/App.js</code> maps all three routes to the same <code>HomePage</code>.</p></article>
+          <article class="card"><h3>Inline data</h3><p><code>MainContent.jsx</code> and <code>Sidebar.jsx</code> still embed demo arrays inside the view layer.</p></article>
+          <article class="card"><h3>Legacy split</h3><p>3D lobby and playback logic live in <code>Timeline.js</code> and <code>Rotatingsphere.jsx</code> rather than the active route shell.</p></article>
+          <article class="card"><h3>Acceptance evidence</h3><p>No screenshot pack or reproducible walkthrough artifact exists yet.</p></article>
+        </div>
+      </section>
+
+      <section class="pane dark" data-pane="designs">
+        <div class="section-head">
+          <span class="mini-eyebrow">Exported Design Reference</span>
+          <h2>Exact Figma exports, saved locally</h2>
+          <p>No embeds. No reconstructed UI. These are direct PNG exports from the live Figma file, stored in this repo and shown inline in the tab.</p>
+        </div>
+
+        <p class="design-lede">Source file <code>w4wxWeSghHeH1Dek1TtEfh</code>. Export set covers the current auth screen, dashboard/detail surface, user-flow map, and Vista AI behavior canvas so the planning doc reflects the real design system instead of inferred markup.</p>
+
+        <div class="design-grid" style="margin-bottom:18px;">
+          <article class="embed-card">
+            <div class="embed-copy">
+              <h3>Intro and signup</h3>
+              <p>Direct export from Figma node <code>9997:20197</code> inside the <code>Intro &amp; Signup</code> section. This is the auth page source of truth for the glass card, cinematic background, CTA hierarchy, and consent copy.</p>
+              <ul>
+                <li>Dark photographic backdrop with a centered translucent auth card.</li>
+                <li>Branded logo lockup and high-contrast primary action styling.</li>
+                <li>Consent/legal copy sits inside the card, not below the fold.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <div class="design-export">
+                <div class="design-export__frame">
+                  <img src="plans/month1-foundation/assets/intro-signup.png" alt="Figma export of the Sound Vista intro and signup design." />
+                  <div class="design-export__meta">
+                    <strong>Intro &amp; Signup</strong>
+                    <span>1440 × 1024 export</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="design-note">
+            <h3>Auth build implication</h3>
+            <p>The real design is mood-first, not utility-first. Auth should inherit the cinematic backdrop, centered glass treatment, and restrained green action language from this frame.</p>
+            <p>That means the current placeholder auth build still needs a visual rewrite against this exported source before it is considered aligned.</p>
+          </article>
+        </div>
+
+        <div class="design-grid" style="margin-bottom:18px;">
+          <article class="embed-card">
+            <div class="embed-copy">
+              <h3>Dashboard and content detail</h3>
+              <p>Direct export from Figma node <code>9997:20543</code>. This frame is the source for the premium dashboard shell, persistent navigation, media-led detail layout, and collectible storytelling.</p>
+              <ul>
+                <li>Wide shell with strong nav rhythm and multiple dark surface layers.</li>
+                <li>Hero media area dominates utility metrics and secondary controls.</li>
+                <li>Collectible and standard detail states live inside the same premium environment.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <div class="design-export">
+                <div class="design-export__frame">
+                  <img src="plans/month1-foundation/assets/dashboard.png" alt="Figma export of the Sound Vista dashboard and content detail design." />
+                  <div class="design-export__meta">
+                    <strong>Dashboard</strong>
+                    <span>8050 × 4067 export</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="design-note">
+            <h3>Shell build implication</h3>
+            <p>The current app still under-delivers on density, depth, and polish versus this frame. The real design leans cinematic and editorial, not generic dashboard.</p>
+            <p>Media art, detail copy, and nav chrome have to be composed as one environment. That should drive the next React pass.</p>
+          </article>
+        </div>
+
+        <div class="design-grid" style="margin-bottom:18px;">
+          <article class="embed-card">
+            <div class="embed-copy">
+              <h3>User flows canvas</h3>
+              <p>Direct export from Figma node <code>9770:2</code>. This is the macro journey map for onboarding, create, explore, collect, vault, and live-room entry.</p>
+              <ul>
+                <li>Maps the product as a room and journey system, not a flat feed.</li>
+                <li>Useful for route planning, handoff language, and experience sequencing.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <div class="design-export">
+                <div class="design-export__frame">
+                  <img src="plans/month1-foundation/assets/user-flows.png" alt="Figma export of the Sound Vista user flows canvas." />
+                  <div class="design-export__meta">
+                    <strong>User Flows</strong>
+                    <span>7488 × 2832 export</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="embed-card">
+            <div class="embed-copy">
+              <h3>Vista AI behavior canvas</h3>
+              <p>Direct export from Figma node <code>9897:5476</code>. This captures Vista AI presence, prompt hierarchy, and assistant behavior context.</p>
+              <ul>
+                <li>Confirms the orb assistant is part of the visual language, not a later add-on.</li>
+                <li>Supports the prompt timing and personalization rules called out in the requirements.</li>
+              </ul>
+            </div>
+            <div class="shot">
+              <div class="design-export">
+                <div class="design-export__frame">
+                  <img src="plans/month1-foundation/assets/vista-ai.png" alt="Figma export of the Sound Vista Vista AI behavior canvas." />
+                  <div class="design-export__meta">
+                    <strong>Vista AI</strong>
+                    <span>2082 × 2423 export</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-head">
+          <span class="mini-eyebrow">Token Snapshot</span>
+          <h2>Palette and typography extracted from repo Figma export</h2>
+        </div>
+        <div class="token-band">
+          <article class="token">
+            <div class="swatch" style="background:#033F2C;"></div>
+            <h3>Primary green</h3>
+            <p>Deep anchor color for shell and atmospheric contrast.</p>
+            <code>#033F2C</code>
+          </article>
+          <article class="token">
+            <div class="swatch" style="background:#69FA84;"></div>
+            <h3>Accent green</h3>
+            <p>Main action color for emphasis, states, and navigation focus.</p>
+            <code>#69FA84</code>
+          </article>
+          <article class="token">
+            <div class="swatch" style="background:#FFFD78;"></div>
+            <h3>Signal yellow</h3>
+            <p>Selective highlight used for editorial energy and premium cues.</p>
+            <code>#FFFD78</code>
+          </article>
+          <article class="token">
+            <div class="swatch" style="background:#212329;"></div>
+            <h3>Background dark</h3>
+            <p>Core background tone for the cinematic app shell.</p>
+            <code>#212329</code>
+          </article>
+        </div>
+      </section>
+
+      <section class="pane dark" data-pane="prd">
+        <div class="section-head">
+          <span class="mini-eyebrow">Product Requirements Document</span>
+          <h2>Make Sound Vista feel believable in one walkthrough.</h2>
+          <p>The product goal for Month 1 is not breadth. It is confidence. A stakeholder should move through the app, feel the atmosphere, understand the room structure, open content, and leave convinced the foundation is real.</p>
+          <div class="chips">
+            <span class="chip">immersive first</span>
+            <span class="chip">clear navigation</span>
+            <span class="chip">reliable playback</span>
+            <span class="chip">screenshot-ready</span>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:18px;">
+          <article class="card"><h3>Problem</h3><p>The repo contains promising visual and 3D pieces, but the active application shell does not yet prove a coherent product experience.</p></article>
+          <article class="card"><h3>Goal</h3><p>Turn the existing code into a stakeholder-facing front-end milestone that can support Month 2 data and creator features without redesigning the shell.</p></article>
+        </div>
+
+        <div class="quote">A user lands in a branded 3D Sound Vista lobby, understands what to click, enters at least two distinct rooms, opens a piece of content, uses the player controls confidently, and sees a layout that still feels considered on smaller screens.</div>
+
+        <div class="journey">
+          <article class="step"><div class="step-num">1</div><h3>Arrive</h3><p>First impression is atmospheric and specific to Sound Vista.</p></article>
+          <article class="step"><div class="step-num">2</div><h3>Navigate</h3><p>Room selection is obvious and each destination has a reason to exist.</p></article>
+          <article class="step"><div class="step-num">3</div><h3>Open content</h3><p>Cards feel like real content modules instead of anonymous placeholders.</p></article>
+          <article class="step"><div class="step-num">4</div><h3>Control playback</h3><p>The player feels stable enough that a walkthrough does not turn into debugging.</p></article>
+        </div>
+
+        <div class="section-head" style="margin-top:28px;">
+          <span class="mini-eyebrow">Experience Principles</span>
+          <h2>How the month should feel</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card"><h3>Identity over genericity</h3><p>Use the Figma palette and typographic tone. Avoid default dashboard aesthetics.</p></article>
+          <article class="card"><h3>Spatial clarity</h3><p>The user can always tell where they are, what they can do next, and how to go back.</p></article>
+          <article class="card"><h3>Confidence through stability</h3><p>No speculative feature work if it weakens the reliability of the month-1 demo path.</p></article>
+        </div>
+
+        <div class="section-head" style="margin-top:28px;">
+          <span class="mini-eyebrow">Priority Stack</span>
+          <h2>What matters first</h2>
+        </div>
+        <div class="priority">
+          <div class="priority-row"><code>P0</code><p>3D lobby integration, route differentiation, mock-data extraction, playback state, responsive layouts.</p></div>
+          <div class="priority-row"><code>P1</code><p>Extra polish that directly improves the walkthrough: transitions, stronger room identity, cleaner shell details.</p></div>
+          <div class="priority-row"><code>P2</code><p>Anything from later months: auth, real data, uploads, search, notifications, analytics, web3, social systems.</p></div>
+        </div>
+      </section>
+
+      <section class="pane light" data-pane="planning">
+        <div class="section-head">
+          <span class="mini-eyebrow">Planning Flow</span>
+          <h2>Build order, gap map, and acceptance sequence</h2>
+          <p>This is the engineer-facing board for the first delivery block.</p>
+        </div>
+
+        <div class="build-grid" style="margin-bottom:18px;">
+          <div class="node good"><h3>Current shell</h3><p><code>HomePage</code>, <code>Sidebar</code>, <code>MainContent</code> exist and already carry some visual direction.</p></div>
+          <div class="node err"><h3>Routes</h3><p><code>/</code>, <code>/browse</code>, <code>/radio</code> all resolve to the same page. Must split meaningfully.</p></div>
+          <div class="node warn"><h3>3D foundation</h3><p>Legacy 3D lobby and playback logic exist in <code>src/component/</code>, but are not part of the active route shell.</p></div>
+          <div class="node err"><h3>Data layer</h3><p>Mock content is embedded in presentation files. Extract it before acceptance.</p></div>
+        </div>
+
+        <div class="section-head">
+          <span class="mini-eyebrow">Sequencing</span>
+          <h2>Now, next, only-if-time</h2>
+        </div>
+        <div class="kanban">
+          <div class="col">
+            <h3>Now</h3>
+            <div class="task"><strong>Route split</strong><p>Create distinct room destinations and decide how the 3D lobby enters the flow.</p></div>
+            <div class="task"><strong>Shell integration</strong><p>Unify active app shell with legacy lobby/playback components or port what matters.</p></div>
+            <div class="task"><strong>Mock data extraction</strong><p>Move sample arrays into reusable data/config files.</p></div>
+          </div>
+          <div class="col">
+            <h3>Next</h3>
+            <div class="task"><strong>Player model</strong><p>Define open/play/pause/scrub/close behavior across routes.</p></div>
+            <div class="task"><strong>Room differentiation</strong><p>Give each route unique content blocks and labels.</p></div>
+            <div class="task"><strong>Responsive pass</strong><p>Verify desktop, tablet, and mobile layout integrity.</p></div>
+          </div>
+          <div class="col">
+            <h3>Only if time remains</h3>
+            <div class="task"><strong>Walkthrough polish</strong><p>Transitions, microcopy, and shell cleanup that directly improve demo confidence.</p></div>
+            <div class="task"><strong>Capture flow</strong><p>Add screenshot or demo capture helpers only if they do not slow core implementation.</p></div>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top:28px;">
+          <span class="mini-eyebrow">Acceptance Strip</span>
+          <h2>What must be true at handoff</h2>
+        </div>
+        <div class="strip">
+          <div class="state"><div class="state-dot"></div><div class="state-name">Lobby</div><div class="state-desc">3D entry point visible in active app</div></div>
+          <div class="state"><div class="state-dot"></div><div class="state-name">Routes</div><div class="state-desc">3+ rooms with distinct intent</div></div>
+          <div class="state"><div class="state-dot"></div><div class="state-name">Cards</div><div class="state-desc">driven by extracted mock data</div></div>
+          <div class="state"><div class="state-dot"></div><div class="state-name">Player</div><div class="state-desc">play pause scrub close works</div></div>
+          <div class="state"><div class="state-dot"></div><div class="state-name">Responsive</div><div class="state-desc">desktop tablet mobile proof</div></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="mini">
+            <h3>Scope risk</h3>
+            <ul>
+              <li>Trying to sneak in auth or real data work.</li>
+              <li>Designing brand-new systems instead of integrating what already exists.</li>
+              <li>Treating room count as URL count instead of experience count.</li>
+            </ul>
+          </div>
+          <div class="mini">
+            <h3>Implementation risk</h3>
+            <ul>
+              <li>Leaving player logic trapped in legacy components.</li>
+              <li>Shipping one layout that only works on desktop.</li>
+              <li>Polishing before route/data/player fundamentals are solid.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane dark" data-pane="handoff">
+        <div class="section-head">
+          <span class="mini-eyebrow">Build Prompt</span>
+          <h2>Strict handoff for the next implementation pass</h2>
+          <p>Use this as the direct build brief. Month-1 only.</p>
+        </div>
+        <div class="handoff-block">
+          <pre>Build only the Month 1 Foundation milestone for Sound Vista.
+
+Read first:
+1. docs/plans/SOW_v4_scope_freeze.md
+2. docs/plans/month1-foundation/soundvista-month1-all-in-one.html
+3. docs/plans/README.md
+4. src/design-tokens/figma-export.ts
+5. src/App.js
+6. src/pages/HomePage/HomePage.jsx
+7. src/components/MainContent/MainContent.jsx
+8. src/components/Sidebar/Sidebar.jsx
+9. src/component/Timeline/Timeline.js
+10. src/component/Rotatingsphere/Rotatingsphere.jsx
+
+Goal:
+- integrate the 3D lobby into the active app shell
+- ship 3+ meaningful routes / rooms
+- extract mock card data
+- unify player behavior
+- finish desktop/tablet/mobile proof
+
+In:
+- lobby shell
+- route structure
+- room differentiation
+- mock data extraction
+- player open / pause / scrub / close
+- responsive pass
+
+Out:
+- auth
+- database
+- uploads
+- search
+- notifications
+- analytics
+- web3
+- comments / follows
+
+Return only when:
+- the active app actually shows the 3D-first Sound Vista experience
+- the routes are distinct
+- cards are data-driven
+- player controls work
+- screenshots can be captured cleanly at 3 breakpoints</pre>
+          <div class="links">
+            <a href="/Users/maxpetrusenko/Desktop/Projects/SoundVista/soundvista/docs/plans/SOW_v4_scope_freeze.md">SOW v4 scope freeze</a>
+            <a href="/Users/maxpetrusenko/Desktop/Projects/SoundVista/soundvista/docs/plans/README.md">plans index</a>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panes = Array.from(document.querySelectorAll('.pane'));
+
+    function setActive(name) {
+      tabs.forEach((tab) => tab.classList.toggle('active', tab.dataset.tab === name));
+      panes.forEach((pane) => pane.classList.toggle('active', pane.dataset.pane === name));
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => setActive(tab.dataset.tab));
+    });
+  </script>
+</body>
+</html>
