@@ -79,20 +79,20 @@ class TestPersonaV1Psychological:
         assert p.emotional_profile.baseline_mood == "calm"
         assert p.moral_framework.ethical_stance == "utilitarian"
 
-    def test_communication_style_is_optional(self) -> None:
+    def test_communication_style_is_required(self) -> None:
         kwargs = _minimal_persona_kwargs()
         del kwargs["communication_style"]
-        p = PersonaV1(**kwargs)
-        assert p.communication_style is None
+        with pytest.raises(ValidationError):
+            PersonaV1(**kwargs)
 
-    def test_emotional_profile_is_optional(self) -> None:
+    def test_emotional_profile_is_required(self) -> None:
         kwargs = _minimal_persona_kwargs()
         del kwargs["emotional_profile"]
-        p = PersonaV1(**kwargs)
-        assert p.emotional_profile is None
+        with pytest.raises(ValidationError):
+            PersonaV1(**kwargs)
 
-    def test_moral_framework_is_optional(self) -> None:
+    def test_moral_framework_is_required(self) -> None:
         kwargs = _minimal_persona_kwargs()
         del kwargs["moral_framework"]
-        p = PersonaV1(**kwargs)
-        assert p.moral_framework is None
+        with pytest.raises(ValidationError):
+            PersonaV1(**kwargs)

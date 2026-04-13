@@ -23,10 +23,23 @@ objections (those go in `objections`). Think "wouldn't be caught dead doing X" \
 or "rolls their eyes at Y". Make them specific and rooted in the persona's \
 values, role, or habits, not generic ("doesn't like spam").
 
-Psychological fields (communication_style, emotional_profile, moral_framework) \
-are OPTIONAL. Fill them only when source data supports it; otherwise omit the \
-entire sub-object rather than guessing. When filled, ground each with at least \
-one source_evidence entry rooted in that sub-object.
+Psychological extraction rules (communication_style, emotional_profile, \
+moral_framework are REQUIRED):
+- **communication_style** — Infer tone, formality, and vocabulary_level from \
+verbatim support messages and the technical register of their language. \
+preferred_channels must reflect where this cluster actually communicates.
+- **emotional_profile** — baseline_mood is the dominant tone across their \
+messages. stress_triggers are specific situations that produce complaint \
+messages or long error-filled sessions. coping_mechanisms are observable \
+behaviors they take when stressed.
+- **moral_framework** — core_values are what they repeatedly advocate for in \
+their own words (2-6). ethical_stance is your best-fit classification. \
+moral_foundations weights the six MFT foundations (care, fairness, loyalty, \
+authority, sanctity, liberty) in [0.0, 1.0] — only include foundations with \
+clear evidence; omit rather than guess.
+- Each of communication_style, emotional_profile, and moral_framework must \
+have at least one source_evidence entry with a field_path rooted in that \
+sub-object.
 
 Evidence rules:
 - Each entry in source_evidence must reference at least one record_id from the \
