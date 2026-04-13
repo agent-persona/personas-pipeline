@@ -1,0 +1,416 @@
+{
+  "tenant_id": "bench_single_cohort",
+  "tenant_hash": "3c3629244fde",
+  "industry": "Developer Tools",
+  "product": "API platform",
+  "n_records": 200,
+  "n_clusters": 1,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_7f40b19cb60e",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00005",
+        "bench_00002",
+        "bench_00000",
+        "bench_00006",
+        "bench_00011",
+        "bench_00029",
+        "bench_00001",
+        "bench_00010",
+        "bench_00003",
+        "bench_00004",
+        "bench_00007",
+        "bench_00008"
+      ],
+      "persona_name": "Marcus, the Infrastructure-First DevOps Architect",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Marcus, the Infrastructure-First DevOps Architect",
+        "summary": "Marcus is a Senior/Staff Engineer at a mid-to-large SaaS or fintech company who treats API platform integrations as critical infrastructure. He's deeply technical, focused on scaling and reliability, and evaluates tools through the lens of CI/CD pipelines, infrastructure-as-code workflows, and event-driven architecture. He needs robust API documentation, seamless GitHub and Terraform integration, and observable systems to justify platform investments to leadership.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "North America (based on SaaS/fintech company presence)",
+            "urban tech hubs"
+          ],
+          "education_level": "Bachelor's or higher in Computer Science/Engineering",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "SaaS, fintech",
+          "role_titles": [
+            "Staff Engineer",
+            "Senior DevOps Engineer",
+            "Platform Engineer"
+          ],
+          "tech_stack_signals": [
+            "GitHub",
+            "CI/CD pipelines",
+            "Terraform",
+            "REST/GraphQL APIs",
+            "webhooks",
+            "custom dashboards"
+          ]
+        },
+        "goals": [
+          "Integrate APIs seamlessly into CI/CD pipelines without custom glue code",
+          "Scale bulk operations (e.g., 500k row exports) without timeouts or performance degradation",
+          "Automate infrastructure provisioning using Terraform for reproducibility and drift prevention",
+          "Build custom observability and monitoring dashboards to track API performance and usage",
+          "Reduce operational friction by using webhooks for event-driven workflows instead of polling"
+        ],
+        "pains": [
+          "Rough edges or incomplete implementations in API endpoints (e.g., GraphQL inconsistencies)",
+          "API documentation gaps or unclear guidance on scaling patterns",
+          "Integration friction when connecting to GitHub and CI systems",
+          "Lack of native webhook support or configuration complexity for event-driven workflows",
+          "Difficulty building custom observability dashboards for team needs",
+          "Bulk export operations timing out under large dataset loads"
+        ],
+        "motivations": [
+          "Ensure platform stability and reduce runtime failures in production environments",
+          "Reduce time spent on manual integration work and custom tooling",
+          "Adopt infrastructure-as-code best practices (Terraform) for compliance and auditability",
+          "Demonstrate platform stability and ROI to leadership through metrics and dashboards"
+        ],
+        "objections": [
+          "Concern that GraphQL or other API endpoints aren't production-ready",
+          "Worry that the platform won't handle enterprise-scale data volumes reliably",
+          "Unclear SLA or performance guarantees for large-scale data handling",
+          "Vendor lock-in fears if integrations aren't standardized (Terraform, webhooks)"
+        ],
+        "channels": [
+          "GitHub repositories and integration documentation",
+          "CI/CD platform dashboards and logs",
+          "API documentation and reference sites",
+          "Slack or internal chat (for team discussions about integrations)",
+          "Intercom/support chat for technical blockers"
+        ],
+        "vocabulary": [
+          "infrastructure-as-code",
+          "CI/CD pipeline",
+          "bulk export",
+          "scaling patterns",
+          "event-driven workflows",
+          "webhook",
+          "GraphQL endpoint",
+          "SLA",
+          "observability",
+          "terraform setup",
+          "custom dashboard",
+          "rough edges",
+          "ROI"
+        ],
+        "decision_triggers": [
+          "Clear documentation on scaling limits and performance benchmarks for bulk operations",
+          "Evidence of native webhook support and standardized event formats",
+          "Terraform provider maturity and GitHub Actions integration examples",
+          "Dashboard and monitoring capabilities that work with existing observability stacks",
+          "Published SLAs and performance guarantees for enterprise customers"
+        ],
+        "sample_quotes": [
+          "Your REST API is solid but the GraphQL endpoint has some rough edges.",
+          "We need the bulk export to handle 500k rows without timing out.",
+          "Can we just provision this API client infrastructure using Terraform like everything else?",
+          "I need to show leadership this platform will actually perform at scale before we standardize on it."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Cautiously optimistic about the platform but evaluating it against strict operational criteria",
+            "key_actions": [
+              "Testing SDK installation and API endpoint behavior",
+              "Configuring GitHub and CI/CD integrations",
+              "Attempting Terraform setup to assess infrastructure-as-code compatibility",
+              "Setting up webhooks and custom dashboards to assess observability"
+            ],
+            "content_preferences": [
+              "API reference documentation with scaling guidance",
+              "GitHub integration and CI/CD pipeline examples",
+              "Terraform provider documentation and usage examples",
+              "Performance benchmarks and SLA information"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if infrastructure integration is seamless and performance is guaranteed at enterprise scale",
+            "key_actions": [
+              "Bulk exporting large datasets to validate performance",
+              "Building custom monitoring dashboards for team oversight",
+              "Reviewing webhook configuration and event-driven patterns",
+              "Presenting findings to leadership with ROI/stability metrics"
+            ],
+            "content_preferences": [
+              "Case studies showing enterprise deployments at scale",
+              "Webhook event documentation and examples",
+              "Custom dashboard templates and best practices",
+              "SLA guarantees and performance benchmarks"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Integrates APIs seamlessly into CI/CD pipelines without custom glue code",
+            "record_ids": [
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Scales bulk operations (500k row exports) without timeouts or performance degradation",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00006"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Automates infrastructure provisioning using Terraform for reproducibility",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Builds custom observability and monitoring dashboards to track API performance",
+            "record_ids": [
+              "bench_00029"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Reduces operational friction by using webhooks for event-driven workflows",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "GraphQL endpoint has rough edges or incomplete implementations",
+            "record_ids": [
+              "bench_00003",
+              "bench_00006"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "API documentation gaps or unclear guidance on scaling patterns",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Integration friction when connecting to GitHub and CI systems",
+            "record_ids": [
+              "bench_00002",
+              "bench_00005"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Lacks native webhook support or has configuration complexity for event-driven workflows",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Difficulty building custom observability dashboards for team needs",
+            "record_ids": [
+              "bench_00029"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Bulk export operations timing out under large dataset loads",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00006"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Ensures platform stability and reduces runtime failures in production",
+            "record_ids": [
+              "bench_00010",
+              "bench_00011"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Reduces time spent on manual integration work and custom tooling",
+            "record_ids": [
+              "bench_00001",
+              "bench_00002",
+              "bench_00004"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Adopts infrastructure-as-code best practices (Terraform) for compliance",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Demonstrates platform stability and ROI to leadership through metrics and dashboards",
+            "record_ids": [
+              "bench_00029"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Concerned that GraphQL or other API endpoints aren't production-ready",
+            "record_ids": [
+              "bench_00003",
+              "bench_00006"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Worries platform won't handle enterprise-scale data volumes reliably",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00006"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Unclear SLA or performance guarantees for large-scale data handling",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00006"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Vendor lock-in fears if integrations aren't standardized (Terraform, webhooks)",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00010"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Explores SDK installation to assess API quality and developer experience",
+            "record_ids": [
+              "bench_00000",
+              "bench_00003",
+              "bench_00008"
+            ],
+            "field_path": "journey_stages.0.key_actions.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Tests GitHub and CI/CD pipeline integration capabilities",
+            "record_ids": [
+              "bench_00002",
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "journey_stages.0.key_actions.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Evaluates Terraform setup for infrastructure-as-code compatibility",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "journey_stages.0.key_actions.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Configures webhooks and custom dashboards to assess observability",
+            "record_ids": [
+              "bench_00010",
+              "bench_00029"
+            ],
+            "field_path": "journey_stages.0.key_actions.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Tests bulk export with large datasets to validate performance at scale",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00006"
+            ],
+            "field_path": "journey_stages.1.key_actions.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Builds custom monitoring dashboards for team oversight and metrics",
+            "record_ids": [
+              "bench_00029"
+            ],
+            "field_path": "journey_stages.1.key_actions.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Staff or Senior Engineer at SaaS or fintech company",
+            "record_ids": [
+              "bench_00011",
+              "bench_00010"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "groundedness": 0.9473684210526315,
+      "attempts": 3,
+      "cost_usd": 0.055539,
+      "latency_s": 62.764999999897555,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    }
+  ],
+  "total_cost_usd": 0.055539,
+  "total_latency_s": 62.764999999897555,
+  "mean_groundedness": 0.9473684210526315,
+  "success_rate": 1.0,
+  "error": ""
+}

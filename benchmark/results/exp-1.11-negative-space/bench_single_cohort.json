@@ -1,0 +1,451 @@
+{
+  "tenant_id": "bench_single_cohort",
+  "tenant_hash": "3c3629244fde",
+  "industry": "Developer Tools",
+  "product": "API platform",
+  "n_records": 200,
+  "n_clusters": 1,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_244bad7c19b2",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00005",
+        "bench_00002",
+        "bench_00000",
+        "bench_00006",
+        "bench_00011",
+        "bench_00029",
+        "bench_00001",
+        "bench_00010",
+        "bench_00003",
+        "bench_00004",
+        "bench_00007",
+        "bench_00008"
+      ],
+      "persona_name": "Marcus the Infrastructure-First Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Marcus the Infrastructure-First Engineer",
+        "summary": "A mid-level to senior backend engineer at a growth-stage SaaS or fintech company who builds APIs and infrastructure automation as core parts of their role. Marcus is deeply hands-on with CI/CD, GitHub workflows, and infrastructure-as-code (IaC), and he evaluates developer tools through the lens of operational reliability, bulk data handling, and integration depth rather than ease-of-use.",
+        "demographics": {
+          "age_range": "28-40",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US-based tech hubs (inferred from SaaS/fintech company presence)"
+          ],
+          "education_level": "BS/MS in Computer Science or related field",
+          "income_bracket": "120k-180k"
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "SaaS, fintech, or similar software-driven verticals",
+          "role_titles": [
+            "Staff Engineer",
+            "Senior DevOps Engineer",
+            "Senior Backend Engineer",
+            "Platform Engineer"
+          ],
+          "tech_stack_signals": [
+            "GitHub",
+            "Terraform",
+            "CI/CD pipelines (GitHub Actions, GitLab CI)",
+            "REST/GraphQL APIs",
+            "SDK integration",
+            "Webhook infrastructure"
+          ]
+        },
+        "goals": [
+          "Integrate APIs seamlessly into CI/CD pipelines to automate deployment workflows",
+          "Handle bulk data exports and imports at scale (500k+ rows) without performance degradation",
+          "Set up infrastructure-as-code (Terraform) for reproducible, version-controlled deployments",
+          "Configure webhooks and real-time integrations for event-driven architecture",
+          "Leverage SDKs to reduce custom API integration time and surface-level implementation",
+          "Build custom monitoring dashboards to track API performance and usage patterns",
+          "Minimize operational overhead through tight GitHub and platform integrations"
+        ],
+        "pains": [
+          "GraphQL endpoints that lack polish, reliability, or full feature parity with REST APIs",
+          "Bulk export APIs that timeout or fail under realistic production data volumes (500k+ rows)",
+          "Poor webhook configuration UX or lack of webhook support entirely",
+          "Fragmented integrations requiring manual glue code instead of native SDK support",
+          "Long onboarding and setup time for API platforms, especially for CI/CD and IaC workflows",
+          "Lack of visibility into API behavior and usage without building custom instrumentation",
+          "Terraform provider gaps or incomplete infrastructure automation support"
+        ],
+        "motivations": [
+          "Want to reduce toil and handoff cycles between development and operations teams",
+          "Driven by a desire to ship features faster and reduce deployment friction",
+          "Value operational reliability and uptime over flashy UI\u2014'boring' is trustworthy",
+          "Motivated to keep infrastructure as declarative and auditable as possible",
+          "Want to delegate API integration responsibility to the platform, not reinvent it",
+          "Seek to prove technical credibility through deep platform mastery and optimization"
+        ],
+        "objections": [
+          "If an API platform doesn't have native CI/CD integration, it's a non-starter for our workflow",
+          "We can't use this if bulk export will timeout\u2014our data volumes are too high",
+          "GraphQL implementation looks half-baked; REST-only is safer for production use",
+          "If there's no Terraform provider, we'll just build our own wrapper or use a competitor",
+          "SDKs that are poorly maintained or don't match the REST API surface are dead weight",
+          "We need webhook support; if it's not there, we'll have to architect around this platform"
+        ],
+        "not_this": [
+          "Would never choose an API platform based on slick marketing or free credits alone",
+          "Doesn't trust 'magic'\u2014prefers explicit, debuggable integration patterns over hidden abstractions",
+          "Won't accept technical debt in infrastructure; if a tool creates debt, it gets ripped out",
+          "Doesn't do proof-of-concepts that require building custom workarounds; if it doesn't work out-of-the-box, red flag",
+          "Never treats infrastructure automation as optional\u2014IaC is non-negotiable, not a nice-to-have",
+          "Wouldn't tolerate vendor lock-in or proprietary APIs that force long-term dependency"
+        ],
+        "channels": [
+          "GitHub (native integration, pull requests, issue tracking)",
+          "CI/CD pipeline dashboards and logs",
+          "Technical documentation and API reference",
+          "Slack (team communication, ops channel)",
+          "Intercom/in-app chat (direct questions about platform features)"
+        ],
+        "vocabulary": [
+          "CI/CD pipeline",
+          "Bulk export",
+          "Terraform",
+          "Webhook configuration",
+          "SDK integration",
+          "GraphQL vs REST",
+          "Event-driven",
+          "IaC (Infrastructure as Code)",
+          "Timeouts",
+          "Native integration",
+          "Custom dashboard",
+          "Operational reliability",
+          "Scale without degradation",
+          "Glue code"
+        ],
+        "decision_triggers": [
+          "Proof that the bulk export API can handle 500k+ rows without timing out",
+          "Native GitHub integration and GitHub Actions workflow support",
+          "Terraform provider with full CRUD coverage for key resources",
+          "Webhook support with delivery guarantees and retry logic",
+          "SDK availability matching REST API feature completeness",
+          "Clear, honest documentation about GraphQL vs REST tradeoffs"
+        ],
+        "sample_quotes": [
+          "Your REST API is solid but the GraphQL endpoint has some rough edges.",
+          "We need the bulk export to handle 500k rows without timing out.",
+          "If it doesn't integrate natively with our CI/CD pipeline, we'll just build our own.",
+          "Infrastructure as code is non-negotiable\u2014if there's no Terraform provider, it's a blocker.",
+          "SDKs are great, but only if they're kept in sync with the API and actively maintained."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Searching for a platform that handles API infrastructure and automation at scale",
+            "key_actions": [
+              "Visiting documentation and API reference pages",
+              "Reviewing integration capabilities (GitHub, CI/CD, Terraform)",
+              "Checking SDK availability and maturity",
+              "Scanning for known limitations (GraphQL, bulk export, webhooks)"
+            ],
+            "content_preferences": [
+              "Technical API reference documentation",
+              "Integration guides (CI/CD, Terraform, GitHub)",
+              "Performance benchmarks and scaling case studies",
+              "Honest feature comparison tables"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Testing whether the platform can handle our specific operational requirements without custom work",
+            "key_actions": [
+              "Installing SDK and running local integration tests",
+              "Setting up Terraform configuration to test IaC workflows",
+              "Configuring webhooks and testing event delivery",
+              "Stress-testing bulk export with realistic data volumes",
+              "Building custom dashboards to validate monitoring needs"
+            ],
+            "content_preferences": [
+              "Step-by-step integration tutorials",
+              "Troubleshooting guides and common gotchas",
+              "Terraform module examples",
+              "Performance tuning documentation",
+              "In-app chat support for technical blockers"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if technical validation passed and integrations work smoothly",
+            "key_actions": [
+              "Finalizing CI/CD pipeline integration",
+              "Completing Terraform provider setup",
+              "Configuring webhooks for production",
+              "Setting up custom dashboards and alerts",
+              "Handing off to ops team with documentation"
+            ],
+            "content_preferences": [
+              "Operational runbooks and SLA documentation",
+              "Migration guides from legacy systems",
+              "Best practices for production deployment",
+              "On-call documentation and troubleshooting playbooks"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Integrates APIs into CI/CD pipelines",
+            "record_ids": [
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Needs bulk data exports to handle 500k+ rows without timeouts",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00006"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Uses Terraform for infrastructure-as-code deployments",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Configures webhooks for event-driven integrations",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Uses SDKs to reduce custom API integration work",
+            "record_ids": [
+              "bench_00000",
+              "bench_00003",
+              "bench_00008"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Builds custom dashboards for API monitoring and observability",
+            "record_ids": [
+              "bench_00029"
+            ],
+            "field_path": "goals.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Seeks GitHub integrations for CI/CD automation",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "goals.6",
+            "confidence": 0.9
+          },
+          {
+            "claim": "GraphQL endpoints lack reliability and feature parity",
+            "record_ids": [
+              "bench_00003",
+              "bench_00006"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.92
+          },
+          {
+            "claim": "Bulk export APIs timeout under large production data volumes",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00006"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Webhook configuration is difficult or unsupported",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Integrations require manual glue code instead of native support",
+            "record_ids": [
+              "bench_00002",
+              "bench_00010"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Long onboarding and setup time for API platforms",
+            "record_ids": [
+              "bench_00000",
+              "bench_00003",
+              "bench_00008"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.65
+          },
+          {
+            "claim": "Lacks built-in API monitoring and custom dashboard capabilities",
+            "record_ids": [
+              "bench_00029"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Terraform provider gaps or incomplete IaC support",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "pains.6",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated to reduce operational toil and handoff cycles",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00010"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Driven by desire to ship features faster and reduce deployment friction",
+            "record_ids": [
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Values operational reliability and uptime over UI polish",
+            "record_ids": [
+              "bench_00003",
+              "bench_00006"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated to keep infrastructure declarative and auditable",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Wants to delegate API integration responsibility to platform",
+            "record_ids": [
+              "bench_00000",
+              "bench_00003"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Seeks technical credibility through platform mastery",
+            "record_ids": [
+              "bench_00002",
+              "bench_00010",
+              "bench_00029"
+            ],
+            "field_path": "motivations.5",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Cannot adopt if no native CI/CD integration",
+            "record_ids": [
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Will not use if bulk export cannot handle high data volumes",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00006"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Distrusts half-baked GraphQL implementations",
+            "record_ids": [
+              "bench_00003",
+              "bench_00006"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Will build custom wrapper or switch vendors if no Terraform provider",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Poorly maintained SDKs are not acceptable",
+            "record_ids": [
+              "bench_00000",
+              "bench_00003"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Requires webhook support; will architect around platform if missing",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "objections.5",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.022728,
+      "latency_s": 27.655999999959022,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 5.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 5.0
+      }
+    }
+  ],
+  "total_cost_usd": 0.022728,
+  "total_latency_s": 27.655999999959022,
+  "mean_groundedness": 1.0,
+  "success_rate": 1.0,
+  "error": ""
+}

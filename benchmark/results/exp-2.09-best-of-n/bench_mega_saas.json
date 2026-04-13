@@ -1,0 +1,2284 @@
+{
+  "tenant_id": "bench_mega_saas",
+  "tenant_hash": "57399d60577a",
+  "industry": "B2B SaaS",
+  "product": "Cross-functional project management platform",
+  "n_records": 500,
+  "n_clusters": 6,
+  "segment_latency_s": 0.01500000013038516,
+  "clusters": [
+    {
+      "cluster_id": "clust_f95189f65d9e",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00000",
+        "bench_00012",
+        "bench_00036",
+        "bench_00010",
+        "bench_00052",
+        "bench_00006",
+        "bench_00026",
+        "bench_00045",
+        "bench_00025",
+        "bench_00028",
+        "bench_00031",
+        "bench_00039"
+      ],
+      "persona_name": "Dev-Driven Infrastructure Builder",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Dev-Driven Infrastructure Builder",
+        "summary": "An engineer-focused infrastructure practitioner who is deeply embedded in CI/CD pipelines, API integration, and Infrastructure-as-Code workflows. They demand high-scale, low-latency tooling and are frustrated by platform limitations that throttle their automation and data pipelines.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US-based tech hubs",
+            "remote-first",
+            "distributed team environments"
+          ],
+          "education_level": "Bachelor's in Computer Science or equivalent professional experience",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "100-500 employees",
+          "industry": "SaaS / Enterprise Software",
+          "role_titles": [
+            "Staff Engineer",
+            "Engineering Manager",
+            "Platform Engineer",
+            "DevOps Engineer"
+          ],
+          "tech_stack_signals": [
+            "GitHub",
+            "CI/CD platforms (GitHub Actions, Jenkins)",
+            "Terraform",
+            "Webhooks",
+            "REST APIs",
+            "SDK implementations"
+          ]
+        },
+        "goals": [
+          "Automate cross-functional workflows without manual intervention or approval bottlenecks",
+          "Scale data export and reporting to handle hundreds of thousands of rows efficiently",
+          "Integrate project management deeply into existing CI/CD and infrastructure tooling",
+          "Build custom dashboards that reflect real-time team and project metrics"
+        ],
+        "pains": [
+          "Rate limiting on webhook endpoints blocking CI pipeline execution",
+          "Bulk export timeouts when processing large datasets (500k+ rows)",
+          "Lack of programmatic access to project and team data via SDKs and APIs",
+          "Manual configuration required for infrastructure integration; craves Infrastructure-as-Code support"
+        ],
+        "motivations": [
+          "Reduce operational toil and enable self-service automation for teams",
+          "Achieve visibility into project execution without leaving their development environment",
+          "Maintain deployment velocity and avoid vendor lock-in through open APIs and standards",
+          "Drive team adoption by embedding the tool into established workflows"
+        ],
+        "objections": [
+          "Platform rate limits that throttle automation workflows",
+          "No bulk export capability or poor scaling characteristics on large datasets",
+          "Lack of Infrastructure-as-Code support or configuration-as-code patterns",
+          "Slow or non-intuitive API documentation and SDK support"
+        ],
+        "channels": [
+          "Technical documentation and API references",
+          "GitHub and Git workflows",
+          "CI/CD dashboards and monitoring tools",
+          "Slack and team chat platforms",
+          "Internal engineering wikis and runbooks"
+        ],
+        "vocabulary": [
+          "webhook configuration",
+          "rate limits",
+          "bulk export",
+          "CI pipeline",
+          "SDK integration",
+          "infrastructure as code",
+          "terraform setup",
+          "scalability",
+          "automation",
+          "API endpoint",
+          "timeout",
+          "custom dashboard",
+          "integration",
+          "deployment velocity"
+        ],
+        "decision_triggers": [
+          "Proof that rate limits won't block high-volume webhook traffic",
+          "Demonstrated bulk export performance with 500k+ row datasets",
+          "Native Terraform provider or Infrastructure-as-Code support",
+          "Open SDK and API documentation with clear examples",
+          "Customer case studies from similar-sized SaaS companies"
+        ],
+        "sample_quotes": [
+          "Rate limits on the webhook endpoint are killing our CI pipeline.",
+          "We need the bulk export to handle 500k rows without timing out.",
+          "We need programmatic access\u2014let's just write an SDK for this.",
+          "Can we manage this entirely through Terraform? We're not doing manual config."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Curious about how the tool could fit into existing DevOps infrastructure",
+            "key_actions": [
+              "Browse /docs/sdk",
+              "Review /api/reference",
+              "Check /integrations pages"
+            ],
+            "content_preferences": [
+              "Technical architecture docs",
+              "API reference guides",
+              "Integration checklists"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the tool can scale and integrate with their CI/CD without bottlenecks",
+            "key_actions": [
+              "Configure webhooks",
+              "Install SDK or API client",
+              "Test Terraform provider",
+              "Review rate limit docs"
+            ],
+            "content_preferences": [
+              "Performance benchmarks",
+              "Rate limit guarantees",
+              "Terraform documentation",
+              "GitHub integration guides"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if rate limits, bulk export, and Infrastructure-as-Code support are proven",
+            "key_actions": [
+              "Set up CI pipeline integration",
+              "Configure bulk export workflows",
+              "Deploy via Terraform",
+              "Build custom dashboard"
+            ],
+            "content_preferences": [
+              "Deployment templates",
+              "Runbook examples",
+              "Performance SLAs",
+              "Support and escalation paths"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Wants to automate cross-functional workflows without manual intervention",
+            "record_ids": [
+              "bench_00000",
+              "bench_00028",
+              "bench_00031"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Needs to scale bulk export to handle 500k+ rows",
+            "record_ids": [
+              "bench_00039",
+              "bench_00045"
+            ],
+            "field_path": "goals.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Wants to integrate project management into CI/CD workflows",
+            "record_ids": [
+              "bench_00036",
+              "bench_00052"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Needs custom dashboards for real-time team metrics",
+            "record_ids": [
+              "bench_00012"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Rate limiting on webhook endpoints is blocking CI pipeline execution",
+            "record_ids": [
+              "bench_00036"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Bulk export timeouts on large datasets (500k+ rows)",
+            "record_ids": [
+              "bench_00039"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Lacks programmatic access via SDKs and APIs",
+            "record_ids": [
+              "bench_00000",
+              "bench_00026",
+              "bench_00031"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Manual infrastructure configuration prevents adoption",
+            "record_ids": [
+              "bench_00006"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Wants to reduce operational toil and enable self-service automation",
+            "record_ids": [
+              "bench_00010",
+              "bench_00052"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Seeks visibility into project execution without leaving their development environment",
+            "record_ids": [
+              "bench_00012",
+              "bench_00036"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Values deployment velocity and avoiding vendor lock-in",
+            "record_ids": [
+              "bench_00000",
+              "bench_00031"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Wants to embed tool into established workflows for team adoption",
+            "record_ids": [
+              "bench_00045",
+              "bench_00031"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Rate limits that throttle automation are a dealbreaker",
+            "record_ids": [
+              "bench_00036"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "No bulk export or poor scaling on large datasets",
+            "record_ids": [
+              "bench_00039"
+            ],
+            "field_path": "objections.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Lack of Infrastructure-as-Code support blocks adoption",
+            "record_ids": [
+              "bench_00006"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Slow or unclear API documentation is a friction point",
+            "record_ids": [
+              "bench_00026"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Uses GitHub and CI/CD platforms as primary development channels",
+            "record_ids": [
+              "bench_00036",
+              "bench_00052"
+            ],
+            "field_path": "channels.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Consumes technical documentation and API references heavily",
+            "record_ids": [
+              "bench_00026",
+              "bench_00031"
+            ],
+            "field_path": "channels.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Role is Engineering Manager or Staff Engineer in 100-500 person SaaS/enterprise software company",
+            "record_ids": [
+              "bench_00045",
+              "bench_00031"
+            ],
+            "field_path": "firmographics.role_titles.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Webhook configuration is a core workflow activity",
+            "record_ids": [
+              "bench_00036",
+              "bench_00010",
+              "bench_00025"
+            ],
+            "field_path": "vocabulary.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Rate limits are a frequently discussed constraint",
+            "record_ids": [
+              "bench_00036"
+            ],
+            "field_path": "vocabulary.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Bulk export capability is mission-critical",
+            "record_ids": [
+              "bench_00039",
+              "bench_00045"
+            ],
+            "field_path": "vocabulary.2",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 3,
+      "cost_usd": 0.056702999999999996,
+      "latency_s": 65.71899999980815,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "error": "Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 450,000 input tokens per minute (org: a7562626-eba9-4e"
+      }
+    },
+    {
+      "cluster_id": "clust_7520b8a5c4bc",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00003",
+        "bench_00123",
+        "bench_00015",
+        "bench_00054",
+        "bench_00008",
+        "bench_00056",
+        "bench_00018",
+        "bench_00022",
+        "bench_00038",
+        "bench_00041",
+        "bench_00046",
+        "bench_00066"
+      ],
+      "persona_name": "Solo Design Entrepreneur",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Solo Design Entrepreneur",
+        "summary": "An independent designer or freelance brand specialist who manages their own business, creates professional design assets and templates to serve clients efficiently, and actively seeks ways to build reusable systems. They heavily explore brand kit features, template libraries, and client-sharing tools to scale their output without proportional time investment.",
+        "demographics": {
+          "age_range": "25-45",
+          "gender_distribution": "mixed",
+          "location_signals": [
+            "remote work patterns",
+            "global freelance market"
+          ],
+          "education_level": "professional design background",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "Solo practitioner (1 person)",
+          "industry": "Design Services / Creative Entrepreneurship",
+          "role_titles": [
+            "Independent Designer",
+            "Freelance Brand Designer"
+          ],
+          "tech_stack_signals": [
+            "asset management tools",
+            "design collaboration platforms",
+            "client delivery systems"
+          ]
+        },
+        "goals": [
+          "Build and maintain a library of branded assets and templates that accelerate project delivery",
+          "Share design components and presentations with clients in a polished, professional format that reinforces brand consistency",
+          "Create a professional client-facing experience that showcases work and gathers feedback efficiently",
+          "Establish a scalable business model where creative output isn't directly tied to billable hours",
+          "Reduce repetitive design work by establishing reusable systems and standardized templates"
+        ],
+        "pains": [
+          "Managing multiple file versions and assets across projects creates operational friction and slows down delivery",
+          "Pricing model based on per-seat licensing makes it unaffordable for solo practitioners with limited recurring revenue",
+          "Lacking ability to save and reuse personal design variants limits the efficiency gains they seek",
+          "Lacks a straightforward way to share design components and assets with clients for ongoing use",
+          "Time spent on administrative tasks and repetitive design decisions diverts energy from higher-value creative work"
+        ],
+        "motivations": [
+          "Strong desire to professionalize their freelance business by adopting structured design systems and brand standards",
+          "Driven to invest time upfront in systems and templates that pay dividends across many future projects",
+          "Want to reduce decision fatigue and creative rework by establishing consistent brand standards",
+          "Motivated to build long-term client relationships through exceptional, frictionless experiences",
+          "Need to justify tool adoption based on tangible time savings and efficiency gains that improve profitability"
+        ],
+        "objections": [
+          "Concerned that platform overhead will slow down their already-efficient design process",
+          "Skeptical that the tool adds real value if it requires significant setup time they must recoup from project budgets",
+          "Skeptical that the learning curve will be worth it if they can't customize and reuse their own variants",
+          "Questioning ROI if the tool doesn't dramatically reduce the time spent on admin and repetitive tasks",
+          "Worried about lock-in and whether switching costs make the platform a risky investment"
+        ],
+        "channels": [
+          "Direct product exploration and self-service trials",
+          "In-app messaging and product tours",
+          "Template and asset library browsing",
+          "Industry-specific design communities and forums",
+          "Social media and portfolio platforms"
+        ],
+        "vocabulary": [
+          "Templates",
+          "variants",
+          "brand kit",
+          "assets",
+          "client-facing",
+          "reusable",
+          "scalable",
+          "efficiency",
+          "professional",
+          "workflow",
+          "brand standards",
+          "components",
+          "freelancer",
+          "solo business"
+        ],
+        "decision_triggers": [
+          "Concrete evidence that the tool saves at least 2-3 hours per project",
+          "Ability to customize and save their own template variants within the system",
+          "Freemium or solo-friendly pricing tier that doesn't require seat-based licensing",
+          "Client-ready export and sharing features that elevate project deliverables",
+          "Integration with their existing design tools and workflows"
+        ],
+        "sample_quotes": [
+          "Love the templates but I wish I could save my own variants.",
+          "Pricing per seat doesn't work for solo freelancers.",
+          "I need tools that help me work faster, not slower\u2014my profit margin depends on it.",
+          "If I spend a week setting this up, it has to pay for itself across multiple projects.",
+          "Show me exactly how much time this saves before I commit to learning another platform."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Exploring whether design system and template tools can genuinely improve their efficiency and profitability",
+            "key_actions": [
+              "Browsing available templates and brand kit features",
+              "Testing color picker and font upload functionality",
+              "Exploring asset export capabilities",
+              "Evaluating whether platform feels intuitive enough for solo use"
+            ],
+            "content_preferences": [
+              "Feature walkthroughs showing time savings",
+              "Templates and examples relevant to their client work",
+              "Pricing transparency for solo/freelance use"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Assessing whether the tool's efficiency gains justify setup investment and learning curve, with concern about per-seat pricing",
+            "key_actions": [
+              "Testing client-share functionality to understand delivery workflows",
+              "Creating a test brand kit to evaluate customization depth",
+              "Comparing ROI against their current manual processes",
+              "Checking whether personal variants can be saved and reused"
+            ],
+            "content_preferences": [
+              "Case studies from solo designers showing measurable time savings",
+              "Documentation on variant customization and reuse capabilities",
+              "Honest comparison of setup time vs. long-term project velocity gains",
+              "Solo-friendly pricing tier options or clarification"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if they believe the tool will materially reduce admin time, supports variant reuse, and offers accessible pricing",
+            "key_actions": [
+              "Signing up for freemium or affordable solo tier",
+              "Building first real brand kit with custom variants",
+              "Creating templates for their most common project types",
+              "Testing client delivery workflow on a real project"
+            ],
+            "content_preferences": [
+              "Onboarding guides tailored to solo designers",
+              "Quick-start templates to accelerate setup",
+              "Support access to unblock customization questions",
+              "Success metrics to track time savings"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Build and maintain a library of branded assets and templates that accelerate project delivery",
+            "record_ids": [
+              "bench_00054",
+              "bench_00066",
+              "bench_00008",
+              "bench_00018"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Share design components and presentations with clients in a polished, professional format that reinforces brand consistency",
+            "record_ids": [
+              "bench_00056",
+              "bench_00041",
+              "bench_00003"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Create a professional client-facing experience that showcases work and gathers feedback efficiently",
+            "record_ids": [
+              "bench_00056"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Establish a scalable business model where creative output isn't directly tied to billable hours",
+            "record_ids": [
+              "bench_00022",
+              "bench_00038"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Reduce repetitive design work by establishing reusable systems and standardized templates",
+            "record_ids": [
+              "bench_00022",
+              "bench_00054",
+              "bench_00066"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Managing multiple file versions and assets across projects creates operational friction and slows down delivery",
+            "record_ids": [
+              "bench_00003",
+              "bench_00046",
+              "bench_00041"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Pricing model based on per-seat licensing makes it unaffordable for solo practitioners with limited recurring revenue",
+            "record_ids": [
+              "bench_00015"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Lacking ability to save and reuse personal design variants limits the efficiency gains they seek",
+            "record_ids": [
+              "bench_00022"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Lacks a straightforward way to share design components and assets with clients for ongoing use",
+            "record_ids": [
+              "bench_00056"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Time spent on administrative tasks and repetitive design decisions diverts energy from higher-value creative work",
+            "record_ids": [
+              "bench_00038",
+              "bench_00054"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Strong desire to professionalize their freelance business by adopting structured design systems and brand standards",
+            "record_ids": [
+              "bench_00123",
+              "bench_00018"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Driven to invest time upfront in systems and templates that pay dividends across many future projects",
+            "record_ids": [
+              "bench_00054",
+              "bench_00008",
+              "bench_00066"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Want to reduce decision fatigue and creative rework by establishing consistent brand standards",
+            "record_ids": [
+              "bench_00123",
+              "bench_00018"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated to build long-term client relationships through exceptional, frictionless experiences",
+            "record_ids": [
+              "bench_00056",
+              "bench_00038"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Need to justify tool adoption based on tangible time savings and efficiency gains that improve profitability",
+            "record_ids": [
+              "bench_00015"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Concerned that platform overhead will slow down their already-efficient design process",
+            "record_ids": [
+              "bench_00008",
+              "bench_00003"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Skeptical that the tool adds real value if it requires significant setup time they must recoup from project budgets",
+            "record_ids": [
+              "bench_00022",
+              "bench_00038"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Skeptical that the learning curve will be worth it if they can't customize and reuse their own variants",
+            "record_ids": [
+              "bench_00022"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Questioning ROI if the tool doesn't dramatically reduce the time spent on admin and repetitive tasks",
+            "record_ids": [
+              "bench_00046",
+              "bench_00054"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Worried about lock-in and whether switching costs make the platform a risky investment",
+            "record_ids": [
+              "bench_00003",
+              "bench_00056"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.65
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.037526000000000004,
+      "latency_s": 46.28099999995902,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "error": "Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': \"This request would exceed your organization's rate limit of 450,000 input tokens per minute (org: a7562626-eba9-4e"
+      }
+    },
+    {
+      "cluster_id": "clust_6d600179c6e3",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00035",
+        "bench_00027",
+        "bench_00047",
+        "bench_00150",
+        "bench_00001",
+        "bench_00030",
+        "bench_00063",
+        "bench_00067",
+        "bench_00076",
+        "bench_00077",
+        "bench_00083",
+        "bench_00096"
+      ],
+      "persona_name": "Sara, the Data-Driven Product Leader",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Sara, the Data-Driven Product Leader",
+        "summary": "Sara is a Head of Product or Senior Product Manager at a mid-sized B2B SaaS or eCommerce company who relies on cross-functional visibility and real-time data to drive product decisions. She spends significant time on sprint planning, roadmap management, and stakeholder reporting, but is frustrated by seat licensing costs that prevent broader stakeholder visibility and UI inefficiencies that slow her team's velocity.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "not specified",
+          "location_signals": [],
+          "education_level": null,
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "100-500 employees",
+          "industry": "B2B SaaS / eCommerce",
+          "role_titles": [
+            "Head of Product",
+            "Senior Product Manager"
+          ],
+          "tech_stack_signals": [
+            "feature flag management",
+            "roadmap visualization",
+            "sprint planning tools",
+            "stakeholder reporting",
+            "feedback collection systems"
+          ]
+        },
+        "goals": [
+          "Enable stakeholders (executives, other departments) to access project visibility without requiring full platform seats",
+          "Reduce operational overhead by allowing read-only stakeholder access without consuming expensive seats",
+          "Streamline sprint planning and feature flag management to eliminate manual workarounds",
+          "Consolidate product feedback from distributed teams and external stakeholders into a single searchable source of truth",
+          "Drive faster, data-informed product decisions through real-time cross-functional visibility"
+        ],
+        "pains": [
+          "Feature flag management UI requires excessive clicks and manual steps to toggle or manage flags efficiently",
+          "Stakeholder visibility requires full seat licensing, inflating tooling costs unnecessarily",
+          "Inability to grant limited, read-only access creates friction and forces seat purchases for non-core users",
+          "Sprint planning sessions lack clear visibility into blockers and cross-functional dependencies",
+          "Lack of efficient feedback collection mechanisms from distributed teams and external stakeholders",
+          "Managing multiple tools for different aspects of project delivery fragments team context"
+        ],
+        "motivations": [
+          "Maximize ROI on product management tooling by reducing unnecessary seat spend on non-core users",
+          "Empower teams with real-time data and transparency to make faster decisions",
+          "Simplify workflows by reducing the number of manual steps required for routine product operations",
+          "Build stronger stakeholder alignment through self-service visibility and reporting",
+          "Gather and act on product feedback at scale without slowing team velocity"
+        ],
+        "objections": [
+          "Solutions that require complex setup or ongoing manual configuration are not worth the implementation effort",
+          "Solutions that require constant manual intervention instead of automating routine tasks",
+          "Tools that isolate data rather than integrating with existing workflows",
+          "Lack of audit trails or role-based access controls for sensitive product decisions",
+          "Switching costs are too high if the new tool doesn't demonstrably reduce seat spend or time spent in planning"
+        ],
+        "channels": [
+          "Product platform (sprint planning, roadmap, reports)",
+          "Email and direct messaging (Intercom/Slack)",
+          "GA4 product analytics",
+          "Executive reporting dashboards"
+        ],
+        "vocabulary": [
+          "read-only view",
+          "seats",
+          "stakeholder visibility",
+          "sprint planning",
+          "feature flags",
+          "roadmap",
+          "cross-functional alignment",
+          "blockers",
+          "feedback collection",
+          "real-time data",
+          "self-service reporting",
+          "UX friction"
+        ],
+        "decision_triggers": [
+          "Quantified proof that a solution reduces seat licensing costs by 20%+ for stakeholder access",
+          "Demonstration that UI improvements cut task completion time in half",
+          "Evidence that the tool integrates seamlessly with existing product stack without adding manual work",
+          "Ability to grant fine-grained, role-based read-only access with audit trails",
+          "Free trial or pilot that proves measurable improvement in sprint velocity and stakeholder alignment"
+        ],
+        "sample_quotes": [
+          "Can we get a read-only view for stakeholders without eating seats?",
+          "Feature flag UX is clunky \u2014 takes 4 clicks to toggle one flag.",
+          "We need real-time visibility across sprint, roadmap, and blockers all in one place.",
+          "Our execs want to track progress, but we can't justify the extra seat cost for that visibility.",
+          "Feedback from the field is scattered across emails and Slack. We need to pull it together without adding another tool."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Alert to friction points in current tooling but not yet actively evaluating solutions",
+            "key_actions": [
+              "Spending extended time (20+ minutes) exploring roadmap and sprint planning features",
+              "Encountering UI friction points and noting them but continuing with workarounds"
+            ],
+            "content_preferences": [
+              "Product comparison guides that highlight seat licensing alternatives",
+              "Case studies showing how other mid-market companies reduced tooling overhead"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Actively seeking solutions to reduce seat costs and simplify stakeholder access",
+            "key_actions": [
+              "Requesting read-only access features or stakeholder reporting dashboards",
+              "Testing feature flag and roadmap workflows to evaluate ease of use",
+              "Asking detailed questions about access control and audit trails"
+            ],
+            "content_preferences": [
+              "ROI calculators for seat cost reduction",
+              "Deep-dive product demos focused on read-only stakeholder views",
+              "Technical documentation on role-based access controls and integrations"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to switch if the solution demonstrably reduces seat costs and improves team velocity",
+            "key_actions": [
+              "Requesting a pilot with real product data and team members",
+              "Benchmarking new solution's UI efficiency against current tool",
+              "Evaluating integration capabilities with existing systems"
+            ],
+            "content_preferences": [
+              "Pilot program details and success metrics",
+              "Customer references from similar company sizes and industries",
+              "Technical integration documentation and API specs"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Enable stakeholders to access project visibility without requiring full platform seats",
+            "record_ids": [
+              "bench_00150",
+              "bench_00001"
+            ],
+            "field_path": "goals.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Reduce operational overhead by allowing read-only stakeholder access without consuming expensive seats",
+            "record_ids": [
+              "bench_00150",
+              "bench_00001"
+            ],
+            "field_path": "goals.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Streamline sprint planning and feature flag management to eliminate manual workarounds",
+            "record_ids": [
+              "bench_00096",
+              "bench_00027",
+              "bench_00035"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Consolidate product feedback from distributed teams and external stakeholders into a single searchable source of truth",
+            "record_ids": [
+              "bench_00001",
+              "bench_00083",
+              "bench_00067"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Drive faster, data-informed product decisions through real-time cross-functional visibility",
+            "record_ids": [
+              "bench_00047",
+              "bench_00063",
+              "bench_00077"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Feature flag management UI requires excessive clicks and manual steps to toggle or manage flags efficiently",
+            "record_ids": [
+              "bench_00096"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stakeholder visibility requires full seat licensing, inflating tooling costs unnecessarily",
+            "record_ids": [
+              "bench_00150",
+              "bench_00001"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Inability to grant limited, read-only access creates friction and forces seat purchases for non-core users",
+            "record_ids": [
+              "bench_00150"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Sprint planning sessions lack clear visibility into blockers and cross-functional dependencies",
+            "record_ids": [
+              "bench_00035",
+              "bench_00077",
+              "bench_00096"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Lack of efficient feedback collection mechanisms from distributed teams and external stakeholders",
+            "record_ids": [
+              "bench_00001",
+              "bench_00083",
+              "bench_00067"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Managing multiple tools for different aspects of project delivery fragments team context",
+            "record_ids": [
+              "bench_00027",
+              "bench_00047",
+              "bench_00067"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Maximize ROI on product management tooling by reducing unnecessary seat spend on non-core users",
+            "record_ids": [
+              "bench_00150",
+              "bench_00001"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Empower teams with real-time data and transparency to make faster decisions",
+            "record_ids": [
+              "bench_00035",
+              "bench_00077",
+              "bench_00047"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Simplify workflows by reducing the number of manual steps required for routine product operations",
+            "record_ids": [
+              "bench_00096"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Build stronger stakeholder alignment through self-service visibility and reporting",
+            "record_ids": [
+              "bench_00150",
+              "bench_00001"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Gather and act on product feedback at scale without slowing team velocity",
+            "record_ids": [
+              "bench_00083",
+              "bench_00067"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Solutions that require complex setup or ongoing manual configuration are not worth the implementation effort",
+            "record_ids": [
+              "bench_00096"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Solutions that require constant manual intervention instead of automating routine tasks",
+            "record_ids": [
+              "bench_00096",
+              "bench_00030"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Tools that isolate data rather than integrating with existing workflows",
+            "record_ids": [
+              "bench_00027",
+              "bench_00067"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Lack of audit trails or role-based access controls for sensitive product decisions",
+            "record_ids": [
+              "bench_00150"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Switching costs are too high if the new tool doesn't demonstrably reduce seat spend or time spent in planning",
+            "record_ids": [
+              "bench_00150",
+              "bench_00096"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.8
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.037767999999999996,
+      "latency_s": 44.875,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 3.0,
+        "coherent": 4.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    },
+    {
+      "cluster_id": "clust_0c2753e16d76",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00009",
+        "bench_00002",
+        "bench_00016",
+        "bench_00049",
+        "bench_00032",
+        "bench_00044",
+        "bench_00048",
+        "bench_00062",
+        "bench_00084",
+        "bench_00100",
+        "bench_00102",
+        "bench_00114"
+      ],
+      "persona_name": "Marcus, the Overextended Support Operations Lead",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Marcus, the Overextended Support Operations Lead",
+        "summary": "Marcus is a support leader at a mid-market B2B SaaS company responsible for keeping a growing team efficient while maintaining customer satisfaction metrics. He's wrestling with gaps in KB quality and SLA visibility, and is actively hunting for operational tools that actually integrate and show measurable ROI.",
+        "demographics": {
+          "age_range": "35-44",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US-based",
+            "enterprise SaaS hubs"
+          ],
+          "education_level": "Bachelor's degree",
+          "income_bracket": "75,000-120,000"
+        },
+        "firmographics": {
+          "company_size": "50-500",
+          "industry": "B2B SaaS",
+          "role_titles": [
+            "Support Lead",
+            "CS Manager",
+            "Support Operations Manager"
+          ],
+          "tech_stack_signals": [
+            "helpdesk platform",
+            "knowledge base system",
+            "ticket management",
+            "analytics dashboards",
+            "CRM integration"
+          ]
+        },
+        "goals": [
+          "Reduce manual ticket handling through strategic macro automation and knowledge base improvements",
+          "Improve first-contact resolution rates by enabling customers to self-serve",
+          "Lower customer escalations and improve CSAT scores",
+          "Scale support operations without proportional headcount increase",
+          "Gain transparency into SLA performance at the ticket priority level to defend service commitments"
+        ],
+        "pains": [
+          "Weak knowledge base search functionality leaves customers unable to find answers, driving ticket volume",
+          "No visibility into SLA performance at the ticket priority level, making it hard to manage commitments",
+          "Team is overwhelmed by manual, repetitive work that could be automated",
+          "Difficulty measuring and improving CSAT when root causes (like KB quality) aren't transparent",
+          "Tool fatigue from adding platforms that don't integrate with the helpdesk stack"
+        ],
+        "motivations": [
+          "Prove efficiency gains to leadership through visible metrics and quick operational wins",
+          "Enable self-service to reduce team burden and improve customer experience simultaneously",
+          "Gain control over operational metrics so predictable and defensible SLAs can be met",
+          "Find quick wins through automation (macros) to show leadership ROI on support tools",
+          "Build a data-driven support operation that justifies headcount and tooling investments"
+        ],
+        "objections": [
+          "Another tool that doesn't integrate with our helpdesk\u2014we're already tool-fatigued",
+          "SLA tracking sounds nice, but without fixing the underlying KB search, it's just reporting on the symptom",
+          "Does this actually fix KB search, or just report on it?",
+          "How does this compare to the macro automation we already have in place?",
+          "Will this replace human judgment in escalations or just mask the real problem?"
+        ],
+        "channels": [
+          "Helpdesk admin dashboards",
+          "Knowledge base platform",
+          "Analytics and reporting tools",
+          "Direct team communication",
+          "Product management/vendor discussions",
+          "Industry support forums",
+          "LinkedIn peer networks"
+        ],
+        "vocabulary": [
+          "SLA tracking",
+          "first-contact resolution",
+          "macro automation",
+          "KB quality",
+          "self-service",
+          "escalations",
+          "CSAT",
+          "ticket priority",
+          "helpdesk integration",
+          "operational ROI",
+          "tool fatigue",
+          "ticket volume",
+          "customer satisfaction"
+        ],
+        "decision_triggers": [
+          "Clear metrics showing reduction in ticket volume or escalations",
+          "Proof of helpdesk platform integration without additional setup burden",
+          "Evidence that KB improvements are part of the solution, not just SLA reporting",
+          "Case study from a similar-sized company showing headcount savings or team productivity gain",
+          "Quick implementation and visible wins within 30-60 days"
+        ],
+        "sample_quotes": [
+          "Knowledge base search is weak \u2014 customers can't find answers.",
+          "SLA tracking per ticket priority please.",
+          "We're already tool-fatigued, so this better integrate seamlessly with our helpdesk.",
+          "I need to show leadership that this investment pays for itself in team efficiency.",
+          "Can you actually improve our KB quality, or are you just going to report on how bad it is?"
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Recognizing that KB gaps and SLA blind spots are hurting team efficiency and customer satisfaction",
+            "key_actions": [
+              "Browsing helpdesk analytics to understand escalation and CSAT trends",
+              "Reading KB search performance reports",
+              "Reviewing team ticket response data"
+            ],
+            "content_preferences": [
+              "Operational efficiency benchmarks",
+              "KB best practices",
+              "SLA management frameworks"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether a new tool can solve KB and SLA challenges without adding to tool sprawl",
+            "key_actions": [
+              "Testing macro automation features",
+              "Checking integration compatibility with existing helpdesk",
+              "Reviewing vendor case studies for similar company profiles"
+            ],
+            "content_preferences": [
+              "Integration guides and technical specs",
+              "ROI calculators and efficiency case studies",
+              "Pricing and implementation timelines"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to pilot if the vendor proves they address KB quality AND SLA visibility without requiring major platform changes",
+            "key_actions": [
+              "Requesting a pilot or demo focused on KB improvement + SLA tracking",
+              "Negotiating integration scope with vendor",
+              "Securing approval from leadership based on projected team productivity gains"
+            ],
+            "content_preferences": [
+              "Pilot program details",
+              "Customer success stories with metrics",
+              "Implementation roadmap and support plan"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Reduce manual ticket handling through strategic macro automation and knowledge base improvements",
+            "record_ids": [
+              "bench_00016",
+              "bench_00114",
+              "bench_00048"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Improve first-contact resolution rates by enabling customers to self-serve",
+            "record_ids": [
+              "bench_00049",
+              "bench_00048"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Lower customer escalations and improve CSAT scores",
+            "record_ids": [
+              "bench_00062",
+              "bench_00084",
+              "bench_00102",
+              "bench_00049"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Scale support operations without proportional headcount increase",
+            "record_ids": [
+              "bench_00016",
+              "bench_00002"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Gain transparency into SLA performance at the ticket priority level to defend service commitments",
+            "record_ids": [
+              "bench_00032"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Weak knowledge base search functionality leaves customers unable to find answers, driving ticket volume",
+            "record_ids": [
+              "bench_00049",
+              "bench_00048"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "No visibility into SLA performance at the ticket priority level, making it hard to manage commitments",
+            "record_ids": [
+              "bench_00032"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Team is overwhelmed by manual, repetitive work that could be automated",
+            "record_ids": [
+              "bench_00016",
+              "bench_00114",
+              "bench_00044"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Difficulty measuring and improving CSAT when root causes (like KB quality) aren't transparent",
+            "record_ids": [
+              "bench_00062",
+              "bench_00084",
+              "bench_00102",
+              "bench_00049"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Tool fatigue from adding platforms that don't integrate with the helpdesk stack",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Prove efficiency gains to leadership through visible metrics and quick operational wins",
+            "record_ids": [
+              "bench_00016",
+              "bench_00002"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Enable self-service to reduce team burden and improve customer experience simultaneously",
+            "record_ids": [
+              "bench_00049",
+              "bench_00048"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Gain control over operational metrics so predictable and defensible SLAs can be met",
+            "record_ids": [
+              "bench_00032"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Find quick wins through automation (macros) to show leadership ROI on support tools",
+            "record_ids": [
+              "bench_00016",
+              "bench_00114"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Build a data-driven support operation that justifies headcount and tooling investments",
+            "record_ids": [
+              "bench_00062",
+              "bench_00084",
+              "bench_00102"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Another tool that doesn't integrate with our helpdesk\u2014we're already tool-fatigued",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "SLA tracking sounds nice, but without fixing the underlying KB search, it's just reporting on the symptom",
+            "record_ids": [
+              "bench_00032",
+              "bench_00049"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Does this actually fix KB search, or just report on it?",
+            "record_ids": [
+              "bench_00049",
+              "bench_00048"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "How does this compare to the macro automation we already have in place?",
+            "record_ids": [
+              "bench_00016",
+              "bench_00114",
+              "bench_00048"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Will this replace human judgment in escalations or just mask the real problem?",
+            "record_ids": [
+              "bench_00009",
+              "bench_00100"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.75
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.035523,
+      "latency_s": 41.76600000006147,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 5.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 5.0
+      }
+    },
+    {
+      "cluster_id": "clust_b93390122b8c",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00004",
+        "bench_00037",
+        "bench_00014",
+        "bench_00023",
+        "bench_00019",
+        "bench_00011",
+        "bench_00013",
+        "bench_00017",
+        "bench_00050",
+        "bench_00051",
+        "bench_00061",
+        "bench_00064"
+      ],
+      "persona_name": "Casey, the Growth-Minded Performance Marketer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Casey, the Growth-Minded Performance Marketer",
+        "summary": "Casey is a Performance Marketer at mid-sized fintech companies (200-500 employees) who is actively hands-on with campaign creation, audience segmentation, and A/B testing. They spend significant time exploring marketing automation and experimentation tools, showing strong engagement patterns across platform builders and email editors\u2014indicating they're in active exploration mode for their next marketing tech solution.",
+        "demographics": {
+          "age_range": "25-40",
+          "gender_distribution": "mixed",
+          "location_signals": [
+            "remote-capable",
+            "North America focus"
+          ],
+          "education_level": "Bachelor's degree or higher",
+          "income_bracket": "60k-90k"
+        },
+        "firmographics": {
+          "company_size": "200-500 employees",
+          "industry": "fintech",
+          "role_titles": [
+            "Performance Marketer",
+            "Growth Marketer",
+            "Marketing Specialist"
+          ],
+          "tech_stack_signals": [
+            "GA4 tracking",
+            "HubSpot integration",
+            "campaign management",
+            "email marketing tools"
+          ]
+        },
+        "goals": [
+          "Set up and run A/B tests quickly without manual overhead",
+          "Build and refine audience segments to improve campaign targeting and conversion rates",
+          "Create and launch campaigns faster, with less back-and-forth between teams",
+          "Compose and manage email campaigns that drive qualified leads and revenue",
+          "Develop data-driven insights from testing to inform future marketing strategy"
+        ],
+        "pains": [
+          "Slow, fragmented workflow across multiple platforms for campaign and audience management",
+          "Difficulty targeting the right audience segments without manual data cleanup and export cycles",
+          "Limited ability to run quick tests and experiments without developer or IT involvement",
+          "Email composition and management feels disconnected from broader campaign strategy",
+          "Time spent on administrative tasks rather than strategic optimization and analysis",
+          "Lack of consolidated visibility into what is actually working in campaigns and tests"
+        ],
+        "motivations": [
+          "Proving ROI through data and measurable campaign performance to leadership",
+          "Staying ahead of competition by rapidly experimenting and iterating on messaging",
+          "Reducing cycle time from idea to live campaign to maintain competitive edge",
+          "Building a repeatable, scalable marketing process that doesn't require constant manual intervention",
+          "Earning credibility and respect by delivering growth results consistently"
+        ],
+        "objections": [
+          "Worried about complexity\u2014doesn't want to learn yet another tool with a steep learning curve",
+          "Concerned about integration with existing HubSpot and GA4 workflows and data consistency",
+          "Skeptical that a cross-functional tool can do campaign, audience, and email well (vs. specialized solutions)",
+          "Needs proof that the tool will save time, not create additional overhead for her team",
+          "Budget constraints and difficulty justifying new spend in a cost-conscious organization"
+        ],
+        "channels": [
+          "Google Analytics (GA4)",
+          "HubSpot (CRM and email)",
+          "SaaS review sites (G2, Capterra)",
+          "LinkedIn (for thought leadership and peer recommendations)",
+          "Marketing Slack communities and forums",
+          "Email newsletters (industry and product updates)",
+          "Product demos and free trials"
+        ],
+        "vocabulary": [
+          "audience segmentation",
+          "A/B testing",
+          "conversion optimization",
+          "campaign performance",
+          "lead quality",
+          "data-driven",
+          "workflow automation",
+          "marketing stack",
+          "attribution",
+          "rapid iteration",
+          "integration",
+          "scalability"
+        ],
+        "decision_triggers": [
+          "Clear demo showing campaign creation and audience building in under 5 minutes",
+          "Proof of seamless HubSpot and GA4 integration with no manual syncing",
+          "Case studies from other fintech/SaaS companies showing time saved and ROI impact",
+          "Free trial with realistic sample data to test the full workflow",
+          "Strong customer support and onboarding to reduce ramp-up time",
+          "Competitive pricing with clear ROI payback period (<6 months)"
+        ],
+        "sample_quotes": [
+          "I'm spending half my time on busywork\u2014manual audience pulls, email list updates, test setup. I need a tool that lets me focus on strategy.",
+          "We're using HubSpot and GA4, so it has to play nicely with both. I'm not moving our data around.",
+          "Show me it works. I don't have time for a learning curve. If it takes more than a week to be productive, we move on.",
+          "Every campaign test has to prove its worth. I need to see the lift in conversions, not just click metrics.",
+          "Our CEO wants 30% growth this year. I need to move fast, test often, and iterate. Manual tools are killing us."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Actively looking for solutions to reduce marketing friction and speed up campaign testing cycles",
+            "key_actions": [
+              "Landing page exploration to understand product breadth and positioning",
+              "Reviewing campaign and audience builders to assess ease of use and feature set",
+              "Checking integration capabilities with HubSpot and GA4"
+            ],
+            "content_preferences": [
+              "Product overview and feature comparison guides",
+              "Integration documentation and setup guides",
+              "Fintech/SaaS case studies showing time and cost savings",
+              "Competitive comparison charts"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the tool can genuinely replace or consolidate their current fragmented martech stack without adding complexity",
+            "key_actions": [
+              "In-depth exploration of campaign builder and audience segmentation workflows",
+              "A/B test setup and email composition to understand full feature capabilities",
+              "Requesting demos or starting a free trial with realistic data",
+              "Talking to peers or asking for references from similar companies"
+            ],
+            "content_preferences": [
+              "Deep-dive product walkthroughs and feature breakdowns",
+              "Customer testimonials and ROI case studies from similar-sized companies",
+              "Pricing and packaging comparison",
+              "Technical integration guides and API documentation",
+              "Video tutorials and onboarding resources"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Performance Marketer role at mid-sized fintech companies",
+            "record_ids": [
+              "bench_00037",
+              "bench_00011"
+            ],
+            "field_path": "firmographics.role_titles.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Company size 200-500 employees in fintech",
+            "record_ids": [
+              "bench_00037",
+              "bench_00011"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Actively using GA4 and HubSpot for marketing workflows",
+            "record_ids": [
+              "bench_00037",
+              "bench_00011",
+              "bench_00004",
+              "bench_00014"
+            ],
+            "field_path": "firmographics.tech_stack_signals",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Set up and run A/B tests quickly without manual overhead",
+            "record_ids": [
+              "bench_00023"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Build and refine audience segments to improve campaign targeting",
+            "record_ids": [
+              "bench_00037"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Create and launch campaigns faster",
+            "record_ids": [
+              "bench_00014",
+              "bench_00017",
+              "bench_00061"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Compose and manage email campaigns that drive qualified leads",
+            "record_ids": [
+              "bench_00019"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Develop data-driven insights from testing to inform strategy",
+            "record_ids": [
+              "bench_00023",
+              "bench_00037"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Slow, fragmented workflow across multiple platforms",
+            "record_ids": [
+              "bench_00037",
+              "bench_00011",
+              "bench_00004",
+              "bench_00019"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Difficulty targeting the right audience segments without manual effort",
+            "record_ids": [
+              "bench_00037"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Limited ability to run quick tests and experiments",
+            "record_ids": [
+              "bench_00023"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Email composition feels disconnected from broader campaign strategy",
+            "record_ids": [
+              "bench_00019"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Time spent on administrative tasks rather than strategic optimization",
+            "record_ids": [
+              "bench_00014",
+              "bench_00017",
+              "bench_00061"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Lack of consolidated visibility into what is working in campaigns",
+            "record_ids": [
+              "bench_00023",
+              "bench_00037"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Proving ROI through measurable campaign performance to leadership",
+            "record_ids": [
+              "bench_00037",
+              "bench_00023",
+              "bench_00014"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Staying ahead of competition by rapidly experimenting and iterating",
+            "record_ids": [
+              "bench_00023",
+              "bench_00019"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Reducing cycle time from idea to live campaign",
+            "record_ids": [
+              "bench_00014",
+              "bench_00017",
+              "bench_00061"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Building a repeatable, scalable marketing process",
+            "record_ids": [
+              "bench_00037",
+              "bench_00019"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Earning credibility by delivering growth results consistently",
+            "record_ids": [
+              "bench_00037",
+              "bench_00023"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Worried about complexity and steep learning curve",
+            "record_ids": [
+              "bench_00014",
+              "bench_00017",
+              "bench_00061"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Concerned about integration with HubSpot and GA4 workflows",
+            "record_ids": [
+              "bench_00037",
+              "bench_00011"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Skeptical cross-functional tool can do campaign, audience, and email well",
+            "record_ids": [
+              "bench_00014",
+              "bench_00037",
+              "bench_00019"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Needs proof that tool saves time, not creates overhead",
+            "record_ids": [
+              "bench_00014",
+              "bench_00017",
+              "bench_00061"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Budget constraints and difficulty justifying new spend",
+            "record_ids": [
+              "bench_00037",
+              "bench_00011"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.7
+          },
+          {
+            "claim": "High engagement with landing pages and feature builders indicate active evaluation",
+            "record_ids": [
+              "bench_00004",
+              "bench_00011",
+              "bench_00013",
+              "bench_00050",
+              "bench_00051",
+              "bench_00064"
+            ],
+            "field_path": "journey_stages.0.key_actions.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Time spent exploring campaign builder and audience segmentation tools",
+            "record_ids": [
+              "bench_00014",
+              "bench_00037",
+              "bench_00017",
+              "bench_00061"
+            ],
+            "field_path": "journey_stages.1.key_actions.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "A/B test setup exploration indicates consideration of testing capabilities",
+            "record_ids": [
+              "bench_00023"
+            ],
+            "field_path": "journey_stages.1.key_actions.1",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.020948,
+      "latency_s": 24.719000000040978,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 4.0,
+        "coherent": 4.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    },
+    {
+      "cluster_id": "clust_bdf57d9ba86a",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00020",
+        "bench_00007",
+        "bench_00021",
+        "bench_00005",
+        "bench_00033",
+        "bench_00024",
+        "bench_00029",
+        "bench_00034",
+        "bench_00055",
+        "bench_00058",
+        "bench_00060",
+        "bench_00070"
+      ],
+      "persona_name": "Sarah \u2013 The Data-Driven Sales Manager",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Sarah \u2013 The Data-Driven Sales Manager",
+        "summary": "Sarah is a Sales Manager at a mid-to-large enterprise software company who spends her day managing deal pipelines, reviewing team activity, and ensuring consistent customer engagement. She's deeply invested in operational efficiency and team visibility, but frustrated by the fragmentation of her CRM and proposal workflows. She's looking for a unified tool that integrates seamlessly with her existing stack and gives her real-time intelligence on team performance\u2014without adding complexity or slowing her down during critical sales cycles.",
+        "demographics": {
+          "age_range": "35-45",
+          "gender_distribution": "predominantly female",
+          "location_signals": [
+            "US-based",
+            "Enterprise software hubs"
+          ],
+          "education_level": "Bachelor's degree or MBA",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "100-500 employees",
+          "industry": "Enterprise software, Fintech",
+          "role_titles": [
+            "Sales Manager",
+            "BDR Lead",
+            "Sales Operations Lead"
+          ],
+          "tech_stack_signals": [
+            "HubSpot CRM",
+            "Proposal management tools",
+            "Pipeline analytics tools"
+          ]
+        },
+        "goals": [
+          "Get real-time visibility into team activity, deal stages, and customer interactions to spot issues early",
+          "Reduce time spent chasing down status updates and manually consolidating deal information across systems",
+          "Maintain detailed contact records and relationship intelligence to prioritize outreach",
+          "Accelerate deal cycles by identifying and removing friction from the sales process",
+          "Scale team productivity without adding manual overhead",
+          "Build a reputation as a data-driven sales leader with organized, transparent team operations"
+        ],
+        "pains": [
+          "Constantly switching between CRM, email, and proposal tools to get a complete picture of each deal",
+          "Juggling multiple systems to track proposals, deals, and contact information",
+          "Losing visibility when team members don't log activities or update deal stages consistently",
+          "Wasting time in pipeline reviews because key data is scattered across disconnected tools",
+          "Unable to quickly identify bottlenecks or blockers in the sales funnel",
+          "Concerns that yet another tool will fragment her workflow instead of simplifying it"
+        ],
+        "motivations": [
+          "Team accountability: needs clear visibility into what her team is doing so she can coach and unblock them",
+          "Efficiency gains: seeks to eliminate friction in the sales process so team can sell more",
+          "Data-driven decisions: wants consolidated insights to optimize team performance",
+          "Reputation: wants to be seen as a high-performing, organized sales leader",
+          "Risk mitigation: wants early warning signs when deals stall or activities drop off",
+          "Competitive advantage: understands that better data discipline gives her team an edge"
+        ],
+        "objections": [
+          "Another tool will just add complexity instead of reducing it",
+          "Won't give up our existing CRM/HubSpot workflow unless integration is seamless",
+          "Solution must be fast to implement\u2014can't afford ramp-up time during busy sales cycles",
+          "Skeptical that a cross-functional project management platform solves sales-specific problems",
+          "Concerns about data privacy and compliance when connecting multiple tools",
+          "Needs proof that the tool will actually increase deal velocity, not just add busywork"
+        ],
+        "channels": [
+          "HubSpot dashboard and CRM interface",
+          "Email and Slack for team communication",
+          "LinkedIn for sales industry insights",
+          "Sales conferences and webinars",
+          "Direct peer recommendations from other sales leaders",
+          "Product demos and trial experiences"
+        ],
+        "vocabulary": [
+          "pipeline health",
+          "deal velocity",
+          "team visibility",
+          "deal stages",
+          "activity logging",
+          "proposal tracking",
+          "real-time insights",
+          "bottleneck",
+          "team accountability",
+          "workflow integration",
+          "sales operations",
+          "data discipline"
+        ],
+        "decision_triggers": [
+          "A deal stalls because the team didn't update status\u2014and she realizes she missed it",
+          "Spends more than 30 minutes in a single pipeline review hunting for information",
+          "A prospect complains about inconsistent follow-up from her team",
+          "She loses a deal and can't pinpoint when or why the team dropped the ball",
+          "A competitor's sales team clearly has better visibility and coordination",
+          "Her executive peers praise the data transparency of a peer's sales org"
+        ],
+        "sample_quotes": [
+          "I'm living in HubSpot, but I can't see what my team isn't logging. That's where things fall apart.",
+          "I need something that integrates with what we already use\u2014I can't afford to migrate or train everyone on a new CRM.",
+          "If this tool just lets me see proposals and deal stages in one place without slowing down my reps, it's worth it.",
+          "The moment I can't explain why a deal slipped, I know we have a visibility problem.",
+          "I'm always looking for ways to turn data into action. But the data has to come to me, not the other way around."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Frustrated by tool fragmentation but skeptical of new solutions",
+            "key_actions": [
+              "Browsing pipeline_review pages frequently (2\u20133 times per week)",
+              "Spending extended sessions (20+ minutes) trying to consolidate deal data",
+              "Talking to peers about how they manage team visibility"
+            ],
+            "content_preferences": [
+              "Case studies from similar-sized companies showing ROI on tool consolidation",
+              "Sales ops best practices and benchmarks on deal velocity",
+              "Short demos showing how the platform integrates with HubSpot"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the tool is worth the switching cost and integration effort",
+            "key_actions": [
+              "Requesting a trial and testing integration with existing CRM",
+              "Asking for references from other Sales Managers",
+              "Reviewing proposal sending workflows and contact lookups in detail",
+              "Calculating time savings from consolidated visibility"
+            ],
+            "content_preferences": [
+              "Technical integration documentation and HubSpot API details",
+              "Customer testimonials from Sales Managers with comparable team sizes",
+              "Implementation timeline and support SLAs",
+              "Competitive comparison (vs. staying with current tools)"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to buy if implementation is quick and integration is proven",
+            "key_actions": [
+              "Negotiating contract terms and implementation timeline",
+              "Planning rollout with her team to minimize disruption",
+              "Scheduling integration setup and user training",
+              "Setting success metrics (deal velocity, activity logging rates, pipeline accuracy)"
+            ],
+            "content_preferences": [
+              "Implementation playbooks tailored for sales teams",
+              "Quick-start guides and video tutorials",
+              "Dedicated onboarding support and check-in calls"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Get real-time visibility into team activity, deal stages, and customer interactions to spot issues early",
+            "record_ids": [
+              "bench_00007",
+              "bench_00034",
+              "bench_00070"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Reduce time spent chasing down status updates and manually consolidating deal information across systems",
+            "record_ids": [
+              "bench_00005",
+              "bench_00024"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Maintain detailed contact records and relationship intelligence to prioritize outreach",
+            "record_ids": [
+              "bench_00033",
+              "bench_00060"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Accelerate deal cycles by identifying and removing friction from the sales process",
+            "record_ids": [
+              "bench_00021",
+              "bench_00029",
+              "bench_00055"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Scale team productivity without adding manual overhead",
+            "record_ids": [
+              "bench_00020",
+              "bench_00034"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Build a reputation as a data-driven sales leader with organized, transparent team operations",
+            "record_ids": [
+              "bench_00007",
+              "bench_00058",
+              "bench_00070"
+            ],
+            "field_path": "goals.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Constantly switching between CRM, email, and proposal tools to get a complete picture of each deal",
+            "record_ids": [
+              "bench_00005",
+              "bench_00021",
+              "bench_00033"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Juggling multiple systems to track proposals, deals, and contact information",
+            "record_ids": [
+              "bench_00021",
+              "bench_00024",
+              "bench_00055",
+              "bench_00060"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Losing visibility when team members don't log activities or update deal stages consistently",
+            "record_ids": [
+              "bench_00020",
+              "bench_00034",
+              "bench_00058"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Wasting time in pipeline reviews because key data is scattered across disconnected tools",
+            "record_ids": [
+              "bench_00007",
+              "bench_00034",
+              "bench_00070"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Unable to quickly identify bottlenecks or blockers in the sales funnel",
+            "record_ids": [
+              "bench_00007",
+              "bench_00058",
+              "bench_00070"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Concerns that yet another tool will fragment her workflow instead of simplifying it",
+            "record_ids": [
+              "bench_00005",
+              "bench_00034"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Team accountability: needs clear visibility into what her team is doing so she can coach and unblock them",
+            "record_ids": [
+              "bench_00007",
+              "bench_00034",
+              "bench_00070"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Efficiency gains: seeks to eliminate friction in the sales process so team can sell more",
+            "record_ids": [
+              "bench_00021",
+              "bench_00029",
+              "bench_00055"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Data-driven decisions: wants consolidated insights to optimize team performance",
+            "record_ids": [
+              "bench_00007",
+              "bench_00058",
+              "bench_00070"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Reputation: wants to be seen as a high-performing, organized sales leader",
+            "record_ids": [
+              "bench_00005",
+              "bench_00034"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Risk mitigation: wants early warning signs when deals stall or activities drop off",
+            "record_ids": [
+              "bench_00020",
+              "bench_00058",
+              "bench_00070"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Competitive advantage: understands that better data discipline gives her team an edge",
+            "record_ids": [
+              "bench_00007",
+              "bench_00034"
+            ],
+            "field_path": "motivations.5",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Another tool will just add complexity instead of reducing it",
+            "record_ids": [
+              "bench_00005",
+              "bench_00024",
+              "bench_00034"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Won't give up our existing CRM/HubSpot workflow unless integration is seamless",
+            "record_ids": [
+              "bench_00005",
+              "bench_00021",
+              "bench_00034"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Solution must be fast to implement\u2014can't afford ramp-up time during busy sales cycles",
+            "record_ids": [
+              "bench_00007",
+              "bench_00058",
+              "bench_00070"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Skeptical that a cross-functional project management platform solves sales-specific problems",
+            "record_ids": [
+              "bench_00005",
+              "bench_00020",
+              "bench_00034"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Concerns about data privacy and compliance when connecting multiple tools",
+            "record_ids": [
+              "bench_00005",
+              "bench_00060"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Needs proof that the tool will actually increase deal velocity, not just add busywork",
+            "record_ids": [
+              "bench_00007",
+              "bench_00021",
+              "bench_00058"
+            ],
+            "field_path": "objections.5",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.039648,
+      "latency_s": 50.03100000019185,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 3.0,
+        "coherent": 4.0,
+        "actionable": 4.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    }
+  ],
+  "total_cost_usd": 0.22811599999999999,
+  "total_latency_s": 115.75,
+  "mean_groundedness": 1.0,
+  "success_rate": 1.0,
+  "error": ""
+}

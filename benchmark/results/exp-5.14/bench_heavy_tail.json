@@ -1,0 +1,1288 @@
+{
+  "tenant_id": "bench_heavy_tail",
+  "tenant_hash": "1b8513362899",
+  "industry": "B2B SaaS",
+  "product": "Developer-heavy project management platform",
+  "n_records": 300,
+  "n_clusters": 4,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_1145bf7acc7a",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00007",
+        "bench_00025",
+        "bench_00004",
+        "bench_00001",
+        "bench_00002",
+        "bench_00006",
+        "bench_00000",
+        "bench_00005",
+        "bench_00003",
+        "bench_00009",
+        "bench_00013",
+        "bench_00014"
+      ],
+      "persona_name": "Infrastructure-First Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Infrastructure-First Engineer",
+        "summary": "A senior or staff-level engineer at a growing SaaS company who views project management through the lens of infrastructure and automation. They spend significant time setting up integrations, APIs, and CI/CD pipelines because they want to embed project tracking into their existing developer workflows rather than replace them.",
+        "demographics": {
+          "age_range": "28-45",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US tech hubs",
+            "Remote-first tech companies"
+          ],
+          "education_level": "Bachelor's degree in Computer Science or related field",
+          "income_bracket": "$120k-$200k"
+        },
+        "firmographics": {
+          "company_size": "100-500 employees",
+          "industry": "SaaS, Enterprise Software",
+          "role_titles": [
+            "Staff Engineer",
+            "Engineering Manager",
+            "Senior Software Engineer",
+            "DevOps Engineer"
+          ],
+          "tech_stack_signals": [
+            "GitHub",
+            "Terraform",
+            "CI/CD pipelines",
+            "Webhooks",
+            "REST APIs",
+            "SDKs"
+          ]
+        },
+        "goals": [
+          "Eliminate manual context-switching between project management and development tools by integrating the platform into existing workflows",
+          "Automate project tracking data export to reduce overhead and enable programmatic access for dashboards or reporting",
+          "Build infrastructure-as-code patterns around project management to reduce toil and ensure consistency across teams",
+          "Enable real-time project state synchronization between GitHub, CI/CD, and project management through webhooks and APIs",
+          "Create custom dashboards that pull live data from multiple sources to surface metrics relevant to engineering leadership"
+        ],
+        "pains": [
+          "Manual data entry and synchronization between project management and code repositories creates friction and delays",
+          "Lack of deep API/webhook support forces workarounds and custom scripts instead of proper integrations",
+          "Inability to export data in bulk makes it hard to migrate, audit, or build downstream reporting on project state",
+          "Generic dashboards don't reflect the way engineering teams actually track work (by sprint, deployment, or infrastructure change)",
+          "Tools that treat project management as a UI-first system ignore the reality that engineers often work from CLI, code, or infrastructure tools",
+          "Time spent configuring integrations manually instead of defining infrastructure as code takes away from strategic engineering work"
+        ],
+        "motivations": [
+          "Desire to reduce toil and keep engineers focused on building rather than administering tools",
+          "Drive to maintain full visibility and control over project state through programmatic access",
+          "Need to align project management with infrastructure and deployment automation already in place",
+          "Preference for tools that integrate cleanly into existing ecosystems rather than forcing new workflows"
+        ],
+        "objections": [
+          "Platform requires manual configuration instead of infrastructure-as-code or one-click automation",
+          "Pricing model doesn't align with API/webhook usage or becomes prohibitive at scale",
+          "Limited or undocumented API endpoints prevent building the integrations we need",
+          "Vendor lock-in risk if exporting data or migrating to another tool is difficult",
+          "Learning curve is too steep relative to the time saved if integrations aren't immediately productive"
+        ],
+        "channels": [
+          "GitHub Issues and Discussions",
+          "Product documentation and API docs",
+          "Slack and internal engineering channels",
+          "HackerNews and tech forums",
+          "YouTube technical tutorials",
+          "Company engineering blogs"
+        ],
+        "vocabulary": [
+          "webhooks",
+          "API-first",
+          "CI/CD",
+          "infrastructure as code",
+          "programmatic access",
+          "automation",
+          "integration",
+          "bulk export",
+          "CLI",
+          "terraform",
+          "SDK",
+          "custom dashboard",
+          "context-switching",
+          "toil"
+        ],
+        "decision_triggers": [
+          "Availability of production-ready GitHub integration that syncs bi-directionally",
+          "Comprehensive REST API and webhook support with clear documentation and examples",
+          "Bulk export functionality that enables data portability and downstream reporting",
+          "Terraform provider or IaC support for one-command setup across environments",
+          "Evidence of adoption by other engineering leaders at similar-sized companies",
+          "Free or generous API tier that doesn't penalize heavy automation use"
+        ],
+        "sample_quotes": [
+          "I don't want to manage another tool\u2014I want project management baked into my GitHub workflow and CI/CD pipeline.",
+          "If I can't export the data or query it via API, it's not really ours.",
+          "We need this configured in Terraform. Manual UI-based setup doesn't scale when we add new teams.",
+          "The real value isn't in the dashboards\u2014it's in the ability to pull project state into our internal tools and make decisions faster.",
+          "Show me the API docs first. If the integration isn't mature enough to automate, we'll keep using what we have."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Skeptical but curious\u2014evaluating whether the platform can reduce friction in existing workflows",
+            "key_actions": [
+              "Search for GitHub integration capabilities",
+              "Review API documentation and webhook support",
+              "Check if similar companies in their space use the platform"
+            ],
+            "content_preferences": [
+              "Technical API reference documentation",
+              "Case studies from engineering-heavy companies",
+              "Integration quickstart guides",
+              "Feature comparison matrices"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Testing feasibility\u2014wants proof that the platform can integrate cleanly and scale without manual overhead",
+            "key_actions": [
+              "Spend 10+ minutes exploring API docs and SDK samples",
+              "Attempt GitHub integration and webhook configuration",
+              "Set up a custom dashboard to test data query capabilities",
+              "Request or test bulk export to validate data portability"
+            ],
+            "content_preferences": [
+              "Step-by-step integration tutorials",
+              "Live demos of webhook and API in action",
+              "Terraform provider documentation",
+              "Example workflows showing CI/CD integration",
+              "Pricing transparency around API usage"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if the platform meets infrastructure standards and doesn't require ongoing manual administration",
+            "key_actions": [
+              "Configure production GitHub integration",
+              "Set up Terraform for cross-environment deployment",
+              "Enable webhooks to sync project state",
+              "Build or customize dashboards for team metrics"
+            ],
+            "content_preferences": [
+              "Onboarding checklists and runbooks",
+              "Dedicated technical support and Slack channel",
+              "Best practices for at-scale usage",
+              "Release notes and API versioning policy"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Staff and senior engineers at SaaS and enterprise software companies",
+            "record_ids": [
+              "bench_00007",
+              "bench_00025"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Work at companies with 100-500 employees",
+            "record_ids": [
+              "bench_00007",
+              "bench_00025"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Integrate with GitHub and configure webhooks as core behaviors",
+            "record_ids": [
+              "bench_00007",
+              "bench_00014",
+              "bench_00001",
+              "bench_00003"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Bulk export data to reduce manual overhead and enable downstream reporting",
+            "record_ids": [
+              "bench_00025"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Set up infrastructure as code (Terraform) patterns for consistency",
+            "record_ids": [
+              "bench_00000",
+              "bench_00009"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Enable real-time synchronization between tools through webhooks",
+            "record_ids": [
+              "bench_00001",
+              "bench_00003"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Create custom dashboards pulling live data from multiple sources",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Manual context-switching between project management and development tools creates friction",
+            "record_ids": [
+              "bench_00007",
+              "bench_00025"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Limited API/webhook support forces workarounds instead of proper integrations",
+            "record_ids": [
+              "bench_00001",
+              "bench_00005",
+              "bench_00003"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Bulk export limitations make it hard to migrate or build downstream reporting",
+            "record_ids": [
+              "bench_00025"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Generic dashboards don't reflect engineering team workflow and tracking patterns",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Tools treat project management as UI-first, ignoring CLI and infrastructure-driven workflows",
+            "record_ids": [
+              "bench_00004",
+              "bench_00005",
+              "bench_00000"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Time spent on manual integration configuration takes away from strategic work",
+            "record_ids": [
+              "bench_00000",
+              "bench_00005",
+              "bench_00006"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Reduce toil to keep engineers focused on building",
+            "record_ids": [
+              "bench_00007",
+              "bench_00025"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Maintain full visibility and control over project state through programmatic access",
+            "record_ids": [
+              "bench_00005",
+              "bench_00002"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Align project management with existing infrastructure and deployment automation",
+            "record_ids": [
+              "bench_00000",
+              "bench_00006",
+              "bench_00013"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Preference for tools that integrate cleanly rather than forcing new workflows",
+            "record_ids": [
+              "bench_00007",
+              "bench_00004"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Requires infrastructure-as-code or one-click automation, not manual configuration",
+            "record_ids": [
+              "bench_00000",
+              "bench_00009"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Concerned about pricing models that don't align with API/webhook usage",
+            "record_ids": [
+              "bench_00001",
+              "bench_00005"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.65
+          },
+          {
+            "claim": "Limited or undocumented API endpoints prevent building needed integrations",
+            "record_ids": [
+              "bench_00005"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Risk of vendor lock-in if exporting data or migrating is difficult",
+            "record_ids": [
+              "bench_00025"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "GitHub integration is a core decision trigger",
+            "record_ids": [
+              "bench_00007",
+              "bench_00014"
+            ],
+            "field_path": "decision_triggers.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Comprehensive REST API and webhook support with documentation is critical",
+            "record_ids": [
+              "bench_00005",
+              "bench_00001",
+              "bench_00003"
+            ],
+            "field_path": "decision_triggers.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Bulk export functionality enables data portability",
+            "record_ids": [
+              "bench_00025"
+            ],
+            "field_path": "decision_triggers.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Terraform provider or IaC support for one-command setup",
+            "record_ids": [
+              "bench_00000",
+              "bench_00009"
+            ],
+            "field_path": "decision_triggers.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Evidence of adoption by similar engineering-led companies",
+            "record_ids": [
+              "bench_00007",
+              "bench_00025"
+            ],
+            "field_path": "decision_triggers.4",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Generous API tier that doesn't penalize heavy automation",
+            "record_ids": [
+              "bench_00005",
+              "bench_00001"
+            ],
+            "field_path": "decision_triggers.5",
+            "confidence": 0.7
+          }
+        ]
+      },
+      "groundedness": 0.95,
+      "attempts": 1,
+      "cost_usd": 0.021516,
+      "latency_s": 25.20300000021234,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 4.0
+      }
+    },
+    {
+      "cluster_id": "clust_ed840b9a28dc",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00104",
+        "bench_00026",
+        "bench_00099",
+        "bench_00119",
+        "bench_00012",
+        "bench_00207",
+        "bench_00103",
+        "bench_00107",
+        "bench_00125",
+        "bench_00128",
+        "bench_00141",
+        "bench_00143"
+      ],
+      "persona_name": "Maya, the Design-Forward Studio Lead",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Maya, the Design-Forward Studio Lead",
+        "summary": "Maya is a Design Studio Owner or Brand Strategist at a small creative agency (1-5 people) who uses project management tools as the backbone for delivering branded work to clients. She's deeply invested in design systems\u2014color palettes, typography, asset libraries\u2014and spends significant time setting up and refining brand kits to ensure visual consistency across deliverables. Her workflow centers on sharing work with clients and exporting polished assets, making tooling that streamlines this handoff critical to her success.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "balanced",
+          "location_signals": [
+            "North America",
+            "urban creative hubs"
+          ],
+          "education_level": "Bachelor's or higher in design/marketing",
+          "income_bracket": "50K-100K"
+        },
+        "firmographics": {
+          "company_size": "1-5 employees",
+          "industry": "design_services, agency, creative studios",
+          "role_titles": [
+            "Design Studio Owner",
+            "Brand Strategist",
+            "Design Lead"
+          ],
+          "tech_stack_signals": [
+            "Figma",
+            "brand management platforms",
+            "project management tools",
+            "cloud asset libraries"
+          ]
+        },
+        "goals": [
+          "Maintain consistent brand identity across all client deliverables",
+          "Streamline the client review and approval process with clear, shareable work",
+          "Reduce friction when exporting and preparing assets for handoff",
+          "Build reusable design systems and templates to speed up future projects",
+          "Give clients confidence in the visual coherence of their brand"
+        ],
+        "pains": [
+          "Manual color and font management across multiple projects leads to inconsistency and rework",
+          "Client feedback loops are slow because sharing work requires too many steps",
+          "Exporting assets in different formats and sizes is tedious and error-prone",
+          "Small team means no dedicated design ops person to maintain design systems",
+          "Difficulty justifying tool costs when working on tight project budgets"
+        ],
+        "motivations": [
+          "Wants to present a polished, professional image to clients",
+          "Driven by efficiency\u2014time spent on process is time not spent on creative work",
+          "Takes pride in detailed craftsmanship and visual precision",
+          "Values tools that make her team look more organized and scalable than they are",
+          "Seeks validation that her design work is high-quality through client satisfaction"
+        ],
+        "objections": [
+          "Hesitant to adopt tools that add complexity to an already lean workflow",
+          "Skeptical of platform lock-in or tools that don't integrate with her existing stack (Figma, Slack, etc.)",
+          "Worried about steep learning curves that pull focus from billable work",
+          "Concerned that setup overhead won't pay off on smaller projects",
+          "Resistance to tools that feel geared toward larger teams and don't match her scrappy culture"
+        ],
+        "channels": [
+          "Figma community and plugins",
+          "Design-focused Slack communities and Discord servers",
+          "Product Hunt and indie hacker communities",
+          "LinkedIn (following design ops and agency leaders)",
+          "Direct outreach and word-of-mouth from peer designers",
+          "Design conference talks and webinars"
+        ],
+        "vocabulary": [
+          "brand kit",
+          "asset library",
+          "client handoff",
+          "design system",
+          "brand consistency",
+          "template",
+          "color palette",
+          "typography",
+          "design ops",
+          "visual identity",
+          "client-facing",
+          "export",
+          "share",
+          "version control"
+        ],
+        "decision_triggers": [
+          "A peer or respected designer in her network recommends the tool",
+          "Free tier or project-based pricing allows low-risk experimentation",
+          "Clear ROI: tool saves 5+ hours per month on a typical project",
+          "Integrates seamlessly with Figma, Slack, and her existing workflows",
+          "Solves an immediate, painful problem on her current project",
+          "Mobile-friendly or allows quick updates on the go during client calls"
+        ],
+        "sample_quotes": [
+          "I need my clients to see that we're organized and professional, even if it's just the three of us.",
+          "If setting it up takes longer than the time I save, I'm not using it.",
+          "A solid brand kit saves us weeks of back-and-forth with clients over 'wait, is this the right blue?'",
+          "I live in Figma and Slack\u2014if your tool doesn't play nice with those, I'm not interested.",
+          "We're not a big agency, so we need tools that make us punch above our weight."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Feels friction in her current workflow but isn't actively searching for solutions; discovers tools through peer recommendations or when a new project surfaces a specific pain.",
+            "key_actions": [
+              "Watches design-focused YouTube tutorials and reads design blogs",
+              "Asks questions in Slack communities about how peers solve branding challenges",
+              "Clicks on Product Hunt posts about design tools during morning coffee"
+            ],
+            "content_preferences": [
+              "Case studies from other small studios showing before/after workflow improvements",
+              "Short video demos (2-3 min) showing real client handoff scenarios",
+              "Peer testimonials and quotes from designers she follows"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Actively comparing solutions after identifying a specific problem; wants proof that setup is simple and ROI is real; skeptical of vendor hype.",
+            "key_actions": [
+              "Tests free trials on smaller, lower-stakes projects",
+              "Asks in communities: 'Does anyone use X? Is it worth the learning curve?'",
+              "Checks integrations and pricing details; calculates time savings",
+              "Watches expert reviews and reads detailed feature comparisons"
+            ],
+            "content_preferences": [
+              "Detailed walkthroughs of core workflows (e.g., how to set up and iterate on a brand kit)",
+              "Transparent pricing and tier comparisons",
+              "FAQ answering integration questions and learning time",
+              "Success stories with quantified time savings (e.g., 'saved 8 hours per project')"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if tool proves itself on a pilot project; wants assurance on support and ease of team onboarding; willing to pay if value is clear.",
+            "key_actions": [
+              "Signs up for a paid plan after successful free trial",
+              "Onboards her team and trains them on key features",
+              "Integrates the tool into her client delivery workflow",
+              "Leaves reviews and shares experience in design communities"
+            ],
+            "content_preferences": [
+              "Quick-start guides and setup checklists",
+              "Video onboarding for the team",
+              "Live chat or responsive email support",
+              "Templates and starter kits to accelerate initial setup"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Design Studio Owner or Brand Strategist role",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012",
+              "bench_00119"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Works in small creative agencies (1-5 employees)",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012",
+              "bench_00119"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Operates in design services and agency industries",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012",
+              "bench_00119"
+            ],
+            "field_path": "firmographics.industry",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Maintains consistent brand identity across deliverables",
+            "record_ids": [
+              "bench_00099",
+              "bench_00026",
+              "bench_00128"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Streamline client review and approval process with shareable work",
+            "record_ids": [
+              "bench_00104",
+              "bench_00107",
+              "bench_00125"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Reduce friction when exporting and preparing assets for handoff",
+            "record_ids": [
+              "bench_00119",
+              "bench_00141",
+              "bench_00143"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Build reusable design systems and templates to speed up future projects",
+            "record_ids": [
+              "bench_00012",
+              "bench_00099"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Give clients confidence in visual coherence",
+            "record_ids": [
+              "bench_00104",
+              "bench_00107",
+              "bench_00125"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Manual color and font management leads to inconsistency",
+            "record_ids": [
+              "bench_00026",
+              "bench_00103",
+              "bench_00128",
+              "bench_00207"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Client feedback loops are slow due to sharing friction",
+            "record_ids": [
+              "bench_00104",
+              "bench_00107",
+              "bench_00125"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Exporting assets in different formats is tedious and error-prone",
+            "record_ids": [
+              "bench_00119",
+              "bench_00141",
+              "bench_00143"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Small team means no dedicated design ops person",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Difficulty justifying tool costs on tight project budgets",
+            "record_ids": [
+              "bench_00104",
+              "bench_00119"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Wants to present polished, professional image to clients",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Driven by efficiency\u2014time spent on process is time not spent on creative work",
+            "record_ids": [
+              "bench_00026",
+              "bench_00099",
+              "bench_00207"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Takes pride in detailed craftsmanship and visual precision",
+            "record_ids": [
+              "bench_00026",
+              "bench_00103",
+              "bench_00128",
+              "bench_00207"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Values tools that make team look organized and scalable",
+            "record_ids": [
+              "bench_00104"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Seeks validation through client satisfaction",
+            "record_ids": [
+              "bench_00104",
+              "bench_00107",
+              "bench_00125"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Hesitant to adopt tools that add complexity to lean workflow",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012",
+              "bench_00119"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Skeptical of platform lock-in or tools that don't integrate with Figma, Slack",
+            "record_ids": [
+              "bench_00099",
+              "bench_00026"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Worried about steep learning curves pulling focus from billable work",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Concerned setup overhead won't pay off on smaller projects",
+            "record_ids": [
+              "bench_00119"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Resistance to tools geared toward larger teams",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Uses Figma and Slack as core tools",
+            "record_ids": [
+              "bench_00026",
+              "bench_00099",
+              "bench_00207"
+            ],
+            "field_path": "firmographics.tech_stack_signals",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Discovers tools through peer recommendations and word-of-mouth",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012"
+            ],
+            "field_path": "channels.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Engages with design community on LinkedIn and Slack",
+            "record_ids": [
+              "bench_00104",
+              "bench_00012",
+              "bench_00119"
+            ],
+            "field_path": "channels.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Free tier or project-based pricing is a key decision trigger",
+            "record_ids": [
+              "bench_00099",
+              "bench_00026"
+            ],
+            "field_path": "decision_triggers.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Must integrate seamlessly with Figma and Slack",
+            "record_ids": [
+              "bench_00099",
+              "bench_00026",
+              "bench_00207"
+            ],
+            "field_path": "decision_triggers.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Solves immediate, painful problems on current projects",
+            "record_ids": [
+              "bench_00119",
+              "bench_00141",
+              "bench_00143"
+            ],
+            "field_path": "decision_triggers.4",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.022866,
+      "latency_s": 27.54700000002049,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    },
+    {
+      "cluster_id": "clust_71a93320ee6f",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00008",
+        "bench_00057",
+        "bench_00067",
+        "bench_00045",
+        "bench_00016",
+        "bench_00066",
+        "bench_00068",
+        "bench_00075",
+        "bench_00078",
+        "bench_00088",
+        "bench_00094",
+        "bench_00097"
+      ],
+      "persona_name": "",
+      "persona_json": {},
+      "groundedness": 0.0,
+      "attempts": 3,
+      "cost_usd": 0.054334,
+      "latency_s": 65.67200000002049,
+      "failed": true,
+      "error": "Synthesis failed after 3 attempts"
+    },
+    {
+      "cluster_id": "clust_41cc50091810",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00010",
+        "bench_00060",
+        "bench_00011",
+        "bench_00050",
+        "bench_00052",
+        "bench_00024",
+        "bench_00054",
+        "bench_00059",
+        "bench_00064",
+        "bench_00065",
+        "bench_00084",
+        "bench_00112"
+      ],
+      "persona_name": "Marcus Chen, Sales Ops Optimizer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Marcus Chen, Sales Ops Optimizer",
+        "summary": "Marcus is a high-velocity sales professional (BDR Lead or Account Executive) at a mid-sized B2B SaaS or fintech company who lives in his CRM pipeline and deal views. He's constantly moving between prospect lookups, proposal sends, and activity logging, and he's deeply frustrated with the friction of context-switching and sync failures across his existing tool stack.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US-based",
+            "high time-zone overlap with sales hours"
+          ],
+          "education_level": "bachelor's degree or higher",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "50-200 employees",
+          "industry": "B2B SaaS / Fintech",
+          "role_titles": [
+            "BDR Lead",
+            "Account Executive"
+          ],
+          "tech_stack_signals": [
+            "Salesforce",
+            "Zapier",
+            "HubSpot",
+            "proposal tools",
+            "activity logging systems"
+          ]
+        },
+        "goals": [
+          "Get a complete view of the sales pipeline without jumping between multiple systems",
+          "Send proposals and log activities without losing context or wasting time on sync delays",
+          "Reduce the number of manual tools required to manage the full sales cycle",
+          "Have real-time access to contact details and deal status during client conversations"
+        ],
+        "pains": [
+          "Context switching between CRM, pipeline views, contact databases, and proposal tools during critical moments",
+          "Waiting for Salesforce sync to catch up when using Zapier\u2014losing visibility into live deal status",
+          "Manual data entry and re-entry across disconnected systems (Salesforce, proposal tools, activity logs)",
+          "Long session times (avg 1.5+ hours) spent just navigating and reconciling information across platforms",
+          "Context switching between tools during critical sales moments disrupts momentum and increases error risk"
+        ],
+        "motivations": [
+          "Close more deals by reducing time wasted on administrative overhead",
+          "Maintain a single, trustworthy source of truth for all sales activities and pipeline status",
+          "Operate with confidence that no deal will slip through the cracks due to sync failures or missed updates",
+          "Work faster and more intuitively\u2014like using one integrated platform instead of a fragmented toolkit"
+        ],
+        "objections": [
+          "Not sure if another tool can actually integrate cleanly with our existing Salesforce setup without adding more complexity",
+          "Concerned about data duplication and sync reliability across multiple systems",
+          "Hesitant to add another tool if it doesn't immediately reduce daily workload",
+          "Worried about onboarding time and team adoption\u2014we move too fast to spend weeks training"
+        ],
+        "channels": [
+          "CRM dashboard (Salesforce, HubSpot)",
+          "Pipeline review tools",
+          "Email and proposal platforms",
+          "Sales call logs and activity trackers",
+          "Zapier/integration hubs",
+          "In-app messaging and support chats",
+          "Sales team Slack or team communication"
+        ],
+        "vocabulary": [
+          "pipeline review",
+          "contact lookup",
+          "deal view",
+          "Salesforce sync",
+          "Zapier",
+          "proposal send",
+          "activity logging",
+          "context switching",
+          "single source of truth",
+          "real-time visibility",
+          "sync reliability",
+          "deal momentum"
+        ],
+        "decision_triggers": [
+          "A demo showing how the tool eliminates Salesforce sync delays and Zapier friction",
+          "Proof that it reduces manual data entry by at least 30-40% on daily sales tasks",
+          "Clear evidence that onboarding takes less than one week with minimal team disruption",
+          "Testimonials or case studies from similar BDRs or Account Executives showing measurable time savings",
+          "A free trial that lets the team test it against their current Salesforce + Zapier workflow in real deals",
+          "Guarantees around data sync reliability and no duplication between the new tool and Salesforce"
+        ],
+        "sample_quotes": [
+          "I need Salesforce sync without Zapier slowing everything down\u2014we're losing deals while we wait for data to catch up.",
+          "Every time I look up a contact, then check the pipeline, then send a proposal, I'm switching tools three times. That's three chances to lose focus.",
+          "If your tool just adds another place I have to check, I'm not interested. It has to consolidate, not complicate.",
+          "We move fast here. I can't afford to spend two weeks learning a new platform when I'm already juggling five systems."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Frustrated with current toolkit complexity; actively searching for 'better sales tools' and 'CRM alternatives that integrate with Salesforce'",
+            "key_actions": [
+              "Comparing notes with other BDRs/AEs about what tools they use",
+              "Searching for 'Salesforce alternatives' and 'Zapier-free CRM workflows'",
+              "Asking for demos of integrated pipeline and proposal solutions"
+            ],
+            "content_preferences": [
+              "Product comparison guides (Salesforce vs. alternatives)",
+              "Case studies on sales productivity improvements",
+              "Articles on 'reducing sales tool stack complexity'",
+              "Short demos or explainer videos showing before/after workflows"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether a new tool is worth the risk and onboarding effort; needs proof it won't create more overhead",
+            "key_actions": [
+              "Reviewing free trials and integrating them with existing Salesforce workflows",
+              "Asking specific questions about sync reliability and data duplication risks",
+              "Requesting proof-of-concept in real sales scenarios (pipeline review, proposal send, contact lookup)",
+              "Checking for community feedback and success stories from similar companies"
+            ],
+            "content_preferences": [
+              "In-depth product documentation and API specifications",
+              "User testimonials from BDRs and AEs at similar companies",
+              "Integration guides and setup instructions",
+              "ROI calculators showing time/cost savings",
+              "Technical documentation about sync architecture and data reliability"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if onboarding is seamless and the tool demonstrates immediate value in reducing daily friction",
+            "key_actions": [
+              "Setting up a pilot team (3-5 reps) to test in parallel with Salesforce",
+              "Defining success metrics: time saved per day, deal velocity, data accuracy",
+              "Requesting a dedicated onboarding specialist to minimize disruption",
+              "Negotiating contract terms and integration costs"
+            ],
+            "content_preferences": [
+              "Step-by-step onboarding guides and training videos",
+              "Success metrics dashboards and reporting tools",
+              "Direct access to product support and implementation teams",
+              "Customization guides for team workflows"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Get a complete view of the sales pipeline without jumping between multiple systems",
+            "record_ids": [
+              "bench_00010",
+              "bench_00054",
+              "bench_00065",
+              "bench_00112"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Send proposals and log activities without losing context or wasting time on sync delays",
+            "record_ids": [
+              "bench_00011",
+              "bench_00050"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Reduce the number of manual tools required to manage the full sales cycle",
+            "record_ids": [
+              "bench_00024"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Have real-time access to contact details and deal status during client conversations",
+            "record_ids": [
+              "bench_00060",
+              "bench_00084"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Context switching between CRM, pipeline views, contact databases, and proposal tools during critical moments",
+            "record_ids": [
+              "bench_00010",
+              "bench_00060",
+              "bench_00011",
+              "bench_00050",
+              "bench_00052"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Waiting for Salesforce sync to catch up when using Zapier\u2014losing visibility into live deal status",
+            "record_ids": [
+              "bench_00024"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Manual data entry and re-entry across disconnected systems (Salesforce, proposal tools, activity logs)",
+            "record_ids": [
+              "bench_00011",
+              "bench_00050"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Long session times (avg 1.5+ hours) spent just navigating and reconciling information across platforms",
+            "record_ids": [
+              "bench_00024",
+              "bench_00054",
+              "bench_00060",
+              "bench_00112"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.88
+          },
+          {
+            "claim": "Context switching between tools during critical sales moments disrupts momentum and increases error risk",
+            "record_ids": [
+              "bench_00010",
+              "bench_00060",
+              "bench_00011",
+              "bench_00052"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Close more deals by reducing time wasted on administrative overhead",
+            "record_ids": [
+              "bench_00010",
+              "bench_00011",
+              "bench_00052"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Maintain a single, trustworthy source of truth for all sales activities and pipeline status",
+            "record_ids": [
+              "bench_00024",
+              "bench_00052"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Operate with confidence that no deal will slip through the cracks due to sync failures or missed updates",
+            "record_ids": [
+              "bench_00024",
+              "bench_00059"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Work faster and more intuitively\u2014like using one integrated platform instead of a fragmented toolkit",
+            "record_ids": [
+              "bench_00010",
+              "bench_00060",
+              "bench_00011"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Not sure if another tool can actually integrate cleanly with our existing Salesforce setup without adding more complexity",
+            "record_ids": [
+              "bench_00024"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Concerned about data duplication and sync reliability across multiple systems",
+            "record_ids": [
+              "bench_00024",
+              "bench_00052"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Hesitant to add another tool if it doesn't immediately reduce daily workload",
+            "record_ids": [
+              "bench_00054",
+              "bench_00112"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Worried about onboarding time and team adoption\u2014we move too fast to spend weeks training",
+            "record_ids": [
+              "bench_00010",
+              "bench_00011"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Uses pipeline review, contact lookup, deal view, proposal send, and call logging as primary workflows",
+            "record_ids": [
+              "bench_00010",
+              "bench_00060",
+              "bench_00011",
+              "bench_00050",
+              "bench_00052"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Works at mid-sized companies (50-200 employees) in B2B SaaS or fintech sectors",
+            "record_ids": [
+              "bench_00011",
+              "bench_00052"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.036109,
+      "latency_s": 44.59399999980815,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    }
+  ],
+  "total_cost_usd": 0.134825,
+  "total_latency_s": 69.81199999991804,
+  "mean_groundedness": 0.9833333333333334,
+  "success_rate": 0.75,
+  "error": ""
+}

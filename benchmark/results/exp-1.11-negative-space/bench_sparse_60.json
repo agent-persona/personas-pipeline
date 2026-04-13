@@ -1,0 +1,1101 @@
+{
+  "tenant_id": "bench_sparse_60",
+  "tenant_hash": "2e54b12d993c",
+  "industry": "B2B SaaS",
+  "product": "Sales and marketing automation",
+  "n_records": 60,
+  "n_clusters": 3,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_949511fc6aed",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00006",
+        "bench_00008",
+        "bench_00011",
+        "bench_00012",
+        "bench_00031",
+        "bench_00036",
+        "bench_00054",
+        "bench_00019",
+        "bench_00009",
+        "bench_00013",
+        "bench_00014",
+        "bench_00015"
+      ],
+      "persona_name": "Kai, the Automation-First Platform Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Kai, the Automation-First Platform Engineer",
+        "summary": "Kai is a senior DevOps or platform engineer working at a mid-market SaaS or fintech company who treats infrastructure as code and automation as non-negotiable. They spend extended sessions configuring webhooks, setting up CI/CD pipelines, and provisioning infrastructure via Terraform, expecting tools to integrate seamlessly with their existing DevOps stack rather than requiring manual UI workflows.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US-based (inferred from SaaS/fintech cluster)"
+          ],
+          "education_level": "Bachelor's degree or higher in Computer Science/Engineering",
+          "income_bracket": "100k-150k+"
+        },
+        "firmographics": {
+          "company_size": "50-200 employees",
+          "industry": "SaaS or fintech",
+          "role_titles": [
+            "Senior DevOps Engineer",
+            "Platform Engineer",
+            "Infrastructure Engineer"
+          ],
+          "tech_stack_signals": [
+            "Terraform",
+            "GitHub",
+            "CI/CD pipelines (GitHub Actions or similar)",
+            "Webhooks",
+            "SDKs",
+            "API-first workflows"
+          ]
+        },
+        "goals": [
+          "Automate infrastructure provisioning and management via Infrastructure-as-Code (Terraform, CDK) rather than manual UI clicks",
+          "Integrate third-party tools into CI/CD pipelines so deployments are fully automated and auditable",
+          "Set up webhook-based event handling to eliminate polling and reduce manual monitoring overhead",
+          "Export data in bulk for analytics, auditing, and downstream system integration",
+          "Reduce operational friction by replacing manual API calls with provider-based tooling (e.g., Terraform providers, SDKs)"
+        ],
+        "pains": [
+          "Tools that only offer a UI and don't provide Terraform providers or SDKs force manual workarounds and break infrastructure-as-code discipline",
+          "Integrating with CI/CD pipelines is painful when SDKs are undocumented or API-first patterns are not the primary path",
+          "Having to fork between multiple documentation sources (SDK docs, API reference, integration guides) wastes time during implementation",
+          "Manual webhook configuration is tedious and error-prone compared to declarative infrastructure definitions",
+          "Slow session times when setting up complex infrastructure (spending 30+ minutes on individual tasks like webhook configuration or Terraform provisioning)",
+          "Rate limits and lack of bulk operation support in APIs make automation unviable at scale"
+        ],
+        "motivations": [
+          "Minimizing toil and manual work so the team can focus on higher-level architecture and product impact",
+          "Building systems that scale horizontally without adding operational burden",
+          "Earning credibility by reducing mean-time-to-recovery (MTTR) and preventing incidents through better tooling",
+          "Working within a modern DevOps culture where tooling is developer-first and automation is expected",
+          "Using tools that align with existing tech investments (GitHub, Terraform, CI/CD) to avoid fragmentation"
+        ],
+        "objections": [
+          "If it doesn't integrate with our CI/CD pipeline, it creates a maintenance debt we can't sustain",
+          "Why should I adopt this when I can build it faster myself in Terraform or via API?",
+          "Does it support bulk operations at scale, or will I hit rate limits immediately?",
+          "I need full API documentation and SDK examples, not just a UI\u2014our automation depends on it"
+        ],
+        "not_this": [
+          "Wouldn't spend 30+ minutes clicking through a UI when a 5-line Terraform config could do the same thing",
+          "Doesn't view point-and-click tools as 'solved' if they don't have a programmatic path",
+          "Wouldn't trust a vendor that positions the UI as the primary interface and APIs as an afterthought",
+          "Doesn't manually monitor or check logs when alerting and webhooks could automate that entirely",
+          "Wouldn't accept vendor lock-in or tight coupling to a single tool if open standards (Terraform, REST APIs) are available"
+        ],
+        "channels": [
+          "GitHub (code repos, Issues, integration points)",
+          "CI/CD platform dashboards (GitHub Actions, Jenkins, CircleCI, etc.)",
+          "API documentation and SDK reference sites",
+          "Intercom/in-app support chat (for specific integration blockers)",
+          "Terraform Registry and provider documentation",
+          "DevOps-focused Slack communities and Discord servers"
+        ],
+        "vocabulary": [
+          "Infrastructure as Code",
+          "Declarative configuration",
+          "API-first",
+          "Terraform provider",
+          "Webhook",
+          "CI/CD pipeline",
+          "SDK",
+          "Bulk operations",
+          "Rate limits",
+          "Automation",
+          "Toil",
+          "Idempotent",
+          "Provisioning"
+        ],
+        "decision_triggers": [
+          "Seeing a native Terraform provider or proven IaC integration path in the docs",
+          "Confirmation that the tool has robust SDK support with code examples in multiple languages",
+          "Evidence of webhook support or event-driven architecture that fits existing CI/CD workflows",
+          "Clear API documentation showing bulk operations, pagination, and no artificial rate limits",
+          "A working GitHub integration that passes security and doesn't require manual token management",
+          "Demo or case study showing integration with a tool stack they already use (Terraform, GitHub, Jenkins, etc.)"
+        ],
+        "sample_quotes": [
+          "Any plans for a Terraform provider? We manage everything as code.",
+          "I'm not going to spend 30 minutes in a UI when I can define this in Terraform and version it in Git.",
+          "If your API doesn't support bulk exports, it won't work at our scale.",
+          "Show me the SDK and API docs first\u2014the UI is secondary for us.",
+          "We need this integrated into our CI/CD pipeline, not as a standalone tool."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Skeptical of UI-first tools; immediately looking for Terraform, SDK, and API evidence",
+            "key_actions": [
+              "Visits /docs/sdk and /api/docs pages within the first session",
+              "Checks for GitHub integration and Terraform provider mentions in documentation",
+              "Scans for evidence of bulk operation support and rate limit details"
+            ],
+            "content_preferences": [
+              "API reference documentation",
+              "SDK code examples (Python, Go, Node.js)",
+              "Architecture diagrams showing webhook and event-driven workflows",
+              "Terraform provider registry listings"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the tool can fit into existing infrastructure-as-code workflows without creating maintenance debt",
+            "key_actions": [
+              "Configures webhooks to test event-driven integration patterns",
+              "Attempts SDK installation and runs sample API calls",
+              "Sets up CI/CD pipeline integration to see if automation is truly frictionless",
+              "Reviews Terraform provider docs if available, or plans custom resource workarounds"
+            ],
+            "content_preferences": [
+              "Integration guides (GitHub Actions, Terraform, Docker, Kubernetes)",
+              "Example Terraform modules or CDK constructs",
+              "API rate limit specifications and bulk operation documentation",
+              "Security and compliance documentation for CI/CD automation"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to adopt if the tool eliminates toil and fits seamlessly into their automation-first culture",
+            "key_actions": [
+              "Configures bulk exports for ongoing data pipeline integration",
+              "Deploys custom dashboards or monitoring tied to webhook events",
+              "Writes IaC (Terraform/CDK) to provision and manage the tool configuration",
+              "Integrates the tool into the team's standard deployment pipeline"
+            ],
+            "content_preferences": [
+              "Troubleshooting and advanced API documentation",
+              "Best practices for scaling and handling rate limits",
+              "Terraform provider version release notes and upgrade guides",
+              "Performance tuning and optimization guides"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Automate infrastructure provisioning and management via Infrastructure-as-Code (Terraform, CDK) rather than manual UI clicks",
+            "record_ids": [
+              "bench_00012",
+              "bench_00014",
+              "bench_00015"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Integrate third-party tools into CI/CD pipelines so deployments are fully automated and auditable",
+            "record_ids": [
+              "bench_00011",
+              "bench_00013"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Set up webhook-based event handling to eliminate polling and reduce manual monitoring overhead",
+            "record_ids": [
+              "bench_00006",
+              "bench_00014",
+              "bench_00015"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Export data in bulk for analytics, auditing, and downstream system integration",
+            "record_ids": [
+              "bench_00019"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Reduce operational friction by replacing manual API calls with provider-based tooling (e.g., Terraform providers, SDKs)",
+            "record_ids": [
+              "bench_00031",
+              "bench_00036"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Tools that only offer a UI and don't provide Terraform providers or SDKs force manual workarounds and break infrastructure-as-code discipline",
+            "record_ids": [
+              "bench_00012",
+              "bench_00015"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Integrating with CI/CD pipelines is painful when SDKs are undocumented or API-first patterns are not the primary path",
+            "record_ids": [
+              "bench_00011",
+              "bench_00013"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Having to fork between multiple documentation sources (SDK docs, API reference, integration guides) wastes time during implementation",
+            "record_ids": [
+              "bench_00031",
+              "bench_00036"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Manual webhook configuration is tedious and error-prone compared to declarative infrastructure definitions",
+            "record_ids": [
+              "bench_00006",
+              "bench_00014"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Slow session times when setting up complex infrastructure (spending 30+ minutes on individual tasks like webhook configuration or Terraform provisioning)",
+            "record_ids": [
+              "bench_00006",
+              "bench_00014",
+              "bench_00013"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Rate limits and lack of bulk operation support in APIs make automation unviable at scale",
+            "record_ids": [
+              "bench_00019"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Minimizing toil and manual work so the team can focus on higher-level architecture and product impact",
+            "record_ids": [
+              "bench_00006",
+              "bench_00014",
+              "bench_00031"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Building systems that scale horizontally without adding operational burden",
+            "record_ids": [
+              "bench_00019",
+              "bench_00013"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Earning credibility by reducing mean-time-to-recovery (MTTR) and preventing incidents through better tooling",
+            "record_ids": [
+              "bench_00011",
+              "bench_00014"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Working within a modern DevOps culture where tooling is developer-first and automation is expected",
+            "record_ids": [
+              "bench_00012",
+              "bench_00031"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Using tools that align with existing tech investments (GitHub, Terraform, CI/CD) to avoid fragmentation",
+            "record_ids": [
+              "bench_00008",
+              "bench_00009",
+              "bench_00012"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "If it doesn't integrate with our CI/CD pipeline, it creates a maintenance debt we can't sustain",
+            "record_ids": [
+              "bench_00011",
+              "bench_00013"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Why should I adopt this when I can build it faster myself in Terraform or via API?",
+            "record_ids": [
+              "bench_00012",
+              "bench_00015"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Does it support bulk operations at scale, or will I hit rate limits immediately?",
+            "record_ids": [
+              "bench_00019"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "I need full API documentation and SDK examples, not just a UI\u2014our automation depends on it",
+            "record_ids": [
+              "bench_00031",
+              "bench_00036"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.043523,
+      "latency_s": 53.46900000004098,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 5.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 5.0
+      }
+    },
+    {
+      "cluster_id": "clust_670aaab0430f",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00003",
+        "bench_00001",
+        "bench_00023",
+        "bench_00007",
+        "bench_00043",
+        "bench_00005",
+        "bench_00010",
+        "bench_00016",
+        "bench_00018",
+        "bench_00022",
+        "bench_00024",
+        "bench_00025"
+      ],
+      "persona_name": "Marcus, the Efficient Sales Leader",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Marcus, the Efficient Sales Leader",
+        "summary": "Marcus is a mid-market Sales Manager or Account Executive (50\u2013500 person companies) who lives in his CRM, deal pipeline, and call logs. He's laser-focused on closing deals and moving deals down the pipeline\u2014and he's frustrated by the administrative overhead that eats into his selling time. He wants seamless integrations, real-time visibility, and tools that let him work smarter without adding complexity.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "North America",
+            "SaaS hubs (likely US coastal or tech-forward regions)"
+          ],
+          "education_level": "Bachelor's degree or higher",
+          "income_bracket": "75k\u2013150k"
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "B2B SaaS / Enterprise Software",
+          "role_titles": [
+            "Sales Manager",
+            "Account Executive"
+          ],
+          "tech_stack_signals": [
+            "Salesforce",
+            "Zapier",
+            "HubSpot",
+            "proposal automation tools"
+          ]
+        },
+        "goals": [
+          "Close more deals faster by reducing friction in deal progression",
+          "Maintain clean, accurate pipeline visibility without manual data entry",
+          "Send professional proposals and track deal progress with minimal friction",
+          "Build a transparent, trustworthy sales process that leadership can rely on"
+        ],
+        "pains": [
+          "Switching between multiple CRM and proposal tools wastes time and breaks workflow",
+          "Manual data syncing between tools (like Salesforce and Zapier) creates errors and delays",
+          "Repetitive contact lookups and data entry steal selling time",
+          "Proposal generation and delivery takes too long to get deals closed quickly",
+          "Losing visibility on pipeline when integration breaks or requires workarounds"
+        ],
+        "motivations": [
+          "Drive revenue growth and hit quota consistently",
+          "Desire to be seen as efficient and organized by their sales leadership",
+          "Want to spend more time on high-value selling activities, not admin",
+          "Pride in winning deals and moving prospects toward close",
+          "Need for real-time pipeline transparency to make confident sales calls"
+        ],
+        "objections": [
+          "We already use Salesforce\u2014another tool is just more overhead",
+          "Integration needs to be seamless or we'll abandon it for our current workflow",
+          "Show me the ROI in hours saved per week or deal cycle time reduction",
+          "Our team won't adopt if it requires manual setup or training"
+        ],
+        "not_this": [
+          "Wouldn't trust a tool that can't integrate cleanly with Salesforce\u2014that's non-negotiable",
+          "Wouldn't spend time on manual setup or workarounds; if it's clunky, he abandons it",
+          "Wouldn't sacrifice visibility for convenience\u2014real-time data matters more than UI polish",
+          "Wouldn't adopt a tool without seeing concrete numbers on time saved or deal velocity"
+        ],
+        "channels": [
+          "Salesforce CRM (primary workspace)",
+          "Email and calendar (deal coordination)",
+          "Proposal platforms (HubSpot, etc.)",
+          "Call and meeting tools (native CRM or standalone)",
+          "Sales leadership dashboards and reports",
+          "Product walkthroughs and integration documentation"
+        ],
+        "vocabulary": [
+          "pipeline visibility",
+          "deal velocity",
+          "seamless integration",
+          "Salesforce sync",
+          "proposal turnaround",
+          "contact hygiene",
+          "admin overhead",
+          "quota attainment",
+          "deal progression",
+          "workflow friction",
+          "real-time data",
+          "adoption friction"
+        ],
+        "decision_triggers": [
+          "Seamless, native integration with Salesforce (not Zapier workarounds)",
+          "Measurable time savings (hours/week) or deal cycle acceleration",
+          "Requires zero manual setup or training\u2014plug and play",
+          "Leadership endorsement or peer proof from other Sales Managers in his network",
+          "Free trial or low-risk pilot to test without commitment",
+          "Transparent pricing tied to measurable ROI"
+        ],
+        "sample_quotes": [
+          "Salesforce sync without Zapier? That's what I want.",
+          "If it doesn't talk to Salesforce natively, I don't have time for it.",
+          "Show me how many hours a week this saves, not just features.",
+          "Our team won't touch it if setup is a nightmare\u2014we're already stretched thin.",
+          "Pipeline visibility is everything. I need to know deal status in real time."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Frustrated with manual integrations and admin overhead in current workflow",
+            "key_actions": [
+              "Researching CRM integrations and proposal automation",
+              "Checking product documentation for Salesforce compatibility",
+              "Asking peers and leadership about tools they recommend"
+            ],
+            "content_preferences": [
+              "Integration compatibility docs and architecture diagrams",
+              "Case studies from similar company sizes (50\u2013500)",
+              "Customer reviews focused on time savings and ease of adoption"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Skeptical but willing to evaluate if integration story is strong and ROI is clear",
+            "key_actions": [
+              "Reviewing product demos with integration focus",
+              "Requesting pilot access for a small team segment",
+              "Requesting cost-benefit analysis or customer metrics (deal cycle reduction)"
+            ],
+            "content_preferences": [
+              "ROI calculators and time-savings metrics",
+              "Integration walkthroughs and technical deep-dives",
+              "Customer testimonials from Sales Managers in mid-market SaaS"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if adoption friction is minimal and Salesforce sync is native",
+            "key_actions": [
+              "Negotiating pilot scope and success metrics",
+              "Arranging team training and onboarding (minimal burden)",
+              "Setting up integration and verifying data flow"
+            ],
+            "content_preferences": [
+              "Implementation checklists and quick-start guides",
+              "Dedicated onboarding support (email, calls, not just docs)",
+              "Usage reports and performance dashboards"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Close more deals faster by reducing friction in deal progression",
+            "record_ids": [
+              "bench_00001",
+              "bench_00016",
+              "bench_00024"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Maintain clean, accurate pipeline visibility without manual data entry",
+            "record_ids": [
+              "bench_00023",
+              "bench_00025"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Send professional proposals and track deal progress with minimal friction",
+            "record_ids": [
+              "bench_00007",
+              "bench_00022"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Build a transparent, trustworthy sales process that leadership can rely on",
+            "record_ids": [
+              "bench_00003",
+              "bench_00024"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Switching between multiple CRM and proposal tools wastes time and breaks workflow",
+            "record_ids": [
+              "bench_00001",
+              "bench_00007",
+              "bench_00022"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Manual data syncing between tools (like Salesforce and Zapier) creates errors and delays",
+            "record_ids": [
+              "bench_00018",
+              "bench_00043"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Repetitive contact lookups and data entry steal selling time",
+            "record_ids": [
+              "bench_00043",
+              "bench_00005"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Proposal generation and delivery takes too long to get deals closed quickly",
+            "record_ids": [
+              "bench_00007",
+              "bench_00022"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Losing visibility on pipeline when integration breaks or requires workarounds",
+            "record_ids": [
+              "bench_00023",
+              "bench_00025",
+              "bench_00018"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Drive revenue growth and hit quota consistently",
+            "record_ids": [
+              "bench_00001",
+              "bench_00016",
+              "bench_00024"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Desire to be seen as efficient and organized by their sales leadership",
+            "record_ids": [
+              "bench_00003",
+              "bench_00024"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Want to spend more time on high-value selling activities, not admin",
+            "record_ids": [
+              "bench_00043",
+              "bench_00005",
+              "bench_00018"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Pride in winning deals and moving prospects toward close",
+            "record_ids": [
+              "bench_00007",
+              "bench_00016"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Need for real-time pipeline transparency to make confident sales calls",
+            "record_ids": [
+              "bench_00023",
+              "bench_00025",
+              "bench_00001"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "We already use Salesforce\u2014another tool is just more overhead",
+            "record_ids": [
+              "bench_00018"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Integration needs to be seamless or we'll abandon it for our current workflow",
+            "record_ids": [
+              "bench_00018",
+              "bench_00043"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Show me the ROI in hours saved per week or deal cycle time reduction",
+            "record_ids": [
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Our team won't adopt if it requires manual setup or training",
+            "record_ids": [
+              "bench_00003",
+              "bench_00010"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.8
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.036502999999999994,
+      "latency_s": 44.40599999995902,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 4.6
+      }
+    },
+    {
+      "cluster_id": "clust_36005d8c108c",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00000",
+        "bench_00030",
+        "bench_00020",
+        "bench_00028",
+        "bench_00002",
+        "bench_00004",
+        "bench_00027",
+        "bench_00032",
+        "bench_00033",
+        "bench_00035",
+        "bench_00041",
+        "bench_00049"
+      ],
+      "persona_name": "Priya, the Performance-Obsessed Growth Marketer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Priya, the Performance-Obsessed Growth Marketer",
+        "summary": "Priya is a Growth Marketing Manager at a mid-sized SaaS company (50-200 employees) who lives in the experimental mindset. She's constantly running campaigns, A/B tests, and audience segments to find the winning formula\u2014but she's frustrated by fragmented tools, opaque attribution, and workflow friction that slows her down. She thinks in terms of pipeline impact and competitive advantage, and she won't tolerate anything that takes more than five minutes to set up or adds another layer of complexity to her stack.",
+        "demographics": {
+          "age_range": "28-40",
+          "gender_distribution": "balanced",
+          "location_signals": [],
+          "education_level": "bachelor's degree or above",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "SMB (50-200 employees)",
+          "industry": "SaaS",
+          "role_titles": [
+            "Growth Marketing Manager",
+            "Performance Marketer",
+            "Marketing Operator"
+          ],
+          "tech_stack_signals": [
+            "email marketing platform",
+            "audience segmentation tool",
+            "A/B testing framework",
+            "campaign management",
+            "landing page builder",
+            "UTM tracking",
+            "reporting/analytics"
+          ]
+        },
+        "goals": [
+          "Run rapid A/B tests to identify winning messaging and audience combinations",
+          "Understand true campaign ROI and which channels actually drive pipeline",
+          "Build segmented audiences and execute targeted email campaigns at scale",
+          "Set up and launch campaigns in minutes, not days",
+          "Consolidate fragmented tools into a unified workflow that reduces manual work"
+        ],
+        "pains": [
+          "Attribution tracking across campaigns is confusing and inaccurate",
+          "Switching between multiple tools wastes time and creates data silos",
+          "Custom reporting is required to see campaign impact on pipeline\u2014should be built-in",
+          "A/B test setup requires too many steps to get from idea to live experiment",
+          "Can't easily see which campaigns are actually driving pipeline without custom reporting",
+          "Exporting reports without UTM breakdown forces manual data cleanup"
+        ],
+        "motivations": [
+          "Obsessive about measurable results: wants proof that every campaign move works",
+          "Speed-driven: sees friction in workflows as a direct cost to experimentation velocity",
+          "Competitive: wants to optimize every funnel and identify winning messaging/audience combos",
+          "Mission-aligned: success is measured in qualified leads and revenue influenced",
+          "Data-hungry: believes the team that tests the most wins the most"
+        ],
+        "objections": [
+          "If another tool takes 10+ minutes to set up, it doesn't get used",
+          "Attribution and reporting black boxes are deal-breakers\u2014need transparent, auditable tracking",
+          "Tool sprawl creates more problems than it solves; we need integrated workflows",
+          "If A/B tests can't be set up in under 5 minutes, most won't happen"
+        ],
+        "not_this": [
+          "Wouldn't adopt a tool that requires IT or engineering to configure",
+          "Won't settle for 'best guess' reporting when data-driven decisions are on the line",
+          "Doesn't have patience for onboarding that takes more than a few hours",
+          "Rolls her eyes at vendors who say 'custom integration available' instead of shipping it",
+          "Won't use a tool that can't show her immediate impact on pipeline or revenue"
+        ],
+        "channels": [
+          "Email (both as a user and marketer)",
+          "GA4 and analytics dashboards",
+          "In-app product workflows",
+          "Intercom and product support chat",
+          "Slack channels for marketing ops and growth"
+        ],
+        "vocabulary": [
+          "attribution",
+          "pipeline impact",
+          "audience segment",
+          "A/B test",
+          "UTM breakdown",
+          "campaign ROI",
+          "qualified leads",
+          "experimentation velocity",
+          "tool sprawl",
+          "data-driven",
+          "workflow friction",
+          "competitive advantage"
+        ],
+        "decision_triggers": [
+          "Seeing competitors run tests faster than her team",
+          "Discovering that a campaign's true revenue impact is hidden in custom reports",
+          "Realizing a new experiment idea takes 30+ minutes to execute",
+          "Losing time to context-switching between five different platforms",
+          "Needing to export and manually clean attribution data for board reporting"
+        ],
+        "sample_quotes": [
+          "Attribution tracking across campaigns is a mess\u2014I need to know which channel actually drives qualified leads.",
+          "If I have to jump between three different tools to run an A/B test, it won't happen. Speed is everything.",
+          "Report exports should include UTM breakdown by default. I shouldn't have to spend an hour cleaning data.",
+          "We run on experimentation. The team that tests the most wins\u2014but only if we can execute fast.",
+          "I don't care how many integrations you have\u2014I need one cohesive platform or it adds more friction than value."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Recognizes tool fragmentation and attribution gaps are slowing down experimentation",
+            "key_actions": [
+              "Exploring new product features",
+              "Checking landing pages and demo flows",
+              "Browsing documentation"
+            ],
+            "content_preferences": [
+              "Product walkthroughs",
+              "ROI case studies",
+              "Speed/efficiency benchmarks"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether a new tool can integrate smoothly and reduce setup friction",
+            "key_actions": [
+              "Setting up test audiences and campaigns",
+              "Running A/B test flows",
+              "Reviewing reporting and attribution features",
+              "Composing emails to test functionality"
+            ],
+            "content_preferences": [
+              "Technical spec sheets",
+              "Integration documentation",
+              "Feature comparison vs. current stack",
+              "Speed/ease-of-use demos"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Needs proof that adoption will actually save time and improve attribution\u2014or won't proceed",
+            "key_actions": [
+              "Testing live campaigns",
+              "Analyzing sample reports",
+              "Checking UTM and attribution accuracy"
+            ],
+            "content_preferences": [
+              "ROI calculators",
+              "Integration guides",
+              "Success stories from similar-sized SaaS companies"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Attribution tracking across campaigns is confusing and inaccurate",
+            "record_ids": [
+              "bench_00000"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Switching between multiple tools wastes time and creates data silos",
+            "record_ids": [
+              "bench_00028",
+              "bench_00030",
+              "bench_00041"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Custom reporting is required to see campaign impact on pipeline\u2014should be built-in",
+            "record_ids": [
+              "bench_00035"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "A/B test setup requires too many steps to get from idea to live experiment",
+            "record_ids": [
+              "bench_00020",
+              "bench_00027"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Can't easily see which campaigns are actually driving pipeline without custom reporting",
+            "record_ids": [
+              "bench_00028",
+              "bench_00035"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Exporting reports without UTM breakdown forces manual data cleanup",
+            "record_ids": [
+              "bench_00035"
+            ],
+            "field_path": "pains.5",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Obsessive about measurable results: wants proof that every campaign move works",
+            "record_ids": [
+              "bench_00000",
+              "bench_00028",
+              "bench_00032",
+              "bench_00033"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Speed-driven: sees friction in workflows as a direct cost to experimentation velocity",
+            "record_ids": [
+              "bench_00020",
+              "bench_00027",
+              "bench_00004"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Competitive: wants to optimize every funnel and identify winning messaging/audience combos",
+            "record_ids": [
+              "bench_00020",
+              "bench_00030",
+              "bench_00041",
+              "bench_00004"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Mission-aligned: success is measured in qualified leads and revenue influenced",
+            "record_ids": [
+              "bench_00000",
+              "bench_00035"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Data-hungry: believes the team that tests the most wins the most",
+            "record_ids": [
+              "bench_00020",
+              "bench_00027",
+              "bench_00030"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "If another tool takes 10+ minutes to set up, it doesn't get used",
+            "record_ids": [
+              "bench_00020",
+              "bench_00027"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Attribution and reporting black boxes are deal-breakers\u2014need transparent, auditable tracking",
+            "record_ids": [
+              "bench_00000",
+              "bench_00035"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Tool sprawl creates more problems than it solves; we need integrated workflows",
+            "record_ids": [
+              "bench_00028",
+              "bench_00030",
+              "bench_00041"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "If A/B tests can't be set up in under 5 minutes, most won't happen",
+            "record_ids": [
+              "bench_00020",
+              "bench_00027"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Run rapid A/B tests to identify winning messaging and audience combinations",
+            "record_ids": [
+              "bench_00020",
+              "bench_00027",
+              "bench_00030"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Understand true campaign ROI and which channels actually drive pipeline",
+            "record_ids": [
+              "bench_00000",
+              "bench_00035"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Build segmented audiences and execute targeted email campaigns at scale",
+            "record_ids": [
+              "bench_00030",
+              "bench_00041",
+              "bench_00004",
+              "bench_00032",
+              "bench_00033"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Set up and launch campaigns in minutes, not days",
+            "record_ids": [
+              "bench_00028",
+              "bench_00020",
+              "bench_00027"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Consolidate fragmented tools into a unified workflow that reduces manual work",
+            "record_ids": [
+              "bench_00028",
+              "bench_00030"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.75
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.036892,
+      "latency_s": 44.390000000130385,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 5.0
+      }
+    }
+  ],
+  "total_cost_usd": 0.116918,
+  "total_latency_s": 53.46900000004098,
+  "mean_groundedness": 1.0,
+  "success_rate": 1.0,
+  "error": ""
+}

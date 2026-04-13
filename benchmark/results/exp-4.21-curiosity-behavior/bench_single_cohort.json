@@ -1,0 +1,357 @@
+{
+  "tenant_id": "bench_single_cohort",
+  "tenant_hash": "3c3629244fde",
+  "industry": "Developer Tools",
+  "product": "API platform",
+  "n_records": 200,
+  "n_clusters": 1,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_14c2f7acad7c",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00005",
+        "bench_00002",
+        "bench_00000",
+        "bench_00006",
+        "bench_00011",
+        "bench_00029",
+        "bench_00001",
+        "bench_00010",
+        "bench_00003",
+        "bench_00004",
+        "bench_00007",
+        "bench_00008"
+      ],
+      "persona_name": "Marcus, the Platform-Scaling Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Marcus, the Platform-Scaling Engineer",
+        "summary": "Marcus is a senior-to-staff engineer at a mid-sized SaaS or fintech company who owns platform reliability and developer velocity. He integrates external APIs deeply into CI/CD workflows and infrastructure-as-code patterns, and he expects APIs to handle bulk operations and webhook reliability at production scale without custom engineering overhead.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US-based tech hubs",
+            "remote-capable"
+          ],
+          "education_level": "Bachelor's or higher in Computer Science",
+          "income_bracket": "120k-180k+"
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "SaaS, fintech",
+          "role_titles": [
+            "Staff Engineer",
+            "Senior DevOps Engineer",
+            "Platform Engineer",
+            "Backend Lead"
+          ],
+          "tech_stack_signals": [
+            "GitHub",
+            "CI/CD pipelines (GitHub Actions/Jenkins)",
+            "Terraform",
+            "GraphQL & REST APIs",
+            "bulk export/import workflows"
+          ]
+        },
+        "goals": [
+          "Reduce manual API integration work by automating via SDK and IaC tooling",
+          "Enable bulk data operations (500k+ rows) to meet scale requirements without engineering overhead",
+          "Integrate API platform into GitHub-based CI/CD workflows for developer velocity",
+          "Scale systems without engineering team growth by optimizing platform capabilities"
+        ],
+        "pains": [
+          "GraphQL endpoints have reliability and feature gaps vs. REST API maturity",
+          "Bulk export operations fail or timeout when handling large datasets (500k+ rows)",
+          "Terraform module support is missing or incomplete\u2014forces custom scripting",
+          "Webhook configuration requires manual tuning and doesn't match production SLAs out-of-the-box"
+        ],
+        "motivations": [
+          "Ship features faster by embedding the API into CI/CD as a single source of truth",
+          "Eliminate on-call incidents caused by API reliability gaps in production workflows",
+          "Adopt infrastructure-as-code patterns to reduce manual configuration drift"
+        ],
+        "objections": [
+          "GraphQL API maturity is questionable\u2014REST is proven, GraphQL has rough edges",
+          "Lacks out-of-the-box Terraform support\u2014requires engineering overhead to manage through IaC",
+          "Webhook and custom configuration reliability must match production SLAs"
+        ],
+        "channels": [
+          "GitHub repositories and Issues",
+          "CI/CD dashboards (GitHub Actions, Jenkins)",
+          "Terraform registry and documentation",
+          "API documentation and SDKs",
+          "Slack/team communication channels",
+          "Product roadmap and release notes"
+        ],
+        "vocabulary": [
+          "IaC (Infrastructure as Code)",
+          "bulk export",
+          "webhook reliability",
+          "SLA",
+          "GraphQL vs REST",
+          "SDK",
+          "CI/CD integration",
+          "production scale",
+          "engineering overhead",
+          "configuration drift",
+          "Terraform module",
+          "API gateway",
+          "idempotency"
+        ],
+        "decision_triggers": [
+          "Proven bulk export performance on 500k+ row datasets",
+          "Official Terraform provider or first-class IaC support",
+          "Webhook reliability guarantees backed by SLA",
+          "Native GitHub Actions integration or marketplace listing",
+          "GraphQL feature parity roadmap with REST",
+          "SDK auto-generation for multiple languages"
+        ],
+        "sample_quotes": [
+          "Your REST API is solid but the GraphQL endpoint has some rough edges.",
+          "We need the bulk export to handle 500k rows without timing out.",
+          "I need this to work out-of-the-box in Terraform\u2014I shouldn't have to write custom scripts.",
+          "Webhooks have to be production-grade; my on-call team depends on it.",
+          "The SDK saves us weeks of integration work per microservice."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Evaluating whether the API platform can replace our current ad-hoc integration scripts",
+            "key_actions": [
+              "Visit /docs/sdk and /api/reference",
+              "Check GitHub integration capabilities",
+              "Review bulk export limits"
+            ],
+            "content_preferences": [
+              "API reference docs",
+              "SDK quickstart guides",
+              "comparative blogs (REST vs GraphQL)",
+              "integration case studies"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Skeptical of GraphQL reliability, testing whether Terraform and webhooks work at scale",
+            "key_actions": [
+              "Set up terraform_setup",
+              "Configure webhook_config",
+              "Run bulk_export tests",
+              "Integrate with CI pipeline"
+            ],
+            "content_preferences": [
+              "technical depth docs",
+              "performance benchmarks",
+              "SLA/reliability statements",
+              "troubleshooting guides",
+              "GitHub integration walkthroughs"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to adopt if Terraform is production-ready and webhooks match our SLA requirements",
+            "key_actions": [
+              "Create custom_dashboard for monitoring",
+              "Deploy to staging CI/CD",
+              "Load-test bulk operations",
+              "Negotiate support for production use"
+            ],
+            "content_preferences": [
+              "support tiers and SLAs",
+              "roadmap transparency",
+              "production deployment guides",
+              "monitoring/observability integrations"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Wants to integrate API into GitHub-based CI/CD workflows",
+            "record_ids": [
+              "bench_00005",
+              "bench_00002",
+              "bench_00007"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Needs bulk data operations (500k+ rows) to work reliably",
+            "record_ids": [
+              "bench_00006",
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "GraphQL API has reliability and feature gaps compared to REST",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Bulk export operations timeout or fail at scale",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Terraform integration requires custom engineering work",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Webhook configuration and reliability are critical production concerns",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Wants to reduce manual API integration work through SDKs and automation",
+            "record_ids": [
+              "bench_00000",
+              "bench_00003"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Must scale systems without proportional engineering team growth",
+            "record_ids": [
+              "bench_00011"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Motivation: Ship features faster by embedding API into CI/CD",
+            "record_ids": [
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivation: Eliminate on-call incidents from API reliability gaps",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Motivation: Adopt Infrastructure-as-Code to reduce configuration drift",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Objection: GraphQL API maturity is questionable",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Objection: Requires engineering overhead for Terraform integration",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Objection: Webhook and custom config reliability must match production SLAs",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Role title is Senior DevOps or Staff Engineer",
+            "record_ids": [
+              "bench_00011",
+              "bench_00010"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Works at companies with 50-500 employees in SaaS/fintech",
+            "record_ids": [
+              "bench_00011",
+              "bench_00010"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Uses GitHub integration, Terraform, CI/CD pipelines, bulk export workflows",
+            "record_ids": [
+              "bench_00002",
+              "bench_00005",
+              "bench_00001",
+              "bench_00006"
+            ],
+            "field_path": "firmographics.tech_stack_signals",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Long session engagement (1000+ seconds) indicates deep technical exploration",
+            "record_ids": [
+              "bench_00002",
+              "bench_00006",
+              "bench_00007",
+              "bench_00010"
+            ],
+            "field_path": "demographics.age_range",
+            "confidence": 0.7
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.033858,
+      "latency_s": 39.71900000004098,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.6
+      }
+    }
+  ],
+  "total_cost_usd": 0.033858,
+  "total_latency_s": 39.71900000004098,
+  "mean_groundedness": 1.0,
+  "success_rate": 1.0,
+  "error": ""
+}

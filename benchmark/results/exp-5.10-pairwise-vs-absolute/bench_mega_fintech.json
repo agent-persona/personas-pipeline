@@ -1,0 +1,1974 @@
+{
+  "tenant_id": "bench_mega_fintech",
+  "tenant_hash": "e853eb5ce05b",
+  "industry": "Fintech",
+  "product": "Financial services platform with compliance tooling",
+  "n_records": 500,
+  "n_clusters": 5,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_be4ee3926ac0",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00002",
+        "bench_00000",
+        "bench_00027",
+        "bench_00001",
+        "bench_00038",
+        "bench_00014",
+        "bench_00137",
+        "bench_00042",
+        "bench_00004",
+        "bench_00008",
+        "bench_00011",
+        "bench_00016"
+      ],
+      "persona_name": "Alex, the Infrastructure-First Compliance Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Alex, the Infrastructure-First Compliance Engineer",
+        "summary": "Alex is a platform-focused engineer (Platform Engineer, Staff Engineer, or Senior DevOps Engineer) at a growing fintech or SaaS company who approaches compliance tooling as infrastructure. They demand API reliability, Infrastructure-as-Code integration, and seamless CI/CD workflows\u2014viewing compliance as a scalable system problem rather than a manual process.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US-based tech hubs",
+            "distributed SaaS company locations"
+          ],
+          "education_level": "Bachelor's in Computer Science or related field",
+          "income_bracket": "120k-180k"
+        },
+        "firmographics": {
+          "company_size": "100-500 employees",
+          "industry": "Fintech or Enterprise SaaS",
+          "role_titles": [
+            "Platform Engineer",
+            "Staff Engineer",
+            "Senior DevOps Engineer",
+            "Engineering Manager"
+          ],
+          "tech_stack_signals": [
+            "Terraform",
+            "GitHub Actions",
+            "AWS/GCP infrastructure",
+            "REST/GraphQL APIs",
+            "CI/CD pipelines",
+            "SDK-based tooling"
+          ]
+        },
+        "goals": [
+          "Integrate compliance tooling directly into CI/CD pipelines and Infrastructure-as-Code workflows",
+          "Reduce toil and handoff friction between compliance, engineering, and platform teams",
+          "Build systems that scale reliably as company grows and regulatory complexity increases",
+          "Keep tooling aligned with existing engineering workflows and DevOps philosophy",
+          "Export and reconcile compliance data in bulk for auditing and reporting",
+          "Establish reliable webhooks and event-driven monitoring without pipeline disruption"
+        ],
+        "pains": [
+          "Compliance tooling forces manual configuration that fragments across Terraform, GitHub Actions, and SDKs",
+          "Rate limits on webhook endpoints disrupt CI/CD pipelines and slow down automated checks",
+          "Manual compliance data extraction is tedious and error-prone; need bulk export for reconciliation",
+          "Onboarding new compliance tools requires duplicative setup across Terraform, GitHub Actions, and local SDKs",
+          "GraphQL endpoints have rough edges and incomplete documentation, creating friction for API integration",
+          "Lack of clear versioning or schema guarantees makes it risky to depend on APIs in production systems"
+        ],
+        "motivations": [
+          "Stay efficient by treating compliance as code, not busywork",
+          "Reduce toil and handoff friction between compliance, engineering, and platform teams",
+          "Build systems that scale reliably as company grows and regulatory complexity increases",
+          "Keep tooling aligned with existing engineering workflows and DevOps philosophy",
+          "Ship faster by automating compliance checks in every deployment",
+          "Prove compliance and auditability programmatically without slowing down engineering velocity"
+        ],
+        "objections": [
+          "If the API is unreliable or has undocumented limits, it won't survive production load",
+          "Tools that require manual configuration or don't integrate with Terraform/IaC are non-starters",
+          "Vendor lock-in or proprietary SDKs that can't be version-pinned or reviewed are red flags",
+          "Poor GraphQL or REST schema design signals platform immaturity",
+          "No native GitHub Actions or CI platform integration means we build custom plumbing",
+          "Rate limiting that's not tuned for automation-heavy workloads will choke our pipeline"
+        ],
+        "channels": [
+          "API documentation and reference pages",
+          "GitHub integrations and marketplace",
+          "Terraform registry and IaC communities",
+          "Slack and engineering team discussions",
+          "Internal dashboards and monitoring tools",
+          "DevOps/SRE conferences and communities",
+          "Product documentation and SDK guides"
+        ],
+        "vocabulary": [
+          "Infrastructure as Code",
+          "CI/CD pipeline",
+          "API reliability",
+          "Webhook configuration",
+          "Bulk export",
+          "Rate limits",
+          "GraphQL/REST schema",
+          "Platform engineering",
+          "Terraform integration",
+          "SDK versioning",
+          "Automation",
+          "Toil reduction",
+          "Production load",
+          "Schema design"
+        ],
+        "decision_triggers": [
+          "Direct Terraform provider with clear versioning and pinning support",
+          "Native GitHub Actions integration with documented webhook rate limits",
+          "Reliable REST or GraphQL API with complete schema documentation",
+          "Bulk export capability for reconciliation and auditing workflows",
+          "Proof of production stability through public SLAs or customer case studies",
+          "Clear roadmap for scaling beyond rate-limiting constraints"
+        ],
+        "sample_quotes": [
+          "Rate limits on the webhook endpoint are killing our CI pipeline.",
+          "Your REST API is solid but the GraphQL endpoint has some rough edges.",
+          "We need compliance tooling that works like infrastructure, not a point-and-click console.",
+          "If it doesn't have Terraform support and GitHub Actions integration, we're building custom plumbing.",
+          "Bulk export isn't a nice-to-have\u2014it's how we reconcile compliance data and audit our systems."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Evaluating compliance solutions through an infrastructure lens; looking for tooling that fits into existing DevOps workflows",
+            "key_actions": [
+              "Reviewing API documentation",
+              "Testing REST/GraphQL endpoints",
+              "Checking for Terraform provider support"
+            ],
+            "content_preferences": [
+              "API reference docs",
+              "GitHub integration guides",
+              "Technical architecture overviews",
+              "SDK documentation"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Testing integration points and rate limits; confirming reliability before production adoption",
+            "key_actions": [
+              "Setting up Terraform modules",
+              "Configuring webhooks and CI triggers",
+              "Running bulk export tests",
+              "Reviewing schema completeness"
+            ],
+            "content_preferences": [
+              "Integration guides",
+              "Webhook documentation",
+              "Performance benchmarks",
+              "Rate limit specifications",
+              "Case studies from similar companies"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to standardize on a solution that passes reliability and integration tests; focused on minimizing onboarding friction",
+            "key_actions": [
+              "Implementing SDK in CI/CD pipeline",
+              "Configuring custom dashboards for team monitoring",
+              "Setting up GitHub Actions automation",
+              "Planning rollout across teams"
+            ],
+            "content_preferences": [
+              "Implementation guides",
+              "Troubleshooting docs",
+              "Performance tuning guides",
+              "Team training materials"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Integrate compliance tooling directly into CI/CD pipelines and Infrastructure-as-Code workflows",
+            "record_ids": [
+              "bench_00000",
+              "bench_00004",
+              "bench_00011",
+              "bench_00014"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Reduce toil and handoff friction between compliance, engineering, and platform teams",
+            "record_ids": [
+              "bench_00002",
+              "bench_00027"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Build systems that scale reliably as company grows and regulatory complexity increases",
+            "record_ids": [
+              "bench_00027",
+              "bench_00137"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Keep tooling aligned with existing engineering workflows and DevOps philosophy",
+            "record_ids": [
+              "bench_00000",
+              "bench_00137"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Export and reconcile compliance data in bulk for auditing and reporting",
+            "record_ids": [
+              "bench_00027"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Establish reliable webhooks and event-driven monitoring without pipeline disruption",
+            "record_ids": [
+              "bench_00002",
+              "bench_00042"
+            ],
+            "field_path": "goals.5",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Compliance tooling forces manual configuration that fragments across Terraform, GitHub Actions, and SDKs",
+            "record_ids": [
+              "bench_00000",
+              "bench_00014",
+              "bench_00137"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Rate limits on webhook endpoints disrupt CI/CD pipelines and slow down automated checks",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Manual compliance data extraction is tedious and error-prone; need bulk export for reconciliation",
+            "record_ids": [
+              "bench_00027"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Onboarding new compliance tools requires duplicative setup across Terraform, GitHub Actions, and local SDKs",
+            "record_ids": [
+              "bench_00000",
+              "bench_00014",
+              "bench_00137"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "GraphQL endpoints have rough edges and incomplete documentation, creating friction for API integration",
+            "record_ids": [
+              "bench_00016"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Lack of clear versioning or schema guarantees makes it risky to depend on APIs in production systems",
+            "record_ids": [
+              "bench_00016",
+              "bench_00001"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Stay efficient by treating compliance as code, not busywork",
+            "record_ids": [
+              "bench_00000",
+              "bench_00004"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Reduce toil and handoff friction between compliance, engineering, and platform teams",
+            "record_ids": [
+              "bench_00014"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Build systems that scale reliably as company grows and regulatory complexity increases",
+            "record_ids": [
+              "bench_00027"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Keep tooling aligned with existing engineering workflows and DevOps philosophy",
+            "record_ids": [
+              "bench_00137"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Ship faster by automating compliance checks in every deployment",
+            "record_ids": [
+              "bench_00038"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Prove compliance and auditability programmatically without slowing down engineering velocity",
+            "record_ids": [
+              "bench_00008"
+            ],
+            "field_path": "motivations.5",
+            "confidence": 0.7
+          },
+          {
+            "claim": "If the API is unreliable or has undocumented limits, it won't survive production load",
+            "record_ids": [
+              "bench_00001",
+              "bench_00002"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Tools that require manual configuration or don't integrate with Terraform/IaC are non-starters",
+            "record_ids": [
+              "bench_00000",
+              "bench_00004"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Vendor lock-in or proprietary SDKs that can't be version-pinned or reviewed are red flags",
+            "record_ids": [
+              "bench_00137"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Poor GraphQL or REST schema design signals platform immaturity",
+            "record_ids": [
+              "bench_00016"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.95
+          },
+          {
+            "claim": "No native GitHub Actions or CI platform integration means we build custom plumbing",
+            "record_ids": [
+              "bench_00014",
+              "bench_00038"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Rate limiting that's not tuned for automation-heavy workloads will choke our pipeline",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "objections.5",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.037025,
+      "latency_s": 43.125,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    },
+    {
+      "cluster_id": "clust_e7ad73cf46c7",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00076",
+        "bench_00003",
+        "bench_00009",
+        "bench_00039",
+        "bench_00012",
+        "bench_00020",
+        "bench_00040",
+        "bench_00057",
+        "bench_00078",
+        "bench_00099",
+        "bench_00104",
+        "bench_00125"
+      ],
+      "persona_name": "Rajesh, the Compliance-First Security Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Rajesh, the Compliance-First Security Engineer",
+        "summary": "Rajesh is a security-focused engineer at a mid-to-large fintech or SaaS organization who spends significant time reviewing anomalies, policies, and incidents. He views security as a compliance requirement and operational necessity, not a checkbox\u2014driven by the high stakes of regulated environments where per-tenant isolation and automated threat detection are non-negotiable.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "North America",
+            "Asia-Pacific"
+          ],
+          "education_level": "Bachelor's in Computer Science or Information Security",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "100-500+",
+          "industry": "SaaS, Enterprise Software, Financial Services",
+          "role_titles": [
+            "Security Engineer",
+            "CISO",
+            "Infrastructure Security Lead"
+          ],
+          "tech_stack_signals": [
+            "log aggregation systems",
+            "threat intelligence platforms",
+            "vulnerability scanning tools",
+            "policy management systems"
+          ]
+        },
+        "goals": [
+          "Automate incident response workflows to reduce mean time to response (MTTR)",
+          "Implement per-tenant data isolation to meet regulatory compliance requirements",
+          "Establish automated threat correlation across heterogeneous log sources",
+          "Continuously monitor and review vulnerability scan results without manual overhead",
+          "Build and enforce consistent security policies across the organization"
+        ],
+        "pains": [
+          "Manual incident response processes are slow and error-prone when alerts require immediate action",
+          "Correlating threats across multiple log sources requires expensive manual investigation",
+          "Compliance audits demand rigorous per-tenant isolation validation, but current tooling is opaque",
+          "Vulnerability scan output generates alert fatigue without intelligent prioritization",
+          "Policy configuration and enforcement are fragmented across systems, creating compliance gaps"
+        ],
+        "motivations": [
+          "Deep commitment to preventing data breaches and protecting customer trust in regulated industries",
+          "Need to demonstrate compliance posture to auditors and regulatory bodies (SOC 2, PCI-DSS, etc.)",
+          "Desire to shift from reactive incident response to proactive threat detection",
+          "Drive to reduce toil through automation so the team can focus on strategic security improvements",
+          "Professional accountability for security outcomes in high-stakes environments"
+        ],
+        "objections": [
+          "Won't adopt solutions that can't guarantee per-tenant data isolation in regulated environments",
+          "Skeptical of tools that create additional manual work instead of reducing operational burden",
+          "Concerns about vendor lock-in with proprietary threat correlation engines",
+          "Requires proof that automated response won't trigger false positives and create worse problems",
+          "Budget constraints mean solutions must demonstrably reduce headcount or FTE costs"
+        ],
+        "channels": [
+          "Security-focused Slack communities and Discord servers",
+          "Email newsletters (threat intelligence, compliance, security engineering)",
+          "In-app security platform dashboards and console",
+          "Direct outreach via Intercom/support chat during active incidents",
+          "Security conferences (Black Hat, RSA Conference)",
+          "GitHub repositories and open-source security communities",
+          "Internal documentation and runbook wikis"
+        ],
+        "vocabulary": [
+          "per-tenant isolation",
+          "incident response runbooks",
+          "automated threat correlation",
+          "vulnerability scan",
+          "access anomaly",
+          "policy configuration",
+          "regulated clients",
+          "MTTR (mean time to response)",
+          "log sources",
+          "compliance posture",
+          "alert fatigue",
+          "security controls",
+          "threat detection"
+        ],
+        "decision_triggers": [
+          "A critical incident occurs that exposes gaps in current tooling and response automation",
+          "Upcoming compliance audit (SOC 2, ISO 27001) forces urgent security control improvements",
+          "Team experiences significant alert fatigue from manual vulnerability triage",
+          "Competitive threat or industry breach case study demonstrates need for faster incident response",
+          "Executive sponsor (CISO or CTO) mandates security automation as strategic initiative",
+          "Vendor platform adds multi-tenant isolation guarantees or automated threat correlation capability"
+        ],
+        "sample_quotes": [
+          "Per-tenant isolation is non-negotiable for regulated clients.",
+          "Incident response runbooks should trigger from alerts automatically.",
+          "We need automated threat correlation across log sources.",
+          "Our current process requires too much manual investigation\u2014we need automation that scales.",
+          "Compliance auditors want proof that our isolation is real, not just promised."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Experiencing pain from manual security processes but unsure if better tooling exists",
+            "key_actions": [
+              "Reading security newsletters and threat intelligence reports",
+              "Attending security conferences",
+              "Benchmarking against peer organizations"
+            ],
+            "content_preferences": [
+              "Case studies of incident response automation",
+              "Compliance requirements checklists",
+              "Peer reviews of security tools"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Actively evaluating solutions and building internal business case for tooling changes",
+            "key_actions": [
+              "Requesting product demos with emphasis on automation and multi-tenancy",
+              "Creating RFP or evaluation criteria",
+              "Testing POC in lab environment"
+            ],
+            "content_preferences": [
+              "Technical architecture documentation",
+              "Compliance attestations (SOC 2, PCI-DSS)",
+              "ROI calculators and cost-benefit analyses",
+              "Integration guides with existing log systems"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to buy but requires executive alignment and proof of no disruption to current operations",
+            "key_actions": [
+              "Finalizing procurement agreements",
+              "Planning migration and rollout strategy",
+              "Setting up integration with incident response workflows"
+            ],
+            "content_preferences": [
+              "Implementation playbooks",
+              "Security best practices from reference customers",
+              "SLA guarantees and uptime documentation"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Requires automated incident response runbooks triggered from alerts",
+            "record_ids": [
+              "bench_00009"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Per-tenant isolation is a hard requirement for compliance",
+            "record_ids": [
+              "bench_00076"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Needs automated threat correlation across multiple log sources",
+            "record_ids": [
+              "bench_00057"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Regularly reviews vulnerability scan results to manage security posture",
+            "record_ids": [
+              "bench_00012",
+              "bench_00020",
+              "bench_00099"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Focused on policy configuration and compliance enforcement",
+            "record_ids": [
+              "bench_00003",
+              "bench_00078"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Manual incident response is slow and creates operational burden",
+            "record_ids": [
+              "bench_00009",
+              "bench_00040"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Log correlation across sources is labor-intensive and manual",
+            "record_ids": [
+              "bench_00057"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Compliance audits require proof of per-tenant isolation",
+            "record_ids": [
+              "bench_00076"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Alert fatigue from vulnerability scanning without intelligent prioritization",
+            "record_ids": [
+              "bench_00012",
+              "bench_00099"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Policy enforcement is fragmented and creates compliance risks",
+            "record_ids": [
+              "bench_00003",
+              "bench_00078"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Works in regulated fintech/SaaS environments with high compliance stakes",
+            "record_ids": [
+              "bench_00076",
+              "bench_00039"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Focused on meeting auditor and regulator requirements",
+            "record_ids": [
+              "bench_00076"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Seeks proactive threat detection over reactive firefighting",
+            "record_ids": [
+              "bench_00009",
+              "bench_00040",
+              "bench_00057"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Driven to automate manual security work to reduce team toil",
+            "record_ids": [
+              "bench_00057"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Accountable for security outcomes in high-stakes environments",
+            "record_ids": [
+              "bench_00104"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Will not adopt solutions without strong per-tenant isolation guarantees",
+            "record_ids": [
+              "bench_00076"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Rejects tools that create additional manual work",
+            "record_ids": [
+              "bench_00009",
+              "bench_00057"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Concerned about proprietary lock-in and vendor dependencies",
+            "record_ids": [
+              "bench_00057"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Requires evidence that automation won't cause false positives",
+            "record_ids": [
+              "bench_00009",
+              "bench_00040"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Cost sensitivity and need for ROI justification",
+            "record_ids": [
+              "bench_00039",
+              "bench_00104"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Security Engineer or CISO role at mid-to-large company",
+            "record_ids": [
+              "bench_00039",
+              "bench_00104"
+            ],
+            "field_path": "firmographics.role_titles.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Works at companies in 100-500+ employee range",
+            "record_ids": [
+              "bench_00039",
+              "bench_00104"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Operates in SaaS, Enterprise Software, and Financial Services",
+            "record_ids": [
+              "bench_00039",
+              "bench_00104"
+            ],
+            "field_path": "firmographics.industry",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Uses log aggregation, threat intelligence, and vulnerability scanning platforms",
+            "record_ids": [
+              "bench_00057",
+              "bench_00012",
+              "bench_00099"
+            ],
+            "field_path": "firmographics.tech_stack_signals.0",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.01898,
+      "latency_s": 22.92200000002049,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 5.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.6
+      }
+    },
+    {
+      "cluster_id": "clust_a7cb0598f6f9",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00026",
+        "bench_00006",
+        "bench_00025",
+        "bench_00005",
+        "bench_00015",
+        "bench_00030",
+        "bench_00045",
+        "bench_00048",
+        "bench_00052",
+        "bench_00053",
+        "bench_00055",
+        "bench_00062"
+      ],
+      "persona_name": "Rachel, the Velocity-Driven Sales Leader",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Rachel, the Velocity-Driven Sales Leader",
+        "summary": "Rachel is a sales manager or account executive at a mid-market B2B company (50-500 employees) who lives and dies by pipeline velocity and deal closure. She spends significant time in CRM activities, contact management, and pipeline review\u2014and explicitly seeks tools that integrate seamlessly with Salesforce without adding friction. She's driven by quota attainment, ROI justification to leadership, and the need to coordinate her team's selling efforts efficiently.",
+        "demographics": {
+          "age_range": "30-45",
+          "gender_distribution": "predominantly female",
+          "location_signals": [
+            "North America",
+            "urban centers"
+          ],
+          "education_level": "bachelor's degree or higher",
+          "income_bracket": "75K-120K"
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "SaaS, Enterprise Software, Fintech",
+          "role_titles": [
+            "Sales Manager",
+            "Account Executive",
+            "BDR Lead"
+          ],
+          "tech_stack_signals": [
+            "Salesforce",
+            "proposal tools",
+            "call logging",
+            "pipeline management systems"
+          ]
+        },
+        "goals": [
+          "Increase deal velocity and close rate by streamlining proposal and call workflows",
+          "Reduce time spent on manual CRM data entry and contact management tasks",
+          "Close more deals by maintaining better visibility into pipeline stages",
+          "Build stronger customer relationships through organized contact management and call tracking",
+          "Justify ROI of sales technology investments to executive leadership",
+          "Enable her team to focus on selling rather than administrative work"
+        ],
+        "pains": [
+          "Spends excessive time manually logging calls and updating contact records in Salesforce",
+          "Struggles with pipeline visibility\u2014gaps in deal stage tracking create forecasting blind spots",
+          "Frustrated by tools that don't integrate natively with Salesforce, forcing workarounds and manual syncs",
+          "Overwhelmed by proposal creation and send workflows that require multiple tool hops",
+          "Lacks integrated compliance tooling visibility within existing sales workflows",
+          "Can't easily coordinate team activities or track customer interaction history across channels"
+        ],
+        "motivations": [
+          "Driven by quota attainment and the pressure to demonstrate consistent deal closure",
+          "Motivated by quota attainment and deal closure velocity",
+          "Seeks tools that reduce friction and enable faster sales cycles",
+          "Values automation and integration to free up time for strategic selling activities",
+          "Driven to prove ROI on sales technology investments to leadership"
+        ],
+        "objections": [
+          "Worried about vendor lock-in and complex tool migrations",
+          "Concerned that adopting another standalone tool will fragment her tech stack further",
+          "Hesitant to adopt another tool if it doesn't integrate with existing Salesforce infrastructure",
+          "May resist change if onboarding requires significant time investment from her team",
+          "Skeptical of vendors that can't demonstrate immediate productivity gains or cost savings"
+        ],
+        "channels": [
+          "Salesforce (primary CRM interface)",
+          "Email and Outlook",
+          "Slack (team communication)",
+          "LinkedIn (prospecting and networking)",
+          "Phone/call logging tools",
+          "Proposal and document sharing platforms",
+          "Sales analytics dashboards"
+        ],
+        "vocabulary": [
+          "pipeline velocity",
+          "deal closure",
+          "Salesforce sync",
+          "integration",
+          "compliance visibility",
+          "forecasting accuracy",
+          "call logging",
+          "proposal workflow",
+          "team coordination",
+          "ROI justification",
+          "quota attainment",
+          "sales efficiency",
+          "contact management"
+        ],
+        "decision_triggers": [
+          "Native Salesforce integration without third-party middleware",
+          "Demonstrated time savings (call logging, proposal creation, data entry)",
+          "Case studies from peer companies showing quota impact or deal velocity gains",
+          "Compliance feature built-in (not bolted on), especially for fintech regulations",
+          "Simple, 2-week or less onboarding with minimal disruption to team",
+          "Clear ROI model she can present to finance or executive stakeholders"
+        ],
+        "sample_quotes": [
+          "Does it sync with Salesforce without Zapier? That's the first question I ask.",
+          "I don't have time to learn another tool\u2014my team is already maxed out.",
+          "If it doesn't cut our call logging time in half, what's the point?",
+          "Compliance is built into our business. If your tool can't speak to that, we're not interested.",
+          "Show me the ROI. I need to justify this to my CFO."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Recognizing that current manual processes are slowing down pipeline velocity and creating team friction",
+            "key_actions": [
+              "Searching for workflow bottlenecks",
+              "browsing CRM activities and pipeline dashboards",
+              "asking peers about tooling"
+            ],
+            "content_preferences": [
+              "Competitive benchmarks",
+              "workflow walkthroughs",
+              "webinars on sales efficiency",
+              "peer case studies"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Actively comparing integration-first solutions that won't fragment her Salesforce stack and can demonstrate time savings",
+            "key_actions": [
+              "Testing call logging and proposal workflows",
+              "reviewing product demos",
+              "checking Salesforce app marketplace ratings",
+              "requesting integration specs"
+            ],
+            "content_preferences": [
+              "Technical integration guides",
+              "ROI calculators",
+              "side-by-side feature comparisons",
+              "customer testimonials from similar industries"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if implementation is fast, compliance-ready, and Salesforce-native",
+            "key_actions": [
+              "Piloting with a small team",
+              "finalizing contract and SLAs",
+              "scheduling onboarding",
+              "defining success metrics with leadership"
+            ],
+            "content_preferences": [
+              "Implementation roadmaps",
+              "best practice guides",
+              "executive summary for leadership sign-off"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Increase deal velocity and close rate by streamlining proposal and call workflows",
+            "record_ids": [
+              "bench_00015",
+              "bench_00052",
+              "bench_00062"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Reduce time spent on manual CRM data entry and contact management tasks",
+            "record_ids": [
+              "bench_00006",
+              "bench_00030",
+              "bench_00045",
+              "bench_00053"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Close more deals by maintaining better visibility into pipeline stages",
+            "record_ids": [
+              "bench_00025"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Build stronger customer relationships through organized contact management and call tracking",
+            "record_ids": [
+              "bench_00026",
+              "bench_00055",
+              "bench_00062"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Justify ROI of sales technology investments to executive leadership",
+            "record_ids": [
+              "bench_00026"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Enable her team to focus on selling rather than administrative work",
+            "record_ids": [
+              "bench_00026",
+              "bench_00055"
+            ],
+            "field_path": "goals.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Spends excessive time manually logging calls and updating contact records in Salesforce",
+            "record_ids": [
+              "bench_00026",
+              "bench_00055",
+              "bench_00062"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Struggles with pipeline visibility\u2014gaps in deal stage tracking create forecasting blind spots",
+            "record_ids": [
+              "bench_00025",
+              "bench_00005"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Frustrated by tools that don't integrate natively with Salesforce, forcing workarounds and manual syncs",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Overwhelmed by proposal creation and send workflows that require multiple tool hops",
+            "record_ids": [
+              "bench_00015",
+              "bench_00052"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Lacks integrated compliance tooling visibility within existing sales workflows",
+            "record_ids": [
+              "bench_00048",
+              "bench_00055"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Can't easily coordinate team activities or track customer interaction history across channels",
+            "record_ids": [
+              "bench_00026",
+              "bench_00055"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Driven by quota attainment and the pressure to demonstrate consistent deal closure",
+            "record_ids": [
+              "bench_00026",
+              "bench_00045"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivated by quota attainment and deal closure velocity",
+            "record_ids": [
+              "bench_00015",
+              "bench_00025"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Seeks tools that reduce friction and enable faster sales cycles",
+            "record_ids": [
+              "bench_00048",
+              "bench_00015",
+              "bench_00052"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Values automation and integration to free up time for strategic selling activities",
+            "record_ids": [
+              "bench_00026",
+              "bench_00045",
+              "bench_00062"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Driven to prove ROI on sales technology investments to leadership",
+            "record_ids": [
+              "bench_00026"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Worried about vendor lock-in and complex tool migrations",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Concerned that adopting another standalone tool will fragment her tech stack further",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Hesitant to adopt another tool if it doesn't integrate with existing Salesforce infrastructure",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "May resist change if onboarding requires significant time investment from her team",
+            "record_ids": [
+              "bench_00026",
+              "bench_00055"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Skeptical of vendors that can't demonstrate immediate productivity gains or cost savings",
+            "record_ids": [
+              "bench_00026"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.75
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 3,
+      "cost_usd": 0.051501,
+      "latency_s": 62.360000000102445,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 3.0,
+        "coherent": 4.0,
+        "actionable": 5.0,
+        "voice_fidelity": 4.0,
+        "overall": 4.0
+      }
+    },
+    {
+      "cluster_id": "clust_5bd41f0f1dbb",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00013",
+        "bench_00010",
+        "bench_00017",
+        "bench_00007",
+        "bench_00070",
+        "bench_00018",
+        "bench_00019",
+        "bench_00043",
+        "bench_00044",
+        "bench_00049",
+        "bench_00051",
+        "bench_00054"
+      ],
+      "persona_name": "Samantha Chen, Risk & Compliance Officer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Samantha Chen, Risk & Compliance Officer",
+        "summary": "Samantha is a mid-career compliance professional at a growth-stage fintech firm who owns audit readiness, SOC 2 certification, and access control processes. She spends significant time reviewing policies, exporting compliance reports, and managing audit logs\u2014with session durations consistently exceeding 15 minutes\u2014because she needs to demonstrate organizational readiness to external auditors and maintain customer trust through transparent control documentation.",
+        "demographics": {
+          "age_range": "35-44",
+          "gender_distribution": "balanced",
+          "location_signals": [
+            "United States",
+            "major financial hubs"
+          ],
+          "education_level": "Bachelor's degree or higher (compliance, finance, or risk management)",
+          "income_bracket": "$85,000 - $130,000"
+        },
+        "firmographics": {
+          "company_size": "100-500 employees",
+          "industry": "Fintech",
+          "role_titles": [
+            "Compliance Officer",
+            "Risk Analyst",
+            "Compliance Manager",
+            "Internal Audit Lead"
+          ],
+          "tech_stack_signals": [
+            "SOC 2 compliance frameworks",
+            "access management tools",
+            "audit logging systems",
+            "policy management platforms"
+          ]
+        },
+        "goals": [
+          "Achieve and maintain SOC 2 Type II certification to satisfy customer requirements",
+          "Streamline access review processes to reduce manual effort and audit cycle time",
+          "Build credibility as a compliance leader within the organization",
+          "Ensure customer trust through transparent and comprehensive compliance practices",
+          "Generate executive-ready compliance reports that demonstrate control effectiveness",
+          "Reduce the time spent on repetitive compliance documentation tasks"
+        ],
+        "pains": [
+          "Manually reviewing and exporting compliance reports is time-consuming and error-prone",
+          "Access reviews require tedious cross-referencing of user roles, permissions, and system logs",
+          "SOC 2 checklists involve extensive documentation that's difficult to keep current across teams",
+          "Audit logs generate overwhelming volumes of data that are hard to contextualize and summarize",
+          "Lack of visibility into policy compliance status across the organization",
+          "Pressure to respond quickly to auditor requests while maintaining daily operational compliance"
+        ],
+        "motivations": [
+          "Prevent security incidents and regulatory violations that could harm customer data",
+          "Gain organizational respect by owning the compliance process end-to-end",
+          "Build credibility as a compliance leader within the organization",
+          "Ensure customer trust through transparent and comprehensive compliance practices"
+        ],
+        "objections": [
+          "Concern that new tools might require extensive training or slow down current workflows",
+          "Difficulty justifying cost if ROI isn't clear in terms of time saved or audit readiness",
+          "Hesitation about cloud-based compliance tools if data sovereignty is a customer concern",
+          "Concerns that over-automation might obscure important compliance details or create a false sense of security"
+        ],
+        "channels": [
+          "Email and direct communication with auditors",
+          "Internal compliance dashboards and reporting tools",
+          "Compliance management software and audit platforms",
+          "In-house policy and documentation repositories",
+          "Compliance webinars and training platforms"
+        ],
+        "vocabulary": [
+          "SOC 2 certification",
+          "audit readiness",
+          "access control",
+          "control effectiveness",
+          "audit scope",
+          "compliance framework",
+          "data governance",
+          "risk mitigation",
+          "control testing",
+          "evidence collection",
+          "auditor requirements",
+          "policy attestation",
+          "incident response"
+        ],
+        "decision_triggers": [
+          "An upcoming external audit or SOC 2 re-certification deadline",
+          "A security incident or near-miss that exposes process gaps",
+          "Customer requests for compliance evidence or audit reports",
+          "Leadership pressure to reduce compliance team headcount without sacrificing audit readiness",
+          "Discovery that a competitor achieved certification faster or more efficiently",
+          "A compliance failure at a peer organization that creates urgency"
+        ],
+        "sample_quotes": [
+          "I need to be able to pull a compliance report at a moment's notice when our auditors ask for evidence\u2014we can't afford delays.",
+          "Our access reviews are becoming a bottleneck. I'm spending hours manually cross-checking permissions instead of focusing on strategic risk.",
+          "SOC 2 is table stakes for closing enterprise deals. If we can't show auditor-ready documentation, we lose deals.",
+          "My job is to make sure our controls are real and transparent, not just on paper. I need tools that give me confidence in what I'm reporting.",
+          "If a solution makes compliance easier but hides the details, that's not helpful\u2014I need to understand what's actually happening in our systems."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Samantha recognizes that current manual processes don't scale as the organization grows. She's aware that competitors might have more efficient compliance stacks.",
+            "key_actions": [
+              "Researching compliance automation tools",
+              "Benchmarking other fintech firms' audit processes",
+              "Attending compliance webinars or conferences"
+            ],
+            "content_preferences": [
+              "Case studies from peer fintech companies",
+              "Compliance framework whitepapers",
+              "Tool comparison guides",
+              "Auditor perspective articles"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Samantha is actively evaluating solutions that can reduce manual effort while maintaining control quality and auditability. She's weighing trade-offs between automation, cost, and risk.",
+            "key_actions": [
+              "Requesting product demos",
+              "Speaking with peer compliance officers",
+              "Evaluating vendor security practices",
+              "Assessing integration with existing tools"
+            ],
+            "content_preferences": [
+              "ROI calculators and TCO analyses",
+              "Customer testimonials from fintech firms",
+              "Data security and compliance certifications",
+              "Implementation timeline and support options"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Samantha is ready to commit if she's convinced the solution will reduce her team's workload, pass auditor scrutiny, and integrate cleanly with existing systems without introducing new risks.",
+            "key_actions": [
+              "Negotiating pricing and implementation terms",
+              "Setting up pilot or proof-of-concept",
+              "Drafting internal business case for leadership",
+              "Planning change management and training"
+            ],
+            "content_preferences": [
+              "Contract templates and SLA details",
+              "Implementation playbooks",
+              "Support and escalation procedures",
+              "Success metrics and KPI dashboards"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Compliance officer role focused on SOC 2 and audit processes",
+            "record_ids": [
+              "bench_00013",
+              "bench_00019",
+              "bench_00043"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Works at 100-500 employee fintech companies",
+            "record_ids": [
+              "bench_00013",
+              "bench_00070",
+              "bench_00019",
+              "bench_00043"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Achieves and maintains SOC 2 Type II certification to satisfy customer requirements",
+            "record_ids": [
+              "bench_00017",
+              "bench_00018",
+              "bench_00049",
+              "bench_00054"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Streamlines access review processes to reduce manual effort",
+            "record_ids": [
+              "bench_00010",
+              "bench_00019",
+              "bench_00043",
+              "bench_00044"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Build credibility as a compliance leader within the organization",
+            "record_ids": [
+              "bench_00019",
+              "bench_00043",
+              "bench_00070"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Ensure customer trust through transparent and comprehensive compliance practices",
+            "record_ids": [
+              "bench_00013",
+              "bench_00051"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Generate executive-ready compliance reports that demonstrate control effectiveness",
+            "record_ids": [
+              "bench_00013",
+              "bench_00051"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Reduce time spent on repetitive compliance documentation tasks",
+            "record_ids": [
+              "bench_00070",
+              "bench_00007"
+            ],
+            "field_path": "goals.5",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Manually exporting compliance reports is time-consuming",
+            "record_ids": [
+              "bench_00013",
+              "bench_00051"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Access reviews require tedious cross-referencing of permissions and logs",
+            "record_ids": [
+              "bench_00010",
+              "bench_00019",
+              "bench_00043",
+              "bench_00044"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "SOC 2 checklists involve extensive documentation that's difficult to maintain",
+            "record_ids": [
+              "bench_00017",
+              "bench_00018",
+              "bench_00049",
+              "bench_00054"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Audit logs generate overwhelming volumes of data hard to contextualize",
+            "record_ids": [
+              "bench_00007"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Lack of visibility into policy compliance status across the organization",
+            "record_ids": [
+              "bench_00070"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Pressure to respond quickly to auditor requests while maintaining daily compliance",
+            "record_ids": [
+              "bench_00013",
+              "bench_00019",
+              "bench_00070"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Prevent security incidents and regulatory violations",
+            "record_ids": [
+              "bench_00010",
+              "bench_00017",
+              "bench_00019"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Gain organizational respect by owning compliance end-to-end",
+            "record_ids": [
+              "bench_00070",
+              "bench_00043"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Build credibility as a compliance leader within the organization",
+            "record_ids": [
+              "bench_00013",
+              "bench_00019",
+              "bench_00043"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Ensure customer trust through transparent and comprehensive compliance practices",
+            "record_ids": [
+              "bench_00013",
+              "bench_00051"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Concern that new tools might require extensive training",
+            "record_ids": [
+              "bench_00019",
+              "bench_00043"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Concerned about workflow disruption from implementation",
+            "record_ids": [
+              "bench_00070"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Difficulty justifying cost if ROI isn't clear in terms of time saved or audit readiness",
+            "record_ids": [
+              "bench_00013",
+              "bench_00051"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Hesitation about cloud-based compliance tools if data sovereignty is a customer concern",
+            "record_ids": [
+              "bench_00019",
+              "bench_00043"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Concerns that over-automation might obscure important compliance details",
+            "record_ids": [
+              "bench_00007",
+              "bench_00070"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.8
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.039283,
+      "latency_s": 47.0,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 4.0,
+        "coherent": 5.0,
+        "actionable": 5.0,
+        "voice_fidelity": 5.0,
+        "overall": 4.0
+      }
+    },
+    {
+      "cluster_id": "clust_5d34f2765a9d",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00022",
+        "bench_00102",
+        "bench_00033",
+        "bench_00032",
+        "bench_00060",
+        "bench_00034",
+        "bench_00035",
+        "bench_00046",
+        "bench_00050",
+        "bench_00067",
+        "bench_00080",
+        "bench_00087"
+      ],
+      "persona_name": "Data Engineer Priya",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Data Engineer Priya",
+        "summary": "Priya is a Data Engineer at a mid-market fintech or SaaS company responsible for building and maintaining data pipelines, training models, and creating analytics infrastructure. She spends extended sessions working through data imports, model training, and pipeline monitoring, and needs robust tools to manage ad-hoc analytics requests while maintaining data quality and compliance standards.",
+        "demographics": {
+          "age_range": "25-40",
+          "gender_distribution": "gender not specified in data",
+          "location_signals": [
+            "North America (inferred from fintech/SaaS ecosystem)"
+          ],
+          "education_level": "Bachelor's degree or higher in computer science, data science, or engineering",
+          "income_bracket": null
+        },
+        "firmographics": {
+          "company_size": "100-500 employees",
+          "industry": "Fintech and SaaS",
+          "role_titles": [
+            "Data Engineer",
+            "ML Engineer"
+          ],
+          "tech_stack_signals": [
+            "Model training frameworks",
+            "Query builders",
+            "Pipeline orchestration tools",
+            "Dashboard creation platforms",
+            "Data import/ETL systems"
+          ]
+        },
+        "goals": [
+          "Build and maintain reliable, scalable data pipelines that integrate multiple data sources",
+          "Train machine learning models efficiently while minimizing computational overhead",
+          "Create self-serve analytics dashboards so non-technical stakeholders can access insights independently",
+          "Establish data quality standards and ensure compliance with fintech regulations",
+          "Reduce time spent on manual data transformation and ad-hoc reporting"
+        ],
+        "pains": [
+          "Long session times (27+ minutes average) needed to complete data import and pipeline tasks",
+          "Pressure to support multiple concurrent analytics requests without affecting production systems",
+          "Stakeholders requesting ad-hoc dashboards without clear requirements",
+          "Complex approval workflows delaying compliance sign-off in fintech environments",
+          "Managing model training and retraining cycles across different business units",
+          "Difficulty debugging data quality issues in production",
+          "Balancing technical debt with immediate business demands from non-technical teams"
+        ],
+        "motivations": [
+          "Recognition as the go-to expert for data infrastructure and analytics within the organization",
+          "Ability to automate repetitive tasks and shift to higher-value analytical work",
+          "Confidence that data pipelines run reliably with minimal manual intervention",
+          "Empowerment to say no to poorly-scoped requests by providing self-serve alternatives",
+          "Career advancement through mastering modern data stack and ML engineering practices"
+        ],
+        "objections": [
+          "Tool requires learning yet another query language or paradigm when SQL already works",
+          "Won't adopt if it requires retraining the whole team on a new paradigm",
+          "Concerns about data security and audit trails in a fintech-regulated environment",
+          "Performance overhead will slow down production pipelines",
+          "Cannot integrate with existing data warehouse and BI tools already in use"
+        ],
+        "channels": [
+          "Google Analytics (product self-service exploration)",
+          "HubSpot (sales engagement and product inquiries)",
+          "Intercom (in-app support and feature discovery)",
+          "Internal Slack/Teams channels with data team",
+          "Technical documentation and SQL/Python forums",
+          "Vendor product demos and technical webinars"
+        ],
+        "vocabulary": [
+          "data pipeline",
+          "model training",
+          "query builder",
+          "dashboard",
+          "dataset import",
+          "compliance",
+          "data quality",
+          "ad-hoc requests",
+          "production monitoring",
+          "self-serve analytics",
+          "ETL",
+          "data lineage",
+          "stakeholder alignment"
+        ],
+        "decision_triggers": [
+          "Clear demonstration that the tool reduces time spent on manual data imports by 30%+",
+          "Proof of compliance certifications (SOC2, HIPAA, or fintech-specific standards)",
+          "Evidence that query builder or dashboard features integrate seamlessly with existing SQL/BI stack",
+          "Success case studies from other mid-market fintech or SaaS companies",
+          "Free trial that lets her test the tool on a non-critical dataset without approval bottlenecks",
+          "Dedicated technical support for the onboarding and integration phase"
+        ],
+        "sample_quotes": [
+          "I spend half my week just fielding dashboard requests with vague requirements. I need something that lets business users self-serve.",
+          "Model training and monitoring have to be bulletproof\u2014one bad data quality issue and we've got a compliance nightmare on our hands.",
+          "Our pipeline runs daily and any added latency will cascade into downstream systems. The tool has to be performant out of the box.",
+          "If I have to retrain my entire team just to use a new data platform, the business case falls apart immediately."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Skeptical but curious\u2014aware that data infrastructure challenges exist but unsure if a new vendor tool can solve them better than current stack",
+            "key_actions": [
+              "Browsing product pages (/ml/training, /analytics/queries, /data/import) to understand core capabilities",
+              "Checking pricing and deployment models (cloud vs. self-hosted)",
+              "Reviewing security/compliance documentation for fintech requirements"
+            ],
+            "content_preferences": [
+              "Technical whitepapers comparing feature parity with SQL and existing BI tools",
+              "Compliance certifications and audit reports",
+              "Performance benchmarks against current tools",
+              "Customer testimonials from fintech/SaaS peers"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Actively evaluating whether the tool addresses specific pain points (pipeline monitoring, ad-hoc dashboards, model training) without introducing risk",
+            "key_actions": [
+              "Spending 20\u201330 minute sessions in the query builder and dashboard creation tools",
+              "Testing data import capabilities with sample datasets",
+              "Running pilot pipelines in non-production environments",
+              "Discussing integration points with the existing data warehouse and BI team"
+            ],
+            "content_preferences": [
+              "Step-by-step integration guides with their existing tech stack",
+              "Troubleshooting guides for common data quality issues",
+              "Webinars or office hours with technical architects",
+              "Detailed API documentation and SDK examples",
+              "Change management resources for team adoption"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if risk is mitigated\u2014needs executive buy-in on cost, technical validation that integration is feasible, and assurance that compliance requirements are met",
+            "key_actions": [
+              "Scheduling a proof-of-concept (POC) with a vendor engineer",
+              "Drafting a business case for leadership emphasizing time savings and compliance benefits",
+              "Negotiating support SLAs and onboarding timelines",
+              "Planning rollout strategy and team training schedule"
+            ],
+            "content_preferences": [
+              "ROI calculators and time-savings estimates",
+              "References from similar companies willing to do a reference call",
+              "Contract templates and legal/compliance review documentation",
+              "Dedicated onboarding and technical support plans",
+              "Post-launch success metrics and monitoring dashboards"
+            ]
+          }
+        ],
+        "source_evidence": [
+          {
+            "claim": "Build and maintain reliable, scalable data pipelines that integrate multiple data sources",
+            "record_ids": [
+              "bench_00032",
+              "bench_00087",
+              "bench_00035"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Train machine learning models efficiently while minimizing computational overhead",
+            "record_ids": [
+              "bench_00022",
+              "bench_00046",
+              "bench_00080"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Create self-serve analytics dashboards so non-technical stakeholders can access insights independently",
+            "record_ids": [
+              "bench_00060",
+              "bench_00102"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Establish data quality standards and ensure compliance with fintech regulations",
+            "record_ids": [
+              "bench_00032",
+              "bench_00035",
+              "bench_00046"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Reduce time spent on manual data transformation and ad-hoc reporting",
+            "record_ids": [
+              "bench_00033",
+              "bench_00034",
+              "bench_00050",
+              "bench_00067"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Long session times (27+ minutes average) needed to complete data import and pipeline tasks",
+            "record_ids": [
+              "bench_00033",
+              "bench_00067",
+              "bench_00060",
+              "bench_00102"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Pressure to support multiple concurrent analytics requests without affecting production systems",
+            "record_ids": [
+              "bench_00032",
+              "bench_00087"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Stakeholders requesting ad-hoc dashboards without clear requirements",
+            "record_ids": [
+              "bench_00060",
+              "bench_00102"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Complex approval workflows delaying compliance sign-off in fintech environments",
+            "record_ids": [
+              "bench_00046"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Managing model training and retraining cycles across different business units",
+            "record_ids": [
+              "bench_00022",
+              "bench_00046",
+              "bench_00080"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Difficulty debugging data quality issues in production",
+            "record_ids": [
+              "bench_00087",
+              "bench_00032",
+              "bench_00035"
+            ],
+            "field_path": "pains.6",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Balancing technical debt with immediate business demands from non-technical teams",
+            "record_ids": [
+              "bench_00060",
+              "bench_00102",
+              "bench_00046"
+            ],
+            "field_path": "pains.7",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Recognition as the go-to expert for data infrastructure and analytics within the organization",
+            "record_ids": [
+              "bench_00022",
+              "bench_00032",
+              "bench_00035",
+              "bench_00046",
+              "bench_00060"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Ability to automate repetitive tasks and shift to higher-value analytical work",
+            "record_ids": [
+              "bench_00033",
+              "bench_00034",
+              "bench_00050",
+              "bench_00067"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Confidence that data pipelines run reliably with minimal manual intervention",
+            "record_ids": [
+              "bench_00032",
+              "bench_00087"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Empowerment to say no to poorly-scoped requests by providing self-serve alternatives",
+            "record_ids": [
+              "bench_00060",
+              "bench_00102"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Career advancement through mastering modern data stack and ML engineering practices",
+            "record_ids": [
+              "bench_00022",
+              "bench_00046",
+              "bench_00080",
+              "bench_00102"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Tool requires learning yet another query language or paradigm when SQL already works",
+            "record_ids": [
+              "bench_00102"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Won't adopt if it requires retraining the whole team on a new paradigm",
+            "record_ids": [
+              "bench_00032",
+              "bench_00035",
+              "bench_00046"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Concerns about data security and audit trails in a fintech-regulated environment",
+            "record_ids": [
+              "bench_00046"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Performance overhead will slow down production pipelines",
+            "record_ids": [
+              "bench_00022",
+              "bench_00032",
+              "bench_00087"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Cannot integrate with existing data warehouse and BI tools already in use",
+            "record_ids": [
+              "bench_00060",
+              "bench_00102"
+            ],
+            "field_path": "objections.4",
+            "confidence": 0.8
+          }
+        ]
+      },
+      "groundedness": 0.9545454545454546,
+      "attempts": 3,
+      "cost_usd": 0.057656,
+      "latency_s": 76.20300000021234,
+      "failed": false,
+      "error": "",
+      "judge_score": {
+        "grounded": 4.0,
+        "distinctive": 3.0,
+        "coherent": 4.0,
+        "actionable": 4.0,
+        "voice_fidelity": 3.0,
+        "overall": 4.0
+      }
+    }
+  ],
+  "total_cost_usd": 0.204445,
+  "total_latency_s": 119.35900000017136,
+  "mean_groundedness": 0.990909090909091,
+  "success_rate": 1.0,
+  "error": ""
+}
