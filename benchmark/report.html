@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Experiment branch evaluation — full report</title>
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --bg: #0f1419;
+    --panel: #161b22;
+    --panel2: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --dim: #656d76;
+    --main: #58a6ff;
+    --merge: #d29922;
+    --gower: #c678dd;
+    --up: #3fb950;
+    --down: #f85149;
+    --flat: #8b949e;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-size: 14px; line-height: 1.5;
+  }
+  header {
+    background: var(--panel); border-bottom: 1px solid var(--border);
+    padding: 24px 32px; position: sticky; top: 0; z-index: 100;
+  }
+  h1 { font-size: 22px; margin: 0 0 4px 0; }
+  h2 { font-size: 18px; margin: 32px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 15px; margin: 20px 0 8px 0; color: var(--text); }
+  .subtitle { color: var(--muted); font-size: 13px; }
+  nav { display: flex; gap: 16px; margin-top: 12px; font-size: 13px; }
+  nav a { color: var(--main); text-decoration: none; padding: 2px 0; }
+  nav a:hover { text-decoration: underline; }
+  main { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
+  section { margin-bottom: 48px; }
+  .callout {
+    background: var(--panel); border-left: 3px solid var(--main);
+    padding: 12px 16px; margin: 12px 0; border-radius: 4px;
+    color: var(--text);
+  }
+  .callout.warning { border-left-color: var(--merge); }
+  .callout.reject { border-left-color: var(--down); }
+  .metric-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0;
+  }
+  .metric-card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px;
+  }
+  .metric-card .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .metric-card .value { font-size: 22px; font-weight: 600; }
+  .metric-card .delta { font-size: 13px; font-weight: 600; margin-top: 4px; }
+  .delta.up { color: var(--up); } .delta.down { color: var(--down); } .delta.flat { color: var(--flat); }
+  .verdict-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0;
+  }
+  .verdict-card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px; display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .verdict-card .label { font-size: 13px; }
+  .verdict-card .count { font-size: 24px; font-weight: 700; }
+  .verdict-card.merge { border-left: 4px solid var(--up); }
+  .verdict-card.reject { border-left: 4px solid var(--down); }
+  .verdict-card.neutral { border-left: 4px solid var(--flat); }
+  .verdict-card.review { border-left: 4px solid var(--merge); }
+  .verdict-card.option { border-left: 4px solid var(--main); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: var(--panel2); }
+  code {
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px;
+    background: var(--panel2); padding: 1px 5px; border-radius: 3px;
+  }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 12px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .badge.MERGE { background: rgba(63, 185, 80, 0.15); color: var(--up); }
+  .badge.MERGED-AS-OPTION { background: rgba(88, 166, 255, 0.15); color: var(--main); }
+  .badge.REVIEW { background: rgba(210, 153, 34, 0.15); color: var(--merge); }
+  .badge.NEUTRAL { background: rgba(139, 148, 158, 0.15); color: var(--flat); }
+  .badge.REJECT, .badge.REJECT-RELIABILITY, .badge.REJECT-BROKEN { background: rgba(248, 81, 73, 0.15); color: var(--down); }
+  .badge.NO-RESULTS, .badge.SKIPPED-NO-CHANGE, .badge.NOT-PROCESSED { background: rgba(101, 109, 118, 0.15); color: var(--dim); }
+  .branch-card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px; margin-bottom: 12px;
+  }
+  .branch-card .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 12px; }
+  .branch-card .name { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 600; font-size: 14px; }
+  .branch-card .title { font-size: 13px; color: var(--muted); }
+  .branch-card .section { margin-top: 10px; }
+  .branch-card .section .label { font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; letter-spacing: 0.5px; }
+  .branch-card dl { margin: 0; }
+  .branch-card dt { font-weight: 600; color: var(--muted); font-size: 12px; margin-top: 6px; }
+  .branch-card dd { margin: 2px 0 0 0; font-size: 13px; }
+  .branch-card .metrics-row { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; }
+  .branch-card .metrics-row span { white-space: nowrap; }
+  .branch-card .file-list { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; color: var(--muted); }
+  .branch-card .file-list li { margin: 1px 0; }
+  details summary { cursor: pointer; color: var(--main); font-size: 12px; padding: 4px 0; }
+  .toolbar { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
+  .toolbar input[type="text"] {
+    background: var(--panel2); border: 1px solid var(--border); color: var(--text);
+    padding: 6px 10px; border-radius: 4px; font-size: 13px; flex: 1; min-width: 240px;
+  }
+  .toolbar button {
+    background: var(--panel2); border: 1px solid var(--border); color: var(--text);
+    padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer;
+  }
+  .toolbar button.active { background: var(--main); color: var(--bg); border-color: var(--main); }
+  .toolbar button:hover { background: var(--panel); }
+  .comparison-table { font-size: 13px; }
+  .comparison-table .label-col { font-weight: 600; color: var(--muted); }
+  .comparison-table .winner { font-weight: 700; }
+  .variant-main { color: var(--main); }
+  .variant-merge { color: var(--merge); }
+  .variant-gower { color: var(--gower); }
+  .kicker { color: var(--muted); font-size: 12px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .byline { color: var(--muted); font-size: 12px; }
+  .q { color: var(--muted); font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Experiment Branch Evaluation — Full Report</h1>
+  <div class="subtitle">
+    136 experiment branches evaluated against a 42-persona benchmark on 10 synthetic tenants.
+    Judge-scored by calibrated Haiku LLM. Merged onto <code>merging_experiments</code> branch.
+  </div>
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#scoreboard">Scoreboard</a>
+    <a href="#merged">Merged (4)</a>
+    <a href="#gower">Shruti: Gower</a>
+    <a href="#automerged">Auto-merged (64)</a>
+    <a href="#review">Review (7)</a>
+    <a href="#neutral">Neutral (19)</a>
+    <a href="#rejected">Rejected (21)</a>
+    <a href="#skipped">Skipped/Missing (21)</a>
+    <a href="#all">All branches</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="overview">
+  <h2>Overview</h2>
+  <div class="callout">
+    The team produced <strong>136 experiment branches</strong> across 6 researchers (Yash, Shruti, Max, Billy, Pak, Ivan).
+    We built a deterministic 10-tenant synthetic benchmark (42 clusters, 3,305 records total), ran the pipeline on
+    <code>main</code> as a baseline, then ran each branch that modifies runtime code and compared judge scores,
+    groundedness, success rate, and cost. Backwards-compatible additions (new modules, new eval harnesses) were
+    auto-merged without benchmarking. One branch (<code>feat/adaptive-gower-segmentation</code>) was evaluated
+    separately in both Jaccard and Gower modes.
+  </div>
+
+  <div class="verdict-grid" id="verdict-overview"></div>
+</section>
+
+<section id="methodology">
+  <h2>Methodology</h2>
+
+  <h3>The benchmark</h3>
+  <p>10 deterministic synthetic tenants producing 42 clusters:</p>
+  <ul>
+    <li><code>bench_mega_saas</code> — 500 records, 6 cohorts (engineers, designers, PMs, marketers, sales, support)</li>
+    <li><code>bench_mega_fintech</code> — 500 records, 5 cohorts (engineers, compliance, sales, security, data)</li>
+    <li><code>bench_mega_ecommerce</code> — 500 records, 5 cohorts</li>
+    <li><code>bench_dense_devtools</code> — 350 records, 4 cohorts</li>
+    <li><code>bench_sparse_30</code> — sparsity stress, 30 records</li>
+    <li><code>bench_sparse_60</code> — mid-sparsity, 60 records</li>
+    <li><code>bench_poisoned</code> — 350 + 15 adversarial records (agriculture/culinary poison)</li>
+    <li><code>bench_heavy_tail</code> — 300 records, 70/10/10/10 imbalance</li>
+    <li><code>bench_single_cohort</code> — 200 records, 1 cohort — tests degeneracy</li>
+    <li><code>bench_diverse</code> — 500 records, 8 cohorts</li>
+  </ul>
+
+  <h3>Classification</h3>
+  <p>Each branch was bucketed by what files it modifies:</p>
+  <dl>
+    <dt>Runtime-changing (51 branches)</dt>
+    <dd>Modifies core pipeline files (prompt_builder, synthesizer, chat, judges, groundedness, segmentation).
+        Default behavior differs from main, so a benchmark run is required to measure the delta.</dd>
+    <dt>Schema-additive (74 branches)</dt>
+    <dd>Adds new modules / persona variants without changing existing behavior. Auto-merge candidate.</dd>
+    <dt>Eval-only (11 branches)</dt>
+    <dd>Only adds measurement tooling under <code>evals/</code>. Auto-merge candidate.</dd>
+  </dl>
+
+  <h3>Verdict rubric (for runtime-changing branches)</h3>
+  <table>
+    <thead><tr><th>Verdict</th><th>Criteria</th></tr></thead>
+    <tbody>
+    <tr><td><span class="badge MERGE">MERGE</span></td>
+        <td>ΔJudge ≥ +0.15 AND cost penalty &lt; 30%, OR ΔGroundedness ≥ +0.05 AND ΔSuccess ≥ 0 AND cost penalty &lt; 30%</td></tr>
+    <tr><td><span class="badge REVIEW">REVIEW</span></td>
+        <td>Mixed signals — positive judge but reliability concerns, or high variance across tenants</td></tr>
+    <tr><td><span class="badge NEUTRAL">NEUTRAL</span></td>
+        <td>All deltas within ±5% judge, ±2% groundedness, ±10% cost, ±5% success</td></tr>
+    <tr><td><span class="badge REJECT">REJECT</span></td>
+        <td>ΔJudge &lt; -0.15, OR ΔGroundedness &lt; -0.05, OR cost penalty &gt; 80%, OR ΔSuccess &lt; -10%</td></tr>
+    <tr><td><span class="badge REJECT-RELIABILITY">REJECT-RELIABILITY</span></td>
+        <td>ΔSuccess between -5% and -10% (functional but less reliable)</td></tr>
+    <tr><td><span class="badge REJECT-BROKEN">REJECT-BROKEN</span></td>
+        <td>Zero personas produced — branch is fundamentally broken</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Judge model</h3>
+  <p>LLM-as-judge scoring 1-5 on five dimensions (grounded, distinctive, coherent, actionable, voice_fidelity)
+  using Claude Haiku 4.5 with few-shot calibration (from exp-5.13). Every persona produced by every variant
+  was scored — 1,867 + 42 + 39 + 21 = 1,969 total judge calls.</p>
+</section>
+
+<section id="scoreboard">
+  <h2>Scoreboard: 4-way comparison</h2>
+  <div id="scoreboard-table"></div>
+  <div class="callout">
+    <strong>Merged result</strong>: <code>merging_experiments</code> = main + 4 MERGE branches + 64 additive branches.
+    After bumping <code>MAX_RETRIES</code> from 2 to 4 to absorb the stacked schema complexity, it ties main
+    on reliability (42/42 personas) and beats it on judge score by <strong>+0.19</strong> points.
+  </div>
+</section>
+
+<section id="merged">
+  <h2>The 4 MERGE-verdict branches</h2>
+  <p>These are the high-impact branches that got full merges onto <code>merging_experiments</code> in
+  descending-ΔJudge order. Smoke-tested after each merge; one conflict (<code>exp-6.04</code> vs <code>exp-2.07</code>
+  in <code>synthesizer.py</code> parameter list) was resolved by keeping both additions.</p>
+  <div id="merged-list"></div>
+</section>
+
+<section id="gower">
+  <h2>Shruti: <code>feat/adaptive-gower-segmentation</code></h2>
+  <div class="byline">Why this one is special: not named <code>exp-*</code>, much larger scope, own benchmark.</div>
+  <div id="gower-detail"></div>
+</section>
+
+<section id="automerged">
+  <h2>Auto-merged branches (64)</h2>
+  <div class="subtitle">Backwards-compatible additions — new files, no default-behavior changes. Auto-merged onto
+  <code>merging_experiments</code> without benchmarking since their runtime impact is nil by construction.</div>
+  <div class="toolbar">
+    <input type="text" id="filter-auto" placeholder="Filter by name…">
+  </div>
+  <div id="automerged-list"></div>
+</section>
+
+<section id="review">
+  <h2>REVIEW — mixed signals (7)</h2>
+  <div class="subtitle">Judge score went up but reliability or cost hit warrants human review before merging.</div>
+  <div id="review-list"></div>
+</section>
+
+<section id="neutral">
+  <h2>NEUTRAL — within noise (19)</h2>
+  <div class="subtitle">Within ±5% judge and ±5% success rate of main. Safe to merge as optional capability if the new parameter is useful, but no measurable lift on the default path.</div>
+  <div id="neutral-list"></div>
+</section>
+
+<section id="rejected">
+  <h2>REJECT-verdict branches (21)</h2>
+  <div class="subtitle">Quality regression, reliability drop, or outright broken. Not merged.</div>
+  <div id="rejected-list"></div>
+</section>
+
+<section id="skipped">
+  <h2>Skipped / No-change branches (21)</h2>
+  <div class="subtitle">Branches whose diff against main contained only filtered files (docs/plans/, output/,
+  benchmark/, .gitignore) — nothing to bring in.</div>
+  <div id="skipped-list"></div>
+</section>
+
+<section id="all">
+  <h2>All 136 branches (sortable)</h2>
+  <div class="toolbar">
+    <input type="text" id="filter-all" placeholder="Filter by name, owner, or type…">
+    <button data-verdict="all" class="active">All</button>
+    <button data-verdict="MERGE">MERGE</button>
+    <button data-verdict="MERGED-AS-OPTION">AUTO-MERGED</button>
+    <button data-verdict="REVIEW">REVIEW</button>
+    <button data-verdict="NEUTRAL">NEUTRAL</button>
+    <button data-verdict="REJECT">REJECT</button>
+    <button data-verdict="SKIPPED-NO-CHANGE">SKIPPED</button>
+  </div>
+  <div id="all-branches">(loading...)</div>
+</section>
+
+</main>
+
+<script>
+const DATA = {"baseline": {"clusters": 42, "personas_ok": 42, "personas_total": 42, "success_rate": 1.0, "mean_groundedness": 0.9987468671679197, "mean_judge": 4.2447368421052625, "mean_attempts": 2.0, "total_cost": 1.5491730000000001}, "merging_experiments": {"clusters": 42, "personas_ok": 42, "personas_total": 42, "success_rate": 1.0, "mean_groundedness": 0.9949413045388278, "mean_judge": 4.428571428571428, "mean_attempts": 1.9047619047619047, "total_cost": 1.5703629999999995}, "gower_jaccard": {"clusters": 42, "personas_ok": 39, "personas_total": 42, "success_rate": 0.9285714285714286, "mean_groundedness": 0.9927045177045176, "mean_judge": 4.3487179487179475, "mean_attempts": 1.7692307692307692, "total_cost": 1.4554559999999996}, "gower_gower": {"clusters": 23, "personas_ok": 21, "personas_total": 23, "success_rate": 0.9130434782608695, "mean_groundedness": 0.9897914721444133, "mean_judge": 4.123809523809523, "mean_attempts": 2.0, "total_cost": 0.876899}, "branches": [{"name": "exp-1.01-schema-width", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/groundedness.py", "synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py", "synthesis/synthesis/models/persona.py"], "new_files": ["output/experiments/exp_1_01_report.txt", "output/experiments/exp_1_01_results.json", "scripts/experiment_1_01.py", "tests/test_exp_1_01.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9896696938528717, "mean_judge": 4.268292682926829, "mean_attempts": 1.9024390243902438, "total_cost": 1.5578610000000002}, "deltas": {"judge": 0.023555840821566143, "groundedness": -0.009077173315047982, "cost_pct": 0.5608153511583295, "success_rate": -0.023809523809523836, "attempts": -0.09756097560975618}, "verdict": "NEUTRAL"}, {"name": "exp-1.01-schema-width-yash", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-1.01-schema-width/FINDINGS.md", "output/experiments/exp-1.01-schema-width/results.json", "output/experiments/exp-1.01-schema-width/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-1.02-structured-vs-narrative", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-1.02-structured-vs-narrative/FINDINGS.md", "output/experiments/exp-1.02-structured-vs-narrative/results.json", "output/experiments/exp-1.02-structured-vs-narrative/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-1.03-vocab-anchoring", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py", "evaluation/evaluation/metrics.py", "synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py", "twin/twin/chat.py"], "new_files": ["output/exp_1_3_27b9eab7.json", "output/experiments/exp-1.03-vocab-anchoring/FINDINGS.md", "scripts/exp_1_3_vocabulary_anchoring.py"], "other_modified": ["evaluation/evaluation/__init__.py", "evaluation/pyproject.toml"], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9935714285714287, "mean_judge": 4.334999999999999, "mean_attempts": 1.9, "total_cost": 1.523782}, "deltas": {"judge": 0.0902631578947366, "groundedness": -0.005175438596491055, "cost_pct": -1.639003519942586, "success_rate": -0.04761904761904767, "attempts": -0.10000000000000009}, "verdict": "REVIEW"}, {"name": "exp-1.05-schema-versioning-drift", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/judge_helper_1_05.py", "evals/schema_versioning.py", "output/experiments/exp-1.05-schema-versioning-drift/FINDINGS.md", "output/experiments/exp-1.05-schema-versioning-drift/results.json", "scripts/experiment_1_05.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/judge_helper_1_05.py", "evals/schema_versioning.py", "scripts/experiment_1_05.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-1.06", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/self_describing_schema.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-1.07-field-interdependence", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/field_interdependence.py", "evals/judge_helper_1_07.py", "output/experiments/exp-1.07-field-interdependence/FINDINGS.md", "output/experiments/exp-1.07-field-interdependence/control_persona.json", "output/experiments/exp-1.07-field-interdependence/results.json", "scripts/experiment_1_07.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/__init__.py", "evals/field_interdependence.py", "evals/judge_helper_1_07.py", "scripts/experiment_1_07.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-1.09-hierarchical-vs-flat", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-1.09-hierarchical-vs-flat/FINDINGS.md", "output/experiments/exp-1.09-hierarchical-vs-flat/results.json", "output/experiments/exp-1.09-hierarchical-vs-flat/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-1.10", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/value_provenance.py", "synthesis/synthesis/models/persona_provenance.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/value_provenance.py", "synthesis/synthesis/models/persona_provenance.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-1.11-negative-space", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/models/persona.py", "twin/twin/chat.py"], "new_files": ["output/baseline_run.log", "output/exp_1_11_run.log", "output/experiments/exp-1.11-negative-space/FINDINGS.md", "output/experiments/exp-1.11-negative-space/baseline_ab_comparison.log", "output/persona_00.json", "output/persona_01.json"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9926127819548871, "mean_judge": 4.505, "mean_attempts": 1.7, "total_cost": 1.485118}, "deltas": {"judge": 0.2602631578947374, "groundedness": -0.006134085213032603, "cost_pct": -4.134786753964869, "success_rate": -0.04761904761904767, "attempts": -0.30000000000000004}, "verdict": "MERGE", "merged_into": "merging_experiments", "owner": "Pak", "title": "Negative-space persona fields", "hypothesis": "Adding a `not_this` field capturing what the persona would NOT do or say sharpens the persona's identity.", "change": "Adds `not_this: list[str]` (min 2, max 6) to PersonaV1 schema. Prompt instructs model to treat these as identity boundaries, distinct from sales objections."}, {"name": "exp-1.12-temporal-layering", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/cluster_00.json", "output/experiments/exp-1.12-temporal-layering/FINDINGS.md", "output/experiments/exp-1.12-temporal-layering/run_exp.py", "synthesis/synthesis/models/temporal.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["synthesis/synthesis/models/temporal.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-1.14-belief-value-separation", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/models/persona.py", "twin/twin/chat.py"], "new_files": ["output/experiments/exp-1.14-belief-value-separation/FINDINGS.md"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 25, "personas_total": 42, "success_rate": 0.5952380952380952, "mean_groundedness": 0.9879327731092437, "mean_judge": 4.287999999999999, "mean_attempts": 1.96, "total_cost": 2.249947}, "deltas": {"judge": 0.04326315789473689, "groundedness": -0.01081409405867606, "cost_pct": 45.235361060385124, "success_rate": -0.40476190476190477, "attempts": -0.040000000000000036}, "verdict": "REJECT"}, {"name": "exp-1.15-edge-case-behavior-fields", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py", "synthesis/synthesis/models/persona.py", "twin/twin/chat.py"], "new_files": ["output/experiments/exp-1.15/FINDINGS.md", "output/experiments/exp-1.15/baseline_scored.json", "output/experiments/exp-1.15/summary.json", "output/experiments/exp-1.15/treatment_scored.json", "scripts/run_exp_1_15.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9989583333333332, "mean_judge": 4.225, "mean_attempts": 1.875, "total_cost": 1.5647940000000002}, "deltas": {"judge": -0.01973684210526283, "groundedness": 0.0002114661654134542, "cost_pct": 1.0083444521690028, "success_rate": -0.04761904761904767, "attempts": -0.125}, "verdict": "NEUTRAL"}, {"name": "exp-1.16-persona-to-persona-references", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/synthesizer.py", "synthesis/synthesis/models/persona.py"], "new_files": ["output/experiments/exp-1.16-persona-to-persona-references/FINDINGS.md"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 42, "personas_total": 42, "success_rate": 1.0, "mean_groundedness": 0.9946677355152587, "mean_judge": 4.238095238095237, "mean_attempts": 1.9761904761904763, "total_cost": 1.5583029999999995}, "deltas": {"judge": -0.006641604010025226, "groundedness": -0.00407913165266105, "cost_pct": 0.5893467030473302, "success_rate": 0.0, "attempts": -0.023809523809523725}, "verdict": "NEUTRAL"}, {"name": "exp-1.17-length-budgets-per-field", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/experiments/exp_1_17_findings.md", "output/experiments/exp_1_17_report.txt", "output/experiments/exp_1_17_results.json", "scripts/experiment_1_17.py", "tests/test_exp_1_17.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 42, "personas_total": 42, "success_rate": 1.0, "mean_groundedness": 0.9941323195945044, "mean_judge": 4.2142857142857135, "mean_attempts": 1.9523809523809523, "total_cost": 1.5472979999999994}, "deltas": {"judge": -0.03045112781954895, "groundedness": -0.004614547573415284, "cost_pct": -0.12103231853387175, "success_rate": 0.0, "attempts": -0.04761904761904767}, "verdict": "NEUTRAL"}, {"name": "exp-1.19-schema-artifact-format", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/experiments/exp_1_19_findings.md", "output/experiments/exp_1_19_report.txt", "output/experiments/exp_1_19_results.json", "scripts/experiment_1_19.py", "tests/test_exp_1_19.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9919443721614843, "mean_judge": 4.282926829268292, "mean_attempts": 1.7804878048780488, "total_cost": 1.429738}, "deltas": {"judge": 0.03818998716302957, "groundedness": -0.006802495006435372, "cost_pct": -7.709597314179899, "success_rate": -0.023809523809523836, "attempts": -0.2195121951219512}, "verdict": "NEUTRAL"}, {"name": "exp-1.20", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["evals/verbs_vs_adjectives.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9930641821946169, "mean_judge": 4.35, "mean_attempts": 1.875, "total_cost": 1.529553}, "deltas": {"judge": 0.10526315789473717, "groundedness": -0.005682684973302821, "cost_pct": -1.2664821811379485, "success_rate": -0.04761904761904767, "attempts": -0.125}, "verdict": "REVIEW"}, {"name": "exp-1.22-spine-minimum", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/judge_helper_1_22.py", "evals/spine_minimum.py", "output/experiments/exp-1.22-spine-minimum/FINDINGS.md", "output/experiments/exp-1.22-spine-minimum/results.json", "scripts/experiment_1_22.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/judge_helper_1_22.py", "evals/spine_minimum.py", "scripts/experiment_1_22.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-1.23-internalized-contradictions", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/models/persona.py", "twin/twin/chat.py"], "new_files": ["output/experiments/exp-1.23-internalized-contradictions/FINDINGS.md", "output/experiments/exp-1.23-internalized-contradictions/results.json", "output/experiments/exp-4.12-twin-to-twin-conversations/FINDINGS.md"], "other_modified": ["docs/plans/2026-04-10-batch4-research-strategy.md"], "metrics": {"clusters": 42, "personas_ok": 36, "personas_total": 42, "success_rate": 0.8571428571428571, "mean_groundedness": 0.986262531328321, "mean_judge": 4.077777777777778, "mean_attempts": 1.9722222222222223, "total_cost": 1.8021179999999997}, "deltas": {"judge": -0.16695906432748409, "groundedness": -0.012484335839598737, "cost_pct": 16.327743899486986, "success_rate": -0.1428571428571429, "attempts": -0.02777777777777768}, "verdict": "REJECT"}, {"name": "exp-1.23b-off-label-adversarial", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/off_label_probes.py", "output/experiments/exp-1.23b-off-label-adversarial/FINDINGS.md", "output/experiments/exp-1.23b-off-label-adversarial/results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/off_label_probes.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-1.24-stylometric-anchors", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py", "synthesis/synthesis/models/persona.py", "twin/twin/chat.py"], "new_files": ["output/experiments/exp-1.24/FINDINGS.md", "output/experiments/exp-1.24/baseline_personas.json", "output/experiments/exp-1.24/conversations.json", "output/experiments/exp-1.24/summary.json", "output/experiments/exp-1.24/treatment_personas.json", "scripts/run_exp_1_24.py"], "other_modified": [".gitignore"], "metrics": {"clusters": 42, "personas_ok": 36, "personas_total": 42, "success_rate": 0.8571428571428571, "mean_groundedness": 0.9889538065262702, "mean_judge": 4.272222222222221, "mean_attempts": 1.9166666666666667, "total_cost": 1.6143390000000002}, "deltas": {"judge": 0.02748538011695878, "groundedness": -0.009793060641649531, "cost_pct": 4.206502437106769, "success_rate": -0.1428571428571429, "attempts": -0.08333333333333326}, "verdict": "REJECT"}, {"name": "exp-2.01-monolithic-vs-decomposed", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-2.01-monolithic-vs-decomposed/FINDINGS.md", "output/experiments/exp-2.01-monolithic-vs-decomposed/results.json", "output/experiments/exp-2.01-monolithic-vs-decomposed/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-2.02-critique-reflexion-loops", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp_2_02_report.txt", "output/experiments/exp_2_02_results.json", "scripts/experiment_2_02.py", "synthesis/synthesis/engine/critique.py", "tests/test_exp_2_02.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/experiment_2_02.py", "synthesis/synthesis/engine/critique.py", "tests/test_exp_2_02.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-2.03", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/model_mix.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-2.04", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/backend_variants.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-2.05-few-shot-exemplars", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/experiments/exp-2.05-few-shot-exemplars/FINDINGS.md", "output/experiments/exp-2.05-few-shot-exemplars/analyze.py", "output/experiments/exp-2.05-few-shot-exemplars/structural_comparison.log", "synthesis/synthesis/fixtures/golden_examples.json"], "other_modified": [".gitignore", "crawler/crawler/connectors/ga4.py", "crawler/crawler/connectors/hubspot.py", "crawler/crawler/connectors/intercom.py", "scripts/run_full_pipeline.py"], "metrics": {"clusters": 42, "personas_ok": 42, "personas_total": 42, "success_rate": 1.0, "mean_groundedness": 0.994760530474816, "mean_judge": 4.238095238095238, "mean_attempts": 1.9761904761904763, "total_cost": 1.5509419999999998}, "deltas": {"judge": -0.006641604010024338, "groundedness": -0.003986336693103665, "cost_pct": 0.11418995812602513, "success_rate": 0.0, "attempts": -0.023809523809523725}, "verdict": "NEUTRAL"}, {"name": "exp-2.06-temperature-sweep", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/model_backend.py"], "new_files": ["output/experiments/exp-2.06-temperature-sweep/FINDINGS.md", "output/experiments/exp-2.06-temperature-sweep/results.json", "scripts/experiment_2_06.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9887476833032973, "mean_judge": 4.3219512195121945, "mean_attempts": 1.8048780487804879, "total_cost": 1.4550169999999998}, "deltas": {"judge": 0.07721437740693204, "groundedness": -0.009999183864622396, "cost_pct": -6.0778234580644215, "success_rate": -0.023809523809523836, "attempts": -0.19512195121951215}, "verdict": "REVIEW"}, {"name": "exp-2.07-order-of-fields", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py", "synthesis/synthesis/models/persona.py"], "new_files": ["output/experiments/exp-2.07/FINDINGS.md", "output/experiments/exp-2.07/baseline_personas.json", "output/experiments/exp-2.07/summary.json", "output/experiments/exp-2.07/treatment_personas.json", "scripts/run_exp_2_07.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9927990708478515, "mean_judge": 4.453658536585365, "mean_attempts": 1.853658536585366, "total_cost": 1.4886940000000002}, "deltas": {"judge": 0.2089216944801029, "groundedness": -0.005947796320068255, "cost_pct": -3.9039539160571444, "success_rate": -0.023809523809523836, "attempts": -0.14634146341463405}, "verdict": "MERGE", "merged_into": "merging_experiments", "owner": "Pak", "title": "Voice-first field ordering", "hypothesis": "Pydantic preserves declaration order in JSON schema; Claude fills tool-use fields in that order. Declaring vocabulary and quotes BEFORE demographics may reduce stereotyping.", "change": "Adds a `PersonaV1VoiceFirst` variant with vocabulary/sample_quotes declared first. Adds `schema_cls` parameter to synthesize() and build_tool_definition()."}, {"name": "exp-2.08-synthetic-warmstart", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/experiments/exp-2.08/FINDINGS.md", "output/experiments/exp-2.08/dense_baseline.json", "output/experiments/exp-2.08/dense_treatment.json", "output/experiments/exp-2.08/sparse_baseline.json", "output/experiments/exp-2.08/sparse_treatment.json", "output/experiments/exp-2.08/summary.json", "scripts/run_exp_2_08.py", "synthesis/.env", "synthesis/synthesis/fixtures/synthetic_priors/prior_eng_manager.json", "synthesis/synthesis/fixtures/synthetic_priors/prior_growth_marketer.json", "synthesis/synthesis/fixtures/synthetic_priors/prior_ops_lead.json"], "other_modified": [".gitignore"], "metrics": {"clusters": 42, "personas_ok": 39, "personas_total": 42, "success_rate": 0.9285714285714286, "mean_groundedness": 0.9881474677140312, "mean_judge": 4.222857142857142, "mean_attempts": 1.8974358974358974, "total_cost": 1.5337659999999997}, "deltas": {"judge": -0.021879699248120055, "groundedness": -0.010599399453888547, "cost_pct": -0.9945306302136941, "success_rate": -0.0714285714285714, "attempts": -0.10256410256410264}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-2.09-best-of-n", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/model_backend.py"], "new_files": ["evals/best_of_n.py", "evals/judge_helper_2_09.py", "output/experiments/exp-2.09-best-of-n/FINDINGS.md", "output/experiments/exp-2.09-best-of-n/results.json", "scripts/experiment_2_09.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9865853492426717, "mean_judge": 4.279999999999999, "mean_attempts": 1.775, "total_cost": 1.450025}, "deltas": {"judge": 0.035263157894736885, "groundedness": -0.012161517925248, "cost_pct": -6.400059902928867, "success_rate": -0.04761904761904767, "attempts": -0.2250000000000001}, "verdict": "NEUTRAL"}, {"name": "exp-2.10-tree-of-thoughts", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/model_backend.py"], "new_files": ["evals/judge_helper_2_10.py", "evals/tree_of_thoughts.py", "output/experiments/exp-2.10-tree-of-thoughts/FINDINGS.md", "output/experiments/exp-2.10-tree-of-thoughts/results.json", "scripts/experiment_2_10.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9922396438250096, "mean_judge": 4.227777777777778, "mean_attempts": 1.7317073170731707, "total_cost": 1.3960509999999997}, "deltas": {"judge": -0.01695906432748462, "groundedness": -0.006507223342910096, "cost_pct": -9.884112361886013, "success_rate": -0.023809523809523836, "attempts": -0.2682926829268293}, "verdict": "NEUTRAL"}, {"name": "exp-2.11-multi-agent-debate", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp_2_11_report.txt", "output/experiments/exp_2_11_results.json", "scripts/experiment_2_11.py", "synthesis/synthesis/engine/debate.py", "tests/test_exp_2_11.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/experiment_2_11.py", "synthesis/synthesis/engine/debate.py", "tests/test_exp_2_11.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-2.12-self-consistency-voting", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/model_backend.py"], "new_files": ["evals/judge_helper_2_12.py", "evals/self_consistency_voting.py", "output/experiments/exp-2.12-self-consistency-voting/FINDINGS.md", "output/experiments/exp-2.12-self-consistency-voting/results.json", "scripts/experiment_2_12.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 39, "personas_total": 42, "success_rate": 0.9285714285714286, "mean_groundedness": 0.9961474198316304, "mean_judge": 4.244444444444444, "mean_attempts": 1.8974358974358974, "total_cost": 1.5479159999999998}, "deltas": {"judge": -0.0002923976608188994, "groundedness": -0.002599447336289362, "cost_pct": -0.08114006634509416, "success_rate": -0.0714285714285714, "attempts": -0.10256410256410264}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-2.14-constitutional-persona", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py"], "new_files": ["output/experiments/exp_2_14_report.txt", "output/experiments/exp_2_14_results.json", "scripts/experiment_2_14.py", "synthesis/synthesis/prompts/constitution.md", "tests/test_exp_2_14.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 42, "personas_total": 42, "success_rate": 1.0, "mean_groundedness": 0.9909001281672088, "mean_judge": 4.238888888888888, "mean_attempts": 2.0, "total_cost": 1.5705050000000003}, "deltas": {"judge": -0.005847953216374435, "groundedness": -0.007846739000710867, "cost_pct": 1.3769927567805615, "success_rate": 0.0, "attempts": 0.0}, "verdict": "NEUTRAL"}, {"name": "exp-2.15", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/distillation.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-2.16-prompt-compression", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["evaluation/evaluation/experiments/__init__.py", "evaluation/evaluation/experiments/config.py", "evaluation/evaluation/experiments/exp_2_16_prompt_compression.py", "evaluation/evaluation/experiments/metrics_collector.py", "experiments/catalog.json", "experiments/queue.json", "output/ablation_draft_evidence_example_00.json", "output/ablation_draft_evidence_example_01.json", "output/ablation_draft_evidence_rules_00.json", "output/ablation_draft_evidence_rules_01.json", "output/ablation_draft_preamble_00.json", "output/ablation_draft_preamble_01.json", "output/ablation_draft_quality_actionable_00.json", "output/ablation_draft_quality_actionable_01.json", "output/ablation_draft_quality_consistent_00.json", "output/ablation_draft_quality_consistent_01.json", "output/ablation_draft_quality_distinctive_00.json", "output/ablation_draft_quality_distinctive_01.json", "output/ablation_draft_quality_grounded_00.json", "output/ablation_draft_quality_grounded_01.json", "output/experiments/exp-2.16-prompt-compression/FINDINGS.md", "output/experiments/exp-2.16-prompt-compression/baseline/persona_00.json", "output/experiments/exp-2.16-prompt-compression/baseline/persona_01.json", "output/experiments/exp-2.16-prompt-compression/comparison.json", "output/experiments/exp-2.16-prompt-compression/experiment/persona_00.json", "output/experiments/exp-2.16-prompt-compression/experiment/persona_01.json", "output/experiments/exp-2.16-prompt-compression/experiment/persona_draft_00.json", "output/experiments/exp-2.16-prompt-compression/experiment/persona_draft_01.json", "prompts/supervisor.md", "scripts/run_experiment.py", "scripts/run_pipeline_cc.py", "tests/test_prompt_ablation.py"], "other_modified": [".gitignore"], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9938727025898079, "mean_judge": 4.333333333333333, "mean_attempts": 1.95, "total_cost": 1.5763610000000001}, "deltas": {"judge": 0.08859649122807056, "groundedness": -0.00487416457811185, "cost_pct": 1.7550008940253923, "success_rate": -0.04761904761904767, "attempts": -0.050000000000000044}, "verdict": "REVIEW"}, {"name": "exp-2.17-system-vs-user-prompt", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/clusters/cluster_00.json", "output/clusters/cluster_01.json", "output/experiments/exp-2.17-system-vs-user-prompt/FINDINGS.md", "output/experiments/exp-2.17-system-vs-user-prompt/baseline/persona_00.json", "output/experiments/exp-2.17-system-vs-user-prompt/baseline/persona_01.json", "output/experiments/exp-2.17-system-vs-user-prompt/baseline/persona_draft_00.json", "output/experiments/exp-2.17-system-vs-user-prompt/baseline/persona_draft_01.json", "output/experiments/exp-2.17-system-vs-user-prompt/comparison.json"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 37, "personas_total": 42, "success_rate": 0.8809523809523809, "mean_groundedness": 0.9942849970713746, "mean_judge": 4.352941176470587, "mean_attempts": 1.8108108108108107, "total_cost": 1.5102730000000004}, "deltas": {"judge": 0.1082043343653245, "groundedness": -0.004461870096545084, "cost_pct": -2.5110171685150533, "success_rate": -0.11904761904761907, "attempts": -0.18918918918918926}, "verdict": "REJECT"}, {"name": "exp-2.18-prompt-prefix-caching", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/model_backend.py", "synthesis/synthesis/engine/prompt_builder.py"], "new_files": ["evals/cache_analysis.py", "output/experiments/exp-2.18-prompt-prefix-caching/FINDINGS.md", "output/experiments/exp-2.18-prompt-prefix-caching/comparison.json"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9837558300832292, "mean_judge": 4.252941176470589, "mean_attempts": 1.675, "total_cost": 1.3879440000000003}, "deltas": {"judge": 0.008204334365326638, "groundedness": -0.014991037084690517, "cost_pct": -10.40742383194129, "success_rate": -0.04761904761904767, "attempts": -0.32499999999999996}, "verdict": "REVIEW"}, {"name": "exp-2.19-outline-then-fill", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-2.19-outline-then-fill/FINDINGS.md", "output/experiments/exp-2.19-outline-then-fill/results.json", "output/experiments/exp-2.19-outline-then-fill/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-2.20-reverse-engineered-persona", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/twin_to_twin.py", "output/baseline_persona_00.json", "output/baseline_persona_01.json", "output/clusters/cluster_00.json", "output/clusters/cluster_01.json", "output/experiments/exp-2.20-reverse-engineered-persona/FINDINGS.md", "output/experiments/exp-2.20-reverse-engineered-persona/comparison.json", "output/experiments/exp-4.12-twin-to-twin-conversations/dialogue.txt", "output/transcript_first_persona_00.json", "output/transcript_first_persona_01.json", "synthesis/synthesis/engine/transcript_first.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/twin_to_twin.py", "synthesis/synthesis/engine/transcript_first.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-2.22-beam-search", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/model_backend.py"], "new_files": ["evals/beam_search.py", "evals/judge_helper_2_22.py", "output/experiments/exp-2.22-beam-search/FINDINGS.md", "output/experiments/exp-2.22-beam-search/results.json", "scripts/experiment_2_22.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9975609756097561, "mean_judge": 4.205405405405405, "mean_attempts": 1.853658536585366, "total_cost": 1.4628739999999996}, "deltas": {"judge": -0.03933143669985739, "groundedness": -0.001185891558163621, "cost_pct": -5.570649630480299, "success_rate": -0.023809523809523836, "attempts": -0.14634146341463405}, "verdict": "NEUTRAL"}, {"name": "exp-2.23-cluster-summary-intermediary", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-2.23-cluster-summary-intermediary/FINDINGS.md", "output/experiments/exp-2.23-cluster-summary-intermediary/results.json", "output/experiments/exp-2.23-cluster-summary-intermediary/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-3.01-layered-groundedness-enforcement", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-3.01-layered-groundedness-enforcement/FINDINGS.md", "output/experiments/exp-3.01-layered-groundedness-enforcement/results.json", "output/experiments/exp-3.01-layered-groundedness-enforcement/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-3.03-retrieval-augmented-synthesis", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/experiments/exp_3_03_findings.md", "output/experiments/exp_3_03_report.txt", "output/experiments/exp_3_03_results.json", "scripts/experiment_3_03.py", "synthesis/synthesis/engine/record_retrieval.py", "tests/test_exp_3_03.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 36, "personas_total": 42, "success_rate": 0.8571428571428571, "mean_groundedness": 0.9878757585599018, "mean_judge": 4.353333333333333, "mean_attempts": 1.8333333333333333, "total_cost": 1.5750909999999998}, "deltas": {"judge": 0.10859649122807014, "groundedness": -0.010871108608017876, "cost_pct": 1.6730216702717942, "success_rate": -0.1428571428571429, "attempts": -0.16666666666666674}, "verdict": "REJECT"}, {"name": "exp-3.04-evidence-first-generation", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp_3_04_report.txt", "output/experiments/exp_3_04_results.json", "scripts/experiment_3_04.py", "synthesis/synthesis/engine/evidence_first.py", "tests/test_exp_3_04.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/experiment_3_04.py", "synthesis/synthesis/engine/evidence_first.py", "tests/test_exp_3_04.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-3.05-per-claim-entailment", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/judge_helper_3_05.py", "evals/per_claim_entailment.py", "output/experiments/exp-3.05-per-claim-entailment/FINDINGS.md", "output/experiments/exp-3.05-per-claim-entailment/results.json", "scripts/experiment_3_05.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/judge_helper_3_05.py", "evals/per_claim_entailment.py", "scripts/experiment_3_05.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-3.06", "type": "runtime-changing", "files_changed_runtime": ["crawler/crawler/connectors/__init__.py", "synthesis/synthesis/engine/groundedness.py", "synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["crawler/crawler/connectors/dense_fixture.py", "evals/compare_branches.py", "evals/sparse_data.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 38, "personas_total": 42, "success_rate": 0.9047619047619048, "mean_groundedness": 0.9958204334365324, "mean_judge": 4.231578947368421, "mean_attempts": 2.0, "total_cost": 1.6176369999999998}, "deltas": {"judge": -0.013157894736841591, "groundedness": -0.0029264337313873456, "cost_pct": 4.419390216586503, "success_rate": -0.09523809523809523, "attempts": 0.0}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-3.07", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/source_poison.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-3.09-source-diversity-requirement", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-3.09-source-diversity-requirement/FINDINGS.md", "output/experiments/exp-3.09-source-diversity-requirement/results.json", "output/experiments/exp-3.09-source-diversity-requirement/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-3.10-multi-hop-grounding", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-3.10-multi-hop-grounding/FINDINGS.md", "output/experiments/exp-3.10-multi-hop-grounding/results.json", "output/experiments/exp-3.10-multi-hop-grounding/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-3.11-quote-only-personas", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-3.11-quote-only-personas/FINDINGS.md", "output/experiments/exp-3.11-quote-only-personas/results.json", "output/experiments/exp-3.11-quote-only-personas/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-3.12-self-detected-hallucination", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/judge_helper_3_12.py", "evals/self_detected_hallucination.py", "output/experiments/exp-3.12-self-detected-hallucination/FINDINGS.md", "output/experiments/exp-3.12-self-detected-hallucination/results.json", "scripts/experiment_3_12.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/judge_helper_3_12.py", "evals/self_detected_hallucination.py", "scripts/experiment_3_12.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-3.13-temporal-grounding", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/models/evidence.py"], "new_files": ["output/experiments/exp-3.13-temporal-grounding/FINDINGS.md", "output/experiments/exp-3.13-temporal-grounding/results.json", "output/experiments/exp-3.13-temporal-grounding/run_experiment.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 0, "personas_total": 42, "success_rate": 0.0, "mean_groundedness": 0, "mean_judge": 0, "mean_attempts": 0, "total_cost": 2.6418369999999993}, "deltas": {"judge": -4.2447368421052625, "groundedness": -0.9987468671679197, "cost_pct": 70.53208389250258, "success_rate": -1.0, "attempts": -2.0}, "verdict": "REJECT-BROKEN"}, {"name": "exp-3.14-negative-evidence", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/experiments/exp-3.14/FINDINGS.md", "output/experiments/exp-3.14/baseline_personas.json", "output/experiments/exp-3.14/summary.json", "output/experiments/exp-3.14/treatment_personas.json", "scripts/run_exp_3_14.py", "synthesis/.env", "synthesis/synthesis/fixtures/sparse_gap_cluster/records.json"], "other_modified": [".gitignore"], "metrics": {"clusters": 42, "personas_ok": 37, "personas_total": 42, "success_rate": 0.8809523809523809, "mean_groundedness": 0.9961916461916462, "mean_judge": 4.285714285714285, "mean_attempts": 1.972972972972973, "total_cost": 1.6500050000000004}, "deltas": {"judge": 0.040977443609022224, "groundedness": -0.0025552209762734757, "cost_pct": 6.508763062614714, "success_rate": -0.11904761904761907, "attempts": -0.027027027027026973}, "verdict": "REJECT"}, {"name": "exp-3.15", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/counterfactual_swap.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-3.16-synthetic-ground-truth-injection", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/ground_truth_injection.py", "output/experiments/exp-3.16-synthetic-ground-truth-injection/FINDINGS.md", "output/experiments/exp-3.16-synthetic-ground-truth-injection/results.json", "scripts/experiment_3_16.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/ground_truth_injection.py", "scripts/experiment_3_16.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-3.17-evidence-ablation", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/experiments/exp-3.17/FINDINGS.md", "output/experiments/exp-3.17/ablated_personas.json", "output/experiments/exp-3.17/summary.json", "scripts/run_exp_3_17.py", "synthesis/.env"], "other_modified": [".gitignore"], "metrics": {"clusters": 42, "personas_ok": 37, "personas_total": 42, "success_rate": 0.8809523809523809, "mean_groundedness": 0.9931334696040577, "mean_judge": 4.351515151515151, "mean_attempts": 1.7297297297297298, "total_cost": 1.4545319999999997}, "deltas": {"judge": 0.1067783094098882, "groundedness": -0.005613397563862033, "cost_pct": -6.109130484458509, "success_rate": -0.11904761904761907, "attempts": -0.2702702702702702}, "verdict": "REJECT"}, {"name": "exp-3.18-pii-stripped", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/synthesizer.py"], "new_files": ["output/experiments/exp-3.18/FINDINGS.md", "output/experiments/exp-3.18/raw_personas.json", "output/experiments/exp-3.18/stripped_personas.json", "output/experiments/exp-3.18/summary.json", "scripts/run_exp_3_18.py", "synthesis/.env"], "other_modified": [".gitignore"], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9924738930659981, "mean_judge": 4.239999999999999, "mean_attempts": 1.85, "total_cost": 1.5107729999999997}, "deltas": {"judge": -0.00473684210526315, "groundedness": -0.0062729741019216245, "cost_pct": -2.478741883572747, "success_rate": -0.04761904761904767, "attempts": -0.1499999999999999}, "verdict": "NEUTRAL"}, {"name": "exp-3.19-source-weighting-recency", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py"], "new_files": ["output/experiments/exp-3.19-source-weighting-recency/FINDINGS.md"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9907305217959903, "mean_judge": 4.270588235294118, "mean_attempts": 1.7804878048780488, "total_cost": 1.4003109999999999}, "deltas": {"judge": 0.0258513931888551, "groundedness": -0.008016345371929412, "cost_pct": -9.609126934177155, "success_rate": -0.023809523809523836, "attempts": -0.2195121951219512}, "verdict": "NEUTRAL"}, {"name": "exp-3.19b-recency-real-fixture", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/recency_rerun.py", "output/experiments/exp-3.19b-recency-real-fixture/FINDINGS.md", "output/experiments/exp-3.19b-recency-real-fixture/results.json", "synthesis/fixtures/temporal_tenant/records.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/recency_rerun.py", "synthesis/fixtures/temporal_tenant/records.json"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-3.20-confidence-weighted-corroboration", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/groundedness.py", "synthesis/synthesis/models/evidence.py"], "new_files": ["output/experiments/exp_3_20_report.txt", "output/experiments/exp_3_20_results.json", "scripts/experiment_3_20.py", "tests/test_exp_3_20.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9895225155279505, "mean_judge": 4.211764705882352, "mean_attempts": 1.925, "total_cost": 1.5370469999999998}, "deltas": {"judge": -0.03297213622291029, "groundedness": -0.009224351639969264, "cost_pct": -0.7827402104219672, "success_rate": -0.04761904761904767, "attempts": -0.07499999999999996}, "verdict": "NEUTRAL"}, {"name": "exp-3.22-domain-specific-grounding-rules", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/domain_rules_eval.py", "output/experiments/exp-3.22-domain-specific-grounding-rules/FINDINGS.md", "synthesis/synthesis/engine/domain_rules.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/domain_rules_eval.py", "synthesis/synthesis/engine/domain_rules.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-3.23-predictive-grounding", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/predictive_grounding.py", "output/experiments/exp-3.23-predictive-grounding/FINDINGS.md", "output/experiments/exp-3.23-predictive-grounding/eval_results.json", "synthesis/fixtures/longitudinal_tenant/records.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/predictive_grounding.py", "synthesis/fixtures/longitudinal_tenant/records.json"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-3.24-counterfactual-grounding", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/counterfactual_grounding.py", "output/experiments/exp-3.24-counterfactual-grounding/FINDINGS.md", "output/experiments/exp-3.24-counterfactual-grounding/results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/counterfactual_grounding.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-3.25-semantic-groundedness-validation", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/semantic_vs_structural.py", "output/experiments/exp-3.25-semantic-groundedness-validation/FINDINGS.md", "output/experiments/exp-3.25-semantic-groundedness-validation/results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/semantic_vs_structural.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.01-system-prompt-format", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-4.01-system-prompt-format/FINDINGS.md", "output/experiments/exp-4.01-system-prompt-format/results.json", "output/experiments/exp-4.01-system-prompt-format/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-4.02-rag-over-persona", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-4.02-rag-over-persona/FINDINGS.md", "output/experiments/exp-4.02-rag-over-persona/results.json", "output/experiments/exp-4.02-rag-over-persona/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-4.03-drift-over-turn-count", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/drift_curve.py", "output/experiments/exp_4_03_report.txt", "output/experiments/exp_4_03_results.json", "scripts/experiment_4_03.py", "tests/test_exp_4_03.py", "twin/twin/conversations.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/drift_curve.py", "scripts/experiment_4_03.py", "tests/test_exp_4_03.py", "twin/twin/conversations.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.04-reinforcement-turns", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-4.04-reinforcement-turns/FINDINGS.md", "output/experiments/exp-4.04-reinforcement-turns/results.json", "output/experiments/exp-4.04-reinforcement-turns/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-4.05-refusal-boundary-attacks", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/boundary_attacks.py", "output/experiments/exp-4.05-refusal-boundary-attacks/FINDINGS.md", "output/experiments/exp-4.05-refusal-boundary-attacks/results.json", "scripts/experiment_4_05.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/boundary_attacks.py", "scripts/experiment_4_05.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.06", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/__init__.py", "twin/twin/chat.py"], "new_files": ["evals/memory_architectures.py", "twin/twin/memory.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9922047419272818, "mean_judge": 4.205882352941176, "mean_attempts": 1.775, "total_cost": 1.4388390000000002}, "deltas": {"judge": -0.038854489164086736, "groundedness": -0.006542125240637908, "cost_pct": -7.122122577659172, "success_rate": -0.04761904761904767, "attempts": -0.2250000000000001}, "verdict": "NEUTRAL"}, {"name": "exp-4.07", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/chat.py"], "new_files": ["evals/inner_monologue.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9934161942288876, "mean_judge": 4.252631578947367, "mean_attempts": 1.75, "total_cost": 1.4305569999999996}, "deltas": {"judge": 0.007894736842104955, "groundedness": -0.005330672939032111, "cost_pct": -7.656730397444346, "success_rate": -0.04761904761904767, "attempts": -0.25}, "verdict": "NEUTRAL"}, {"name": "exp-4.09-multi-turn-red-team", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/red_team_agent.py", "output/experiments/exp-4.09-multi-turn-red-team/FINDINGS.md", "output/experiments/exp-4.09-multi-turn-red-team/results.json", "scripts/experiment_4_09.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/red_team_agent.py", "scripts/experiment_4_09.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.10-personality-strength-dial", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/__init__.py", "twin/twin/chat.py"], "new_files": ["output/experiments/exp-4.10-personality-strength-dial/FINDINGS.md", "output/experiments/exp-4.10-personality-strength-dial/baseline/persona_00.json", "output/experiments/exp-4.10-personality-strength-dial/baseline/persona_01.json", "output/experiments/exp-4.10-personality-strength-dial/persona_00.json", "output/experiments/exp-4.10-personality-strength-dial/persona_01.json", "output/experiments/exp-4.10-personality-strength-dial/structural_comparison.log"], "other_modified": ["scripts/run_full_pipeline.py"], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9902504238946133, "mean_judge": 4.23030303030303, "mean_attempts": 1.7560975609756098, "total_cost": 1.4608350000000003}, "deltas": {"judge": -0.01443381180223291, "groundedness": -0.008496443273306453, "cost_pct": -5.702268242475165, "success_rate": -0.023809523809523836, "attempts": -0.24390243902439024}, "verdict": "NEUTRAL"}, {"name": "exp-4.11", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/chat.py"], "new_files": ["evals/emotional_state.py", "twin/twin/state.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 38, "personas_total": 42, "success_rate": 0.9047619047619048, "mean_groundedness": 0.9936510334848285, "mean_judge": 4.425806451612902, "mean_attempts": 1.8421052631578947, "total_cost": 1.537556}, "deltas": {"judge": 0.18106960950763984, "groundedness": -0.005095833683091189, "cost_pct": -0.7498839703506457, "success_rate": -0.09523809523809523, "attempts": -0.1578947368421053}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-4.12-twin-to-twin-conversations", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/twin_to_twin.py", "output/experiments/exp-4.12-twin-to-twin-conversations/FINDINGS.md", "output/experiments/exp-4.12-twin-to-twin-conversations/dialogue.txt"], "other_modified": [], "automerge_status": "all_files_already_present", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-4.13-length-matching", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/chat.py"], "new_files": ["output/experiments/exp-4.13/FINDINGS.md", "output/experiments/exp-4.13/conversations.json", "output/experiments/exp-4.13/realism_scores.json", "output/experiments/exp-4.13/summary.json", "scripts/run_exp_4_13.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 39, "personas_total": 42, "success_rate": 0.9285714285714286, "mean_groundedness": 0.9918877636524694, "mean_judge": 4.139393939393939, "mean_attempts": 1.8205128205128205, "total_cost": 1.4979120000000001}, "deltas": {"judge": -0.10534290271132374, "groundedness": -0.006859103515450271, "cost_pct": -3.3089267628599255, "success_rate": -0.0714285714285714, "attempts": -0.17948717948717952}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-4.14-latency-vs-realism", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/chat.py"], "new_files": ["output/experiments/exp-4.14/FINDINGS.md", "output/experiments/exp-4.14/conversations.json", "output/experiments/exp-4.14/proxy_scores.json", "output/experiments/exp-4.14/summary.json", "scripts/run_exp_4_14.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9848945279866331, "mean_judge": 4.422857142857142, "mean_attempts": 1.8, "total_cost": 1.45898}, "deltas": {"judge": 0.17812030075187923, "groundedness": -0.013852339181286588, "cost_pct": -5.8220095496113204, "success_rate": -0.04761904761904767, "attempts": -0.19999999999999996}, "verdict": "MERGE", "merged_into": "merging_experiments", "owner": "Pak", "title": "Latency-vs-realism tradeoff knob", "hypothesis": "Twin response latency affects perceived realism; adding a configurable artificial delay lets callers study this tradeoff.", "change": "Adds `artificial_delay_ms` parameter on TwinChat and latency tracking (model_latency_ms, total_latency_ms) on TwinReply."}, {"name": "exp-4.15-cold-start-warmup", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/chat.py"], "new_files": ["output/experiments/baseline/personas.json", "output/experiments/baseline/summary.json", "output/experiments/baseline/twin_replies.json", "output/experiments/exp-4.15/FINDINGS.md", "output/experiments/exp-4.15/conversations.json", "output/experiments/exp-4.15/summary.json", "scripts/run_baseline_control.py", "scripts/run_exp_4_15.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 37, "personas_total": 42, "success_rate": 0.8809523809523809, "mean_groundedness": 0.9890983420395184, "mean_judge": 4.291891891891892, "mean_attempts": 2.0, "total_cost": 1.6491399999999998}, "deltas": {"judge": 0.0471550497866291, "groundedness": -0.009648525128401308, "cost_pct": 6.452926819664408, "success_rate": -0.11904761904761907, "attempts": 0.0}, "verdict": "REJECT"}, {"name": "exp-4.16-twin-handling-unknowns", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/twin_unknowns.py", "output/experiments/exp-4.16-twin-handling-unknowns/FINDINGS.md", "output/experiments/exp-4.16-twin-handling-unknowns/results.json", "scripts/experiment_4_16.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/twin_unknowns.py", "scripts/experiment_4_16.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.19-cross-language-coherence", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/multilingual_twin.py", "output/experiments/exp-4.19-cross-language-coherence/FINDINGS.md", "output/experiments/exp-4.19-cross-language-coherence/comparison.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/multilingual_twin.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.19b-multilingual-semantic-judge", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/multilingual_semantic.py", "output/experiments/exp-4.19b-multilingual-semantic-judge/FINDINGS.md", "output/experiments/exp-4.19b-multilingual-semantic-judge/results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/multilingual_semantic.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.20-meta-question-handling", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/meta_question_handling.py", "output/experiments/exp-4.20-meta-question-handling/FINDINGS.md", "output/experiments/exp-4.20-meta-question-handling/results.json", "scripts/experiment_4_20.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/meta_question_handling.py", "scripts/experiment_4_20.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.21-curiosity-behavior", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/chat.py"], "new_files": ["output/experiments/exp-4.21-curiosity-behavior/FINDINGS.md", "output/experiments/exp-4.21-curiosity-behavior/raw_results.json"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 38, "personas_total": 42, "success_rate": 0.9047619047619048, "mean_groundedness": 0.9891883228570535, "mean_judge": 4.337499999999999, "mean_attempts": 1.868421052631579, "total_cost": 1.5373109999999997}, "deltas": {"judge": 0.0927631578947361, "groundedness": -0.009558544310866224, "cost_pct": -0.7656988599724164, "success_rate": -0.09523809523809523, "attempts": -0.13157894736842102}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-4.21b-curiosity-throttle", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/curiosity_throttle.py", "output/experiments/exp-4.21b-curiosity-throttle/FINDINGS.md", "output/experiments/exp-4.21b-curiosity-throttle/results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/curiosity_throttle.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-4.23-persona-wake-words", "type": "runtime-changing", "files_changed_runtime": ["twin/twin/chat.py"], "new_files": ["output/experiments/exp_4_23_report.txt", "output/experiments/exp_4_23_results.json", "scripts/experiment_4_23.py", "tests/test_exp_4_23.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 37, "personas_total": 42, "success_rate": 0.8809523809523809, "mean_groundedness": 0.9821557216697883, "mean_judge": 4.3352941176470585, "mean_attempts": 1.6756756756756757, "total_cost": 1.4460579999999996}, "deltas": {"judge": 0.09055727554179605, "groundedness": -0.016591145498131454, "cost_pct": -6.656132013661516, "success_rate": -0.11904761904761907, "attempts": -0.32432432432432434}, "verdict": "REJECT"}, {"name": "exp-5.01-judge-human-correlation", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-5.01-judge-human-correlation/FINDINGS.md", "output/experiments/exp-5.01-judge-human-correlation/results.json", "output/experiments/exp-5.01-judge-human-correlation/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-5.02-cross-judge-agreement", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/judge_harness.py", "output/experiments/exp_5_02_report.txt", "output/experiments/exp_5_02_results.json", "scripts/experiment_5_02.py", "tests/test_exp_5_02.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/judge_harness.py", "scripts/experiment_5_02.py", "tests/test_exp_5_02.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.02-cross-judge-agreement-yash", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-5.02-cross-judge-agreement/FINDINGS.md", "output/experiments/exp-5.02-cross-judge-agreement/results.json", "output/experiments/exp-5.02-cross-judge-agreement/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-5.03-self-preference-bias", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/self_preference.py", "output/experiments/exp_5_03_report.txt", "output/experiments/exp_5_03_results.json", "scripts/experiment_5_03.py", "tests/test_exp_5_03.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/self_preference.py", "scripts/experiment_5_03.py", "tests/test_exp_5_03.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.03-self-preference-bias-yash", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-5.03-self-preference-bias/FINDINGS.md", "output/experiments/exp-5.03-self-preference-bias/results.json", "output/experiments/exp-5.03-self-preference-bias/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-5.04-position-verbosity-bias", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py"], "new_files": ["evals/pairwise_biases.py", "output/experiments/exp_5_04_findings.md", "output/experiments/exp_5_04_report.txt", "output/experiments/exp_5_04_results.json", "tests/test_exp_5_04.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 39, "personas_total": 42, "success_rate": 0.9285714285714286, "mean_groundedness": 0.9931203543045647, "mean_judge": 4.320689655172413, "mean_attempts": 1.8205128205128205, "total_cost": 1.4993380000000003}, "deltas": {"judge": 0.07595281306715052, "groundedness": -0.0056265128633550265, "cost_pct": -3.2168776502043253, "success_rate": -0.0714285714285714, "attempts": -0.17948717948717952}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-5.05-rubric-ablation", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py"], "new_files": ["evals/judge_calibration.py", "evals/rubric_ablation.py", "output/experiments/exp-5.05-rubric-ablation/FINDINGS.md", "output/experiments/exp-5.05-rubric-ablation/report.txt", "output/experiments/exp-5.05-rubric-ablation/results.json", "scripts/experiment_5_05.py", "tests/test_exp_5_05.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9826358386083784, "mean_judge": 4.23076923076923, "mean_attempts": 1.825, "total_cost": 1.4852379999999996}, "deltas": {"judge": -0.013967611336032526, "groundedness": -0.016111028559541274, "cost_pct": -4.127040685578725, "success_rate": -0.04761904761904767, "attempts": -0.17500000000000004}, "verdict": "NEUTRAL"}, {"name": "exp-5.06-human-protocol-design", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/human_protocols/README.md", "evals/human_protocols/__init__.py", "evals/human_protocols/agreement.py", "evals/human_protocols/build_stimuli.py", "evals/human_protocols/ingest.py", "evals/human_protocols/prolific_config.yaml", "evals/human_protocols/protocols.py", "evals/human_protocols/test_agreement.py", "output/experiments/exp-1.15/baseline_scored.json", "output/experiments/exp-1.15/treatment_scored.json", "output/experiments/exp-4.13/conversations.json", "output/experiments/exp-5.06/FINDINGS.md", "output/experiments/exp-5.06/stimuli_protocol_a.csv", "output/experiments/exp-5.06/stimuli_protocol_b.csv", "output/experiments/exp-5.06/stimuli_protocol_c.csv"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/human_protocols/README.md", "evals/human_protocols/__init__.py", "evals/human_protocols/agreement.py", "evals/human_protocols/build_stimuli.py", "evals/human_protocols/ingest.py", "evals/human_protocols/prolific_config.yaml", "evals/human_protocols/protocols.py", "evals/human_protocols/test_agreement.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.07-time-to-detect", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/human_protocols/__init__.py", "evals/human_protocols/agreement.py", "evals/human_protocols/protocols.py", "output/experiments/baseline/personas.json", "output/experiments/baseline/summary.json", "output/experiments/baseline/twin_replies.json", "output/experiments/exp-5.07/FINDINGS.md", "output/experiments/exp-5.07/conversations.json", "output/experiments/exp-5.07/judgments.json", "output/experiments/exp-5.07/summary.json", "scripts/run_baseline_control.py", "scripts/run_exp_5_07.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/run_baseline_control.py", "scripts/run_exp_5_07.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.08-adversarial-detector", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evaluation/evaluation/evals/__init__.py", "evaluation/evaluation/evals/ai_detector.py", "output/experiments/exp-5.08-adversarial-detector/baseline/persona_00.json", "output/experiments/exp-5.08-adversarial-detector/baseline/persona_01.json", "output/experiments/exp-5.08-adversarial-detector/comparison.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evaluation/evaluation/evals/__init__.py", "evaluation/evaluation/evals/ai_detector.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.09-eval-drift-model-versions", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/version_drift.py", "output/experiments/exp-5.09-eval-drift-model-versions/FINDINGS.md", "output/experiments/exp-5.09-eval-drift-model-versions/comparison.json", "output/experiments/exp-5.09-eval-drift-model-versions/scores_vclaude-sonnet-4-6.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/version_drift.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.10-pairwise-vs-absolute", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py"], "new_files": ["evals/judge_calibration.py", "evals/pairwise_judging.py", "output/experiments/exp-5.10-pairwise-vs-absolute/FINDINGS.md", "output/experiments/exp-5.10-pairwise-vs-absolute/results.json", "scripts/experiment_5_10.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 40, "personas_total": 42, "success_rate": 0.9523809523809523, "mean_groundedness": 0.9884757180384115, "mean_judge": 4.232432432432431, "mean_attempts": 1.85, "total_cost": 1.4678019999999998}, "deltas": {"judge": -0.012304409672831085, "groundedness": -0.010271149129508217, "cost_pct": -5.25254442208845, "success_rate": -0.04761904761904767, "attempts": -0.1499999999999999}, "verdict": "NEUTRAL"}, {"name": "exp-5.10-pairwise-vs-absolute-yash", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py"], "new_files": ["evals/judge_calibration.py", "evals/pairwise_judging.py", "output/experiments/exp-5.10-pairwise-vs-absolute/FINDINGS.md", "output/experiments/exp-5.10-pairwise-vs-absolute/results.json", "scripts/experiment_5_10.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9902363458317547, "mean_judge": 4.33939393939394, "mean_attempts": 1.8780487804878048, "total_cost": 1.5054829999999997}, "deltas": {"judge": 0.09465709728867733, "groundedness": -0.008510521336165033, "cost_pct": -2.820214398262844, "success_rate": -0.023809523809523836, "attempts": -0.12195121951219523}, "verdict": "REVIEW"}, {"name": "exp-5.11-reference-based-vs-reference-free", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py"], "new_files": ["evals/judge_calibration.py", "evals/reference_judging.py", "output/experiments/exp-5.11-reference-vs-free-judging/FINDINGS.md", "output/experiments/exp-5.11-reference-vs-free-judging/results.json", "scripts/experiment_5_11.py", "tests/test_exp_5_11.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 37, "personas_total": 42, "success_rate": 0.8809523809523809, "mean_groundedness": 0.9947174447174447, "mean_judge": 4.306666666666667, "mean_attempts": 1.837837837837838, "total_cost": 1.5656189999999999}, "deltas": {"judge": 0.06192982456140417, "groundedness": -0.004029422450474995, "cost_pct": 1.0615986723238615, "success_rate": -0.11904761904761907, "attempts": -0.16216216216216206}, "verdict": "REJECT"}, {"name": "exp-5.12-judge-prompt-sensitivity", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py"], "new_files": ["evals/judge_calibration.py", "evals/judge_prompt_sensitivity.py", "output/experiments/exp-5.12-judge-prompt-sensitivity/FINDINGS.md", "output/experiments/exp-5.12-judge-prompt-sensitivity/results.json", "scripts/experiment_5_12.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.992115404920283, "mean_judge": 4.3055555555555545, "mean_attempts": 1.8048780487804879, "total_cost": 1.4623749999999998}, "deltas": {"judge": 0.060818713450291995, "groundedness": -0.006631462247636666, "cost_pct": -5.602860364852755, "success_rate": -0.023809523809523836, "attempts": -0.19512195121951215}, "verdict": "REVIEW"}, {"name": "exp-5.13", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py"], "new_files": ["evals/judge_calibration.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 38, "personas_total": 42, "success_rate": 0.9047619047619048, "mean_groundedness": 0.9861149084833293, "mean_judge": 4.183333333333334, "mean_attempts": 1.763157894736842, "total_cost": 1.481432}, "deltas": {"judge": -0.061403508771928905, "groundedness": -0.012631958684590439, "cost_pct": -4.372720154559887, "success_rate": -0.09523809523809523, "attempts": -0.23684210526315796}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-5.14", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/judges.py"], "new_files": ["evals/confidence_calibration.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 39, "personas_total": 42, "success_rate": 0.9285714285714286, "mean_groundedness": 0.989792663476874, "mean_judge": 4.205882352941177, "mean_attempts": 1.7179487179487178, "total_cost": 1.4329670000000003}, "deltas": {"judge": -0.03885448916408585, "groundedness": -0.008954203691045715, "cost_pct": -7.501163524022159, "success_rate": -0.0714285714285714, "attempts": -0.28205128205128216}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-5.16", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/test_retest.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-5.17-inter-annotator-agreement", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/human_protocols/__init__.py", "evals/human_protocols/agreement.py", "evals/human_protocols/protocols.py", "output/experiments/baseline/personas.json", "output/experiments/baseline/summary.json", "output/experiments/baseline/twin_replies.json", "output/experiments/exp-5.17/FINDINGS.md", "output/experiments/exp-5.17/ratings.json", "output/experiments/exp-5.17/summary.json", "scripts/run_baseline_control.py", "scripts/run_exp_5_17.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/run_exp_5_17.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.18-crowd-vs-expert", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/human_protocols/__init__.py", "evals/human_protocols/agreement.py", "evals/human_protocols/protocols.py", "output/experiments/baseline/personas.json", "output/experiments/baseline/summary.json", "output/experiments/baseline/twin_replies.json", "output/experiments/exp-5.18/FINDINGS.md", "output/experiments/exp-5.18/ratings.json", "output/experiments/exp-5.18/summary.json", "scripts/run_baseline_control.py", "scripts/run_exp_5_18.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/run_exp_5_18.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.19-continuous-vs-binary-metrics", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/metric_resolution.py", "output/experiments/exp-5.19-continuous-vs-binary-metrics/FINDINGS.md", "output/experiments/exp-5.19-continuous-vs-binary-metrics/results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/metric_resolution.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.21", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/normalization.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-5.22-eval-contamination-check", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/contamination.py", "output/experiments/exp_5_22_report.txt", "output/experiments/exp_5_22_results.json", "scripts/experiment_5_22.py", "tests/test_exp_5_22.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/contamination.py", "scripts/experiment_5_22.py", "tests/test_exp_5_22.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-5.23-composite-realism-score", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/composite_score.py", "output/experiments/exp-5.23-composite-realism-score/FINDINGS.md"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-6.01-distinctiveness-floor", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-6.01-distinctiveness-floor/FINDINGS.md", "output/experiments/exp-6.01-distinctiveness-floor/results.json", "output/experiments/exp-6.01-distinctiveness-floor/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-6.02-coverage-gaps", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/coverage_gaps.py", "output/experiments/exp_6_02_report.txt", "output/experiments/exp_6_02_results.json", "scripts/experiment_6_02.py", "tests/test_exp_6_02.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/coverage_gaps.py", "scripts/experiment_6_02.py", "tests/test_exp_6_02.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.03-clusterer-parameter-sweep", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/clusterer_sweep.py", "evals/judge_helper_6_03.py", "output/experiments/exp-6.03-clusterer-parameter-sweep/FINDINGS.md", "output/experiments/exp-6.03-clusterer-parameter-sweep/results.json", "scripts/experiment_6_03.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/clusterer_sweep.py", "evals/judge_helper_6_03.py", "scripts/experiment_6_03.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.04", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/prompt_builder.py", "synthesis/synthesis/engine/synthesizer.py"], "new_files": ["evals/contrast_prompting.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 42, "personas_total": 42, "success_rate": 1.0, "mean_groundedness": 0.9928889684528782, "mean_judge": 4.363157894736841, "mean_attempts": 1.8095238095238095, "total_cost": 1.415051}, "deltas": {"judge": 0.11842105263157876, "groundedness": -0.0058578987150414985, "cost_pct": -8.657651534076573, "success_rate": 0.0, "attempts": -0.19047619047619047}, "verdict": "MERGE", "merged_into": "merging_experiments", "owner": "Billy", "title": "Cross-persona contrast prompting", "hypothesis": "When synthesizing persona N+1, injecting personas 1..N with instructions to differ on goals/vocabulary/voice will produce more distinctive personas.", "change": "Adds `existing_personas` parameter to synthesize() and build_user_message(). When provided, injects a contrast block instructing the LLM to differentiate."}, {"name": "exp-6.05-stability-across-reruns", "type": "runtime-changing", "files_changed_runtime": ["synthesis/synthesis/engine/model_backend.py"], "new_files": ["evals/stability_reruns.py", "output/experiments/exp-6.05-stability-across-reruns/FINDINGS.md", "output/experiments/exp-6.05-stability-across-reruns/results.json", "scripts/experiment_6_05.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 38, "personas_total": 42, "success_rate": 0.9047619047619048, "mean_groundedness": 0.9897988004065892, "mean_judge": 4.393749999999999, "mean_attempts": 1.7894736842105263, "total_cost": 1.5110340000000002}, "deltas": {"judge": 0.14901315789473646, "groundedness": -0.008948066761330531, "cost_pct": -2.4618941848328055, "success_rate": -0.09523809523809523, "attempts": -0.21052631578947367}, "verdict": "REJECT-RELIABILITY"}, {"name": "exp-6.06-cross-tenant-leakage", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/baseline/personas.json", "output/experiments/baseline/summary.json", "output/experiments/baseline/twin_replies.json", "output/experiments/exp-6.06/FINDINGS.md", "output/experiments/exp-6.06/personas_a.json", "output/experiments/exp-6.06/personas_b.json", "output/experiments/exp-6.06/summary.json", "scripts/run_baseline_control.py", "scripts/run_exp_6_06.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/run_exp_6_06.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.07", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/counterfactual_probes.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-6.08-long-tail-viability", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/baseline/personas.json", "output/experiments/baseline/summary.json", "output/experiments/baseline/twin_replies.json", "output/experiments/exp-6.08/FINDINGS.md", "output/experiments/exp-6.08/personas.json", "output/experiments/exp-6.08/summary.json", "scripts/run_baseline_control.py", "scripts/run_exp_6_08.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/run_exp_6_08.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.09-color-palette-view", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evaluation/evaluation/evals/persona_viz.py", "output/experiments/exp-6.09-color-palette-view/FINDINGS.md", "output/experiments/exp-6.09-color-palette-view/baseline/persona_00.json", "output/experiments/exp-6.09-color-palette-view/baseline/persona_01.json", "output/experiments/exp-6.09-color-palette-view/comparison.json", "output/experiments/exp-6.09-color-palette-view/persona_projection.html"], "other_modified": [], "automerge_status": "ok", "files_added": ["evaluation/evaluation/evals/persona_viz.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.10-diversity-along-specific-axes", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/axis_diversity.py", "output/experiments/exp_6_10_report.txt", "output/experiments/exp_6_10_results.json", "scripts/experiment_6_10.py", "tests/test_exp_6_10.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/axis_diversity.py", "scripts/experiment_6_10.py", "tests/test_exp_6_10.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.11-outlier-persona-forced", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/outlier_persona.py", "output/experiments/exp-6.11-outlier-persona-forced/FINDINGS.md", "output/experiments/exp-6.11-outlier-persona-forced/results.json", "scripts/experiment_6_11.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/outlier_persona.py", "scripts/experiment_6_11.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.12-power-user-heuristic", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/power_user_check.py", "output/experiments/exp_6_12_report.txt", "output/experiments/exp_6_12_results.json", "scripts/experiment_6_12.py", "tests/test_exp_6_12.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/power_user_check.py", "scripts/experiment_6_12.py", "tests/test_exp_6_12.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.13-persona-overlap-heatmap", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/overlap_heatmap.py", "output/experiments/exp_6_13_field_density.png", "output/experiments/exp_6_13_heatmap.png", "output/experiments/exp_6_13_report.txt", "output/experiments/exp_6_13_results.json", "scripts/experiment_6_13.py", "tests/test_exp_6_13.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/overlap_heatmap.py", "scripts/experiment_6_13.py", "tests/test_exp_6_13.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.13-persona-overlap-heatmap-yash", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-6.13-persona-overlap-heatmap/FINDINGS.md", "output/experiments/exp-6.13-persona-overlap-heatmap/results.json", "output/experiments/exp-6.13-persona-overlap-heatmap/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-6.14-persona-graph-relationships", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/persona_graph.py", "output/experiments/exp-6.14-persona-graph-relationships/FINDINGS.md", "output/experiments/exp-6.14-persona-graph-relationships/graph_results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/persona_graph.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.16-vocabulary-uniqueness", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/vocab_divergence.py", "scripts/experiment_6_16.py", "tests/test_exp_6_16.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/vocab_divergence.py", "scripts/experiment_6_16.py", "tests/test_exp_6_16.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.16-vocabulary-uniqueness-yash", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-6.16-vocabulary-uniqueness/FINDINGS.md", "output/experiments/exp-6.16-vocabulary-uniqueness/results.json", "output/experiments/exp-6.16-vocabulary-uniqueness/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-6.17-persona-naming-distinctiveness", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/naming_audit.py", "output/experiments/exp-6.17-persona-naming-distinctiveness/FINDINGS.md", "output/experiments/exp-6.17-persona-naming-distinctiveness/results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/naming_audit.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.18", "type": "eval-only", "files_changed_runtime": [], "new_files": ["evals/synthesizer_compare.py"], "other_modified": [], "automerge_status": "unknown", "files_added": [], "files_skipped": [], "verdict": "NOT-PROCESSED"}, {"name": "exp-6.19-population-gini", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["output/experiments/exp-6.19-population-gini/FINDINGS.md", "output/experiments/exp-6.19-population-gini/results.json", "output/experiments/exp-6.19-population-gini/run_experiment.py"], "other_modified": [], "automerge_status": "no_new_files", "files_added": [], "files_skipped": [], "verdict": "SKIPPED-NO-CHANGE"}, {"name": "exp-6.20-persona-deletion-robustness", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/deletion_robustness.py", "output/experiments/exp_6_20_report.txt", "output/experiments/exp_6_20_results.json", "scripts/experiment_6_20.py", "tests/test_exp_6_20.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/deletion_robustness.py", "scripts/experiment_6_20.py", "tests/test_exp_6_20.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.21-population-turing-test", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/__init__.py", "evals/human_protocols/__init__.py", "evals/human_protocols/agreement.py", "evals/human_protocols/protocols.py", "output/experiments/baseline/personas.json", "output/experiments/baseline/summary.json", "output/experiments/baseline/twin_replies.json", "output/experiments/exp-6.21/FINDINGS.md", "output/experiments/exp-6.21/judgments.json", "output/experiments/exp-6.21/personas.json", "output/experiments/exp-6.21/summary.json", "scripts/run_baseline_control.py", "scripts/run_exp_6_21.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["scripts/run_exp_6_21.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-6.23-hierarchical-archetypes", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/hierarchical_archetypes.py", "evals/judge_helper_6_23.py", "output/experiments/exp-6.23-hierarchical-archetypes/FINDINGS.md", "output/experiments/exp-6.23-hierarchical-archetypes/results.json", "scripts/experiment_6_23.py"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/hierarchical_archetypes.py", "evals/judge_helper_6_23.py", "scripts/experiment_6_23.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-b1-semantic-groundedness-proxy", "type": "runtime-changing", "files_changed_runtime": ["evaluation/evaluation/metrics.py"], "new_files": ["tests/test_semantic_groundedness.py"], "other_modified": [], "metrics": {"clusters": 42, "personas_ok": 41, "personas_total": 42, "success_rate": 0.9761904761904762, "mean_groundedness": 0.9948109603276484, "mean_judge": 4.276923076923077, "mean_attempts": 1.829268292682927, "total_cost": 1.4595200000000002}, "deltas": {"judge": 0.03218623481781435, "groundedness": -0.0039359068402713415, "cost_pct": -5.7871522418735655, "success_rate": -0.023809523809523836, "attempts": -0.1707317073170731}, "verdict": "NEUTRAL"}, {"name": "exp-b2-rerun-2.20-semantic", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/semantic_rerun_2_20.py", "output/clusters/cluster_00.json", "output/clusters/cluster_01.json", "output/experiments/exp-b2-rerun-2.20-semantic/FINDINGS_v2.md", "output/experiments/exp-b2-rerun-2.20-semantic/results.json", "output/personas/baseline_persona_00.json", "output/personas/baseline_persona_01.json", "output/personas/transcript_persona_00.json", "output/personas/transcript_persona_01.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/semantic_rerun_2_20.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}, {"name": "exp-b3-rerun-3.22-semantic", "type": "schema-additive", "files_changed_runtime": [], "new_files": ["evals/semantic_rerun_3_22.py", "output/experiments/exp-b3-rerun-3.22-semantic/FINDINGS_v2.md", "output/experiments/exp-b3-rerun-3.22-semantic/results.json"], "other_modified": [], "automerge_status": "ok", "files_added": ["evals/semantic_rerun_3_22.py"], "files_skipped": [], "verdict": "MERGED-AS-OPTION", "merged_into": "merging_experiments"}], "counts_by_verdict": {"NEUTRAL": 19, "SKIPPED-NO-CHANGE": 21, "REVIEW": 7, "MERGED-AS-OPTION": 53, "NOT-PROCESSED": 11, "MERGE": 4, "REJECT": 10, "REJECT-RELIABILITY": 10, "REJECT-BROKEN": 1}, "counts_by_type": {"runtime-changing": 51, "schema-additive": 74, "eval-only": 11}, "gower_meta": {"owner": "Shruti", "title": "Adaptive Gower-distance segmentation", "hypothesis": "Jaccard distance over behavior sets is one of many ways to cluster users. Gower distance handles numeric, categorical, and set features uniformly, which may produce better clusters when records have firmographic or session-duration signals.", "change": "3,635 lines across 36 files. New modules: gower.py, registry.py, schema_inference.py. FeatureType enum with typed feature dicts (numeric/categorical/set). Feature schema registry for connectors. Per-type distance functions with family weighting and missing-data handling. ClusterPrototype (union/mean/mode) replaces fixed-seed comparison. Pipeline accepts `distance_metric='jaccard'|'gower'`, `feature_registry`, `family_weights`. Jaccard path preserved byte-for-byte as default. 177 tests."}};
+
+function fmt(n, d=2) { return (n==null||isNaN(n)) ? '—' : n.toFixed(d); }
+function fmtPct(n) { return n==null ? '—' : (n*100).toFixed(1) + '%'; }
+function fmtMoney(n) { return n==null ? '—' : '$' + n.toFixed(4); }
+function fmtDeltaJ(d) {
+  if (d == null || isNaN(d)) return '—';
+  const s = d >= 0 ? '+' : '';
+  return s + d.toFixed(2);
+}
+function fmtDeltaG(d) {
+  if (d == null || isNaN(d)) return '—';
+  const s = d >= 0 ? '+' : '';
+  return s + d.toFixed(3);
+}
+function fmtDeltaPct(d) {
+  if (d == null || isNaN(d)) return '—';
+  const s = d >= 0 ? '+' : '';
+  return s + d.toFixed(1) + '%';
+}
+
+// ============================================================================
+// Verdict overview
+// ============================================================================
+(function() {
+  const counts = DATA.counts_by_verdict;
+  const groups = [
+    {label:'MERGE', keys:['MERGE'], cls:'merge', desc:'High-impact, benchmarked wins'},
+    {label:'MERGED-AS-OPTION', keys:['MERGED-AS-OPTION'], cls:'option', desc:'Additive, backwards-compatible'},
+    {label:'REVIEW', keys:['REVIEW'], cls:'review', desc:'Mixed signals'},
+    {label:'NEUTRAL', keys:['NEUTRAL'], cls:'neutral', desc:'Within noise'},
+    {label:'REJECT family', keys:['REJECT','REJECT-RELIABILITY','REJECT-BROKEN'], cls:'reject', desc:'Regression or broken'},
+    {label:'SKIPPED / missing', keys:['SKIPPED-NO-CHANGE','NO-RESULTS','NOT-PROCESSED'], cls:'neutral', desc:'No code to bring in or failed to run'},
+  ];
+  const root = document.getElementById('verdict-overview');
+  root.innerHTML = groups.map(g => {
+    const total = g.keys.reduce((s, k) => s + (counts[k] || 0), 0);
+    return `<div class="verdict-card ${g.cls}">
+      <div><div class="label">${g.label}</div><div class="subtitle">${g.desc}</div></div>
+      <div class="count">${total}</div>
+    </div>`;
+  }).join('');
+})();
+
+// ============================================================================
+// Scoreboard
+// ============================================================================
+(function() {
+  const b = DATA.baseline;
+  const m = DATA.merging_experiments;
+  const gj = DATA.gower_jaccard;
+  const gg = DATA.gower_gower;
+  const variants = [
+    {name: 'main baseline', data: b, cls: 'variant-main', note: 'untouched reference'},
+    {name: 'merging_experiments', data: m, cls: 'variant-merge', note: '4 MERGE + 64 additive, MAX_RETRIES=4'},
+    {name: 'gower (jaccard mode)', data: gj, cls: 'variant-gower', note: 'parity claim — should match main'},
+    {name: 'gower (gower mode)', data: gg, cls: 'variant-gower', note: 'typed-feature clustering'},
+  ];
+  const rows = [
+    {label:'Clusters', get: d=>d.clusters, fmt: v=>v, better:null},
+    {label:'Personas ok / total', get: d=>`${d.personas_ok}/${d.personas_total}`, fmt: v=>v, better:null},
+    {label:'Success rate', get: d=>d.success_rate, fmt: v=>fmtPct(v), better:'up'},
+    {label:'Mean judge (1-5)', get: d=>d.mean_judge, fmt: v=>fmt(v,2), better:'up'},
+    {label:'Mean groundedness', get: d=>d.mean_groundedness, fmt: v=>fmt(v,3), better:'up'},
+    {label:'Mean attempts', get: d=>d.mean_attempts, fmt: v=>fmt(v,2), better:'down'},
+    {label:'Total cost', get: d=>d.total_cost, fmt: v=>fmtMoney(v), better:'down'},
+  ];
+  const root = document.getElementById('scoreboard-table');
+  let html = '<table class="comparison-table"><thead><tr><th></th>';
+  variants.forEach(v => { html += `<th class="${v.cls}">${v.name}<div class="byline">${v.note}</div></th>`; });
+  html += '</tr></thead><tbody>';
+  rows.forEach(r => {
+    const values = variants.map(v => v.data[r.label] !== undefined ? v.data[r.label] : r.get(v.data));
+    let winnerIdx = null;
+    if (r.better) {
+      const nums = values.map(v => typeof v === 'number' ? v : NaN);
+      if (r.better === 'up') winnerIdx = nums.indexOf(Math.max(...nums.filter(n=>!isNaN(n))));
+      else winnerIdx = nums.indexOf(Math.min(...nums.filter(n=>!isNaN(n))));
+    }
+    html += `<tr><td class="label-col">${r.label}</td>`;
+    values.forEach((v, i) => {
+      html += `<td class="${i === winnerIdx ? 'winner' : ''}">${r.fmt(v)}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  root.innerHTML = html;
+})();
+
+// ============================================================================
+// Merged (MERGE verdict)
+// ============================================================================
+function renderBranchCard(b, opts={}) {
+  const d = b.deltas || {};
+  const m = b.metrics || {};
+  const metricStr = (m.mean_judge || m.mean_judge === 0)
+    ? `<div class="metrics-row">
+        <span>personas: <strong>${m.personas_ok}/${m.personas_total}</strong></span>
+        <span>judge: <strong>${fmt(m.mean_judge,2)}</strong></span>
+        <span>grounded: ${fmt(m.mean_groundedness,3)}</span>
+        <span>attempts: ${fmt(m.mean_attempts,2)}</span>
+        <span>cost: ${fmtMoney(m.total_cost)}</span>
+      </div>` : '';
+  const deltaStr = d.judge !== undefined
+    ? `<div class="metrics-row">
+        <span>ΔJudge: <strong class="delta ${d.judge>0.01?'up':d.judge<-0.01?'down':'flat'}">${fmtDeltaJ(d.judge)}</strong></span>
+        <span>ΔGnd: <strong class="delta ${d.groundedness>0.01?'up':d.groundedness<-0.01?'down':'flat'}">${fmtDeltaG(d.groundedness)}</strong></span>
+        <span>ΔCost: <strong class="delta ${d.cost_pct<-1?'up':d.cost_pct>1?'down':'flat'}">${fmtDeltaPct(d.cost_pct)}</strong></span>
+        <span>ΔSuccess: <strong class="delta ${d.success_rate>0.01?'up':d.success_rate<-0.01?'down':'flat'}">${fmtDeltaG(d.success_rate)}</strong></span>
+      </div>` : '';
+  const filesStr = (() => {
+    const rt = b.files_changed_runtime || [];
+    const added = b.files_added || b.new_files || [];
+    if (!rt.length && !added.length) return '';
+    return `<details><summary>files (${rt.length} rt + ${added.length} new)</summary>
+      <ul class="file-list">
+        ${rt.map(f => '<li><code>'+f+'</code> <span class="q">(modified)</span></li>').join('')}
+        ${added.map(f => '<li><code>'+f+'</code> <span class="q">(new)</span></li>').join('')}
+      </ul></details>`;
+  })();
+  const owner = b.owner ? `<span class="q">by ${b.owner}</span>` : '';
+  const body = b.hypothesis ? `
+    <div class="section">
+      <div class="label">Hypothesis</div>
+      <div>${b.hypothesis}</div>
+    </div>
+    <div class="section">
+      <div class="label">Change</div>
+      <div>${b.change}</div>
+    </div>` : '';
+  return `<div class="branch-card">
+    <div class="head">
+      <div>
+        <div class="name">${b.name}</div>
+        <div class="title">${b.title || b.type} ${owner}</div>
+      </div>
+      <div><span class="badge ${b.verdict}">${b.verdict}</span></div>
+    </div>
+    ${metricStr}
+    ${deltaStr}
+    ${body}
+    ${filesStr}
+  </div>`;
+}
+
+(function() {
+  const merged = DATA.branches
+    .filter(b => b.verdict === 'MERGE')
+    .sort((a,b) => (b.deltas.judge || 0) - (a.deltas.judge || 0));
+  document.getElementById('merged-list').innerHTML = merged.map(b => renderBranchCard(b)).join('');
+})();
+
+// ============================================================================
+// Gower detail
+// ============================================================================
+(function() {
+  const gj = DATA.gower_jaccard;
+  const gg = DATA.gower_gower;
+  const b = DATA.baseline;
+  const m = DATA.gower_meta;
+  const root = document.getElementById('gower-detail');
+  root.innerHTML = `
+    <div class="branch-card">
+      <div class="head">
+        <div>
+          <div class="name">feat/adaptive-gower-segmentation</div>
+          <div class="title">${m.title} <span class="q">by ${m.owner}</span></div>
+        </div>
+        <div><span class="badge MERGED-AS-OPTION">MERGE-WITH-JACCARD-DEFAULT</span></div>
+      </div>
+      <div class="section">
+        <div class="label">Hypothesis</div>
+        <div>${m.hypothesis}</div>
+      </div>
+      <div class="section">
+        <div class="label">Change</div>
+        <div>${m.change}</div>
+      </div>
+      <div class="section">
+        <div class="label">Jaccard-mode run (parity claim)</div>
+        <div class="metrics-row">
+          <span>personas: <strong>${gj.personas_ok}/${gj.personas_total}</strong></span>
+          <span>judge: <strong>${fmt(gj.mean_judge,2)}</strong></span>
+          <span>grounded: ${fmt(gj.mean_groundedness,3)}</span>
+          <span>cost: ${fmtMoney(gj.total_cost)}</span>
+          <span>ΔJudge vs main: <strong class="delta up">+${fmt(gj.mean_judge - b.mean_judge,2)}</strong></span>
+        </div>
+      </div>
+      <div class="section">
+        <div class="label">Gower-mode run (typed-feature clustering)</div>
+        <div class="metrics-row">
+          <span>personas: <strong>${gg.personas_ok}/${gg.personas_total}</strong></span>
+          <span>clusters: <strong>${gg.clusters}</strong> (vs main's ${b.clusters})</span>
+          <span>judge: <strong>${fmt(gg.mean_judge,2)}</strong></span>
+          <span>cost: <strong>${fmtMoney(gg.total_cost)}</strong></span>
+          <span>ΔJudge vs main: <strong class="delta down">${fmt(gg.mean_judge - b.mean_judge,2)}</strong></span>
+        </div>
+      </div>
+      <div class="callout warning">
+        <strong>Verdict</strong>: Merge the module (Jaccard stays default, backwards-compatible). Do NOT flip
+        default to Gower. Gower produces a <strong>${Math.round((1 - gg.clusters/b.clusters)*100)}% drop in cluster count</strong>
+        and lower judge scores because it groups users by firmographic attributes (company size, industry)
+        rather than behavioral overlap, collapsing distinct behavioral groups into one.
+      </div>
+    </div>
+  `;
+})();
+
+// ============================================================================
+// Auto-merged
+// ============================================================================
+(function() {
+  const items = DATA.branches.filter(b => b.verdict === 'MERGED-AS-OPTION');
+  const filter = document.getElementById('filter-auto');
+  function render() {
+    const q = filter.value.toLowerCase();
+    const matching = items.filter(b => !q || b.name.toLowerCase().includes(q));
+    document.getElementById('automerged-list').innerHTML = matching
+      .map(b => renderAutoCard(b)).join('') || '<p class="q">no matches</p>';
+  }
+  filter.addEventListener('input', render);
+  render();
+})();
+
+function renderAutoCard(b) {
+  const added = b.files_added || [];
+  return `<div class="branch-card">
+    <div class="head">
+      <div>
+        <div class="name">${b.name}</div>
+        <div class="title">${b.type}${b.owner ? ' — by '+b.owner : ''}</div>
+      </div>
+      <div><span class="badge MERGED-AS-OPTION">AUTO-MERGED</span></div>
+    </div>
+    <div class="metrics-row"><span>new files added: <strong>${added.length}</strong></span></div>
+    ${added.length ? `<details><summary>files</summary><ul class="file-list">${added.map(f=>'<li><code>'+f+'</code></li>').join('')}</ul></details>` : ''}
+  </div>`;
+}
+
+// ============================================================================
+// Review / Neutral / Rejected / Skipped
+// ============================================================================
+function renderGroup(verdicts, rootId) {
+  const items = DATA.branches
+    .filter(b => verdicts.includes(b.verdict))
+    .sort((a,b) => (a.deltas ? (a.deltas.judge||0) : 0) - (b.deltas ? (b.deltas.judge||0) : 0));
+  document.getElementById(rootId).innerHTML = items.map(b => renderBranchCard(b)).join('') || '<p class="q">none</p>';
+}
+renderGroup(['REVIEW'], 'review-list');
+renderGroup(['NEUTRAL'], 'neutral-list');
+renderGroup(['REJECT','REJECT-RELIABILITY','REJECT-BROKEN','NO-RESULTS'], 'rejected-list');
+renderGroup(['SKIPPED-NO-CHANGE','NOT-PROCESSED'], 'skipped-list');
+
+// ============================================================================
+// All branches
+// ============================================================================
+(function() {
+  let currentFilter = 'all';
+  const filterInput = document.getElementById('filter-all');
+  document.querySelectorAll('[data-verdict]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-verdict]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.verdict;
+      render();
+    });
+  });
+  filterInput.addEventListener('input', render);
+
+  function render() {
+    const q = filterInput.value.toLowerCase();
+    let items = DATA.branches.slice();
+    if (currentFilter !== 'all') {
+      if (currentFilter === 'REJECT') {
+        items = items.filter(b => ['REJECT','REJECT-RELIABILITY','REJECT-BROKEN'].includes(b.verdict));
+      } else if (currentFilter === 'SKIPPED-NO-CHANGE') {
+        items = items.filter(b => ['SKIPPED-NO-CHANGE','NOT-PROCESSED','NO-RESULTS'].includes(b.verdict));
+      } else {
+        items = items.filter(b => b.verdict === currentFilter);
+      }
+    }
+    if (q) {
+      items = items.filter(b =>
+        b.name.toLowerCase().includes(q) ||
+        (b.owner && b.owner.toLowerCase().includes(q)) ||
+        (b.type && b.type.toLowerCase().includes(q))
+      );
+    }
+    items.sort((a,b) => {
+      const va = a.deltas && a.deltas.judge !== undefined ? a.deltas.judge : -99;
+      const vb = b.deltas && b.deltas.judge !== undefined ? b.deltas.judge : -99;
+      return vb - va;
+    });
+    let html = '<table><thead><tr><th>Branch</th><th>Type</th><th>Verdict</th><th>ΔJudge</th><th>ΔGnd</th><th>ΔCost%</th><th>ΔSuccess</th></tr></thead><tbody>';
+    html += items.map(b => {
+      const d = b.deltas || {};
+      return `<tr>
+        <td><code>${b.name}</code></td>
+        <td>${b.type}</td>
+        <td><span class="badge ${b.verdict}">${b.verdict}</span></td>
+        <td>${fmtDeltaJ(d.judge)}</td>
+        <td>${fmtDeltaG(d.groundedness)}</td>
+        <td>${fmtDeltaPct(d.cost_pct)}</td>
+        <td>${fmtDeltaG(d.success_rate)}</td>
+      </tr>`;
+    }).join('');
+    html += '</tbody></table>';
+    document.getElementById('all-branches').innerHTML = html || '<p class="q">no matches</p>';
+  }
+  render();
+})();
+</script>
+</body>
+</html>
