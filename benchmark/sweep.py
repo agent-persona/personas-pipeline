@@ -81,7 +81,7 @@ async def run_branch(
                 stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
             )
             try:
-                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=600)
+                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=1500)
             except asyncio.TimeoutError:
                 proc.kill()
                 report["status"] = "timeout"

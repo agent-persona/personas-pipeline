@@ -1,6 +1,6 @@
 # Merge Decisions — Experiment Branch Evaluation
 
-Evaluated 50 runtime-changing branches against main baseline.
+Evaluated 51 runtime-changing branches against main baseline.
 
 ## Summary
 
@@ -9,10 +9,10 @@ Evaluated 50 runtime-changing branches against main baseline.
 | MERGE | 4 | Clear improvement, safe to merge |
 | REVIEW | 7 | Mixed signals, human read-through needed |
 | NEUTRAL | 19 | No meaningful change; safe to merge if orthogonal |
-| REJECT | 7 | Quality regression |
-| REJECT-RELIABILITY | 9 | Reduced success rate |
-| REJECT-BROKEN | 0 | Zero successful personas — branch is broken |
-| NO-RESULTS | 4 | Benchmark didn't run — infra issue |
+| REJECT | 10 | Quality regression |
+| REJECT-RELIABILITY | 10 | Reduced success rate |
+| REJECT-BROKEN | 1 | Zero successful personas — branch is broken |
+| NO-RESULTS | 0 | Benchmark didn't run — infra issue |
 
 ## Legend
 - **ΔG**: change in mean groundedness vs main (higher is better)
@@ -59,6 +59,7 @@ Evaluated 50 runtime-changing branches against main baseline.
 | `exp-4.21-curiosity-behavior` | **REJECT-RELIABILITY** | +0.09 | -0.010 | -0.8% | -0.10 | rt-files=1 |
 | `exp-5.04-position-verbosity-bias` | **REJECT-RELIABILITY** | +0.08 | -0.006 | -3.2% | -0.07 | rt-files=1 |
 | `exp-2.12-self-consistency-voting` | **REJECT-RELIABILITY** | -0.00 | -0.003 | -0.1% | -0.07 | rt-files=1 |
+| `exp-3.06` | **REJECT-RELIABILITY** | -0.01 | -0.003 | +4.4% | -0.10 | rt-files=4 |
 | `exp-2.08-synthetic-warmstart` | **REJECT-RELIABILITY** | -0.02 | -0.011 | -1.0% | -0.07 | rt-files=2 |
 | `exp-5.14` | **REJECT-RELIABILITY** | -0.04 | -0.009 | -7.5% | -0.07 | rt-files=1 |
 | `exp-5.13` | **REJECT-RELIABILITY** | -0.06 | -0.013 | -4.4% | -0.10 | rt-files=1 |
@@ -68,12 +69,12 @@ Evaluated 50 runtime-changing branches against main baseline.
 | `exp-3.17-evidence-ablation` | **REJECT** | +0.11 | -0.006 | -6.1% | -0.12 | rt-files=1 |
 | `exp-4.23-persona-wake-words` | **REJECT** | +0.09 | -0.017 | -6.7% | -0.12 | rt-files=1 |
 | `exp-5.11-reference-based-vs-reference-free` | **REJECT** | +0.06 | -0.004 | +1.1% | -0.12 | rt-files=1 |
+| `exp-4.15-cold-start-warmup` | **REJECT** | +0.05 | -0.010 | +6.5% | -0.12 | rt-files=1 |
+| `exp-1.14-belief-value-separation` | **REJECT** | +0.04 | -0.011 | +45.2% | -0.40 | rt-files=3 |
 | `exp-3.14-negative-evidence` | **REJECT** | +0.04 | -0.003 | +6.5% | -0.12 | rt-files=1 |
 | `exp-1.24-stylometric-anchors` | **REJECT** | +0.03 | -0.010 | +4.2% | -0.14 | rt-files=4 |
-| `exp-1.14-belief-value-separation` | **NO-RESULTS** | — | +0.000 | — | +0.00 | rt-files=3 |
-| `exp-1.23-internalized-contradictions` | **NO-RESULTS** | — | +0.000 | — | +0.00 | rt-files=3 |
-| `exp-3.06` | **NO-RESULTS** | — | +0.000 | — | +0.00 | rt-files=4 |
-| `exp-3.13-temporal-grounding` | **NO-RESULTS** | — | +0.000 | — | +0.00 | rt-files=2 |
+| `exp-1.23-internalized-contradictions` | **REJECT** | -0.17 | -0.012 | +16.3% | -0.14 | rt-files=3 |
+| `exp-3.13-temporal-grounding` | **REJECT-BROKEN** | — | -0.999 | +70.5% | -1.00 | rt-files=2 |
 
 ## Raw metrics per branch
 
@@ -357,6 +358,14 @@ Evaluated 50 runtime-changing branches against main baseline.
 - Mean attempts: 1.90 (main: 2.00)
 - Total cost: $1.5479 (main: $1.5492)
 
+### `exp-3.06` — REJECT-RELIABILITY
+
+- Personas: 38/42 (main: 42/42)
+- Groundedness: 0.996 (main: 0.999)
+- Judge score: 4.23 (main: 4.24)
+- Mean attempts: 2.00 (main: 2.00)
+- Total cost: $1.6176 (main: $1.5492)
+
 ### `exp-2.08-synthetic-warmstart` — REJECT-RELIABILITY
 
 - Personas: 39/42 (main: 42/42)
@@ -429,6 +438,22 @@ Evaluated 50 runtime-changing branches against main baseline.
 - Mean attempts: 1.84 (main: 2.00)
 - Total cost: $1.5656 (main: $1.5492)
 
+### `exp-4.15-cold-start-warmup` — REJECT
+
+- Personas: 37/42 (main: 42/42)
+- Groundedness: 0.989 (main: 0.999)
+- Judge score: 4.29 (main: 4.24)
+- Mean attempts: 2.00 (main: 2.00)
+- Total cost: $1.6491 (main: $1.5492)
+
+### `exp-1.14-belief-value-separation` — REJECT
+
+- Personas: 25/42 (main: 42/42)
+- Groundedness: 0.988 (main: 0.999)
+- Judge score: 4.29 (main: 4.24)
+- Mean attempts: 1.96 (main: 2.00)
+- Total cost: $2.2499 (main: $1.5492)
+
 ### `exp-3.14-negative-evidence` — REJECT
 
 - Personas: 37/42 (main: 42/42)
@@ -445,30 +470,17 @@ Evaluated 50 runtime-changing branches against main baseline.
 - Mean attempts: 1.92 (main: 2.00)
 - Total cost: $1.6143 (main: $1.5492)
 
-### `exp-1.14-belief-value-separation` — NO-RESULTS
+### `exp-1.23-internalized-contradictions` — REJECT
 
-- Personas: 0/0 (main: 42/42)
+- Personas: 36/42 (main: 42/42)
+- Groundedness: 0.986 (main: 0.999)
+- Judge score: 4.08 (main: 4.24)
+- Mean attempts: 1.97 (main: 2.00)
+- Total cost: $1.8021 (main: $1.5492)
+
+### `exp-3.13-temporal-grounding` — REJECT-BROKEN
+
+- Personas: 0/42 (main: 42/42)
 - Groundedness: 0.000 (main: 0.999)
 - Mean attempts: 0.00 (main: 2.00)
-- Total cost: $0.0000 (main: $1.5492)
-
-### `exp-1.23-internalized-contradictions` — NO-RESULTS
-
-- Personas: 0/0 (main: 42/42)
-- Groundedness: 0.000 (main: 0.999)
-- Mean attempts: 0.00 (main: 2.00)
-- Total cost: $0.0000 (main: $1.5492)
-
-### `exp-3.06` — NO-RESULTS
-
-- Personas: 0/0 (main: 42/42)
-- Groundedness: 0.000 (main: 0.999)
-- Mean attempts: 0.00 (main: 2.00)
-- Total cost: $0.0000 (main: $1.5492)
-
-### `exp-3.13-temporal-grounding` — NO-RESULTS
-
-- Personas: 0/0 (main: 42/42)
-- Groundedness: 0.000 (main: 0.999)
-- Mean attempts: 0.00 (main: 2.00)
-- Total cost: $0.0000 (main: $1.5492)
+- Total cost: $2.6418 (main: $1.5492)
