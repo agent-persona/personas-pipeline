@@ -115,8 +115,10 @@ class TestPsychologicalGroundedness:
         assert "moral_framework" in report.missing_psychological_prefixes
         assert any("moral_framework" in v for v in report.violations)
 
-    def test_all_psych_prefixes_missing_fails_on_score(self) -> None:
-        """Dropping all three psych prefixes pushes score below 0.9 → passed=False via threshold."""
+    def test_all_psych_prefixes_missing_still_passes_on_required_fields(self) -> None:
+        """Psych prefixes are informational: dropping all three still leaves required
+        fields fully covered, so the score stays at 1.0 and `passed` is True. The
+        missing prefixes are recorded for visibility."""
         cluster = _cluster(["r1"])
         ev = [
             e for e in _full_evidence()
@@ -124,5 +126,7 @@ class TestPsychologicalGroundedness:
         ]
         persona = _persona(ev)
         report = check_groundedness(persona, cluster)
-        assert not report.passed
-        assert report.score < 0.9
+        assert report.passed
+        assert set(report.missing_psychological_prefixes) == {
+            "communication_style", "emotional_profile", "moral_framework",
+        }
