@@ -232,12 +232,12 @@ async def main():
     # ---- Step 2: Synthesize baseline (sparse) and treatment (full) ----
     print("\n[2/4] Synthesizing baseline (3-record sparse) and treatment (full cluster)...")
 
-    sparse_cluster = subsample_cluster(base_cluster, 3)
+    sparse_cluster = subsample_cluster(base_cluster, 5)
     print(f"  Baseline cluster: {sparse_cluster.cluster_id} ({len(sparse_cluster.sample_records)} records)")
 
     synth_cost = 0.0
     try:
-        r_baseline = await synthesize(sparse_cluster, backend)
+        r_baseline = await synthesize(sparse_cluster, backend, max_retries=4)
         baseline_persona = r_baseline.persona.model_dump(mode="json")
         synth_cost += r_baseline.total_cost_usd
         print(f"    [OK baseline] {baseline_persona['name']}  cost=${r_baseline.total_cost_usd:.4f}")
@@ -245,7 +245,7 @@ async def main():
         raise RuntimeError(f"Baseline synthesis failed: {e}")
 
     try:
-        r_treatment = await synthesize(base_cluster, backend)
+        r_treatment = await synthesize(base_cluster, backend, max_retries=4)
         treatment_persona = r_treatment.persona.model_dump(mode="json")
         synth_cost += r_treatment.total_cost_usd
         print(f"    [OK treatment] {treatment_persona['name']}  cost=${r_treatment.total_cost_usd:.4f}")
