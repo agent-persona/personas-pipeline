@@ -18,7 +18,7 @@ from persona_eval.schemas import (
 from synthesis.models.persona import PersonaV1
 
 _AGE_RANGE_RE = re.compile(r"^\s*(\d{1,3})\s*[-–]\s*(\d{1,3})\s*$")
-_GENDER_PREFIX_RE = re.compile(r"^(predominantly|mostly|mainly)\s+", re.IGNORECASE)
+_GENDER_PREFIX_RE = re.compile(r"^(predominantly|mostly|mainly|primarily)\s+", re.IGNORECASE)
 _GENDER_MIXED = {"mixed", "balanced", "diverse", "varied"}
 
 

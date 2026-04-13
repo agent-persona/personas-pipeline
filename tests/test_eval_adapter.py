@@ -119,3 +119,25 @@ class TestAdapterIdentityAndDemographics:
         out = persona_v1_to_eval(p, persona_id="clust_abc")
         assert out.age is None
         assert out.extra["age_range"] == "unknown"
+
+    def test_age_range_plus_notation_falls_back(self) -> None:
+        """'65+' is preserved in extra but age is None — pins behavior so an LLM shift gets caught."""
+        p = _fully_populated_persona()
+        p.demographics.age_range = "65+"
+        out = persona_v1_to_eval(p, persona_id="clust_abc")
+        assert out.age is None
+        assert out.extra["age_range"] == "65+"
+
+    def test_gender_strip_primarily(self) -> None:
+        p = _fully_populated_persona()
+        p.demographics.gender_distribution = "primarily female"
+        out = persona_v1_to_eval(p, persona_id="clust_abc")
+        assert out.gender == "female"
+
+    def test_gender_non_binary_passes_through(self) -> None:
+        """No prefix, not in the 'mixed' set — pass through to eval.Persona as-is."""
+        p = _fully_populated_persona()
+        p.demographics.gender_distribution = "non-binary"
+        out = persona_v1_to_eval(p, persona_id="clust_abc")
+        assert out.gender == "non-binary"
+        assert out.extra["gender_distribution"] == "non-binary"
