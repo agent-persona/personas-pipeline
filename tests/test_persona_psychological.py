@@ -81,3 +81,37 @@ class TestMoralFramework:
                 ethical_stance="utilitarian",
                 moral_foundations={"care": 1.5},  # > 1.0
             )
+
+    def test_moral_foundations_negative_weights_rejected(self) -> None:
+        with pytest.raises(ValidationError):
+            MoralFramework(
+                core_values=["fairness", "honesty"],
+                ethical_stance="utilitarian",
+                moral_foundations={"care": -0.1},
+            )
+
+    def test_moral_foundations_empty_dict_accepted(self) -> None:
+        """Per prompt rule 'omit rather than guess' — empty dict is a valid 'no evidence' state."""
+        mf = MoralFramework(
+            core_values=["fairness", "honesty"],
+            ethical_stance="utilitarian",
+            moral_foundations={},
+        )
+        assert mf.moral_foundations == {}
+
+    def test_moral_foundations_boundary_values_accepted(self) -> None:
+        mf = MoralFramework(
+            core_values=["fairness", "honesty"],
+            ethical_stance="utilitarian",
+            moral_foundations={"care": 0.0, "liberty": 1.0},
+        )
+        assert mf.moral_foundations["care"] == 0.0
+        assert mf.moral_foundations["liberty"] == 1.0
+
+    def test_core_values_max_length_enforced(self) -> None:
+        with pytest.raises(ValidationError):
+            MoralFramework(
+                core_values=["a", "b", "c", "d", "e", "f", "g"],  # 7 > 6
+                ethical_stance="utilitarian",
+                moral_foundations={"care": 0.5},
+            )

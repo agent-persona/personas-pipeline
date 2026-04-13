@@ -79,7 +79,11 @@ class MoralFramework(BaseModel):
         description="The values this persona treats as non-negotiable — 'fairness', 'autonomy', 'efficiency', etc.",
     )
     ethical_stance: str = Field(
-        description="One of 'utilitarian', 'virtue ethics', 'deontological', 'principlist', 'care ethics'",
+        description=(
+            "Best-fit label, e.g. 'utilitarian', 'virtue ethics', 'deontological', "
+            "'principlist', 'care ethics'. Open-ended — prefer one of these if the "
+            "language fits, otherwise use a short descriptive label."
+        ),
     )
     moral_foundations: dict[str, float] = Field(
         description=(

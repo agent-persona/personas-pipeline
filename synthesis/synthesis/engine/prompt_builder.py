@@ -25,17 +25,25 @@ Psychological extraction rules:
 support messages and the technical register of their language. An engineer writing \
 "idempotent" and "schema drift" has advanced vocabulary_level; a user writing "the \
 thing doesn't work" has basic. preferred_channels must reflect where this cluster \
-actually communicates (Intercom messages → support channels; heavy forum signal → forums).
+actually communicates (Intercom messages → support channels; heavy forum signal → \
+forums). Provide at least one preferred_channel.
 - **emotional_profile** — baseline_mood is the dominant tone across their messages \
 (frustrated, optimistic, neutral, anxious). stress_triggers are the specific situations \
-that produce complaint messages or long error-filled sessions. coping_mechanisms are \
-the observable behaviors they take when stressed (file support tickets, write automation, \
-switch tools, escalate to CSM).
+that produce complaint messages or long error-filled sessions (provide 1-6). \
+coping_mechanisms are the observable behaviors they take when stressed — file support \
+tickets, write automation, switch tools, escalate to CSM (provide 1-6).
 - **moral_framework** — core_values are what they repeatedly advocate for in their own \
-words (fairness, autonomy, efficiency, transparency, community). ethical_stance is your \
-best-fit classification given their value language. moral_foundations weights the six \
-MFT foundations (care, fairness, loyalty, authority, sanctity, liberty) in [0.0, 1.0] — \
-only include foundations with clear evidence; omit rather than guess.
+words: fairness, autonomy, efficiency, transparency, community (provide 2-6). \
+ethical_stance is your best-fit classification given their value language. \
+moral_foundations weights the six MFT foundations (care, fairness, loyalty, authority, \
+sanctity, liberty) in [0.0, 1.0] — only include foundations with clear evidence; omit \
+rather than guess.
+
+Additional numeric bounds (the tool schema will enforce these; plan your output to fit):
+- source_evidence: at least 3 entries overall.
+- goals: 2-8; pains: 2-8; motivations: 2-6; objections: 1-6.
+- vocabulary: 3-15; channels: 1-8; sample_quotes: 2-5; decision_triggers: 1-6.
+- journey_stages: 2-5.
 
 Evidence rules:
 - Each entry in source_evidence must reference at least one record_id from the \
