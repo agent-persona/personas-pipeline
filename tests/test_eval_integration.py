@@ -47,11 +47,15 @@ def test_converted_persona_has_all_eval_fields(filename: str) -> None:
     assert rehydrated.emotional_profile.stress_triggers
     assert rehydrated.emotional_profile.coping_mechanisms
 
-    # moral_framework — moral_foundations may legitimately be empty per schema
-    # (only include foundations with clear evidence), so pin the shape, not length.
+    # moral_framework — moral_foundations may legitimately be empty per schema.
+    # Pin value-equality (not len > 0) so the test tolerates empty dicts but
+    # catches adapter drift that drops, reorders, or coerces the weights.
     assert rehydrated.moral_framework.core_values
     assert rehydrated.moral_framework.ethical_stance
-    assert isinstance(rehydrated.moral_framework.moral_foundations, dict)
+    assert (
+        rehydrated.moral_framework.moral_foundations
+        == persona_v1.moral_framework.moral_foundations
+    )
 
     assert rehydrated.goals
     assert rehydrated.pain_points
