@@ -46,6 +46,33 @@ cost, and a twin-reply demo for each persona.
 All five stages run through the `orchestration.Pipeline` DAG runner, which
 logs per-stage duration and captures a `RunState` for telemetry.
 
+## `convert_to_eval_personas.py`
+
+Converts `PersonaV1` JSON (the synthesis pipeline's output shape) into
+`persona_eval.Persona` JSON (the shape each eval scorer expects). Pure
+field-mapping — no LLM calls, no network.
+
+### Run it
+
+```bash
+# Convert everything under output/ (default), write to output/eval_personas/
+python scripts/convert_to_eval_personas.py
+
+# Custom paths
+python scripts/convert_to_eval_personas.py \
+  --input-dir tests/fixtures \
+  --output-dir /tmp/eval_out
+```
+
+Input glob: `<input-dir>/persona_*.json`. Output file naming: one file per
+input, keyed by `cluster_id` (falling back to the source filename stem) as
+`<output-dir>/<cluster_id>.json`. Overwrites existing files in `--output-dir`
+without warning.
+
+Use this after `run_full_pipeline.py` to hand off personas to `persona_eval`
+for scoring, or run it against `tests/fixtures/` to regenerate the example
+eval inputs without a live pipeline run.
+
 ## Using this script as an experiment harness
 
 The simplest way to compare two pipeline variants is to duplicate
