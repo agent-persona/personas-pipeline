@@ -1,13 +1,11 @@
 """exp-6.21 — Population-level Turing test.
 
-Hypothesis: A complete persona set passes the population Turing test >= 70%
-of the time — LLM judges believe the set represents real customers.
+Baseline vs Treatment: present two persona sets to LLM judges:
+  - Baseline: personas from sparse clusters (3 records each)
+  - Treatment: personas from full clusters
 
-Approach:
-  1. Fetch + segment + synthesize personas from ALL clusters.
-  2. Present the FULL SET to 10 independent LLM judges.
-  3. Each judge answers: real/AI-generated/unsure, coverage %, authenticity 1-5.
-  4. Compute Turing pass rate, mean perceived coverage, mean authenticity.
+Hypothesis: Treatment set passes the population Turing test >= 70% of the
+time, while baseline passes <= 40%.
 
 Usage:
     python scripts/run_exp_6_21.py
@@ -17,6 +15,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import random
 import re
 import sys
 from pathlib import Path
@@ -26,8 +25,6 @@ sys.path.insert(0, str(REPO_ROOT / "crawler"))
 sys.path.insert(0, str(REPO_ROOT / "segmentation"))
 sys.path.insert(0, str(REPO_ROOT / "synthesis"))
 sys.path.insert(0, str(REPO_ROOT / "orchestration"))
-sys.path.insert(0, str(REPO_ROOT / "twin"))
-sys.path.insert(0, str(REPO_ROOT / "evals"))
 
 from dotenv import load_dotenv
 
@@ -46,23 +43,25 @@ from synthesis.models.cluster import ClusterData  # noqa: E402
 TENANT_ID = "tenant_acme_corp"
 TENANT_INDUSTRY = "B2B SaaS"
 TENANT_PRODUCT = "Project management tool for engineering teams"
-
 OUTPUT_DIR = REPO_ROOT / "output" / "experiments" / "exp-6.21"
 
 N_RATERS = 10
 
 
-# ---------------------------------------------------------------------------
-# Judge function
-# ---------------------------------------------------------------------------
+def subsample_cluster(cluster: ClusterData, target_size: int, seed: int = 42) -> ClusterData:
+    records = list(cluster.sample_records)
+    if len(records) <= target_size:
+        return cluster
+    rng = random.Random(seed)
+    sample = rng.sample(records, target_size)
+    sub = cluster.model_copy(deep=True)
+    sub.sample_records = sample
+    sub.summary.cluster_size = target_size
+    sub.cluster_id = f"{cluster.cluster_id}_n{target_size}"
+    return sub
 
-async def judge_population(
-    personas: list[dict],
-    client: AsyncAnthropic,
-    model: str,
-    rater_id: int,
-) -> dict:
-    """One simulated rater judges the full persona set."""
+
+async def judge_population(personas, client, model, rater_id, condition_label):
     persona_cards = []
     for i, p in enumerate(personas):
         card = f"""### Persona {i + 1}: {p.get('name')}
@@ -92,9 +91,7 @@ Respond with STRICT JSON only:
 {{"verdict": "real" or "AI-generated" or "unsure", "coverage_pct": <int 0-100>, "authenticity": <int 1-5>, "rationale": "<2-3 sentences>"}}"""
 
     resp = await client.messages.create(
-        model=model,
-        max_tokens=300,
-        temperature=0.8,
+        model=model, max_tokens=300, temperature=0.8,
         messages=[{"role": "user", "content": prompt}],
     )
     text = next(b.text for b in resp.content if b.type == "text")
@@ -102,154 +99,154 @@ Respond with STRICT JSON only:
     return json.loads(match.group(0)) if match else {}
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+def compute_turing_metrics(judgments):
+    valid = [j for j in judgments if j]
+    n_real = sum(1 for j in valid if j.get("verdict") == "real")
+    n_unsure = sum(1 for j in valid if j.get("verdict") == "unsure")
+    n_ai = sum(1 for j in valid if j.get("verdict") == "AI-generated")
+    pass_rate = (n_real / len(valid) * 100) if valid else 0
+    coverages = [j.get("coverage_pct", 0) for j in valid if "coverage_pct" in j]
+    auths = [j.get("authenticity", 0) for j in valid if "authenticity" in j]
+    return {
+        "n_valid": len(valid),
+        "verdicts": {"real": n_real, "unsure": n_unsure, "AI-generated": n_ai},
+        "turing_pass_rate_pct": pass_rate,
+        "mean_coverage_pct": sum(coverages) / len(coverages) if coverages else 0,
+        "mean_authenticity": sum(auths) / len(auths) if auths else 0,
+        "judgments": valid,
+    }
 
-async def main() -> None:
+
+async def main():
     print("=" * 72)
-    print("exp-6.21 — Population-level Turing test")
+    print("exp-6.21 — Population-level Turing test (baseline vs treatment)")
     print("=" * 72)
 
     if not settings.anthropic_api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY not set in synthesis/.env")
+        raise RuntimeError("ANTHROPIC_API_KEY not set")
 
     client = AsyncAnthropic(api_key=settings.anthropic_api_key)
     backend = AnthropicBackend(client=client, model=settings.default_model)
     model = settings.default_model
 
-    # ---- Step 1: Fetch + segment + synthesize ----
-    print("\n[1/3] Fetching and segmenting records...")
+    # ---- Step 1: Fetch + segment ----
+    print("\n[1/5] Fetching and segmenting...")
     raw_records = fetch_all(TENANT_ID)
     records = [RawRecord.model_validate(r.model_dump()) for r in raw_records]
-
     cluster_dicts = segment(
-        records,
-        tenant_industry=TENANT_INDUSTRY,
-        tenant_product=TENANT_PRODUCT,
-        existing_persona_names=[],
-        similarity_threshold=0.15,
-        min_cluster_size=2,
+        records, tenant_industry=TENANT_INDUSTRY, tenant_product=TENANT_PRODUCT,
+        existing_persona_names=[], similarity_threshold=0.15, min_cluster_size=2,
     )
     clusters = sorted(
         [ClusterData.model_validate(c) for c in cluster_dicts],
         key=lambda c: c.cluster_id,
     )
-    print(f"  Got {len(clusters)} clusters: {[c.cluster_id for c in clusters]}")
+    print(f"  Got {len(clusters)} clusters")
 
-    print("\n  Synthesizing personas from all clusters...")
-    persona_results = []
+    # ---- Step 2: Synthesize baseline set (sparse 3-record clusters) ----
+    print("\n[2/5] Synthesizing baseline set (sparse, 3 records per cluster)...")
+    baseline_personas = []
+    baseline_cost = 0.0
     for i, cluster in enumerate(clusters):
-        print(f"  [{i + 1}/{len(clusters)}] {cluster.cluster_id}...")
+        sparse = subsample_cluster(cluster, 3)
+        print(f"  [{i+1}/{len(clusters)}] {sparse.cluster_id}...")
+        try:
+            r = await synthesize(sparse, backend)
+            p = r.persona.model_dump(mode="json")
+            baseline_personas.append(p)
+            baseline_cost += r.total_cost_usd
+            print(f"    [OK] {p['name']}  cost=${r.total_cost_usd:.4f}")
+        except SynthesisError as e:
+            baseline_cost += sum(a.cost_usd for a in e.attempts)
+            print(f"    [FAIL] {e}")
+
+    # ---- Step 3: Synthesize treatment set (full clusters) ----
+    print("\n[3/5] Synthesizing treatment set (full clusters)...")
+    treatment_personas = []
+    treatment_cost = 0.0
+    for i, cluster in enumerate(clusters):
+        print(f"  [{i+1}/{len(clusters)}] {cluster.cluster_id}...")
         try:
             r = await synthesize(cluster, backend)
-            p_dict = r.persona.model_dump(mode="json")
-            persona_results.append({
-                "cluster_id": cluster.cluster_id,
-                "status": "ok",
-                "persona": p_dict,
-                "cost_usd": r.total_cost_usd,
-                "groundedness": r.groundedness.score,
-            })
-            print(
-                f"    [OK] {p_dict['name']}  "
-                f"cost=${r.total_cost_usd:.4f}  "
-                f"grounded={r.groundedness.score:.2f}"
-            )
+            p = r.persona.model_dump(mode="json")
+            treatment_personas.append(p)
+            treatment_cost += r.total_cost_usd
+            print(f"    [OK] {p['name']}  cost=${r.total_cost_usd:.4f}")
         except SynthesisError as e:
-            total_cost = sum(a.cost_usd for a in e.attempts)
-            persona_results.append({
-                "cluster_id": cluster.cluster_id,
-                "status": "failed",
-                "error": str(e),
-                "cost_usd": total_cost,
-            })
-            print(f"    [FAIL] {e}  cost=${total_cost:.4f}")
+            treatment_cost += sum(a.cost_usd for a in e.attempts)
+            print(f"    [FAIL] {e}")
 
-    ok_results = [r for r in persona_results if r["status"] == "ok"]
-    if not ok_results:
-        raise RuntimeError("No personas synthesized successfully")
-    personas = [r["persona"] for r in ok_results]
-    print(f"\n  {len(personas)} personas synthesized successfully")
+    if not baseline_personas or not treatment_personas:
+        raise RuntimeError("Need at least 1 persona per condition")
 
-    # ---- Step 2: Run population judges ----
-    print(f"\n[2/3] Running {N_RATERS} population-level judges...")
-    tasks = [
-        judge_population(personas, client, model, rid)
+    # ---- Step 4: Judge both sets ----
+    print(f"\n[4/5] Judging baseline set ({len(baseline_personas)} personas) with {N_RATERS} raters...")
+    baseline_judgments = await asyncio.gather(*[
+        judge_population(baseline_personas, client, model, rid, "baseline")
         for rid in range(1, N_RATERS + 1)
-    ]
-    judgments = await asyncio.gather(*tasks)
-    valid_judgments = [j for j in judgments if j]
-    print(f"  Got {len(valid_judgments)}/{N_RATERS} valid judgments")
+    ])
+    baseline_metrics = compute_turing_metrics(baseline_judgments)
+    print(f"  Baseline: pass_rate={baseline_metrics['turing_pass_rate_pct']:.0f}%  "
+          f"auth={baseline_metrics['mean_authenticity']:.1f}  "
+          f"coverage={baseline_metrics['mean_coverage_pct']:.0f}%")
 
-    for j in valid_judgments:
-        print(
-            f"    verdict={j.get('verdict'):15s}  "
-            f"coverage={j.get('coverage_pct', '?')}%  "
-            f"auth={j.get('authenticity', '?')}  "
-            f"rationale={j.get('rationale', '')[:80]}..."
-        )
+    print(f"\n  Judging treatment set ({len(treatment_personas)} personas) with {N_RATERS} raters...")
+    treatment_judgments = await asyncio.gather(*[
+        judge_population(treatment_personas, client, model, rid, "treatment")
+        for rid in range(1, N_RATERS + 1)
+    ])
+    treatment_metrics = compute_turing_metrics(treatment_judgments)
+    print(f"  Treatment: pass_rate={treatment_metrics['turing_pass_rate_pct']:.0f}%  "
+          f"auth={treatment_metrics['mean_authenticity']:.1f}  "
+          f"coverage={treatment_metrics['mean_coverage_pct']:.0f}%")
 
-    # ---- Step 3: Compute metrics ----
-    print("\n[3/3] Computing metrics...")
-
-    # Turing pass rate: % of judges who said "real"
-    n_real = sum(1 for j in valid_judgments if j.get("verdict") == "real")
-    n_unsure = sum(1 for j in valid_judgments if j.get("verdict") == "unsure")
-    n_ai = sum(1 for j in valid_judgments if j.get("verdict") == "AI-generated")
-    turing_pass_rate = (n_real / len(valid_judgments) * 100) if valid_judgments else 0
-
-    # Mean perceived coverage
-    coverages = [j.get("coverage_pct", 0) for j in valid_judgments if "coverage_pct" in j]
-    mean_coverage = sum(coverages) / len(coverages) if coverages else 0
-
-    # Mean authenticity
-    auths = [j.get("authenticity", 0) for j in valid_judgments if "authenticity" in j]
-    mean_authenticity = sum(auths) / len(auths) if auths else 0
-
-    hypothesis_pass = turing_pass_rate >= 70
-
-    print(f"  Verdicts: real={n_real}, unsure={n_unsure}, AI-generated={n_ai}")
-    print(f"  Turing pass rate: {turing_pass_rate:.1f}% (target >= 70%)")
-    print(f"  Mean coverage:    {mean_coverage:.1f}%")
-    print(f"  Mean authenticity: {mean_authenticity:.2f}/5")
-    print(f"  Hypothesis pass:  {hypothesis_pass}")
-
-    # ---- Write outputs ----
-    total_cost = sum(r.get("cost_usd", 0) for r in persona_results)
+    # ---- Step 5: Compare ----
+    print("\n[5/5] Comparing...")
+    b_pass = baseline_metrics["turing_pass_rate_pct"]
+    t_pass = treatment_metrics["turing_pass_rate_pct"]
+    delta_pass = t_pass - b_pass
+    hypothesis_pass = t_pass >= 70
 
     summary = {
         "experiment_id": "6.21",
         "branch": "exp-6.21-population-turing-test",
         "model": model,
-        "n_personas": len(personas),
-        "n_raters": N_RATERS,
-        "n_valid_judgments": len(valid_judgments),
-        "verdicts": {
-            "real": n_real,
-            "unsure": n_unsure,
-            "AI-generated": n_ai,
+        "baseline": {
+            "condition": "sparse (3 records per cluster)",
+            "n_personas": len(baseline_personas),
+            "persona_names": [p["name"] for p in baseline_personas],
+            **{k: v for k, v in baseline_metrics.items() if k != "judgments"},
         },
-        "turing_pass_rate_pct": turing_pass_rate,
-        "mean_perceived_coverage_pct": mean_coverage,
-        "mean_authenticity": mean_authenticity,
+        "treatment": {
+            "condition": "full clusters",
+            "n_personas": len(treatment_personas),
+            "persona_names": [p["name"] for p in treatment_personas],
+            **{k: v for k, v in treatment_metrics.items() if k != "judgments"},
+        },
+        "delta_pass_rate_pct": delta_pass,
+        "delta_authenticity": treatment_metrics["mean_authenticity"] - baseline_metrics["mean_authenticity"],
+        "delta_coverage_pct": treatment_metrics["mean_coverage_pct"] - baseline_metrics["mean_coverage_pct"],
         "hypothesis": {
-            "description": "Persona set passes population Turing test >= 70% of the time",
+            "description": "Treatment set passes population Turing test >= 70%",
             "target_pass_rate_pct": 70,
-            "actual_pass_rate_pct": turing_pass_rate,
+            "actual_treatment_pass_rate_pct": t_pass,
+            "actual_baseline_pass_rate_pct": b_pass,
             "pass": hypothesis_pass,
         },
-        "total_cost_usd": total_cost,
-        "judgments": valid_judgments,
+        "total_cost_usd": baseline_cost + treatment_cost,
     }
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUTPUT_DIR / "summary.json").write_text(json.dumps(summary, indent=2))
-    (OUTPUT_DIR / "personas.json").write_text(
-        json.dumps([r for r in persona_results if r["status"] == "ok"], indent=2, default=str)
-    )
+    (OUTPUT_DIR / "personas.json").write_text(json.dumps({
+        "baseline": [{"persona": p} for p in baseline_personas],
+        "treatment": [{"persona": p} for p in treatment_personas],
+    }, indent=2, default=str))
+    (OUTPUT_DIR / "judgments.json").write_text(json.dumps({
+        "baseline": baseline_metrics["judgments"],
+        "treatment": treatment_metrics["judgments"],
+    }, indent=2, default=str))
 
-    # ---- Print summary ----
     print("\n" + "=" * 72)
     print("SUMMARY")
     print("=" * 72)
