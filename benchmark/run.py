@@ -124,7 +124,13 @@ async def _synth_one(
             except Exception as e:
                 err_str = str(e).lower()
                 is_rate = "429" in err_str or "rate_limit" in err_str or "overloaded" in err_str
-                if is_rate and attempt < max_retries - 1:
+                is_transient = (
+                    "apiconnectionerror" in type(e).__name__.lower()
+                    or "connection error" in err_str
+                    or "connection reset" in err_str
+                    or "timeout" in err_str
+                )
+                if (is_rate or is_transient) and attempt < max_retries - 1:
                     await asyncio.sleep(5 * (2 ** attempt))
                     continue
                 result.failed = True
