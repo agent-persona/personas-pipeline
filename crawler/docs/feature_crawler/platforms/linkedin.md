@@ -8,6 +8,7 @@ First LinkedIn pass supports two HTML-backed transports that map into the same c
 - `public-html`: direct profile fetch for public profile pages or local exported HTML
 - `session-html`: authenticated profile fetch using an existing LinkedIn cookie/session
 - `session-browser`: authenticated Playwright-backed crawl for first-degree connections in My Network
+- `headless-visible-profiles`: authenticated Playwright crawl for detailed sections on already harvested visible connections
 - `apify`, `brightdata`, `linkdapi`: vendor-backed crawl modes for richer posts and network data
 
 Current crawl unit:
@@ -53,6 +54,12 @@ or:
 
 - `LINKEDIN_SESSION_COOKIE_LI_AT`
 - `LINKEDIN_SESSION_COOKIE_JSESSIONID`
+
+Required for headless visible-profile helper:
+
+- local Brave profile with an active LinkedIn session
+- `browser-cookie3`
+- `playwright`
 
 Vendor mode env:
 
@@ -122,6 +129,22 @@ python3 -m feature_crawler.crawler.cli crawl-linkedin \
   --scope profile,network
 ```
 
+Headless visible-profile harvest from a saved connections file:
+
+```bash
+PYTHONPATH=crawler python crawler/scripts/feature_crawler/linkedin_headless_visible_profiles.py \
+  --connections-file crawler/data/linkedin_connections_live_2026-04-13.json \
+  --output-file crawler/data/linkedin_visible_profile_details_2026-04-13.json \
+  --state-file crawler/data/linkedin_headless_state.json \
+  --refresh-auth-state
+```
+
+Repo snapshots captured so far:
+
+- `crawler/data/linkedin_connections_live_2026-04-13.json`: 120 visible first-degree connection cards
+- `crawler/data/linkedin_visible_profile_details_2026-04-13.json`: 100 headless profile-detail harvest results with section extracts
+- keep `crawler/data/linkedin_headless_state.json` local only; it contains reusable authenticated browser state
+
 Vendor crawl with activity + network:
 
 ```bash
@@ -166,5 +189,6 @@ python3 -m feature_crawler.crawler.cli crawl-linkedin \
 - no generic token refresh path yet
 - HTML session mode still does not paginate posts/comments/network
 - browser session mode depends on Playwright plus a live authenticated LinkedIn viewer session
+- headless visible-profile helper depends on exporting cookies from the local Brave session into Playwright storage state
 - vendor modes depend on human-provided actor IDs / dataset IDs / API keys
 - no delete/tombstone propagation yet
