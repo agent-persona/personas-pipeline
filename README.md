@@ -119,23 +119,6 @@ findings were measured against.
 
 ---
 
-## Conventions
-
-These fall out of the iterative approach — they exist so each round of
-iteration can be compared cleanly against the last.
-
-- **One module = one owner at a time.** Changes that cross modules (space 6
-  does) need a heads-up before the second module is touched.
-- **Default behavior is sacred.** New knobs arrive as flags with
-  behavior-preserving defaults. A downstream control run depends on yours
-  still matching it.
-- **Variants live on branches or behind config.** `main` carries validated
-  defaults, not in-flight experiments.
-- **Cost is recorded.** Every run's Anthropic spend is part of the result —
-  the model-mix findings turn on it.
-
----
-
 ## Where to find things
 
 - `output/experiments/` — the empirical record. Findings, raw outputs, and
