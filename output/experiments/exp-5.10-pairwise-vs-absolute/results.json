@@ -1,0 +1,306 @@
+{
+  "experiment_id": "5.10",
+  "title": "Pairwise vs absolute scoring",
+  "num_personas": 4,
+  "judge_models": [
+    "claude-sonnet-4-20250514",
+    "claude-haiku-4-5-20251001"
+  ],
+  "synth_cost_usd": 0.1216,
+  "duration_ms": 258715,
+  "absolute": {
+    "claude-sonnet-4-20250514": [
+      {
+        "id": "P1",
+        "overall": 5.0,
+        "dimensions": {
+          "grounded": 4.0,
+          "distinctive": 5.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 4.0
+        }
+      },
+      {
+        "id": "P2",
+        "overall": 4.0,
+        "dimensions": {
+          "grounded": 5.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 4.0
+        }
+      },
+      {
+        "id": "P3",
+        "overall": 4.0,
+        "dimensions": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 4.0
+        }
+      },
+      {
+        "id": "P4",
+        "overall": 4.0,
+        "dimensions": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 4.0
+        }
+      }
+    ],
+    "claude-haiku-4-5-20251001": [
+      {
+        "id": "P1",
+        "overall": 4.0,
+        "dimensions": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 4.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0
+        }
+      },
+      {
+        "id": "P2",
+        "overall": 4.0,
+        "dimensions": {
+          "grounded": 4.0,
+          "distinctive": 3.0,
+          "coherent": 4.0,
+          "actionable": 4.0,
+          "voice_fidelity": 4.0
+        }
+      },
+      {
+        "id": "P3",
+        "overall": 4.0,
+        "dimensions": {
+          "grounded": 4.0,
+          "distinctive": 4.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 4.0
+        }
+      },
+      {
+        "id": "P4",
+        "overall": 4.0,
+        "dimensions": {
+          "grounded": 4.0,
+          "distinctive": 3.0,
+          "coherent": 4.0,
+          "actionable": 4.0,
+          "voice_fidelity": 4.0
+        }
+      }
+    ]
+  },
+  "pairwise": {
+    "claude-sonnet-4-20250514": {
+      "win_count_ranking": {
+        "P1": 1.4,
+        "P2": 2.2,
+        "P3": 1.2,
+        "P4": 1.2
+      },
+      "bradley_terry_ranking": {
+        "P1": 0.688,
+        "P2": 2.1831199999999997,
+        "P3": 0.56444,
+        "P4": 0.56444
+      },
+      "verdicts": [
+        {
+          "a": "P1",
+          "b": "P2",
+          "debiased": {
+            "grounded": "tie",
+            "distinctive": "b",
+            "coherent": "tie",
+            "actionable": "tie",
+            "voice_fidelity": "tie"
+          },
+          "ab_order": {
+            "grounded": "a",
+            "distinctive": "b",
+            "coherent": "a",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          },
+          "ba_order": {
+            "grounded": "tie",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          }
+        },
+        {
+          "a": "P1",
+          "b": "P3",
+          "debiased": {
+            "grounded": "tie",
+            "distinctive": "tie",
+            "coherent": "tie",
+            "actionable": "tie",
+            "voice_fidelity": "tie"
+          },
+          "ab_order": {
+            "grounded": "a",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          },
+          "ba_order": {
+            "grounded": "tie",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          }
+        },
+        {
+          "a": "P1",
+          "b": "P4",
+          "debiased": {
+            "grounded": "tie",
+            "distinctive": "tie",
+            "coherent": "tie",
+            "actionable": "tie",
+            "voice_fidelity": "tie"
+          },
+          "ab_order": {
+            "grounded": "tie",
+            "distinctive": "a",
+            "coherent": "tie",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          },
+          "ba_order": {
+            "grounded": "a",
+            "distinctive": "a",
+            "coherent": "tie",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          }
+        },
+        {
+          "a": "P2",
+          "b": "P3",
+          "debiased": {
+            "grounded": "tie",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "tie",
+            "voice_fidelity": "a"
+          },
+          "ab_order": {
+            "grounded": "tie",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          },
+          "ba_order": {
+            "grounded": "tie",
+            "distinctive": "b",
+            "coherent": "b",
+            "actionable": "a",
+            "voice_fidelity": "b"
+          }
+        },
+        {
+          "a": "P2",
+          "b": "P4",
+          "debiased": {
+            "grounded": "tie",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "tie",
+            "voice_fidelity": "a"
+          },
+          "ab_order": {
+            "grounded": "a",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "tie",
+            "voice_fidelity": "a"
+          },
+          "ba_order": {
+            "grounded": "a",
+            "distinctive": "b",
+            "coherent": "b",
+            "actionable": "a",
+            "voice_fidelity": "b"
+          }
+        },
+        {
+          "a": "P3",
+          "b": "P4",
+          "debiased": {
+            "grounded": "tie",
+            "distinctive": "tie",
+            "coherent": "tie",
+            "actionable": "tie",
+            "voice_fidelity": "tie"
+          },
+          "ab_order": {
+            "grounded": "tie",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          },
+          "ba_order": {
+            "grounded": "a",
+            "distinctive": "a",
+            "coherent": "a",
+            "actionable": "a",
+            "voice_fidelity": "a"
+          }
+        }
+      ]
+    },
+    "claude-haiku-4-5-20251001": {
+      "win_count_ranking": {
+        "P1": 1.9,
+        "P2": 1.7,
+        "P3": 0.5,
+        "P4": 1.9
+      },
+      "bradley_terry_ranking": {
+        "P1": 1.41746,
+        "P2": 0.9150599999999999,
+        "P3": 0.20392000000000002,
+        "P4": 1.4635399999999998
+      }
+    }
+  },
+  "correlations": {
+    "within_model_absolute_vs_winCount_sonnet": 0.272,
+    "within_model_absolute_vs_bradleyTerry_sonnet": 0.272,
+    "inter_judge_absolute_spearman": 0.0,
+    "inter_judge_pairwise_winCount_spearman": 0.056,
+    "inter_judge_pairwise_bradleyTerry_spearman": -0.105
+  },
+  "distribution": {
+    "absolute_sonnet_range": 1.0,
+    "absolute_haiku_range": 0.0,
+    "pairwise_winCount_range": 1.0
+  },
+  "position_bias": {
+    "disagreement_rate": 0.433,
+    "disagreements": 26,
+    "total_dim_votes": 60
+  },
+  "decision": "defer",
+  "decision_rationale": "inter-judge pairwise Spearman = 0.06, inter-judge absolute = 0.00, lift = +0.06, position bias rate = 0.43"
+}
