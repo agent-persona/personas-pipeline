@@ -87,36 +87,37 @@ asyncio.run(main())
 - **Reinforcement turns.** Inject a re-summary of the persona spine every
   N turns inside `reply()` to test the drift-reduction hypothesis (4.4).
 
-## Where this module shows up in the experiment catalog
+## Scientific backing
 
-This is the home of **Problem space 4 — Twin runtime: character consistency
-& drift**:
+This module is the home of **Problem space 4 — Twin runtime: character
+consistency & drift**. The runtime choices below — prose-format system
+prompt, full-persona injection, 512 max tokens, no reinforcement — came
+out of the following head-to-head runs:
 
-- **4.1 System prompt format.** Raw JSON vs prose vs hybrid vs retrieved fields.
-- **4.2 RAG over persona JSON vs full-context.** At every turn, inject all
-  fields vs only the top-k most relevant.
-- **4.3 Drift over turn count.** Measure at turn 1, 5, 10, 25, 50.
-- **4.4 Reinforcement turns.** Re-inject the spine every N turns.
-- **4.5 Refusal & boundary behavior.** Adversarial "ignore your persona,"
-  "what model are you," etc. Measure turns-to-break.
-- **4.6 Memory architectures.** Scratchpad / episodic / vector-recall.
-- **4.7 Inner-monologue scaffolding.** Hidden CoT field before the visible
+- **System prompt format.** Raw JSON vs prose vs hybrid vs retrieved fields.
+- **RAG over persona JSON vs full-context.** Inject all fields vs only the
+  top-k most relevant, per turn.
+- **Drift over turn count.** Measured at turn 1, 5, 10, 25, 50.
+- **Reinforcement turns.** Re-inject the spine every N turns.
+- **Refusal & boundary behavior.** Adversarial "ignore your persona,"
+  "what model are you," etc. Turns-to-break measured.
+- **Memory architectures.** Scratchpad / episodic / vector-recall.
+- **Inner-monologue scaffolding.** Hidden CoT field before the visible
   reply.
-- **4.8 Voice vs text parity.** Same persona to TTS/STT; does voice
-  expose drift faster?
-- **4.9 Multi-turn role-injection attacks.** Red-team agent scripts.
+- **Voice vs text parity.** Same persona through TTS/STT; whether voice
+  exposes drift faster.
+- **Multi-turn role-injection attacks.** Red-team agent scripts.
 
-Space 1.3 (vocabulary anchoring) also reaches in here — toggle the
+Space 1.3 (vocabulary anchoring) also reaches in here — the presence of
 `vocabulary` and `sample_quotes` lines in `build_persona_system_prompt()`
-on/off and measure stylometric cosine downstream.
+was evaluated for stylometric cosine effect.
 
 ## Default-is-sacred rule
 
-`build_persona_system_prompt()` is the default runtime that everyone else's
-twin experiments are compared against. If your experiment needs a different
-prompt builder, add a new function (`build_persona_system_prompt_v2`,
-`build_rag_system_prompt`, ...) and pass it explicitly — don't replace the
-original.
+`build_persona_system_prompt()` is the runtime every prior twin finding
+was measured against. New runtime variants arrive as additional functions
+(`build_persona_system_prompt_v2`, `build_rag_system_prompt`, ...) passed
+in explicitly — the original stays in place.
 
 ## Tests
 

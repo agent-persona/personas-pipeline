@@ -110,32 +110,36 @@ asyncio.run(main())
 - Retrieval-augmented synthesis (3.3): before calling the backend, retrieve
   top-k records per persona section via embedding search.
 
-## Where this module shows up in the experiment catalog
+## Scientific backing
 
-This is ground zero for three problem spaces. **Coordinate before merging.**
+This module is the empirical ground zero for three problem spaces. The
+current defaults — schema shape, prompt structure, tool-use calling
+convention, retry/critique policy, groundedness threshold — were chosen
+after head-to-head runs under the lines below. Raw results and findings
+live under `output/experiments/`.
 
-| Space | Experiments | Primary files |
+| Space | Hypotheses tested | Primary files |
 |---|---|---|
-| 1 (schema) | 1.1 schema width · 1.2 structured vs narrative · 1.3 vocabulary anchoring · 1.4 trait crystallization · 1.5 schema versioning · 1.6 self-describing · 1.11 negative space · 1.14 belief/value split · 1.17 length budgets · 1.20 verbs vs adjectives | `models/persona.py` |
-| 2 (pipeline) | 2.1 monolithic vs decomposed · 2.2 critique loops · 2.3 model-mix tiering · 2.4 tool-use vs JSON · 2.5 few-shot examples · 2.6 temperature sweep · 2.7 order-of-fields · 2.8 synthetic warmstart | `engine/prompt_builder.py`, `engine/synthesizer.py`, `engine/model_backend.py` |
-| 3 (grounding) | 3.1 citation-required · 3.2 prompt vs post-hoc validation · 3.3 retrieval-augmented · 3.4 evidence-first · 3.5 NLI check · 3.6 sparse-data ablation · 3.7 adversarial injection | `engine/groundedness.py`, `engine/prompt_builder.py` |
+| 1 (schema) | schema width · structured vs narrative · vocabulary anchoring · trait crystallization · schema versioning · self-describing schemas · negative space · belief/value split · length budgets · verbs vs adjectives | `models/persona.py` |
+| 2 (pipeline) | monolithic vs decomposed · critique loops · model-mix tiering · tool-use vs JSON mode · few-shot examples · temperature · order-of-fields · synthetic warmstart | `engine/prompt_builder.py`, `engine/synthesizer.py`, `engine/model_backend.py` |
+| 3 (grounding) | citation-required · prompt vs post-hoc validation · retrieval-augmented synthesis · evidence-first · NLI entailment · sparse-data ablation · adversarial injection | `engine/groundedness.py`, `engine/prompt_builder.py` |
 
-Space 6 (distinctiveness) also edits this module for **6.4 cross-persona
-contrast prompting**: when synthesizing persona N+1, include personas 1..N
-with an instruction to differ on specific axes. This means the synthesizer
-needs to accept an `existing_personas` argument and build that into the
-prompt. Coordinate with space 1/2 on the API change.
+Space 6 (distinctiveness) also reaches into this module for cross-persona
+contrast prompting: `synthesize()` accepts an `existing_personas` argument
+so persona N+1 can be generated with instructions to differ from 1..N.
 
 ## Default-is-sacred rule
 
-Space 1/2/3 researchers are all editing files in this directory. Please:
+The defaults in this module are what every prior experiment's control was
+measured against. Further iteration stays cheap only if we preserve that:
 
 1. **Don't change the default behavior** of `synthesize()`. Add new keyword
    arguments with defaults that preserve today's behavior.
-2. **Don't rename** `PersonaV1`. If you need a new schema, add `PersonaV1_1`,
-   `PersonaV2`, etc. alongside.
-3. **Branch per experiment.** Never merge an experiment-specific default
-   into main without a recorded decision in the space's results file.
+2. **Don't rename** `PersonaV1`. New schemas live alongside as `PersonaV1_1`,
+   `PersonaV2`, etc.
+3. **Variants live on branches or behind config.** A validated default only
+   moves on `main` when a new finding says so, recorded under
+   `output/experiments/`.
 
 ## Tests
 

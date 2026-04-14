@@ -4,16 +4,16 @@
 together (`crawler → segment → synthesize → twin → persist`). Stands in for
 what a production system would run on Temporal / LangGraph / Prefect.
 
-This module is **not** a primary lab target. Per `PRD_LAB_RESEARCH.md`, the
-choice of orchestration engine (Temporal vs LangGraph vs …) is explicitly
-**out of scope** for the lab program:
+This module was deliberately kept out of the iteration program. Per
+`PRD_LAB_RESEARCH.md`, the choice of orchestration engine (Temporal vs
+LangGraph vs …) is an engineering call, not a research one:
 
 > *"Infrastructure benchmarking (Temporal vs LangGraph etc — that's an
 > orchestration call, not a research one)."*
 
-Treat this module as **stable shared infrastructure**. Don't edit it to run
-an experiment — add your experiment as a new `Stage` in the pipeline, or
-wrap an existing stage, rather than changing the runner.
+Treat this module as **stable shared infrastructure**. Variants of a
+pipeline stage arrive as new `Stage` values or wrappers around existing
+stages — the runner itself doesn't change.
 
 ## What lives here
 
@@ -50,21 +50,20 @@ failed stage raises `PipelineError` carrying the partial state.
 
 See `scripts/run_full_pipeline.py` for the reference wiring.
 
-## Where this module shows up in the experiment catalog
+## Role in the iteration harness
 
-Nowhere as a variable under test — but two places as a hosting layer:
+Never a variable under test — but two places as a hosting layer:
 
-- **Experiment harness.** Any experiment that compares a variant stage
-  against a control stage can build two `Pipeline` instances that share
-  every stage except one. Good way to A/B without duplicating the whole
-  script.
-- **Telemetry collection.** `RunState.stages` gives per-stage timing and
-  success. If the evaluation module needs to log cost and latency per run,
-  read them out of `RunState` after `pipeline.run()` returns.
+- **Variant A/B runner.** A/B comparisons between a variant stage and a
+  control stage build two `Pipeline` instances that share every stage
+  except one. `output/experiments/` write-ups use this pattern.
+- **Telemetry collection.** `RunState.stages` carries per-stage timing and
+  success. Cost and latency per run are read out of `RunState` after
+  `pipeline.run()` returns.
 
-## Knobs you *shouldn't* turn
+## Out of scope
 
 - Parallel execution, conditional branching, resume-from-stage, Postgres
-  persistence — all explicitly out of scope. If you need them, talk to
-  the owner of `PRD_ORCHESTRATION.md`; the lab program is not where
-  orchestration features ship.
+  persistence — all deliberately out of scope. Those are orchestration
+  engineering calls, tracked in `PRD_ORCHESTRATION.md`, not validated
+  through the iteration program here.

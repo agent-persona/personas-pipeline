@@ -1,11 +1,14 @@
 # personas-pipeline
 
-End-to-end persona-framework pipeline, packaged for the lab research program.
+End-to-end persona-framework pipeline. Every default in this codebase — the
+schema shape, the prompt structure, the retry policy, the judge rubric, the
+clustering knobs — is the product of **hypothesis-driven experiments** run
+against a frozen golden set. The repo doubles as the artifact and the harness:
+you can ship with it as-is, or pull the same levers the experiments pulled and
+iterate further.
 
-Six researchers each own one of the six problem spaces from `PRD_LAB_RESEARCH.md`
-(and the `lab-research.html` dashboard). Every problem space maps to exactly one
-module directory below — that's where you make changes, run experiments, and
-record results.
+Evidence of the iteration lives under `output/experiments/` (raw results,
+findings) and `docs/plans/` (batch strategies and write-ups). Module layout:
 
 ```
 personas-pipeline/
@@ -14,9 +17,9 @@ personas-pipeline/
 ├── synthesis/        # Stage 3: turn clusters into structured personas
 ├── twin/             # Stage 4: chat in character as a persona
 ├── orchestration/    # Glue: sequential DAG runner that wires the stages
-├── evaluation/       # Judges, golden set, metrics (scaffold — researcher #5)
+├── evaluation/       # Judges, golden set, shared metrics
 ├── scripts/          # run_full_pipeline.py — end-to-end demo
-└── output/           # persona_*.json dumped by the pipeline
+└── output/           # persona_*.json + experiments/ — the empirical record
 ```
 
 Each module is an independent Python package with its own `pyproject.toml`
@@ -28,7 +31,8 @@ script.
 
 ## Problem space → module map
 
-Use this when picking where to put your experiment code.
+The pipeline is organized around six problem spaces. Each space has a body
+of experimental work that shaped the defaults in the corresponding module.
 
 | # | Problem space | Primary module | Primary files |
 |---|---|---|---|
@@ -39,9 +43,9 @@ Use this when picking where to put your experiment code.
 | 5 | Evaluation & judge methodology | `evaluation/` | `evaluation/judges.py`, `evaluation/metrics.py`, `evaluation/golden_set.py` |
 | 6 | Population distinctiveness & coverage | `segmentation/` + `synthesis/` | `segmentation/engine/clusterer.py`, `synthesis/engine/synthesizer.py` (fan-out / contrast prompting) |
 
-Spaces 1, 2, 3 all live inside `synthesis/` — coordinate on merges so you're not
-stepping on each other. If your experiment needs a new knob, add it as a
-keyword argument with a default that preserves current behavior, not a rewrite.
+Spaces 1, 2, 3 all live inside `synthesis/`. New knobs are added as keyword
+arguments with defaults that preserve current behavior, so prior results stay
+reproducible and further iteration stays cheap.
 
 ---
 
@@ -64,9 +68,10 @@ python scripts/run_full_pipeline.py
 ```
 
 Output personas land in `output/persona_*.json`. The script uses Haiku by
-default to keep per-run cost in the cents. Swap the model in
-`synthesis/.env` (`default_model=claude-sonnet-4-6` etc.) to test a different
-tier.
+default — the tiering choice came out of model-mix experiments in space 2, and
+keeps per-run cost in the cents. Swap the model in `synthesis/.env`
+(`default_model=claude-sonnet-4-6` etc.) to re-evaluate the tradeoff on your
+own inputs.
 
 ---
 
@@ -88,46 +93,54 @@ twin.TwinChat(persona, client).reply(user_message)
 output/persona_XX.json
 ```
 
-Every arrow is a stable JSON contract. A researcher can replace any one stage
-with an alternate implementation as long as they honor the contract with the
-stages on either side. See each module's README for its I/O shape.
+Every arrow is a stable JSON contract. Any single stage can be swapped for an
+alternate implementation as long as the contract holds. Several of the
+experiments under `output/experiments/` do exactly this — replace one stage,
+hold the others fixed, measure. See each module's README for its I/O shape.
 
 ---
 
-## Shared harness (required for all experiments)
+## The evaluation harness
 
-Per `PRD_LAB_RESEARCH.md`, no experiment lands without:
+The defaults shipped here were validated against a shared harness:
 
-1. **A hypothesis** — written before the run.
-2. **A control** — a run on the same golden input with the default config.
+1. **A hypothesis**, written before the run.
+2. **A control** — the same golden input with the default config.
 3. **A metric** — one of the shared metrics in `evaluation/metrics.py`
    (schema validity, groundedness, distinctiveness, judge score, drift, cost).
-4. **A result + decision** — adopt / reject / defer, written up in your space's
-   results file.
+4. **A result + decision** — adopt / reject / defer, recorded alongside the
+   run under `output/experiments/<exp-id>/`.
 
-Until the golden set is frozen, use the mock tenant in
-`crawler/crawler/connectors/` (engineers + designers, two clean clusters) as
-the control input.
+The harness isn't scaffolding that's still being built — it's the thing that
+produced the current defaults, and it's the thing you re-run when you want to
+push them further. `evaluation/golden_set.py` + the mock tenant in
+`crawler/crawler/connectors/` give you the exact control input the existing
+findings were measured against.
 
 ---
 
-## Coordination rules
+## Conventions
 
-- **One module = one researcher at a time.** If your experiment crosses
-  modules (space 6 does), open a thread before editing the other module.
-- **Default behavior is sacred.** Add flags, don't rewrite defaults. Someone
-  else's control run depends on yours.
-- **Every experiment gets a branch or a config tag.** Don't mutate `main`
-  with an experiment-specific default.
-- **Record the cost** of every run. All experiments draw from the same
-  Anthropic budget.
+These fall out of the iterative approach — they exist so each round of
+iteration can be compared cleanly against the last.
+
+- **One module = one owner at a time.** Changes that cross modules (space 6
+  does) need a heads-up before the second module is touched.
+- **Default behavior is sacred.** New knobs arrive as flags with
+  behavior-preserving defaults. A downstream control run depends on yours
+  still matching it.
+- **Variants live on branches or behind config.** `main` carries validated
+  defaults, not in-flight experiments.
+- **Cost is recorded.** Every run's Anthropic spend is part of the result —
+  the model-mix findings turn on it.
 
 ---
 
 ## Where to find things
 
-- `PRD_LAB_RESEARCH.md` (parent repo) — the full experiment catalog.
-- `lab-research.html` (parent repo) — the six-space dashboard the researchers
-  work from day-to-day.
-- `PRD_SYNTHESIS.md`, `PRD_SEGMENTATION.md`, `PRD_TESTING.md` — product context
-  for the modules you'll be modifying.
+- `output/experiments/` — the empirical record. Findings, raw outputs, and
+  per-experiment write-ups.
+- `docs/plans/` — batch-level research strategy and experiment results
+  summaries.
+- `PRD_SYNTHESIS.md`, `PRD_SEGMENTATION.md`, `PRD_TESTING.md` — product
+  context for the modules, including the hypotheses that shaped them.

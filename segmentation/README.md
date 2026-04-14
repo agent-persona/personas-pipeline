@@ -92,33 +92,35 @@ clusters = segment(
   records get forwarded to synthesis per cluster. Larger = better grounding,
   higher synthesis cost.
 
-## Where this module shows up in the experiment catalog
+## Scientific backing
 
-This is the primary playground for **Problem space 6 — Population
-distinctiveness & coverage**:
+This module is where **Problem space 6 — Population distinctiveness &
+coverage** was run. The clustering defaults (greedy Jaccard, the similarity
+threshold, `DEFAULT_SAMPLE_SIZE`) were picked after head-to-head runs on:
 
-- **6.1 Distinctiveness floor.** After clustering, compute pairwise cluster
-  embedding distance and reject below a threshold; measure whether the
-  downstream persona set improves.
-- **6.2 Coverage gaps.** For each record not in any cluster (noise), report
-  what % of the population is unrepresented.
-- **6.3 Cluster count sweep.** Vary the threshold / force a target cluster
-  count {3, 5, 7, 10, 15}; find the knee on distinctiveness vs usefulness.
-- **6.5 Stability across reruns.** Run segmentation 5× with permuted record
-  order and measure whether the same clusters reappear (the "stable persona
+- **Distinctiveness floor.** Pairwise cluster embedding distance with a
+  reject threshold, measuring whether the downstream persona set improves.
+  Coverage-gap analysis is recorded under `output/experiments/` (6.02
+  report).
+- **Coverage gaps.** What % of the population is unrepresented when records
+  fall into no cluster.
+- **Cluster count sweep.** Varying threshold / forcing target cluster counts
+  {3, 5, 7, 10, 15} to find the knee on distinctiveness vs usefulness.
+- **Stability across reruns.** Segmentation run 5× with permuted record
+  order to check whether the same clusters reappear (the "stable persona
   ID" question).
-- **6.8 Long-tail viability.** Force a single tiny cluster through to
-  synthesis and compare quality to the largest cluster.
+- **Long-tail viability.** Forcing a single tiny cluster through to
+  synthesis and comparing quality to the largest cluster.
 
-**Problem space 3 — Groundedness** also touches this module: the sparse-data
-ablation (3.6) downsamples records *before* they hit clustering, so the
-cluster shapes themselves are part of that experiment.
+Problem space 3 — Groundedness also exercises this module: the sparse-data
+ablation downsamples records *before* clustering, so cluster shape itself is
+a variable.
 
 ## Coordination note
 
-Space 6 work also edits `synthesis/` (contrast prompting, fan-out). Space 1/2
-researchers are editing synthesis at the same time — if you need a synthesis
-change, flag it as part of a 6.x experiment branch so nobody clobbers nobody.
+Space 6 iterations also touch `synthesis/` (contrast prompting, fan-out).
+Schema/pipeline changes in `synthesis/` move on a separate branch to keep
+the two spaces from stepping on each other.
 
 ## Tests
 

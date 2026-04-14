@@ -59,22 +59,22 @@ print(len(records), records[0])
 - **Per-connector filtering.** `fetch()` takes a `since` timestamp for
   incremental pulls (unused by mocks, required for real connectors).
 
-## Where this module shows up in the experiment catalog
+## Scientific backing
 
-Crawler is mostly **infrastructure** for the lab program — it's rarely the
-variable under test. But two problem-space experiments do touch it:
+Crawler is mostly **infrastructure** for the iteration program — rarely the
+variable under test. Two problem spaces have exercised it directly:
 
 - **Space 3 — Groundedness (sparse-data ablation, adversarial injection).**
-  Downsample the connector fixtures to simulate a low-data tenant, or plant
-  false records to measure whether synthesis absorbs them. Make the change
-  behind a flag so the control run still sees the full fixture.
-- **Space 6 — Population coverage (cross-tenant leakage).** Swap in a
-  different fixture set per tenant_id to run the same pipeline over
-  multiple "tenants" and check whether generic LLM patterns dominate.
+  The connector fixtures get downsampled to simulate a low-data tenant, or
+  seeded with false records to measure whether synthesis absorbs them. The
+  default fixture is the control.
+- **Space 6 — Population coverage (cross-tenant leakage).** Alternate
+  fixture sets per tenant_id drive the same pipeline over multiple
+  "tenants" to check whether generic LLM patterns dominate.
 
-If your experiment needs a new fixture, add a new `_GA4_EVENTS_FRESH` constant
-(or a whole new connector file) rather than overwriting the existing one —
-someone else's baseline depends on it.
+New fixtures live alongside the existing ones (e.g. a new
+`_GA4_EVENTS_FRESH` constant, or a new connector file) rather than
+replacing them — prior controls still reference the originals.
 
 ## Tests
 

@@ -73,20 +73,19 @@ Use this after `run_full_pipeline.py` to hand off personas to `persona_eval`
 for scoring, or run it against `tests/fixtures/` to regenerate the example
 eval inputs without a live pipeline run.
 
-## Using this script as an experiment harness
+## Using this script as an iteration harness
 
-The simplest way to compare two pipeline variants is to duplicate
-`run_full_pipeline.py`, change one stage, and run both. But prefer to build
-your experiment *inside* the pipeline by:
+The defaults in this repo were validated by running control vs variant
+pipelines through this script. The pattern that produced the write-ups
+under `output/experiments/`:
 
-1. Keeping the stage list identical to control.
-2. Passing your variant as a keyword argument (e.g. a different prompt
-   builder, a different persona schema version, a different clustering
-   threshold).
-3. Writing results to `output/experiments/<experiment_id>/` so control
-   and variant runs sit side-by-side.
+1. Keep the stage list identical to control.
+2. Pass the variant as a keyword argument (a different prompt builder, a
+   different persona schema version, a different clustering threshold).
+3. Write results to `output/experiments/<experiment_id>/` so control and
+   variant runs sit side-by-side.
 
-If you need branching or parallel stage execution, **don't add it to
-`orchestration/`** — that module is explicitly out of scope for the lab
-program. Either call the stages directly from your script, or build a
-second `Pipeline` and run both.
+Branching or parallel stage execution is deliberately **not** in
+`orchestration/` — that module is out of scope for the iteration program.
+Either call the stages directly from a driver script, or build a second
+`Pipeline` and run both.
