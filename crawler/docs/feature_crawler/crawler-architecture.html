@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Crawler — Architecture</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --orange: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --pink: #f778ba;
+    --cyan: #39d2c0;
+    --discord: #5865F2;
+    --reddit: #FF4500;
+    --twitter: #1DA1F2;
+    --twitch: #9146FF;
+    --facebook: #1877F2;
+    --instagram: #E4405F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  header h1 span { color: var(--accent); }
+
+  header p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .owner-badge {
+    display: inline-block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  /* ---- ARCHITECTURE FLOW ---- */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: relative;
+  }
+
+  .flow-arrow {
+    display: flex;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 1.6rem;
+    margin: -16px 0;
+    z-index: 1;
+  }
+
+  /* ---- LAYER CARDS ---- */
+  .layer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .layer:hover { border-color: var(--accent); }
+
+  .layer-label {
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    background: var(--accent);
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 12px;
+    border-radius: 4px;
+  }
+
+  .layer-label.green { background: var(--green); }
+  .layer-label.orange { background: var(--orange); }
+  .layer-label.purple { background: var(--purple); }
+  .layer-label.pink { background: var(--pink); }
+  .layer-label.cyan { background: var(--cyan); }
+
+  .layer h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  /* ---- PLATFORM GRID ---- */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+  }
+
+  .platform-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.15s, border-color 0.15s;
+    cursor: default;
+  }
+
+  .platform-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+
+  .platform-card .name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .platform-card .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .platform-card .lib {
+    font-size: 0.78rem;
+    color: var(--cyan);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .platform-card .detail {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  .platform-card .phase {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    align-self: flex-start;
+  }
+
+  .phase-1 { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+  .phase-2 { background: rgba(210, 153, 34, 0.15); color: var(--orange); }
+  .phase-3 { background: rgba(248, 81, 73, 0.15); color: var(--red); }
+
+  /* ---- BASE CLASS ---- */
+  .base-class {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 16px;
+  }
+
+  .base-class h3 {
+    font-size: 0.9rem;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+
+  .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .feature-tag {
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    color: var(--accent);
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  /* ---- RECORD TYPES ---- */
+  .record-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 10px;
+  }
+
+  .record-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    transition: transform 0.15s, border-color 0.15s;
+    cursor: default;
+    position: relative;
+  }
+
+  .record-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--purple);
+  }
+
+  .record-card .icon { font-size: 1.4rem; margin-bottom: 6px; }
+
+  .record-card .rname {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--purple);
+  }
+
+  .record-card .rdesc {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* ---- STORAGE ---- */
+  .storage-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .storage-row { grid-template-columns: 1fr; }
+  }
+
+  .storage-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .storage-block .sicon { font-size: 1.8rem; margin-bottom: 8px; }
+
+  .storage-block h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .storage-block p {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .storage-block code {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    margin-top: 8px;
+    background: rgba(0,0,0,0.3);
+    padding: 6px 10px;
+    border-radius: 4px;
+    text-align: left;
+    word-break: break-all;
+  }
+
+  /* ---- DOWNSTREAM ---- */
+  .downstream-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 900px) {
+    .downstream-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .downstream-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .downstream-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .downstream-card:nth-child(1)::before { background: var(--green); }
+  .downstream-card:nth-child(2)::before { background: var(--orange); }
+  .downstream-card:nth-child(3)::before { background: var(--purple); }
+  .downstream-card:nth-child(4)::before { background: var(--pink); }
+
+  .downstream-card h4 { font-size: 0.9rem; margin-bottom: 4px; }
+  .downstream-card p { font-size: 0.75rem; color: var(--text-dim); }
+
+  /* ---- OSS TOOLS SECTION ---- */
+  .oss-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .oss-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .oss-card .oss-name {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .oss-card .oss-name a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .oss-card .oss-name a:hover { text-decoration: underline; }
+
+  .oss-card .oss-desc {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  .oss-card .oss-verdict {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    align-self: flex-start;
+  }
+
+  .verdict-high { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+  .verdict-med { background: rgba(210, 153, 34, 0.15); color: var(--orange); }
+  .verdict-low { background: rgba(139, 148, 158, 0.15); color: var(--text-dim); }
+
+  /* ---- DATA FLOW DIAGRAM ---- */
+  .data-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 0;
+    margin: 24px 0;
+  }
+
+  @media (max-width: 768px) {
+    .data-flow {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .data-flow .df-arrow { transform: rotate(90deg); }
+  }
+
+  .df-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .df-box h4 {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+  }
+
+  .df-box p {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+
+  .df-arrow {
+    color: var(--text-dim);
+    font-size: 1.4rem;
+    text-align: center;
+    padding: 0 8px;
+  }
+
+  /* ---- HIERARCHY VISUAL ---- */
+  .hierarchy {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.78rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 16px;
+    overflow-x: auto;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+
+  .hierarchy .h-platform { color: var(--accent); font-weight: 600; }
+  .hierarchy .h-community { color: var(--green); }
+  .hierarchy .h-thread { color: var(--orange); }
+  .hierarchy .h-message { color: var(--purple); }
+  .hierarchy .h-user { color: var(--pink); }
+
+  /* ---- POLICY MATRIX ---- */
+  .policy-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 0.78rem;
+  }
+
+  .policy-table th {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    color: var(--text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.7rem;
+  }
+
+  .policy-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .policy-table tr:hover td { background: rgba(88, 166, 255, 0.03); }
+
+  .status-ok { color: var(--green); }
+  .status-warn { color: var(--orange); }
+  .status-block { color: var(--red); }
+
+  /* ---- SECTION SPACER ---- */
+  .section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ---- INTERFACE SNIPPET ---- */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+    overflow-x: auto;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+
+  .code-block .kw { color: var(--pink); }
+  .code-block .fn { color: var(--accent); }
+  .code-block .ty { color: var(--cyan); }
+  .code-block .cm { color: var(--text-dim); }
+  .code-block .st { color: var(--green); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="owner-badge">owner: Max &middot; Agent Personas Project</div>
+    <h1><span>Community Crawler</span> — Architecture</h1>
+    <p>Structured, replayable evidence ingestion from community platforms. The crawler owns the evidence stream — not the persona.</p>
+  </header>
+
+  <!-- ===== HIGH-LEVEL PIPELINE ===== -->
+  <div class="flow">
+
+    <!-- DATA FLOW OVERVIEW -->
+    <div class="layer">
+      <div class="layer-label">Pipeline Overview</div>
+      <h2>End-to-End Data Flow</h2>
+      <div class="data-flow">
+        <div class="df-box" style="border-color: var(--accent);">
+          <h4 style="color: var(--accent);">Crawler</h4>
+          <p>Platform APIs → typed records</p>
+        </div>
+        <div class="df-arrow">→</div>
+        <div class="df-box" style="border-color: var(--green);">
+          <h4 style="color: var(--green);">Ingestion</h4>
+          <p>Validate, normalize, land in lake</p>
+        </div>
+        <div class="df-arrow">→</div>
+        <div class="df-box" style="border-color: var(--orange);">
+          <h4 style="color: var(--orange);">Segmentation</h4>
+          <p>Cluster → enrich → persona-ready</p>
+        </div>
+      </div>
+      <div class="data-flow" style="margin-top: 8px;">
+        <div class="df-box" style="border-color: var(--purple);">
+          <h4 style="color: var(--purple);">Synthesis</h4>
+          <p>Cluster → LLM → persona JSON</p>
+        </div>
+        <div class="df-arrow">→</div>
+        <div class="df-box" style="border-color: var(--pink);">
+          <h4 style="color: var(--pink);">Twin Runtime</h4>
+          <p>Persona → memory → conversation</p>
+        </div>
+        <div class="df-arrow">→</div>
+        <div class="df-box" style="border-color: var(--cyan);">
+          <h4 style="color: var(--cyan);">Obsidian</h4>
+          <p>Projection layer for human exploration</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- ===== PLATFORM CONNECTORS ===== -->
+    <div class="layer">
+      <div class="layer-label">Source Layer</div>
+      <h2>Platform Connectors</h2>
+
+      <div class="platform-grid">
+        <div class="platform-card">
+          <div class="name"><div class="dot" style="background: var(--discord);"></div> Discord</div>
+          <div class="lib">discord.py / Pycord</div>
+          <div class="detail">Bot API → servers → channels → threads → messages. Snowflake IDs encode timestamps.</div>
+          <div class="detail">50 req/s &middot; MESSAGE_CONTENT_INTENT</div>
+          <div class="phase phase-1">Phase 1 — Day 1</div>
+        </div>
+
+        <div class="platform-card">
+          <div class="name"><div class="dot" style="background: var(--reddit);"></div> Reddit</div>
+          <div class="lib">PRAW</div>
+          <div class="detail">OAuth → subreddits → posts → comments. replace_more(limit=32) for tree expansion.</div>
+          <div class="detail">100 req/min &middot; OAuth required</div>
+          <div class="phase phase-2">Phase 2</div>
+        </div>
+
+        <div class="platform-card">
+          <div class="name"><div class="dot" style="background: var(--twitter);"></div> X / Twitter</div>
+          <div class="lib">tweepy v4+ / HTTP</div>
+          <div class="detail">API v2 search → tweets → replies → quote chains. 7-day window on recent search.</div>
+          <div class="detail">Pay-per-use &middot; 2M reads/mo cap</div>
+          <div class="phase phase-2">Phase 2</div>
+        </div>
+
+        <div class="platform-card">
+          <div class="name"><div class="dot" style="background: var(--twitch);"></div> Twitch</div>
+          <div class="lib">Helix API + IRC</div>
+          <div class="detail">Channel metadata via REST. Live chat via IRC/EventSub. VOD chat fragile.</div>
+          <div class="detail">Standard OAuth &middot; high msg/sec</div>
+          <div class="phase phase-2">Phase 2</div>
+        </div>
+
+        <div class="platform-card">
+          <div class="name"><div class="dot" style="background: var(--facebook);"></div> Facebook</div>
+          <div class="lib">Meta Graph API</div>
+          <div class="detail">Groups + Pages → posts → comments. App review required for group data.</div>
+          <div class="detail">Restricted access &middot; slow review</div>
+          <div class="phase phase-3">Phase 3</div>
+        </div>
+
+        <div class="platform-card">
+          <div class="name"><div class="dot" style="background: var(--instagram);"></div> Instagram</div>
+          <div class="lib">Meta Graph API</div>
+          <div class="detail">Account / hashtag → posts → comments. Same Meta app review as Facebook.</div>
+          <div class="detail">Restricted access</div>
+          <div class="phase phase-3">Phase 3</div>
+        </div>
+      </div>
+
+      <!-- Base Class -->
+      <div class="base-class">
+        <h3>class CommunityConnector  &lt;base class&gt;</h3>
+        <div class="feature-list">
+          <span class="feature-tag">OAuth token refresh</span>
+          <span class="feature-tag">Rate-limit budgeting</span>
+          <span class="feature-tag">Exponential backoff</span>
+          <span class="feature-tag">Schema validation (Pydantic)</span>
+          <span class="feature-tag">PII scrubbing (Comprehend)</span>
+          <span class="feature-tag">Cursor management (Postgres)</span>
+          <span class="feature-tag">Tombstone detection</span>
+          <span class="feature-tag">Incremental since-cursor</span>
+        </div>
+      </div>
+
+      <!-- Interface -->
+      <div class="code-block">
+<span class="kw">interface</span> <span class="fn">Connector</span>.<span class="fn">fetch</span>(<br>
+&nbsp;&nbsp;target: <span class="ty">CrawlTarget</span>,<br>
+&nbsp;&nbsp;since:  <span class="ty">Cursor</span><br>
+) → <span class="ty">Iterator</span>[<span class="ty">Record</span>]<br>
+<br>
+<span class="cm">// Where Record is one of:</span><br>
+<span class="cm">//   account | profile_snapshot | community | thread | message | interaction | tombstone</span>
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- ===== CANONICAL RECORD TYPES ===== -->
+    <div class="layer">
+      <div class="layer-label purple">Schema Layer</div>
+      <h2>Canonical Record Types</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 16px;">Contracts between crawler and ingestion. Every record carries <code style="color: var(--cyan);">evidence_pointer</code>, <code style="color: var(--cyan);">crawl_run_id</code>, <code style="color: var(--cyan);">observed_at</code>, <code style="color: var(--cyan);">created_at</code>.</p>
+
+      <div class="record-grid">
+        <div class="record-card">
+          <div class="icon">👤</div>
+          <div class="rname">account</div>
+          <div class="rdesc">Identity anchor. One per {platform, platform_user_id}. Immutable key.</div>
+        </div>
+        <div class="record-card">
+          <div class="icon">📸</div>
+          <div class="rname">profile_snapshot</div>
+          <div class="rdesc">Point-in-time mutable fields. Append-only. Enables drift detection.</div>
+        </div>
+        <div class="record-card">
+          <div class="icon">🏘️</div>
+          <div class="rname">community</div>
+          <div class="rdesc">Subreddit, server, channel, group. Metadata + member count snapshots.</div>
+        </div>
+        <div class="record-card">
+          <div class="icon">🧵</div>
+          <div class="rname">thread</div>
+          <div class="rdesc">Conversation container. Post, tweet, Discord thread, stream session.</div>
+        </div>
+        <div class="record-card">
+          <div class="icon">💬</div>
+          <div class="rname">message</div>
+          <div class="rdesc">Individual utterance. The core behavioral signal. Body + metadata + reply edges.</div>
+        </div>
+        <div class="record-card">
+          <div class="icon">🔗</div>
+          <div class="rname">interaction</div>
+          <div class="rdesc">User→user edge. Reply, mention, quote, react. Derived from messages.</div>
+        </div>
+        <div class="record-card">
+          <div class="icon">🪦</div>
+          <div class="rname">tombstone</div>
+          <div class="rdesc">Deletion/edit event. Body hash retained, content redacted. Compliance.</div>
+        </div>
+      </div>
+
+      <!-- Hierarchy -->
+      <div class="hierarchy">
+<span class="h-platform">platform/</span>
+├── <span class="h-community">community_id/</span>
+│   ├── <span class="h-thread">thread_id/</span>
+│   │   ├── <span class="h-message">message</span> records  (body, score, reply_to, depth)
+│   │   └── <span class="h-user">interaction</span> records  (reply | mention | quote | react edges)
+│   └── community metadata  (description, member_count, rules)
+├── <span class="h-user">_users/</span>
+│   ├── account  (platform_user_id, username, first_observed)
+│   └── profile_snapshot[]  (bio, karma, communities_active — append-only)
+└── tombstone[]  (deleted | edited | suspended — body hash, reason)
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- ===== STORAGE ===== -->
+    <div class="layer">
+      <div class="layer-label green">Storage Layer</div>
+      <h2>Canonical Storage — Source of Truth</h2>
+
+      <div class="storage-row">
+        <div class="storage-block">
+          <div class="sicon">🪣</div>
+          <h4>S3 Bronze (Iceberg)</h4>
+          <p>Raw typed records. Partitioned for replay.</p>
+          <code>s3://lake/bronze/{platform}/{community_id}/{crawl_run_id}/{record_type}/</code>
+        </div>
+        <div class="storage-block">
+          <div class="sicon">🐘</div>
+          <h4>Postgres</h4>
+          <p>Crawl cursors, run metadata, enrichment cache.</p>
+          <code>cursors: {platform, community_id, record_type} → since_ts</code>
+        </div>
+        <div class="storage-block">
+          <div class="sicon">🔐</div>
+          <h4>Secrets</h4>
+          <p>OAuth tokens, API keys, bot tokens.</p>
+          <code>Doppler (dev) → AWS Secrets Manager (prod)</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- ===== PROJECTIONS ===== -->
+    <div class="layer">
+      <div class="layer-label cyan">Projection Layer</div>
+      <h2>Obsidian Vault — View, NOT Source of Truth</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 16px;">Generated from canonical records. Regenerable at any time. For human exploration and debugging only.</p>
+
+      <div class="hierarchy">
+<span class="h-platform">vault/</span>
+├── <span class="h-user">_users/{platform}/{username}.md</span>   ← account + latest profile_snapshot
+├── <span class="h-platform">{platform}/</span>
+│   ├── <span class="h-community">{community}/</span>
+│   │   ├── _community.md              ← community record
+│   │   ├── <span class="h-thread">{thread_slug}/</span>
+│   │   │   ├── _topic.md              ← thread record
+│   │   │   └── <span class="h-message">conversation.md</span>        ← messages with <span class="h-user">[[wikilinks]]</span> to users
+│   │   └── ...
+│   └── ...
+└── .obsidian/                          ← pre-configured graph view, Dataview queries
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- ===== DOWNSTREAM CONSUMERS ===== -->
+    <div class="layer">
+      <div class="layer-label orange">Downstream</div>
+      <h2>Pipeline Consumers</h2>
+      <div class="downstream-grid">
+        <div class="downstream-card">
+          <h4>Ingestion</h4>
+          <p>Schema validation, PII quarantine, tenant-safe normalization, replay semantics</p>
+        </div>
+        <div class="downstream-card">
+          <h4>Segmentation</h4>
+          <p>HDBSCAN clustering, behavioral features, enrichment (Clearbit, Apollo, IPinfo)</p>
+        </div>
+        <div class="downstream-card">
+          <h4>Synthesis</h4>
+          <p>Claude Sonnet → persona JSON. source_evidence[] traces back to crawler records</p>
+        </div>
+        <div class="downstream-card">
+          <h4>Twin Runtime</h4>
+          <p>Live persona with memory, character, skill. "Same persona in new chat" goal.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /flow -->
+
+  <!-- ===== POLICY MATRIX ===== -->
+  <div class="layer" style="margin-top: 40px;">
+    <div class="layer-label pink">Compliance</div>
+    <h2>Per-Platform Policy Matrix</h2>
+    <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 12px;">Legal/policy gates are first-class. No connector ships without clearing its row.</p>
+
+    <div style="overflow-x: auto;">
+      <table class="policy-table">
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>Collect</th>
+            <th>Infer</th>
+            <th>Cross-link</th>
+            <th>Deletion SLA</th>
+            <th>Commercial</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight: 600;"><span style="color: var(--discord);">●</span> Discord</td>
+            <td class="status-ok">✓ Bot API</td>
+            <td class="status-ok">✓ Within scope</td>
+            <td class="status-warn">⚠ Not prohibited</td>
+            <td>Gateway events</td>
+            <td class="status-ok">Free (bot API)</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;"><span style="color: var(--reddit);">●</span> Reddit</td>
+            <td class="status-warn">⚠ OAuth + license</td>
+            <td class="status-ok">✓ Within platform</td>
+            <td class="status-block">✗ PROHIBITED</td>
+            <td>Same crawl cycle</td>
+            <td class="status-warn">⚠ Needs contract</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;"><span style="color: var(--twitter);">●</span> X / Twitter</td>
+            <td class="status-ok">✓ Pay-per-use</td>
+            <td class="status-ok">✓ Per API ToS</td>
+            <td class="status-warn">⚠ Risky</td>
+            <td>Best-effort</td>
+            <td class="status-ok">Pay-per-use = commercial</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;"><span style="color: var(--twitch);">●</span> Twitch</td>
+            <td class="status-ok">✓ IRC + Helix</td>
+            <td class="status-ok">✓ OK</td>
+            <td class="status-warn">⚠ Not addressed</td>
+            <td>Best-effort</td>
+            <td class="status-ok">Free (API)</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;"><span style="color: var(--facebook);">●</span> Facebook</td>
+            <td class="status-warn">⚠ App review</td>
+            <td class="status-warn">⚠ Limited</td>
+            <td class="status-block">✗ PROHIBITED</td>
+            <td>Per Meta policy</td>
+            <td class="status-warn">⚠ App review</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;"><span style="color: var(--instagram);">●</span> Instagram</td>
+            <td class="status-warn">⚠ App review</td>
+            <td class="status-warn">⚠ Limited</td>
+            <td class="status-block">✗ PROHIBITED</td>
+            <td>Per Meta policy</td>
+            <td class="status-warn">⚠ App review</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== OSS TOOLS ===== -->
+  <div class="layer" style="margin-top: 40px;">
+    <div class="layer-label">Build vs Reuse</div>
+    <h2>Open Source Tools Assessment</h2>
+    <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 4px;">Custom connectors for schema + evidence_pointer chain. Fork/wrap OSS for the API interaction layer.</p>
+
+    <div class="oss-grid">
+      <div class="oss-card">
+        <div class="oss-name"><a href="https://github.com/LAION-AI/Discord-Scrapers" target="_blank">LAION-AI/Discord-Scrapers</a></div>
+        <div class="oss-desc">Bot-based channel scraper → HuggingFace push. fetch_all + incremental. Pluggable condition_fn + parse_fn.</div>
+        <div class="oss-verdict verdict-high">HIGH — fork as Discord base</div>
+      </div>
+      <div class="oss-card">
+        <div class="oss-name"><a href="https://github.com/pixelatedxp/discord-member-scraper" target="_blank">pixelatedxp/discord-member-scraper</a></div>
+        <div class="oss-desc">Exhaustive user ID extraction via message history, archived threads, welcome logs. Rate-limit aware.</div>
+        <div class="oss-verdict verdict-med">MEDIUM — account enumeration</div>
+      </div>
+      <div class="oss-card">
+        <div class="oss-name"><a href="https://praw.readthedocs.io/" target="_blank">PRAW (official)</a></div>
+        <div class="oss-desc">Python Reddit API Wrapper. OAuth, rate limits, replace_more() comment expansion, pagination.</div>
+        <div class="oss-verdict verdict-high">HIGH — Reddit library</div>
+      </div>
+      <div class="oss-card">
+        <div class="oss-name"><a href="https://github.com/datavorous/yars" target="_blank">datavorous/yars</a></div>
+        <div class="oss-desc">API-key-free Reddit scraper via .json endpoints. Search, subreddit posts, user activity.</div>
+        <div class="oss-verdict verdict-med">MEDIUM — prototype fallback only</div>
+      </div>
+      <div class="oss-card">
+        <div class="oss-name"><a href="https://github.com/ksanjeev284/reddit-universal-scraper" target="_blank">reddit-universal-scraper</a></div>
+        <div class="oss-desc">CLI + analytics + alerts + REST API + Streamlit + DB export. Full-featured reference.</div>
+        <div class="oss-verdict verdict-med">MEDIUM — traversal patterns</div>
+      </div>
+      <div class="oss-card">
+        <div class="oss-name"><a href="https://github.com/Data4Democracy/media-crawler" target="_blank">Data4Democracy/media-crawler</a></div>
+        <div class="oss-desc">Scrapy-based graph builder across articles, Twitter, Reddit. Neo4j + ES for storage.</div>
+        <div class="oss-verdict verdict-low">LOW — architecture ref only</div>
+      </div>
+      <div class="oss-card">
+        <div class="oss-name"><a href="https://github.com/santiment/discord_bot_scraper" target="_blank">santiment/discord_bot_scraper</a></div>
+        <div class="oss-desc">Simple bot scraper with configurable start date. Cursor-based history crawling reference.</div>
+        <div class="oss-verdict verdict-low">LOW — simpler alternative</div>
+      </div>
+      <div class="oss-card">
+        <div class="oss-name"><a href="https://github.com/ScriptSmith/socialreaper" target="_blank">ScriptSmith/socialreaper</a></div>
+        <div class="oss-desc">Multi-platform: Facebook, Twitter, Reddit, YouTube, Pinterest, Tumblr. Unified API wrapper.</div>
+        <div class="oss-verdict verdict-low">LOW — broad but unmaintained</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RUNTIME INFRA ===== -->
+  <div class="layer" style="margin-top: 40px;">
+    <div class="layer-label green">Infrastructure</div>
+    <h2>Runtime Architecture</h2>
+
+    <div class="storage-row">
+      <div class="storage-block">
+        <div class="sicon">🐳</div>
+        <h4>ECS Fargate</h4>
+        <p>One container image per source family. CommunityConnector base class.</p>
+        <code>connector-discord:latest<br>connector-reddit:latest<br>connector-x:latest<br>connector-twitch:latest</code>
+      </div>
+      <div class="storage-block">
+        <div class="sicon">🎭</div>
+        <h4>Playwright (Fallback)</h4>
+        <p>Residential proxy pool for API-insufficient sources. API-first always.</p>
+        <code>Only for owned | consented | public-permitted sources</code>
+      </div>
+      <div class="storage-block">
+        <div class="sicon">⏱️</div>
+        <h4>Orchestration</h4>
+        <p>Crawl scheduling, run management, handoff to ingestion.</p>
+        <code>cron / event-driven (Phase 3)<br>cursor checkpoint per run</code>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Community Crawler Architecture &middot; Agent Personas Project &middot; Generated April 2026
+  </footer>
+
+</div>
+</body>
+</html>

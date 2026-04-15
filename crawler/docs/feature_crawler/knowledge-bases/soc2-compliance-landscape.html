@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOC 2 Compliance Services & Platforms | Competitive Landscape 2026</title>
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #2a3a52;
+    --accent: #3b82f6;
+    --accent2: #f59e0b;
+    --accent3: #10b981;
+    --accent4: #ef4444;
+    --accent5: #8b5cf6;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --text-bright: #f8fafc;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+    color: var(--text-bright);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+  }
+  .hero .subtitle {
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  .hero .dateline {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Navigation tabs */
+  .tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); background: var(--surface2); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  /* Sections */
+  .section { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  .section.active { display: block; }
+  .section h2 {
+    font-size: 1.6rem;
+    color: var(--text-bright);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .section h3 {
+    font-size: 1.15rem;
+    color: var(--accent);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.25rem;
+    margin: 1.25rem 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card .card-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .card .card-label.blue { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .card .card-label.amber { background: rgba(245,158,11,0.15); color: var(--accent2); }
+  .card .card-label.green { background: rgba(16,185,129,0.15); color: var(--accent3); }
+  .card .card-label.red { background: rgba(239,68,68,0.15); color: var(--accent4); }
+  .card .card-label.purple { background: rgba(139,92,246,0.15); color: var(--accent5); }
+  .card h4 {
+    font-size: 1.05rem;
+    color: var(--text-bright);
+    margin-bottom: 0.5rem;
+  }
+  .card p, .card li {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+  .card ul { padding-left: 1.2rem; }
+  .card li { margin-bottom: 0.3rem; }
+
+  /* Stat boxes */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stat-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .stat-box .stat-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent5));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-box .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.25rem;
+  }
+
+  /* Company table */
+  .company-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+  .company-table th {
+    background: var(--surface2);
+    color: var(--accent);
+    padding: 0.85rem 0.75rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 52px;
+  }
+  .company-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+  .company-table tr:hover td { background: rgba(59,130,246,0.04); }
+  .company-table .company-name { color: var(--text-bright); font-weight: 600; }
+  .company-table .tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin: 1px;
+  }
+  .tag.leader { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .tag.challenger { background: rgba(245,158,11,0.15); color: var(--accent2); }
+  .tag.niche { background: rgba(139,92,246,0.15); color: var(--accent5); }
+  .tag.emerging { background: rgba(16,185,129,0.15); color: var(--accent3); }
+  .tag.acquired { background: rgba(239,68,68,0.15); color: var(--accent4); }
+
+  /* Tier visualization */
+  .tier-map {
+    margin: 2rem 0;
+  }
+  .tier {
+    margin-bottom: 1.5rem;
+  }
+  .tier-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .tier-label.t1 { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .tier-label.t2 { background: rgba(245,158,11,0.15); color: var(--accent2); }
+  .tier-label.t3 { background: rgba(139,92,246,0.15); color: var(--accent5); }
+  .tier-label.t4 { background: rgba(16,185,129,0.15); color: var(--accent3); }
+  .tier-players {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .tier-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .tier-chip .sub {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  /* Bar chart */
+  .bar-chart { margin: 1.5rem 0; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.6rem;
+    gap: 0.75rem;
+  }
+  .bar-label {
+    min-width: 130px;
+    font-size: 0.82rem;
+    color: var(--text);
+    font-weight: 500;
+    text-align: right;
+  }
+  .bar-track {
+    flex: 1;
+    background: var(--surface2);
+    border-radius: 4px;
+    height: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    transition: width 0.6s ease;
+  }
+  .bar-fill.blue { background: linear-gradient(90deg, var(--accent), #60a5fa); }
+  .bar-fill.amber { background: linear-gradient(90deg, var(--accent2), #fbbf24); }
+  .bar-fill.green { background: linear-gradient(90deg, var(--accent3), #34d399); }
+  .bar-fill.purple { background: linear-gradient(90deg, var(--accent5), #a78bfa); }
+  .bar-fill.red { background: linear-gradient(90deg, var(--accent4), #f87171); }
+
+  /* Knowledge Tree */
+  .tree { margin: 1rem 0; }
+  .tree-node { margin: 0.5rem 0; }
+  .tree-toggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text-bright);
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.15s;
+  }
+  .tree-toggle:hover { background: var(--surface2); }
+  .tree-toggle .arrow {
+    transition: transform 0.2s;
+    font-size: 0.75rem;
+    color: var(--accent);
+  }
+  .tree-toggle.open .arrow { transform: rotate(90deg); }
+  .tree-children {
+    display: none;
+    margin-left: 1.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--border);
+  }
+  .tree-children.open { display: block; }
+  .tree-leaf {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(42,58,82,0.4);
+  }
+  .tree-leaf:last-child { border-bottom: none; }
+  .tree-leaf strong { color: var(--text); }
+
+  /* Prose */
+  .prose { max-width: 900px; }
+  .prose p { margin-bottom: 1rem; font-size: 0.92rem; color: var(--text-dim); }
+  .prose strong { color: var(--text); }
+
+  /* Source list */
+  .sources { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .sources h3 { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .sources a {
+    display: block;
+    color: var(--accent);
+    font-size: 0.8rem;
+    text-decoration: none;
+    padding: 2px 0;
+    opacity: 0.8;
+  }
+  .sources a:hover { opacity: 1; text-decoration: underline; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.5rem; }
+    .tab-btn { padding: 0.75rem 0.75rem; font-size: 0.78rem; }
+    .card-grid { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .company-table { font-size: 0.75rem; }
+    .bar-label { min-width: 90px; font-size: 0.72rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>SOC 2 Compliance Services & Platforms</h1>
+  <div class="subtitle">Competitive Landscape & Market Analysis</div>
+  <div class="dateline">Research compiled April 2026 | Data as of Q1 2026</div>
+</div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('overview')">Market Overview</button>
+  <button class="tab-btn" onclick="showTab('leaders')">Top Platforms</button>
+  <button class="tab-btn" onclick="showTab('comparison')">Comparison Table</button>
+  <button class="tab-btn" onclick="showTab('audit')">Audit Firms</button>
+  <button class="tab-btn" onclick="showTab('emerging')">AI & Open Source</button>
+  <button class="tab-btn" onclick="showTab('ma')">M&A & Consolidation</button>
+  <button class="tab-btn" onclick="showTab('tree')">Knowledge Tree</button>
+</nav>
+
+<!-- ===== MARKET OVERVIEW ===== -->
+<div id="overview" class="section active">
+  <h2>Market Overview</h2>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-num">$850M</div>
+      <div class="stat-label">SOC 2 Automation Market (2025)</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">$2.7B</div>
+      <div class="stat-label">Projected by 2028</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">~13%</div>
+      <div class="stat-label">CAGR (Compliance Automation)</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">$36B</div>
+      <div class="stat-label">Broader Compliance Software (2025)</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">$66B</div>
+      <div class="stat-label">Compliance Software by 2030</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>The SOC 2 compliance automation market has matured rapidly since 2020, growing from a handful of startups into a well-defined category with clear leaders, challengers, and emerging disruptors. The core SOC 2 automation segment was valued at approximately <strong>$850M in 2025</strong> and is projected to reach <strong>$2.7B by 2028</strong>, representing roughly a 3x expansion in three years.</p>
+    <p>The broader compliance automation tools market was valued at <strong>$4.8B in 2024</strong> and is projected to reach <strong>$12.3B by 2033</strong> at a 13.2% CAGR. The even broader compliance software market sits at <strong>$36.2B in 2025</strong>, heading toward <strong>$65.8B by 2030</strong> at a 12.7% CAGR. AI-based compliance automation specifically is valued at <strong>$6.1B</strong> and is expected to reach <strong>$18.3B by 2033</strong> at a 14.6% CAGR.</p>
+    <p>Key demand drivers include: expanding regulatory requirements, customer/enterprise procurement demands for SOC 2 reports, increasing cloud adoption, the shift-left of security into product development, and the growing acceptance of AI-driven evidence collection and continuous monitoring as viable replacements for manual audit preparation.</p>
+  </div>
+
+  <h3>Market Tier Map</h3>
+  <div class="tier-map">
+    <div class="tier">
+      <div class="tier-label t1">Tier 1 -- Market Leaders</div>
+      <div class="tier-players">
+        <div class="tier-chip">Vanta <span class="sub">$220M ARR | $4.15B val | 12,000+ customers</span></div>
+        <div class="tier-chip">Drata <span class="sub">~$100M ARR | $2B val | 7,000+ customers</span></div>
+      </div>
+    </div>
+    <div class="tier">
+      <div class="tier-label t2">Tier 2 -- Strong Challengers</div>
+      <div class="tier-players">
+        <div class="tier-chip">Secureframe <span class="sub">$79M raised | 200 employees</span></div>
+        <div class="tier-chip">Sprinto <span class="sub">$31.8M raised | 1,000+ customers</span></div>
+        <div class="tier-chip">Thoropass <span class="sub">$98M raised | Audit-inclusive model</span></div>
+      </div>
+    </div>
+    <div class="tier">
+      <div class="tier-label t3">Tier 3 -- Specialized / Mid-Market</div>
+      <div class="tier-players">
+        <div class="tier-chip">Hyperproof <span class="sub">$77M raised | $21M rev | GRC-focused</span></div>
+        <div class="tier-chip">AuditBoard (Optro) <span class="sub">$3B acq by Hg | Enterprise GRC</span></div>
+        <div class="tier-chip">Strike Graph <span class="sub">$23.4M raised | 300+ customers</span></div>
+        <div class="tier-chip">Scytale <span class="sub">$12-15M raised | EMEA focus</span></div>
+      </div>
+    </div>
+    <div class="tier">
+      <div class="tier-label t4">Tier 4 -- Acquired / Emerging / Open Source</div>
+      <div class="tier-players">
+        <div class="tier-chip">Tugboat Logic <span class="sub">Acquired by OneTrust (2021)</span></div>
+        <div class="tier-chip">Comp AI <span class="sub">Open source | $2.6M pre-seed | 4,000+ cos</span></div>
+        <div class="tier-chip">Probo <span class="sub">Open source | Early stage</span></div>
+        <div class="tier-chip">Comply (StrongDM) <span class="sub">Open source | SOC 2 focused</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Funding Raised (Total) by Platform</h3>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">Vanta</div>
+      <div class="bar-track"><div class="bar-fill blue" style="width:100%">$504M</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Drata</div>
+      <div class="bar-track"><div class="bar-fill blue" style="width:65%">$328M</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Thoropass</div>
+      <div class="bar-track"><div class="bar-fill amber" style="width:19.4%">$98M</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Secureframe</div>
+      <div class="bar-track"><div class="bar-fill amber" style="width:15.7%">$79M</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Hyperproof</div>
+      <div class="bar-track"><div class="bar-fill purple" style="width:15.3%">$77M</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Sprinto</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:6.3%">$32M</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Strike Graph</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:4.6%">$23M</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Scytale</div>
+      <div class="bar-track"><div class="bar-fill purple" style="width:3%">$12-15M</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Comp AI</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:0.5%">$2.6M</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOP PLATFORMS ===== -->
+<div id="leaders" class="section">
+  <h2>Platform Deep Dives</h2>
+
+  <div class="card-grid">
+    <!-- VANTA -->
+    <div class="card">
+      <span class="card-label blue">Market Leader</span>
+      <h4>Vanta</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2018 by Christina Cacioppo</li>
+        <li><strong>HQ:</strong> San Francisco, CA</li>
+        <li><strong>Funding:</strong> $504M total (Series D at $4.15B valuation, Jul 2025)</li>
+        <li><strong>ARR:</strong> $220M (Jul 2025), up from $152M (2024)</li>
+        <li><strong>Customers:</strong> 12,000+ (8,000 in mid-2024)</li>
+        <li><strong>ACV:</strong> ~$18K (up from ~$14K in early 2024)</li>
+        <li><strong>Employees:</strong> 500+</li>
+        <li><strong>Pricing:</strong> $7,500-$11,500/yr base (Essentials); Plus, Professional, Enterprise tiers all custom. Total year-1 cost with audit: ~$27,000+</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR, SOX ITGC, NIST, and 30+ more</li>
+        <li><strong>Key features:</strong> 300+ integrations, automated evidence collection, AI-powered risk assessment, trust center, vendor risk management, questionnaire automation</li>
+        <li><strong>Target:</strong> Originally startups, now aggressively moving upmarket to mid-market and enterprise</li>
+        <li><strong>Differentiator:</strong> Largest customer base, broadest integration ecosystem, pioneered the category. Forbes Cloud 100 (2023-2025). AI Agent features for automated remediation.</li>
+        <li><strong>Investors:</strong> Sequoia, Wellington, Craft Ventures, CrowdStrike, Y Combinator</li>
+      </ul>
+    </div>
+
+    <!-- DRATA -->
+    <div class="card">
+      <span class="card-label blue">Market Leader</span>
+      <h4>Drata</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2020 by Adam Markowitz, Daniel Marashlian, Troy Markowitz</li>
+        <li><strong>HQ:</strong> San Diego, CA</li>
+        <li><strong>Funding:</strong> $328M total (Series C $200M at $2B valuation, Nov 2022)</li>
+        <li><strong>ARR:</strong> ~$98-100M (Jan 2025), up 61% YoY from $59M (2023)</li>
+        <li><strong>Customers:</strong> 7,000+ (55% YoY growth)</li>
+        <li><strong>ACV:</strong> ~$13.5K</li>
+        <li><strong>Employees:</strong> 732</li>
+        <li><strong>Pricing:</strong> $7,500-$9,000/yr for single framework (10-85 employees); $20K-$45K for mid-sized (50-200 employees). Custom pricing.</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR, CCPA, NIST, and 20+ more</li>
+        <li><strong>Key features:</strong> 75+ native integrations, continuous automated monitoring, proprietary control testing, custom frameworks, trust center, autopilot remediation</li>
+        <li><strong>Target:</strong> Startups to mid-market, expanding to enterprise</li>
+        <li><strong>Differentiator:</strong> Deep automation and customization capabilities. Strong G2 ratings (11 Momentum Leader badges, Winter 2025). 100% YoY EMEA growth. Notable customers: Notion, OpenAI, PagerDuty, Lemonade.</li>
+        <li><strong>Investors:</strong> ICONIQ Growth, GGV Capital, Alkeon Capital, Salesforce Ventures, Cowboy Ventures</li>
+      </ul>
+    </div>
+
+    <!-- SECUREFRAME -->
+    <div class="card">
+      <span class="card-label amber">Challenger</span>
+      <h4>Secureframe</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2020</li>
+        <li><strong>HQ:</strong> San Francisco, CA</li>
+        <li><strong>Funding:</strong> $79M total</li>
+        <li><strong>Employees:</strong> ~200</li>
+        <li><strong>Pricing:</strong> Starts ~$7,500/yr (Fundamentals); avg ~$20K/yr per Vendr. Complete and Federal tiers available. All custom.</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR, CMMC, FedRAMP, and more</li>
+        <li><strong>Key features:</strong> "Comply AI" for AI-drafted policies and risk assessments (launched 2025), automated evidence collection, continuous monitoring, employee training, vendor management</li>
+        <li><strong>Target:</strong> Startups and SMBs, with Federal tier for government contractors</li>
+        <li><strong>Differentiator:</strong> Strong FedRAMP and CMMC support (Federal tier). Comply AI feature uses LLMs to auto-generate policies tailored to tech stack. Competitive pricing entry point.</li>
+        <li><strong>Investors:</strong> Kleiner Perkins, Base10 Partners, Gradient Ventures (Google)</li>
+      </ul>
+    </div>
+
+    <!-- SPRINTO -->
+    <div class="card">
+      <span class="card-label amber">Challenger</span>
+      <h4>Sprinto</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2020 (Bangalore, India)</li>
+        <li><strong>Funding:</strong> $31.8M total</li>
+        <li><strong>Customers:</strong> 1,000+</li>
+        <li><strong>Employees:</strong> ~200</li>
+        <li><strong>Pricing:</strong> Starter $7K-$8K/yr; Professional $8K-$10K; Advanced $11K-$15K; Enterprise $20K+. Most transparent pricing among challengers.</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, and more</li>
+        <li><strong>Key features:</strong> Automated evidence collection, risk management, policy templates, employee onboarding, integration hub, cost calculator tool</li>
+        <li><strong>Target:</strong> Startups and SMBs, especially in India and APAC markets</li>
+        <li><strong>Differentiator:</strong> Most competitive pricing, strong content marketing engine, aggressive growth (2.5x revenue growth). Good option for cost-conscious startups. India-based engineering team keeps costs lower.</li>
+      </ul>
+    </div>
+
+    <!-- THOROPASS -->
+    <div class="card">
+      <span class="card-label amber">Challenger</span>
+      <h4>Thoropass (formerly Laika)</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2019 by Sam Li, Eva Pittas, Austin Ogilvie</li>
+        <li><strong>Funding:</strong> $95-100M total (Series C $50M)</li>
+        <li><strong>Pricing:</strong> Yearly subscription based on company size and certifications. SOC 2 Type 1: $12K-$27K; Type 2: $15K-$100K+. Replaces traditional one-off $50K-$100K audit engagement model.</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, PCI DSS, HITRUST, and more</li>
+        <li><strong>Key features:</strong> End-to-end compliance with built-in audit services (audit included in subscription), policy management, continuous monitoring, readiness assessments</li>
+        <li><strong>Target:</strong> Mid-market companies wanting a bundled automation + audit solution</li>
+        <li><strong>Differentiator:</strong> Only major platform that bundles the actual audit with the software (audit-inclusive model). Frost & Sullivan 2025 Global Customer Value Leadership Award. Eliminates need to separately find and manage auditors.</li>
+      </ul>
+    </div>
+
+    <!-- HYPERPROOF -->
+    <div class="card">
+      <span class="card-label purple">Specialized</span>
+      <h4>Hyperproof</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2018</li>
+        <li><strong>Funding:</strong> $77.3M total (Series B $40M, Aug 2023)</li>
+        <li><strong>Revenue:</strong> $21.2M (2024), up from $8.2M (2023)</li>
+        <li><strong>Pricing:</strong> Starts ~$12K/yr; median contract $40K (Vendr data); 200-employee SaaS: $16K-$32K; 1,000-employee: $49K-$100K. $10K implementation fee (negotiable).</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, PCI DSS, NIST, CMMC, FedRAMP, GDPR, and many more</li>
+        <li><strong>Key features:</strong> Workload-based licensing (not per-seat), cross-framework mapping, risk registers, control testing, audit management, Hypersync technology for evidence collection</li>
+        <li><strong>Target:</strong> Mid-market to enterprise, multi-framework compliance teams</li>
+        <li><strong>Differentiator:</strong> Full GRC platform, not just SOC 2 point solution. Best for complex, multi-framework environments. Value-based SaaS licensing. Acquired by Expent (Oct 2025, buyout/LBO).</li>
+        <li><strong>Investors:</strong> Riverwood Capital, Toba Capital</li>
+      </ul>
+    </div>
+
+    <!-- AUDITBOARD -->
+    <div class="card">
+      <span class="card-label purple">Enterprise GRC</span>
+      <h4>AuditBoard (now Optro)</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2014</li>
+        <li><strong>Acquisition:</strong> Acquired by Hg Capital for $3B (2024). Rebranded to Optro (March 2026).</li>
+        <li><strong>Pricing:</strong> Custom enterprise pricing. Supports SOC 2 audits alongside SOX, risk management, and internal audit modules.</li>
+        <li><strong>Frameworks:</strong> SOX, SOC 2, ISO 27001, NIST, PCI DSS, HIPAA, and enterprise GRC</li>
+        <li><strong>Key features:</strong> Modular platform (SOX compliance, audit management, risk oversight, compliance management), workflow automation, analytics dashboards, board-level reporting</li>
+        <li><strong>Target:</strong> Large enterprises, publicly traded companies, internal audit teams</li>
+        <li><strong>Differentiator:</strong> Enterprise-first approach. Strongest in SOX compliance and internal audit. The $3B Hg acquisition validates the GRC automation thesis at massive scale. Less startup-focused than Vanta/Drata.</li>
+      </ul>
+    </div>
+
+    <!-- STRIKE GRAPH -->
+    <div class="card">
+      <span class="card-label green">Niche</span>
+      <h4>Strike Graph</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2020</li>
+        <li><strong>Funding:</strong> $23.4M total across 4 rounds</li>
+        <li><strong>Customers:</strong> 300+</li>
+        <li><strong>Pricing:</strong> Starts at $9,000/yr (Certify tier, one Tier 1 framework). Additional frameworks $2K-$8K each. Publicly listed pricing (rare in this space).</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR, and 25+ more</li>
+        <li><strong>Key features:</strong> Flexible risk management, customizable controls, multi-entity support, transparent tiered pricing</li>
+        <li><strong>Target:</strong> SMBs wanting transparent pricing and flexible compliance</li>
+        <li><strong>Differentiator:</strong> One of the few platforms with fully public pricing. Flexible risk-based approach. Good for companies that want more control over their compliance program design. Claims 86% faster SOC 2 achievement.</li>
+        <li><strong>Investors:</strong> Madrona Venture Group, Amplify.LA, Rise of the Rest</li>
+      </ul>
+    </div>
+
+    <!-- SCYTALE -->
+    <div class="card">
+      <span class="card-label green">Niche</span>
+      <h4>Scytale</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2021 by Meiran Galis</li>
+        <li><strong>Funding:</strong> $12-15M</li>
+        <li><strong>Pricing:</strong> Estimated $10K-$25K/yr for small to mid-sized SaaS. Not publicly listed.</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, GDPR, ISO 42001, and 40+ total</li>
+        <li><strong>Key features:</strong> AI GRC agent ("Scy"), expert advisory services bundled, customized controls, security awareness training, smart audit management, continuous monitoring</li>
+        <li><strong>Target:</strong> SaaS companies, particularly in EMEA and Israel ecosystem</li>
+        <li><strong>Differentiator:</strong> Compliance automation + human expert advisory hybrid model. AWS Rising Star Partner of the Year (EMEA, 2025). ISO 42001 (AI governance) support. Customers: Deel, Intel, Oligo Security, Guesty. Acquired AudITech for $15M to expand capabilities.</li>
+        <li><strong>Investors:</strong> Work-Bench, StoneMill Ventures, Bessemer Venture Partners, Bain Capital Ventures</li>
+      </ul>
+    </div>
+
+    <!-- TUGBOAT LOGIC -->
+    <div class="card">
+      <span class="card-label red">Acquired</span>
+      <h4>Tugboat Logic (now OneTrust)</h4>
+      <ul>
+        <li><strong>Founded:</strong> 2018</li>
+        <li><strong>Acquired by:</strong> OneTrust (September 2021, terms undisclosed)</li>
+        <li><strong>Current status:</strong> Integrated into OneTrust's Certification Automation module within its broader privacy, security, and GRC platform</li>
+        <li><strong>Frameworks:</strong> 50+ frameworks via OneTrust's proprietary evidence framework</li>
+        <li><strong>Key features (post-acquisition):</strong> AI-driven compliance automation, integrated into OneTrust's privacy/ethics/ESG/third-party risk suite</li>
+        <li><strong>Target:</strong> Enterprise organizations already in OneTrust ecosystem</li>
+        <li><strong>Differentiator:</strong> Now part of the largest privacy management platform. Best for organizations needing combined privacy + security compliance. Less useful as a standalone SOC 2 tool.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMPARISON TABLE ===== -->
+<div id="comparison" class="section">
+  <h2>Head-to-Head Comparison</h2>
+
+  <div style="overflow-x:auto;">
+  <table class="company-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Pricing (Annual)</th>
+        <th>Total Funding</th>
+        <th>Valuation / Exit</th>
+        <th>ARR / Revenue</th>
+        <th>Customers</th>
+        <th>Position</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="company-name">Vanta</td>
+        <td>$7.5K-$80K+</td>
+        <td>$504M</td>
+        <td>$4.15B (Jul 2025)</td>
+        <td>$220M ARR</td>
+        <td>12,000+</td>
+        <td><span class="tag leader">Leader</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Drata</td>
+        <td>$7.5K-$45K+</td>
+        <td>$328M</td>
+        <td>$2B (Nov 2022)</td>
+        <td>~$100M ARR</td>
+        <td>7,000+</td>
+        <td><span class="tag leader">Leader</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Secureframe</td>
+        <td>$7.5K-$20K+</td>
+        <td>$79M</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td><span class="tag challenger">Challenger</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Sprinto</td>
+        <td>$7K-$25K+</td>
+        <td>$31.8M</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td>1,000+</td>
+        <td><span class="tag challenger">Challenger</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Thoropass</td>
+        <td>$12K-$100K+</td>
+        <td>$95-100M</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td><span class="tag challenger">Challenger</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Hyperproof</td>
+        <td>$12K-$100K+</td>
+        <td>$77M</td>
+        <td>~$145M (est.)</td>
+        <td>$21.2M (2024)</td>
+        <td>Not disclosed</td>
+        <td><span class="tag niche">Specialized</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">AuditBoard (Optro)</td>
+        <td>Custom enterprise</td>
+        <td>N/A (PE-backed)</td>
+        <td>$3B (Hg acq, 2024)</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td><span class="tag niche">Enterprise</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Strike Graph</td>
+        <td>$9K-$25K+</td>
+        <td>$23.4M</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td>300+</td>
+        <td><span class="tag niche">Niche</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Scytale</td>
+        <td>$10K-$25K est.</td>
+        <td>$12-15M</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td>Not disclosed</td>
+        <td><span class="tag niche">Niche</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Tugboat Logic</td>
+        <td>Part of OneTrust</td>
+        <td>N/A (acquired)</td>
+        <td>Acquired 2021</td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td><span class="tag acquired">Acquired</span></td>
+      </tr>
+      <tr>
+        <td class="company-name">Comp AI</td>
+        <td>Open source + paid</td>
+        <td>$2.6M</td>
+        <td>Pre-seed stage</td>
+        <td>$1M ARR (4 months)</td>
+        <td>4,000+</td>
+        <td><span class="tag emerging">Emerging</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Typical Total SOC 2 Costs (2026)</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-label green">Small Startup (10-50 employees)</span>
+      <h4>$20,000 - $50,000 total Year 1</h4>
+      <ul>
+        <li>Platform subscription: $7,500 - $15,000</li>
+        <li>Audit fees (Type II): $10,000 - $25,000</li>
+        <li>Penetration testing: $3,000 - $10,000</li>
+        <li>Internal time/resources: variable</li>
+        <li>Renewal years: ~60-70% of Year 1</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-label amber">Mid-Market (50-500 employees)</span>
+      <h4>$40,000 - $120,000 total Year 1</h4>
+      <ul>
+        <li>Platform subscription: $15,000 - $45,000</li>
+        <li>Audit fees (Type II): $15,000 - $50,000</li>
+        <li>Penetration testing: $10,000 - $25,000</li>
+        <li>Additional frameworks: +$5K-$15K each</li>
+        <li>Implementation/consulting: $5K-$15K</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-label red">Enterprise (500+ employees)</span>
+      <h4>$100,000 - $300,000+ total Year 1</h4>
+      <ul>
+        <li>Platform subscription: $50,000 - $100,000+</li>
+        <li>Audit fees (Type II): $30,000 - $100,000</li>
+        <li>Multi-framework bundle: variable</li>
+        <li>Implementation: $10K-$50K+</li>
+        <li>Ongoing consulting/advisory: variable</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AUDIT FIRMS ===== -->
+<div id="audit" class="section">
+  <h2>Traditional Audit Firms</h2>
+
+  <div class="prose">
+    <p>SOC 2 reports must be issued by a licensed CPA firm. The audit itself cannot be fully automated -- a human auditor must attest. This creates a durable, complementary market between automation platforms (which prepare you for the audit) and CPA firms (which conduct and issue the report). Some platforms like Thoropass bundle the audit; most do not.</p>
+  </div>
+
+  <h3>Big 4 Accounting Firms</h3>
+  <div class="prose">
+    <p>The Big 4 collectively generated <strong>$219B in revenue in 2025</strong>. While they dominate public company audits (Deloitte, EY, PwC, KPMG audit the vast majority of Fortune 500 and S&P 500 companies), their role in SOC 2 specifically is concentrated in large enterprise engagements. Most startups and mid-market companies use specialized or regional firms for SOC 2 due to cost.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-label blue">$70.5B Revenue</span>
+      <h4>Deloitte</h4>
+      <p>Largest professional services firm globally. 473,000 employees. Offers SOC 2 as part of broader risk advisory and cyber practice. Primarily serves Fortune 500 and large enterprise clients for SOC 2. SOC 2 audits typically $50K-$200K+ depending on scope.</p>
+    </div>
+    <div class="card">
+      <span class="card-label blue">$56.9B Revenue</span>
+      <h4>PwC</h4>
+      <p>364,000 employees. Strong in financial services SOC 2 audits. Offers SOC 2 through its Risk Assurance practice. Premium pricing reflects brand name and global reach. Often chosen by companies preparing for IPO or serving large financial institutions.</p>
+    </div>
+    <div class="card">
+      <span class="card-label blue">$53.2B Revenue</span>
+      <h4>Ernst & Young (EY)</h4>
+      <p>406,000 employees. Audits 28.4% of large accelerated filers (highest among Big 4). Technology Risk practice handles SOC 2 engagements. Strong in technology and healthcare sectors.</p>
+    </div>
+    <div class="card">
+      <span class="card-label blue">$39.8B Revenue</span>
+      <h4>KPMG</h4>
+      <p>276,000 employees. IT Advisory and Risk Consulting practices handle SOC 2. Strong government and defense sector presence. Offers SOC 2 alongside broader IT audit and cyber advisory services.</p>
+    </div>
+  </div>
+
+  <h3>Specialist SOC 2 Audit Firms (More Common for Startups/SMBs)</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-label green">Top Specialist</span>
+      <h4>Schellman</h4>
+      <p>Founded 2002. 400+ employees. Global cybersecurity assessment leader. Exclusively focused on attestation and cybersecurity services (SOC 2, ISO 27001, HITRUST, FedRAMP, PCI DSS). One of the most commonly recommended SOC 2 audit firms in the startup ecosystem. Many compliance automation platforms partner with Schellman.</p>
+    </div>
+    <div class="card">
+      <span class="card-label green">Cloud-Native Specialist</span>
+      <h4>BARR Advisory</h4>
+      <p>Cloud-based cybersecurity and compliance firm specializing in SOC 2, ISO 27001, and FedRAMP for fast-growing SaaS and cloud-based organizations. Net Promoter Score of 89 (exceptionally high for audit firms). Strong reputation in the startup/SaaS ecosystem.</p>
+    </div>
+    <div class="card">
+      <span class="card-label green">Regional Specialist</span>
+      <h4>Coalfire</h4>
+      <p>Major cybersecurity advisory firm offering SOC 2, FedRAMP, PCI DSS, and HITRUST audits. Particularly strong in government/federal compliance. Often chosen by companies needing both SOC 2 and FedRAMP.</p>
+    </div>
+    <div class="card">
+      <span class="card-label green">SMB-Focused</span>
+      <h4>Johanson Group / Sensiba / Prescient</h4>
+      <p>Regional and boutique CPA firms offering SOC 2 at lower price points ($10K-$30K for Type II). Popular with early-stage startups. Faster turnaround, more flexible engagement models. Often partnered with automation platforms like Vanta and Drata.</p>
+    </div>
+  </div>
+
+  <h3>Big 4 vs. Specialist Firms: When to Use Which</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-label amber">Use Big 4 When</span>
+      <h4>Enterprise / IPO / Regulated</h4>
+      <ul>
+        <li>Preparing for IPO and need "Big 4 brand" on report</li>
+        <li>Serving Fortune 500 clients who require Big 4 attestation</li>
+        <li>Complex multi-entity, global SOC 2 scope</li>
+        <li>Combined SOC 2 + SOX + financial audit engagements</li>
+        <li>Budget: $50K-$200K+ for SOC 2 alone</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-label green">Use Specialist When</span>
+      <h4>Startup / SMB / Speed Priority</h4>
+      <ul>
+        <li>First-time SOC 2 (Type I or Type II)</li>
+        <li>Budget-conscious (want $10K-$30K audit fees)</li>
+        <li>Using compliance automation platform (Vanta/Drata)</li>
+        <li>Need faster turnaround (4-8 weeks vs. 8-16 weeks)</li>
+        <li>SaaS/cloud-native business model</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AI & OPEN SOURCE ===== -->
+<div id="emerging" class="section">
+  <h2>Emerging: AI-Native & Open Source Approaches</h2>
+
+  <h3>AI-Native Compliance Platforms</h3>
+  <div class="prose">
+    <p>A new wave of AI-native compliance tools is emerging that goes beyond the "automation" of incumbent platforms (which primarily automate evidence collection and monitoring) to use LLMs and AI agents for policy generation, risk assessment, control mapping, and even audit preparation. The AI-based compliance automation segment is valued at <strong>$6.1B (2025)</strong> and growing at <strong>14.6% CAGR</strong> toward $18.3B by 2033.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-label green">Breakout Newcomer</span>
+      <h4>Comp AI (Open Source)</h4>
+      <ul>
+        <li><strong>Founded:</strong> Early 2025 by Lewis Carhart, Claudio Fuentes, Mariano Fuentes</li>
+        <li><strong>Funding:</strong> $2.6M pre-seed (OSS Capital + Grand Ventures)</li>
+        <li><strong>Growth:</strong> $1M ARR in 4 months with 6-person team; 4,000+ companies by early 2026</li>
+        <li><strong>Model:</strong> Open-source core with paid services. 500+ integrations.</li>
+        <li><strong>AI capabilities:</strong> AI agents automate evidence collection, risk assessments, vendor onboarding. AI Agent Studio for custom automation. Claims 90% of compliance process automatable.</li>
+        <li><strong>Frameworks:</strong> SOC 2, ISO 27001, HIPAA, GDPR, 25+ total</li>
+        <li><strong>Why it matters:</strong> First credible open-source competitor to Vanta/Drata. Fastest-growing entrant in the space. Community-contributed control templates and framework mappings.</li>
+        <li><strong>Angel investors:</strong> David Cramer (Sentry founder), founders from Freshworks, Deel, Pipe</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="card-label green">AI-First</span>
+      <h4>Delve</h4>
+      <ul>
+        <li>AI agents that "eliminate compliance busywork"</li>
+        <li>Focused on automated compliance for AI companies and startups</li>
+        <li>Supports SOC 2, HIPAA, GDPR, ISO 27001</li>
+        <li>Positioning: compliance for the AI era</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="card-label blue">Incumbent AI Features</span>
+      <h4>AI Capabilities of Existing Leaders</h4>
+      <ul>
+        <li><strong>Vanta:</strong> AI Agent features for automated remediation and risk assessment. Plus plan includes expanded AI Agent capabilities.</li>
+        <li><strong>Drata:</strong> Self-describes as "AI-native GRC platform." Autopilot features for automated control testing and remediation.</li>
+        <li><strong>Secureframe:</strong> "Comply AI" (launched 2025) drafts policies, generates risk assessments, suggests control implementations based on tech stack.</li>
+        <li><strong>Scytale:</strong> "Scy" AI GRC agent. G2 Best Software Award winner in GRC (2026).</li>
+        <li><strong>Sprinto:</strong> AI-powered continuous monitoring and automated evidence mapping.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="card-label purple">Market AI Trends</span>
+      <h4>Where AI is Transforming SOC 2</h4>
+      <ul>
+        <li><strong>Policy generation:</strong> LLMs auto-draft security policies tailored to org structure and tech stack</li>
+        <li><strong>Evidence collection:</strong> AI agents continuously gather and map evidence to controls</li>
+        <li><strong>Risk assessment:</strong> Automated risk scoring and prioritization</li>
+        <li><strong>Gap analysis:</strong> AI identifies missing controls and recommends remediations</li>
+        <li><strong>Vendor questionnaire automation:</strong> AI fills out security questionnaires using existing compliance data</li>
+        <li><strong>Continuous monitoring:</strong> ML-based anomaly detection for compliance drift</li>
+        <li><strong>Auditor preparation:</strong> AI generates audit-ready documentation packages</li>
+        <li><strong>Estimated time savings:</strong> AI cuts compliance work by ~50% (industry claims)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Open Source & DIY Alternatives</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-label green">Open Source</span>
+      <h4>Comp AI</h4>
+      <p>The leading open-source compliance platform (detailed above). Open-source core on GitHub. Community-contributed control templates, framework mappings, and automations. Paid tiers for managed services. 500+ integrations. The "Red Hat of compliance."</p>
+    </div>
+    <div class="card">
+      <span class="card-label green">Open Source</span>
+      <h4>Probo</h4>
+      <p>Open-source compliance platform built specifically for startups pursuing SOC 2. Available on GitHub (getprobo/probo). Hybrid model: open-source software paired with hands-on service to eliminate DIY burden while preserving open-source benefits. Early stage but represents the growing open-source compliance movement.</p>
+    </div>
+    <div class="card">
+      <span class="card-label green">Open Source</span>
+      <h4>Comply (by StrongDM)</h4>
+      <p>SOC 2-focused compliance automation framework on GitHub (strongdm/comply). Features: markdown-powered document pipeline for auditor-friendly policy documents, ticketing integration, open-source policy and procedure templates. Good for engineering-first teams that want to own their compliance tooling. Lighter-weight than full platforms.</p>
+    </div>
+    <div class="card">
+      <span class="card-label amber">DIY Approach</span>
+      <h4>Build Your Own</h4>
+      <ul>
+        <li><strong>Cost:</strong> $0 software + $10K-$25K audit fees + significant internal time</li>
+        <li><strong>Tools:</strong> Spreadsheets, Jira/Linear for tracking, Google Docs for policies, manual evidence screenshots</li>
+        <li><strong>Viable for:</strong> Very small teams (<20 people) with strong security engineering</li>
+        <li><strong>Drawback:</strong> 200-400 hours of manual work vs. 40-80 hours with automation platform</li>
+        <li><strong>Risk:</strong> Policy gaps, missed controls, longer audit cycles, no continuous monitoring</li>
+        <li><strong>When it makes sense:</strong> Budget-constrained seed-stage startup needing Type I only, with a security-savvy CTO</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== M&A & CONSOLIDATION ===== -->
+<div id="ma" class="section">
+  <h2>M&A, Consolidation & Market Dynamics</h2>
+
+  <h3>Key Transactions</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-label red">$3B Acquisition</span>
+      <h4>Hg Capital acquires AuditBoard (2024)</h4>
+      <p>Private equity firm Hg acquired AuditBoard for $3 billion, the largest transaction in the compliance automation space. AuditBoard was subsequently rebranded to Optro (March 2026) with modular offerings for SOX, compliance, risk, and audit. Validates the massive enterprise GRC market opportunity. AuditBoard continues to operate independently under Hg ownership.</p>
+    </div>
+    <div class="card">
+      <span class="card-label amber">Strategic Acquisition</span>
+      <h4>OneTrust acquires Tugboat Logic (Sep 2021)</h4>
+      <p>OneTrust acquired Tugboat Logic to add SOC 2 and security certification automation to its privacy and GRC platform. Tugboat Logic's proprietary evidence framework (50+ frameworks) was integrated into OneTrust Certification Automation. Tugboat Logic effectively ceased to exist as a standalone product, becoming a module within OneTrust's broader platform.</p>
+    </div>
+    <div class="card">
+      <span class="card-label amber">Buyout/LBO</span>
+      <h4>Expent acquires Hyperproof (Oct 2025)</h4>
+      <p>Hyperproof was acquired in a buyout/LBO by Expent in October 2025. Details of the transaction were not disclosed. This came after Hyperproof's revenue grew from $8.2M (2023) to $21.2M (2024), suggesting a growth-stage acquisition at a revenue multiple.</p>
+    </div>
+    <div class="card">
+      <span class="card-label green">Tuck-in Acquisition</span>
+      <h4>Scytale acquires AudITech ($15M, 2025)</h4>
+      <p>Scytale acquired AudITech for $15M to expand its compliance automation capabilities. A sign that even smaller players in this space are consolidating to build more complete offerings.</p>
+    </div>
+  </div>
+
+  <h3>Market Dynamics & Trends</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-label blue">Consolidation Thesis</span>
+      <h4>Platform vs. Point Solution</h4>
+      <ul>
+        <li>The market is shifting from "SOC 2 tool" to "GRC platform"</li>
+        <li>Leaders are adding frameworks aggressively (Vanta: 30+, Drata: 20+)</li>
+        <li>Multi-framework customers have higher ACV and lower churn</li>
+        <li>Expect more acquisitions as PE firms see the recurring revenue opportunity</li>
+        <li>The AuditBoard/Hg deal ($3B) set the ceiling for GRC automation valuations</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-label purple">Vertical Expansion</span>
+      <h4>Beyond SOC 2</h4>
+      <ul>
+        <li><strong>Trust Centers:</strong> Vanta, Drata building customer-facing trust portals</li>
+        <li><strong>Vendor Risk Management:</strong> Expanding from internal compliance to supply chain risk</li>
+        <li><strong>AI Governance:</strong> ISO 42001, EU AI Act compliance (Scytale leading here)</li>
+        <li><strong>Questionnaire Automation:</strong> Automating security questionnaire responses for sales enablement</li>
+        <li><strong>Risk Management:</strong> Full enterprise risk registers and quantification</li>
+        <li><strong>Continuous Compliance:</strong> Moving from point-in-time audits to always-on monitoring</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-label amber">Pricing Pressure</span>
+      <h4>Race to the Bottom?</h4>
+      <ul>
+        <li>Entry-level pricing compressed from ~$15K (2021) to ~$7.5K (2026)</li>
+        <li>Sprinto and open-source alternatives pushing prices lower</li>
+        <li>Comp AI (open source) is the most disruptive pricing threat</li>
+        <li>Leaders respond by moving upmarket and increasing ACV via bundling</li>
+        <li>Vanta's ACV increased from $14K to $18K by selling multi-framework bundles</li>
+        <li>Audit fees remain a separate, largely uncompressed cost (except Thoropass)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="card-label green">SOC 2 Standard Evolution</span>
+      <h4>2025-2026 Updates</h4>
+      <ul>
+        <li>Reports with 150+ security controls grew from 16% to 23%</li>
+        <li>Confidentiality criteria included in 64.4% of reports (up from 34% in 2023)</li>
+        <li>Availability criteria now in 75.3% of reports</li>
+        <li>Organizations expanding scope to address broader client requirements</li>
+        <li>SOC 2 increasingly a table-stakes requirement, not a differentiator</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== KNOWLEDGE TREE ===== -->
+<div id="tree" class="section">
+  <h2>Knowledge Tree</h2>
+
+  <div class="tree">
+    <div class="tree-node">
+      <button class="tree-toggle" onclick="toggleTree(this)">
+        <span class="arrow">&#9654;</span> SOC 2 Compliance Automation Market
+      </button>
+      <div class="tree-children">
+        <div class="tree-leaf"><strong>Market size (SOC 2 specific):</strong> $850M (2025) -> $2.7B (2028)</div>
+        <div class="tree-leaf"><strong>Broader compliance automation:</strong> $4.8B (2024) -> $12.3B (2033), 13.2% CAGR</div>
+        <div class="tree-leaf"><strong>AI-based compliance:</strong> $6.1B -> $18.3B (2033), 14.6% CAGR</div>
+        <div class="tree-leaf"><strong>Full compliance software market:</strong> $36.2B (2025) -> $65.8B (2030), 12.7% CAGR</div>
+        <div class="tree-leaf"><strong>Key growth drivers:</strong> regulatory expansion, cloud adoption, AI/ML, enterprise procurement requirements</div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <button class="tree-toggle" onclick="toggleTree(this)">
+        <span class="arrow">&#9654;</span> Tier 1: Market Leaders
+      </button>
+      <div class="tree-children">
+        <div class="tree-node">
+          <button class="tree-toggle" onclick="toggleTree(this)">
+            <span class="arrow">&#9654;</span> Vanta ($220M ARR, $4.15B valuation)
+          </button>
+          <div class="tree-children">
+            <div class="tree-leaf"><strong>Funding:</strong> $504M total across 5 rounds. Series D: $150M at $4.15B (Jul 2025, led by Wellington)</div>
+            <div class="tree-leaf"><strong>Revenue growth:</strong> $100M ARR (Jan 2024) -> $152M (2024) -> $220M (Jul 2025)</div>
+            <div class="tree-leaf"><strong>Customers:</strong> 12,000+ (up from 8,000 in mid-2024). ACV: ~$18K</div>
+            <div class="tree-leaf"><strong>Strategy:</strong> Moving upmarket from startups to enterprise. Bundling frameworks to increase ACV.</div>
+            <div class="tree-leaf"><strong>Pricing:</strong> $7.5K-$80K+/yr. Four tiers: Essentials, Plus, Professional, Enterprise (all custom)</div>
+            <div class="tree-leaf"><strong>AI:</strong> AI Agent features for remediation and risk assessment. Expanded in Plus plan.</div>
+            <div class="tree-leaf"><strong>Recognition:</strong> Forbes Cloud 100 (2023, 2024, 2025). TechForward Award for Security Tech GRC (2025).</div>
+          </div>
+        </div>
+        <div class="tree-node">
+          <button class="tree-toggle" onclick="toggleTree(this)">
+            <span class="arrow">&#9654;</span> Drata (~$100M ARR, $2B valuation)
+          </button>
+          <div class="tree-children">
+            <div class="tree-leaf"><strong>Funding:</strong> $328M total. Series C: $200M at $2B (Nov 2022, ICONIQ + GGV)</div>
+            <div class="tree-leaf"><strong>Revenue growth:</strong> $59M (2023) -> $95M (2024) -> ~$100M (Jan 2025). 61% YoY (2023-2024)</div>
+            <div class="tree-leaf"><strong>Customers:</strong> 7,000+ (55% YoY growth). ACV: ~$13.5K</div>
+            <div class="tree-leaf"><strong>International:</strong> 100% YoY EMEA growth. Expanding globally.</div>
+            <div class="tree-leaf"><strong>Notable customers:</strong> Notion, OpenAI, PagerDuty, Lemonade</div>
+            <div class="tree-leaf"><strong>Pricing:</strong> $7.5K-$45K+/yr. Custom pricing based on size, integrations, frameworks.</div>
+            <div class="tree-leaf"><strong>Recognition:</strong> G2 Winter 2025: 11 Momentum Leader badges, 250+ total badges</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <button class="tree-toggle" onclick="toggleTree(this)">
+        <span class="arrow">&#9654;</span> Tier 2: Challengers
+      </button>
+      <div class="tree-children">
+        <div class="tree-leaf"><strong>Secureframe:</strong> $79M raised. ~200 employees. Comply AI (2025) for LLM-generated policies. FedRAMP/CMMC strength. Kleiner Perkins backed.</div>
+        <div class="tree-leaf"><strong>Sprinto:</strong> $31.8M raised. 1,000+ customers. Most competitive pricing ($7K-$25K). India-based. 2.5x revenue growth.</div>
+        <div class="tree-leaf"><strong>Thoropass:</strong> $95-100M raised. Audit-inclusive model (unique). Frost & Sullivan 2025 award. SOC 2 Type II: $15K-$100K+ bundled.</div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <button class="tree-toggle" onclick="toggleTree(this)">
+        <span class="arrow">&#9654;</span> Tier 3: Specialized & Mid-Market
+      </button>
+      <div class="tree-children">
+        <div class="tree-leaf"><strong>Hyperproof:</strong> $77M raised. $21.2M rev (2024). Full GRC platform. Workload-based licensing. Acquired by Expent (Oct 2025).</div>
+        <div class="tree-leaf"><strong>AuditBoard (Optro):</strong> Acquired by Hg for $3B (2024). Rebranded to Optro (Mar 2026). Enterprise-first. SOX + SOC 2 + risk + audit.</div>
+        <div class="tree-leaf"><strong>Strike Graph:</strong> $23.4M raised. 300+ customers. Public pricing (rare). $9K/yr starting. Flexible risk-based approach.</div>
+        <div class="tree-leaf"><strong>Scytale:</strong> $12-15M raised. EMEA/Israel focus. AI agent "Scy". ISO 42001 support. Acquired AudITech ($15M). Bessemer/Bain Capital backed.</div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <button class="tree-toggle" onclick="toggleTree(this)">
+        <span class="arrow">&#9654;</span> Traditional Audit Firms
+      </button>
+      <div class="tree-children">
+        <div class="tree-leaf"><strong>Big 4:</strong> Deloitte ($70.5B), PwC ($56.9B), EY ($53.2B, 28.4% of large filers), KPMG ($39.8B). Combined $219B. SOC 2 is small fraction of revenue.</div>
+        <div class="tree-leaf"><strong>Specialist firms:</strong> Schellman (400+ employees, founded 2002), BARR Advisory (NPS 89), Coalfire (FedRAMP specialist), Sensiba, Prescient, Johanson Group</div>
+        <div class="tree-leaf"><strong>Big 4 SOC 2 pricing:</strong> $50K-$200K+. Specialist pricing: $10K-$30K for Type II.</div>
+        <div class="tree-leaf"><strong>Trend:</strong> West region (Silicon Valley) leads auditing demand driven by SOC 2 attestations and cybersecurity audits.</div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <button class="tree-toggle" onclick="toggleTree(this)">
+        <span class="arrow">&#9654;</span> AI & Open Source Disruptors
+      </button>
+      <div class="tree-children">
+        <div class="tree-leaf"><strong>Comp AI:</strong> Open source. $2.6M pre-seed. $1M ARR in 4 months. 4,000+ companies. 500+ integrations. AI Agent Studio. Claims 90% automation.</div>
+        <div class="tree-leaf"><strong>Probo:</strong> Open source (GitHub: getprobo/probo). Startup-focused. Hybrid software + services model.</div>
+        <div class="tree-leaf"><strong>Comply (StrongDM):</strong> Open source (GitHub: strongdm/comply). Markdown-based policy pipeline. Lightweight SOC 2 tool.</div>
+        <div class="tree-leaf"><strong>Delve:</strong> AI agents for compliance busywork elimination. Targets AI companies and startups.</div>
+        <div class="tree-leaf"><strong>Incumbent AI features:</strong> All leaders adding AI (Vanta AI Agents, Drata Autopilot, Secureframe Comply AI, Scytale Scy agent).</div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <button class="tree-toggle" onclick="toggleTree(this)">
+        <span class="arrow">&#9654;</span> M&A & Consolidation
+      </button>
+      <div class="tree-children">
+        <div class="tree-leaf"><strong>Hg -> AuditBoard:</strong> $3B (2024). Largest GRC automation deal. Rebranded to Optro (Mar 2026).</div>
+        <div class="tree-leaf"><strong>OneTrust -> Tugboat Logic:</strong> Sep 2021. Integrated into OneTrust Certification Automation.</div>
+        <div class="tree-leaf"><strong>Expent -> Hyperproof:</strong> Oct 2025 (buyout/LBO). Terms undisclosed.</div>
+        <div class="tree-leaf"><strong>Scytale -> AudITech:</strong> $15M (2025). Capability expansion.</div>
+        <div class="tree-leaf"><strong>Outlook:</strong> More PE activity expected. Multi-framework platforms are acquisition targets. Open source may disrupt pricing enough to trigger distressed M&A at the low end.</div>
+      </div>
+    </div>
+
+    <div class="tree-node">
+      <button class="tree-toggle" onclick="toggleTree(this)">
+        <span class="arrow">&#9654;</span> Key Hypotheses & Predictions
+      </button>
+      <div class="tree-children">
+        <div class="tree-leaf"><strong>H1:</strong> Vanta and Drata will consolidate >50% of the SMB/mid-market segment by 2027, creating a duopoly similar to Salesforce/HubSpot in CRM.</div>
+        <div class="tree-leaf"><strong>H2:</strong> Open-source (Comp AI) will capture 10-15% of new SOC 2 adopters by 2028, pressuring margins of all incumbents.</div>
+        <div class="tree-leaf"><strong>H3:</strong> At least one more Big 4 or large PE firm will acquire a compliance automation platform by end of 2027.</div>
+        <div class="tree-leaf"><strong>H4:</strong> AI will commoditize the "evidence collection + monitoring" layer, shifting value to audit network effects, trust centers, and vendor risk intelligence.</div>
+        <div class="tree-leaf"><strong>H5:</strong> The Thoropass "audit-included" model will be copied by 2-3 other platforms within 18 months as they acquire or partner with CPA firms.</div>
+        <div class="tree-leaf"><strong>H6:</strong> SOC 2 will become a table-stakes checkbox (not a differentiator) for B2B SaaS by 2028, shifting the competitive landscape to speed-to-compliance and ongoing monitoring quality.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleTree(btn) {
+  btn.classList.toggle('open');
+  const children = btn.nextElementSibling;
+  if (children) children.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
