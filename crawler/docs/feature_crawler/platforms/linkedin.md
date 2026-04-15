@@ -7,7 +7,7 @@ First LinkedIn pass supports two HTML-backed transports that map into the same c
 - `official-oidc`: official LinkedIn member identity fetch via access token
 - `public-html`: direct profile fetch for public profile pages or local exported HTML
 - `session-html`: authenticated profile fetch using an existing LinkedIn cookie/session
-- `session-browser`: authenticated Playwright-backed crawl for first-degree connections in My Network
+- `session-browser`: authenticated Playwright-backed crawl for full profile rendering (JS-rendered pages with lazy-loaded sections) AND first-degree connections in My Network
 - `headless-visible-profiles`: authenticated Playwright crawl for detailed sections on already harvested visible connections
 - `apify`, `brightdata`, `linkdapi`: vendor-backed crawl modes for richer posts and network data
 
@@ -118,6 +118,16 @@ python3 -m feature_crawler.crawler.cli crawl-linkedin \
   --allow-persona-inference
 ```
 
+Session-backed browser profile crawl (full JS-rendered profile with lazy-loaded sections):
+
+```bash
+python -m crawler.feature_crawler crawl-linkedin \
+  --url https://www.linkedin.com/in/username/ \
+  --mode session-browser \
+  --output-dir data/linkedin/username \
+  --collection-basis consented
+```
+
 Session-backed browser network crawl:
 
 ```bash
@@ -181,7 +191,21 @@ python3 -m feature_crawler.crawler.cli crawl-linkedin \
 - persona inference is only allowed for `owned` or `consented` collection basis
 - cross-linking remains off
 - session mode assumes a human-provided cookie/session and should use a dedicated account, not a primary identity
-- `session-browser` crawls the authenticated viewer's My Network page; use the viewer's own profile URL there to avoid target/viewer mismatch
+- `session-browser` uses Playwright for both full profile page rendering and My Network crawling; use the viewer's own profile URL to avoid target/viewer mismatch
+
+## Session-browser profile flow
+
+When `--mode session-browser` targets an individual profile URL, the crawler uses Playwright to render the full profile page with JavaScript enabled. The flow is:
+
+1. Launch a Playwright browser with the authenticated LinkedIn session (cookies injected from `LINKEDIN_COOKIE` or `LINKEDIN_SESSION_COOKIE_LI_AT` + `LINKEDIN_SESSION_COOKIE_JSESSIONID`).
+2. Navigate to the profile URL and wait for the main profile content to load.
+3. Scroll the page progressively to trigger lazy-loaded sections (experience, education, skills, activity, etc.).
+4. Extract individual items from each section: experience entries, education entries, skills, and activity posts.
+5. Emit canonical `message` records for each extracted item, consistent with the other modes.
+
+If browser-based extraction fails for any reason (timeout, element changes, network errors), the crawler falls back to HTTP-based extraction via `session-html` so that a partial result is still returned.
+
+This flow closes the JS-render gap that previously limited `session-html` on profile pages: sections that require JavaScript to appear (e.g., dynamically loaded experience cards, activity feed) are now fully accessible through `session-browser`.
 
 ## Gaps
 
@@ -192,3 +216,4 @@ python3 -m feature_crawler.crawler.cli crawl-linkedin \
 - headless visible-profile helper depends on exporting cookies from the local Brave session into Playwright storage state
 - vendor modes depend on human-provided actor IDs / dataset IDs / API keys
 - no delete/tombstone propagation yet
+- `session-browser` now fills the JS rendering gap for individual profiles; the previous `session-html` JS-render limitation on profile pages is resolved when using `session-browser` mode
