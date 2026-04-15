@@ -91,7 +91,11 @@ def gower_distance(
     if not distances:
         return 1.0
 
-    return sum(d * w for d, w in zip(distances, dim_weights)) / sum(dim_weights)
+    total_weight = sum(dim_weights)
+    if total_weight == 0.0:
+        return 1.0
+
+    return sum(d * w for d, w in zip(distances, dim_weights)) / total_weight
 
 
 def gower_similarity(

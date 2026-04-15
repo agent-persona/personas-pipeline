@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from collections import Counter, defaultdict
 
 from segmentation.models.features import FeatureType, UserFeatures
@@ -65,9 +66,12 @@ def featurize_records(
 
                     if ext.feature_type == FeatureType.NUMERIC:
                         try:
-                            numeric_raw[ext.feature_name].append(float(value))
+                            numeric_value = float(value)
                         except (ValueError, TypeError):
                             continue  # Non-parseable numeric skipped
+                        if not math.isfinite(numeric_value):
+                            continue  # Reject NaN/inf to avoid poisoning aggregates
+                        numeric_raw[ext.feature_name].append(numeric_value)
                     elif ext.feature_type == FeatureType.CATEGORICAL:
                         categorical_raw[ext.feature_name].append(str(value))
                     elif ext.feature_type == FeatureType.SET:
