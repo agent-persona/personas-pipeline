@@ -1,14 +1,98 @@
 # personas-pipeline
 
-End-to-end persona-framework pipeline. Every default in this codebase — the
-schema shape, the prompt structure, the retry policy, the judge rubric, the
-clustering knobs — is the product of **hypothesis-driven experiments** run
-against a frozen golden set. The repo doubles as the artifact and the harness:
-you can ship with it as-is, or pull the same levers the experiments pulled and
-iterate further.
+End-to-end persona-framework pipeline: turn raw behavioral records (chat logs,
+analytics events, CRM notes, Discord activity) into grounded, interactive
+persona twins you can chat with — with every claim bound to a source record.
 
-Evidence of the iteration lives under `output/experiments/` (raw results,
-findings) and `docs/plans/` (batch strategies and write-ups). Module layout:
+Every default in this codebase — schema shape, prompt structure, retry policy,
+judge rubric, clustering knobs, temperature, model tier — is the product of
+**hypothesis-driven experiments** run against a frozen golden set. The repo
+doubles as the artifact and the harness: ship with it as-is, or pull the same
+levers the experiments pulled and iterate further.
+
+---
+
+## What makes this different
+
+Most "AI persona" tools today are prompt wrappers around ChatGPT that output
+plausible-sounding marketing personas from a one-line brief. The commercial
+category splits into two camps:
+
+- **Synthetic-user SaaS** — Delve AI, Synthetic Users, Viewpoints.ai, Ditto:
+  hosted, per-seat or per-persona pricing (Delve charges $0.99/synthetic user),
+  closed-source, you can't audit how a claim was derived.
+- **Character platforms** — Character.AI, Poe, MyShell, Janitor: strong for
+  entertainment-style roleplay, but no grounding in your data and no
+  evaluation harness for drift, refusal, or hallucination.
+
+personas-pipeline targets the gap between them. The concrete differentiators:
+
+| Axis | Typical SaaS / prompt wrapper | personas-pipeline |
+|---|---|---|
+| **Grounding** | Free-form LLM output, no citations | Every claim carries `source_evidence` record IDs; structural groundedness is measured on every synthesis |
+| **Methodology** | Vendor-decided defaults, no visibility | ~30 logged experiments under `output/experiments/` with hypothesis → control → metric → decision |
+| **Openness** | Closed SaaS, black-box prompts | MIT-licensed, modular (6 packages, stable JSON contracts between stages), self-host with your own API key |
+| **Cost** | $0.99+/persona hosted | ~$0.027/persona at Haiku + `temperature=0.0` (exp-2.06); re-runs are free |
+| **Runtime** | Static persona PDFs, or unbounded chat | Twin runtime with tested boundary / refusal / meta-question behavior (exp-4.05, 4.16, 4.20) |
+| **Eval** | "Looks reasonable" | Shared metrics (schema validity, groundedness, distinctiveness, judge score, drift) and a frozen golden set to re-run them against |
+
+The `evaluation/` package is the load-bearing piece. We've already used it to
+reject ideas that sound good on paper — e.g., reference-based judging tightened
+variance 44% but introduced a -0.33 anchoring bias and was rejected
+(exp-5.11); pairwise-vs-absolute judging failed inter-judge agreement at 43%
+position bias and was deferred (exp-5.10). Those negative results are in the
+repo so you don't pay to rediscover them.
+
+---
+
+## Who it's for
+
+**Discord community owners.** Point the crawler at your server's message
+history and get back 3–5 grounded archetypes of the people actually in your
+channel — "the lurker who DMs mods", "the question-asker", "the power-user
+running tournaments" — with quote-level evidence for each trait. Spin up twin
+bots that answer in-character for moderation playbooks, onboarding flows, or
+pre-testing announcements before you post them.
+
+**LinkedIn / creator-economy influencers.** Feed in comment threads, DM
+transcripts, or subscriber survey exports. Synthesis produces distinct
+audience personas with `goals`, `pains`, and `sample_quotes` drawn directly
+from your audience's own language. Draft posts against a twin, see which
+archetype each section lands with, iterate before you publish.
+
+**Chatbot developers.** The schema, synthesis pipeline, and twin runtime are
+designed to be lifted into a product. Stable JSON contracts between every
+stage mean you can replace the crawler with your own data source, swap model
+backends, or plug the twin into an existing chat UI without touching the rest.
+The experimental record tells you which knobs matter and which don't —
+`goals` and `sample_quotes` are load-bearing (exp-1.07); `channels`,
+`vocabulary`, `journey_stages` can be dropped in cost-constrained builds.
+
+---
+
+## Selected results
+
+All numbers below come from `output/experiments/` on the golden tenant
+(`tenant_acme_corp`, 37 records, 2 clusters). Sample sizes are small — each
+FINDINGS.md reports its own caveats — but the decisions encoded in the shipped
+defaults are the ones the data supported.
+
+| Experiment | Result | Impact on defaults |
+|---|---|---|
+| **2.06** temperature sweep | `temp=0.0` reached groundedness 1.0, cut retry rate 50%, saved 30% cost ($0.027 vs $0.039/persona) | Production default is `temperature=0.0` |
+| **1.07** field interdependence | Removing `goals` drops 3 quality dims by -1 each; removing `sample_quotes` drops voice fidelity by -2 | QA prioritizes these two fields; others are optional |
+| **5.11** reference-based judging | Variance -44% but mean -0.33 (anchoring bias), rank distortion | **Rejected** — did not ship |
+| **5.10** pairwise vs absolute judging | Inter-judge Spearman ≈ 0.0 (absolute) vs 0.06 (pairwise win-count); 43% position bias | **Deferred** — honest negative, don't rely on cross-judge absolute scores |
+| **6.02** coverage gap analysis | Current persona set represents 5.3% of population records (strong negative) | Drives next batch: outlier personas (exp-6.11), hierarchical archetypes (exp-6.23), clusterer sweep (exp-6.03) |
+| **1.11** negative-space probing | Surfaces claims a persona would *deny* — used to validate distinctiveness | Wired into judge rubric |
+
+The cost numbers above are real run costs at Haiku pricing. A full end-to-end
+pipeline run (crawl → segment → 2 personas synthesized → twin smoke chat) lands
+at cents, not dollars.
+
+---
+
+## Module layout
 
 ```
 personas-pipeline/
@@ -23,16 +107,12 @@ personas-pipeline/
 ```
 
 Each module is an independent Python package with its own `pyproject.toml`
-and `README.md`. You can `pip install -e .` one module at a time and work on
-it in isolation, or run the whole pipeline end-to-end with the top-level
-script.
+and `README.md`. `pip install -e .` one at a time to work on it in isolation,
+or run the whole pipeline end-to-end with the top-level script.
 
 ---
 
 ## Problem space → module map
-
-The pipeline is organized around six problem spaces. Each space has a body
-of experimental work that shaped the defaults in the corresponding module.
 
 | # | Problem space | Primary module | Primary files |
 |---|---|---|---|
@@ -41,37 +121,23 @@ of experimental work that shaped the defaults in the corresponding module.
 | 3 | Groundedness & evidence binding | `synthesis/` | `synthesis/engine/groundedness.py`, `synthesis/engine/prompt_builder.py` |
 | 4 | Twin runtime: consistency & drift | `twin/` | `twin/twin/chat.py` |
 | 5 | Evaluation & judge methodology | `evaluation/` | `evaluation/judges.py`, `evaluation/metrics.py`, `evaluation/golden_set.py` |
-| 6 | Population distinctiveness & coverage | `segmentation/` + `synthesis/` | `segmentation/engine/clusterer.py`, `synthesis/engine/synthesizer.py` (fan-out / contrast prompting) |
-
-Spaces 1, 2, 3 all live inside `synthesis/`. New knobs are added as keyword
-arguments with defaults that preserve current behavior, so prior results stay
-reproducible and further iteration stays cheap.
+| 6 | Population distinctiveness & coverage | `segmentation/` + `synthesis/` | `segmentation/engine/clusterer.py`, `synthesis/engine/synthesizer.py` |
 
 ---
 
 ## Quickstart
 
 ```bash
-# 1. Clone / cd into personas-pipeline
 cd personas-pipeline
-
-# 2. Install every module in editable mode so imports resolve without PYTHONPATH hacks
 pip install -e crawler -e segmentation -e synthesis -e twin -e orchestration -e evaluation
-pip install python-dotenv                    # used by the end-to-end script
-
-# 3. Drop in your Anthropic API key
-cp synthesis/.env.example synthesis/.env
-# then edit synthesis/.env and set ANTHROPIC_API_KEY=...
-
-# 4. Run the full pipeline (crawler → segment → synthesize → twin → persist)
+pip install python-dotenv
+cp synthesis/.env.example synthesis/.env   # set ANTHROPIC_API_KEY=...
 python scripts/run_full_pipeline.py
 ```
 
-Output personas land in `output/persona_*.json`. The script uses Haiku by
-default — the tiering choice came out of model-mix experiments in space 2, and
-keeps per-run cost in the cents. Swap the model in `synthesis/.env`
-(`default_model=claude-sonnet-4-6` etc.) to re-evaluate the tradeoff on your
-own inputs.
+Output personas land in `output/persona_*.json`. Haiku is the default model
+based on exp-2.06; swap `default_model=claude-sonnet-4-6` in `synthesis/.env`
+to re-evaluate the tradeoff on your own inputs.
 
 ---
 
@@ -93,37 +159,30 @@ twin.TwinChat(persona, client).reply(user_message)
 output/persona_XX.json
 ```
 
-Every arrow is a stable JSON contract. Any single stage can be swapped for an
-alternate implementation as long as the contract holds. Several of the
-experiments under `output/experiments/` do exactly this — replace one stage,
-hold the others fixed, measure. See each module's README for its I/O shape.
+Every arrow is a stable JSON contract — swap any single stage as long as the
+contract holds.
 
 ---
 
 ## The evaluation harness
 
-The defaults shipped here were validated against a shared harness:
+Shipped defaults were validated against a shared harness:
 
 1. **A hypothesis**, written before the run.
-2. **A control** — the same golden input with the default config.
+2. **A control** — same golden input, default config.
 3. **A metric** — one of the shared metrics in `evaluation/metrics.py`
    (schema validity, groundedness, distinctiveness, judge score, drift, cost).
-4. **A result + decision** — adopt / reject / defer, recorded alongside the
-   run under `output/experiments/<exp-id>/`.
+4. **A result + decision** — adopt / reject / defer, recorded under
+   `output/experiments/<exp-id>/`.
 
-The harness isn't scaffolding that's still being built — it's the thing that
-produced the current defaults, and it's the thing you re-run when you want to
-push them further. `evaluation/golden_set.py` + the mock tenant in
-`crawler/crawler/connectors/` give you the exact control input the existing
-findings were measured against.
+`evaluation/golden_set.py` + the mock tenant in `crawler/crawler/connectors/`
+give you the exact control input the existing findings were measured against.
 
 ---
 
 ## Where to find things
 
-- `output/experiments/` — the empirical record. Findings, raw outputs, and
-  per-experiment write-ups.
-- `docs/plans/` — batch-level research strategy and experiment results
-  summaries.
-- `PRD_SYNTHESIS.md`, `PRD_SEGMENTATION.md`, `PRD_TESTING.md` — product
-  context for the modules, including the hypotheses that shaped them.
+- `output/experiments/` — findings, raw outputs, per-experiment write-ups.
+- `docs/plans/` — batch research strategy and results summaries.
+- `PRD_SYNTHESIS.md`, `PRD_SEGMENTATION.md`, `PRD_TESTING.md` — product context
+  and hypotheses that shaped each module.
