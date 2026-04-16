@@ -67,12 +67,9 @@ def build_cluster_data(
             "top_behaviors": top_behaviors,
             "top_pages": top_pages,
             "conversion_rate": None,
-            "avg_session_duration_seconds": None,
+            "avg_session_duration_seconds": _compute_avg_session_duration(cluster_users),
             "top_referrers": [],
-            "extra": {
-                "n_records": len(cluster_records),
-                "source_breakdown": dict(source_counter),
-            },
+            "extra": _build_extra(cluster_users, cluster_records, source_counter),
         },
         "sample_records": [
             {
@@ -90,6 +87,77 @@ def build_cluster_data(
             "extra": {},
         },
     }
+
+
+def _compute_avg_session_duration(users: list[UserFeatures]) -> float | None:
+    """Compute average session duration from numeric features, or None."""
+    durations = [
+        u.numeric_features["session_duration"]
+        for u in users
+        if "session_duration" in u.numeric_features
+    ]
+    if not durations:
+        return None
+    return sum(durations) / len(durations)
+
+
+def _build_extra(
+    users: list[UserFeatures],
+    cluster_records: list[RawRecord],
+    source_counter: Counter,
+) -> dict:
+    """Build the extra dict with source breakdown and optional typed features."""
+    extra: dict = {
+        "n_records": len(cluster_records),
+        "source_breakdown": dict(source_counter),
+    }
+
+    # Add typed feature aggregates if any user has them
+    has_typed = any(
+        u.numeric_features or u.categorical_features or u.set_features
+        for u in users
+    )
+    if has_typed:
+        # Numeric averages
+        numeric_avgs: dict[str, float] = {}
+        numeric_keys: set[str] = set()
+        for u in users:
+            numeric_keys.update(u.numeric_features.keys())
+        for key in numeric_keys:
+            values = [u.numeric_features[key] for u in users if key in u.numeric_features]
+            if values:
+                numeric_avgs[key] = sum(values) / len(values)
+
+        # Categorical modes
+        categorical_modes: dict[str, str] = {}
+        cat_keys: set[str] = set()
+        for u in users:
+            cat_keys.update(u.categorical_features.keys())
+        for key in cat_keys:
+            values = [u.categorical_features[key] for u in users if key in u.categorical_features]
+            if values:
+                counts = Counter(values)
+                categorical_modes[key] = counts.most_common(1)[0][0]
+
+        # Set unions
+        set_unions: dict[str, list[str]] = {}
+        set_keys: set[str] = set()
+        for u in users:
+            set_keys.update(u.set_features.keys())
+        for key in set_keys:
+            union: set[str] = set()
+            for u in users:
+                if key in u.set_features:
+                    union |= u.set_features[key]
+            set_unions[key] = sorted(union)
+
+        extra["typed_features"] = {
+            "numeric_averages": numeric_avgs,
+            "categorical_modes": categorical_modes,
+            "set_unions": set_unions,
+        }
+
+    return extra
 
 
 def _pick_representative_sample(

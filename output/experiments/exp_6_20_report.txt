@@ -1,0 +1,42 @@
+
+====================================================================================================
+EXPERIMENT 6.20 — PERSONA DELETION ROBUSTNESS — RESULTS
+====================================================================================================
+
+  Original personas: 2
+  Deletion tests: 2
+
+-- DELETION RESULTS --
+  Deleted                  Replacement                Repl Sim    Absorb  Surv Sim    Dup?
+  ----------------------------------------------------------------------------------------
+  Alex Chen, DevOps-First  Alex, the Infrastructur       0.297     0.479     0.117      no
+  Maya, the Efficiency-Dr  Maya Chen, Freelance Br       0.319     0.497     0.079      no
+
+  Deleted: Alex Chen, DevOps-First Engineering Lead
+    Replacement: Alex, the Infrastructure-First Engineering Lead
+    Replacement similarity: 0.297 (Jaccard on 188 identity words)
+    Absorption rate: 0.479 (90/188 words absorbed)
+    Survivor similarity: 0.117 (distinct)
+    Surviving personas: Maya, the Efficiency-Driven Freelance Designer
+
+  Deleted: Maya, the Efficiency-Driven Freelance Designer
+    Replacement: Maya Chen, Freelance Brand Designer
+    Replacement similarity: 0.319 (Jaccard on 197 identity words)
+    Absorption rate: 0.497 (98/197 words absorbed)
+    Survivor similarity: 0.079 (distinct)
+    Surviving personas: Alex Chen, DevOps-First Engineering Lead
+
+-- SUMMARY --
+  Avg replacement similarity: 0.308
+  Avg absorption rate:        0.488
+  Avg survivor similarity:    0.098
+  Duplicates of survivors:    0/2
+
+-- SIGNAL ASSESSMENT --
+
+  Signal: MODERATE FINDING
+  Partial robustness. Replacements capture some deleted topics (49%) but with variation (similarity=0.308).
+
+  Synthesis cost: $0.1538
+
+====================================================================================================
