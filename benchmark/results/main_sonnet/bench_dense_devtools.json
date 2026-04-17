@@ -1,0 +1,1391 @@
+{
+  "tenant_id": "bench_dense_devtools",
+  "tenant_hash": "627e97b9e522",
+  "industry": "Developer Tools",
+  "product": "Observability and developer productivity platform",
+  "n_records": 350,
+  "n_clusters": 4,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_3bc4170837ad",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00004",
+        "bench_00000",
+        "bench_00031",
+        "bench_00033",
+        "bench_00081",
+        "bench_00029",
+        "bench_00035",
+        "bench_00015",
+        "bench_00006",
+        "bench_00010",
+        "bench_00024",
+        "bench_00025"
+      ],
+      "persona_name": "Pipeline-First Platform Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Pipeline-First Platform Engineer",
+        "summary": "A Staff or Senior Engineer at a mid-sized SaaS company (200\u2013500 employees) who treats the observability platform as a first-class infrastructure component \u2014 wiring it into CI/CD pipelines, Terraform configs, and GitHub workflows from day one. She lives in the terminal and the API docs, building automated, scalable integrations rather than clicking through UIs. Her primary frustration is platform rough edges (flaky GraphQL endpoints, bulk-export timeouts) that break the automation she's already built around the tool.",
+        "demographics": {
+          "age_range": "28-40",
+          "gender_distribution": "mixed, skews male in industry but no strong signal in data",
+          "location_signals": [
+            "SaaS company hubs \u2014 US West Coast, Europe",
+            "remote-first indicators from async session timestamps spanning multiple time zones"
+          ],
+          "education_level": "BS/MS in Computer Science or related engineering field",
+          "income_bracket": "$140,000\u2013$200,000 USD"
+        },
+        "firmographics": {
+          "company_size": "200-500 employees",
+          "industry": "SaaS",
+          "role_titles": [
+            "Staff Engineer",
+            "Senior Platform Engineer",
+            "DevOps Engineer",
+            "Infrastructure Engineer"
+          ],
+          "tech_stack_signals": [
+            "Terraform",
+            "GitHub Actions / CI pipelines",
+            "REST API",
+            "GraphQL",
+            "Webhooks",
+            "SDK (custom install)",
+            "Observability platform APIs"
+          ]
+        },
+        "goals": [
+          "Automate observability setup end-to-end via Terraform and CI/CD so no manual steps are required post-deploy",
+          "Build reliable, high-volume data pipelines using bulk export (500k+ rows without timeout)",
+          "Integrate platform alerts and events into existing GitHub and webhook workflows",
+          "Create custom dashboards that surface team-specific KPIs without manual refresh",
+          "Keep the platform wired into the developer workflow invisibly \u2014 zero friction for teammates"
+        ],
+        "pains": [
+          "Bulk export times out on large datasets (500k rows), breaking automated ETL pipelines",
+          "GraphQL API endpoint has rough edges that force fallback to REST and add engineering overhead",
+          "Long, complex setup sessions for Terraform and CI integrations suggest poor or incomplete documentation",
+          "SDK install friction \u2014 short sessions indicate repeated failed attempts or unclear quickstart guides",
+          "Webhook configuration requires repeated visits, suggesting unstable or under-documented config options",
+          "Platform limitations force manual workarounds that undermine the 'everything-as-code' standard she holds herself to"
+        ],
+        "motivations": [
+          "Eliminate toil: anything she configures manually today should be scripted and automated by tomorrow",
+          "Own the platform layer: be the person her team trusts to make the observability stack 'just work'",
+          "Hold vendors accountable: a solid REST API earns trust; a rough GraphQL endpoint earns a ticket and a mental note",
+          "Scalability as a professional standard: systems she builds should handle 10x growth without rearchitecting"
+        ],
+        "objections": [
+          "GraphQL endpoint instability makes it risky to build production automation on top of it",
+          "Bulk export scale limits mean the platform can't be the system of record for large data volumes",
+          "If Terraform provider or CI integration docs are incomplete, adoption will stall at the team level",
+          "Vendor lock-in risk if the SDK abstracts too much and prevents direct API access"
+        ],
+        "not_this": [
+          "Would not click through a UI wizard to configure something that has an API",
+          "Would not accept 'works on my machine' as a resolution to a timeout bug in bulk export",
+          "Would not recommend a tool to her team before she's personally stress-tested the integration layer",
+          "Would not use a dashboard someone else built without customizing it to her team's signal definitions",
+          "Would not file a vague support ticket \u2014 she arrives with reproduction steps, version numbers, and a curl command",
+          "Would not treat observability as a nice-to-have bolted on after shipping"
+        ],
+        "channels": [
+          "API documentation pages (/api/docs, /docs/sdk)",
+          "GitHub (issues, PRs, Actions marketplace)",
+          "Intercom support (technical, specific complaints)",
+          "Terraform Registry",
+          "Internal Slack / engineering channels",
+          "Dev-focused community forums (Hacker News, r/devops)",
+          "CI/CD platform dashboards (GitHub Actions, CircleCI)"
+        ],
+        "vocabulary": [
+          "infrastructure as code",
+          "end-to-end automation",
+          "bulk export",
+          "webhook payload",
+          "idempotent",
+          "pipeline",
+          "rate limit",
+          "GraphQL schema",
+          "SDK",
+          "Terraform provider",
+          "CI/CD",
+          "observability",
+          "rough edges",
+          "timeout",
+          "zero-touch deploy"
+        ],
+        "decision_triggers": [
+          "Confirms REST API is stable and well-documented before committing to deeper integration",
+          "Validates bulk export can handle production-scale data volumes without hitting timeouts",
+          "Checks for a maintained Terraform provider before recommending to the team",
+          "Sees GitHub and webhook integrations that match her existing toolchain without adapter hacks",
+          "Gets a direct, technically credible response from support when she raises a specific API complaint"
+        ],
+        "sample_quotes": [
+          "Your REST API is solid but the GraphQL endpoint has some rough edges \u2014 we need to fix that before we build our alerting pipeline on it.",
+          "We need the bulk export to handle 500k rows without timing out. That's not a feature request, that's table stakes for our data volume.",
+          "If it's not in Terraform, it doesn't exist. I'm not clicking through a UI to provision something that should be declarative.",
+          "I'll wire this into the CI pipeline and make it transparent for the rest of the team \u2014 they shouldn't have to think about it.",
+          "Give me the API docs and a working example. I'll figure it out from there."
+        ],
+        "journey_stages": [
+          {
+            "stage": "activation",
+            "mindset": "Skeptical but motivated \u2014 evaluating whether the platform's integration layer meets her engineering standards before committing the team",
+            "key_actions": [
+              "Reads API and SDK docs thoroughly",
+              "Runs sdk_install and api_setup to test integration quality",
+              "Checks Terraform provider and CI pipeline support"
+            ],
+            "content_preferences": [
+              "API reference docs",
+              "SDK quickstart guides",
+              "Terraform provider examples",
+              "GitHub Actions integration guides"
+            ]
+          },
+          {
+            "stage": "adoption",
+            "mindset": "Building confidence through hands-on wiring \u2014 creating the automation scaffolding the team will rely on",
+            "key_actions": [
+              "Configures webhooks and GitHub integration",
+              "Builds custom dashboards for team KPIs",
+              "Sets up CI pipeline integration"
+            ],
+            "content_preferences": [
+              "Advanced webhook configuration docs",
+              "Custom dashboard tutorials",
+              "CI/CD integration examples",
+              "Community-contributed Terraform modules"
+            ]
+          },
+          {
+            "stage": "expansion / friction",
+            "mindset": "Hitting scale walls \u2014 frustrated that platform limits are blocking automation she's already designed around",
+            "key_actions": [
+              "Attempts bulk export of 500k+ rows",
+              "Files specific, technical Intercom support tickets",
+              "Re-visits /settings/webhooks to debug instability"
+            ],
+            "content_preferences": [
+              "Changelog / release notes for GraphQL fixes",
+              "Bulk export rate limit documentation",
+              "Support escalation paths for engineering-level issues"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and technically precise \u2014 praises what works, names what doesn't, no hedging",
+          "formality": "casual-professional (peer-to-peer engineer register, not corporate)",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom (technical support tickets)",
+            "API/docs pages",
+            "GitHub issues"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and task-driven, with a low-simmering impatience for platform friction that breaks her automation",
+          "stress_triggers": [
+            "Bulk export timing out on large datasets mid-pipeline",
+            "GraphQL endpoint inconsistencies that force fallback engineering",
+            "Long Terraform/CI setup sessions with incomplete docs",
+            "Repeated webhook config visits suggesting undocumented edge cases",
+            "Platform limitations that expose her automation to her team as unreliable"
+          ],
+          "coping_mechanisms": [
+            "Files precise, reproduction-ready Intercom support tickets",
+            "Falls back to REST API when GraphQL is unstable",
+            "Extends session duration to brute-force through documentation gaps",
+            "Builds workarounds in code rather than waiting for vendor fixes",
+            "Re-visits config pages until behavior is fully understood and locked down"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "reliability",
+            "automation over manual process",
+            "technical accountability",
+            "scalability",
+            "transparency (systems should behave predictably and be observable)"
+          ],
+          "ethical_stance": "utilitarian \u2014 optimizes for the greatest reduction in toil and system fragility across her team, not just herself",
+          "moral_foundations": {
+            "care": 0.5,
+            "fairness": 0.7,
+            "liberty": 0.8,
+            "authority": 0.3
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Staff Engineer role at a 200-500 person SaaS company",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Automate observability setup via Terraform and CI/CD end-to-end",
+            "record_ids": [
+              "bench_00033",
+              "bench_00081"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Needs bulk export to handle 500k rows without timing out",
+            "record_ids": [
+              "bench_00025",
+              "bench_00031"
+            ],
+            "field_path": "goals.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Integrates platform alerts into GitHub and webhook workflows",
+            "record_ids": [
+              "bench_00029",
+              "bench_00006",
+              "bench_00004"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Builds custom dashboards for team-specific KPIs",
+            "record_ids": [
+              "bench_00000",
+              "bench_00024",
+              "bench_00025"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Keeps the platform wired into developer workflow invisibly",
+            "record_ids": [
+              "bench_00081",
+              "bench_00029"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Bulk export times out on 500k+ row datasets, breaking pipelines",
+            "record_ids": [
+              "bench_00025",
+              "bench_00031"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "GraphQL endpoint has rough edges forcing REST fallback",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Long Terraform and CI setup sessions suggest poor documentation",
+            "record_ids": [
+              "bench_00033",
+              "bench_00081"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Short SDK install session suggests install friction or failed attempts",
+            "record_ids": [
+              "bench_00035"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Repeated webhook configuration visits suggest instability or unclear docs",
+            "record_ids": [
+              "bench_00006",
+              "bench_00004",
+              "bench_00010"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Platform limitations force manual workarounds that undermine everything-as-code standards",
+            "record_ids": [
+              "bench_00033",
+              "bench_00025",
+              "bench_00004"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Motivated to eliminate toil through automation and scripting",
+            "record_ids": [
+              "bench_00033",
+              "bench_00081"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Wants to own the platform layer and make the stack 'just work' for her team",
+            "record_ids": [
+              "bench_00029",
+              "bench_00000",
+              "bench_00024"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Holds vendors accountable \u2014 praises REST, flags GraphQL as rough",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Scalability is a professional standard \u2014 systems must handle 10x growth",
+            "record_ids": [
+              "bench_00025",
+              "bench_00031"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "GraphQL instability makes it risky to build production automation on top of it",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Bulk export scale limits mean the platform can't be the system of record for large data volumes",
+            "record_ids": [
+              "bench_00025",
+              "bench_00031"
+            ],
+            "field_path": "objections.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Incomplete Terraform/CI docs will stall team-level adoption",
+            "record_ids": [
+              "bench_00033",
+              "bench_00081"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Communicates with direct, technically precise language \u2014 names specific endpoints and scale thresholds",
+            "record_ids": [
+              "bench_00004",
+              "bench_00025",
+              "bench_00015"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Communicates primarily via Intercom technical support and API/docs pages",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015",
+              "bench_00025"
+            ],
+            "field_path": "communication_style.preferred_channels",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Stress triggered by bulk export timeouts breaking automated pipelines",
+            "record_ids": [
+              "bench_00025",
+              "bench_00031"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Copes with GraphQL instability by falling back to REST and filing specific support tickets",
+            "record_ids": [
+              "bench_00004",
+              "bench_00035",
+              "bench_00015"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Extends session duration to work through documentation gaps (Terraform, CI, webhook sessions 1391\u20131868s)",
+            "record_ids": [
+              "bench_00033",
+              "bench_00081",
+              "bench_00029",
+              "bench_00006"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Values reliability and transparency \u2014 expects systems to behave predictably",
+            "record_ids": [
+              "bench_00004",
+              "bench_00025",
+              "bench_00035"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Values liberty/autonomy \u2014 prefers direct API access and code-defined configuration over UI wizards",
+            "record_ids": [
+              "bench_00033",
+              "bench_00015",
+              "bench_00081"
+            ],
+            "field_path": "moral_framework.moral_foundations",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 0.9473684210526315,
+      "attempts": 1,
+      "cost_usd": 0.071157,
+      "latency_s": 180.26500000013039,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_3882c4096c31",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00007",
+        "bench_00065",
+        "bench_00001",
+        "bench_00040",
+        "bench_00019",
+        "bench_00020",
+        "bench_00021",
+        "bench_00027",
+        "bench_00028",
+        "bench_00039",
+        "bench_00061",
+        "bench_00062"
+      ],
+      "persona_name": "Sienna, the Security-First Analyst",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Sienna, the Security-First Analyst",
+        "summary": "Sienna is a Security Analyst at a mid-sized fintech company (200\u2013500 employees) who lives in the security dashboards of her observability platform. She spends long, focused sessions triaging threats, reviewing vulnerability scans, investigating access anomalies, and tightening policy configurations \u2014 often across multiple cycles in a single day. Compliance and tenant isolation are non-negotiable for her, and she expects the platform to surface actionable intelligence without forcing her to dig.",
+        "demographics": {
+          "age_range": "28-40",
+          "gender_distribution": "not specified; role-skewed toward mixed",
+          "location_signals": [
+            "fintech hub \u2014 likely US or UK financial center"
+          ],
+          "education_level": "Bachelor's or Master's in Computer Science, Cybersecurity, or Information Systems",
+          "income_bracket": "$85,000\u2013$130,000"
+        },
+        "firmographics": {
+          "company_size": "200-500 employees",
+          "industry": "Fintech",
+          "role_titles": [
+            "Security Analyst",
+            "Security Engineer",
+            "SOC Analyst"
+          ],
+          "tech_stack_signals": [
+            "Observability platform",
+            "SIEM",
+            "Vulnerability scanners",
+            "Policy management tooling",
+            "Incident response workflows"
+          ]
+        },
+        "goals": [
+          "Rapidly triage and contain threats before they escalate into incidents",
+          "Maintain full visibility into vulnerability scan results and act on findings quickly",
+          "Enforce strict per-tenant data isolation to satisfy regulatory requirements",
+          "Configure and audit security policies that keep the environment compliant and hardened",
+          "Detect and investigate access anomalies before they become breaches"
+        ],
+        "pains": [
+          "Threat and anomaly data is scattered, requiring deep manual investigation instead of surfacing clear prioritized alerts",
+          "Policy configuration is fragmented and time-consuming, with changes hard to audit end-to-end",
+          "Per-tenant isolation guarantees are difficult to verify in practice \u2014 trust requires evidence, not assurances",
+          "Long session durations signal that finding actionable signal from raw scan or incident data takes too long",
+          "Incident response workflows lack the speed and automation needed to match the pace of real-world threats"
+        ],
+        "motivations": [
+          "Protecting regulated customer data and meeting compliance mandates \u2014 failure is not an option",
+          "Being the person in the org who catches threats before they become headlines",
+          "Efficiency: reducing the cognitive load of security operations so she can focus on high-signal events",
+          "Building airtight configurations that hold up under audit scrutiny"
+        ],
+        "objections": [
+          "Per-tenant data isolation must be provably enforced \u2014 marketing claims without technical proof are dismissed",
+          "Platforms that require too much manual correlation work are a liability, not an asset",
+          "Security tooling that can't integrate into existing incident response workflows won't get adopted",
+          "Vendor lock-in on policy configuration makes future audits and migrations painful"
+        ],
+        "not_this": [
+          "Would not skip a vulnerability scan review to hit a sprint deadline \u2014 security comes before velocity",
+          "Would never accept a vague vendor promise about compliance without demanding documentation or a technical walkthrough",
+          "Does not rely solely on automated alerts without reviewing the underlying data herself",
+          "Would not advocate for convenience features that trade security posture for ease of use",
+          "Doesn't tolerate noisy, low-fidelity alerts \u2014 she'd rather tune the system than live with alert fatigue",
+          "Would not use a platform that co-mingles tenant data, even if the performance trade-off were favorable"
+        ],
+        "channels": [
+          "Security platform dashboards (/security/threats, /security/incidents, /security/scans, /security/anomalies, /security/policies)",
+          "Intercom (in-app support messages)",
+          "HubSpot-tracked email and CRM touchpoints",
+          "Internal Slack channels (#security-ops, #incident-response)",
+          "Industry forums and security community channels (e.g., SANS, Reddit /r/netsec)"
+        ],
+        "vocabulary": [
+          "per-tenant isolation",
+          "regulated clients",
+          "threat triage",
+          "vuln scan",
+          "access anomaly",
+          "policy config",
+          "incident response",
+          "attack surface",
+          "hardening",
+          "audit trail",
+          "compliance posture",
+          "zero trust",
+          "blast radius",
+          "signal-to-noise",
+          "escalation"
+        ],
+        "decision_triggers": [
+          "Clear, verifiable evidence of per-tenant data isolation",
+          "Demonstrable reduction in time-to-triage for threats and anomalies",
+          "Seamless integration with existing incident response and SIEM workflows",
+          "Robust audit logging and policy version history for compliance reviews",
+          "Positive peer validation from other fintech or regulated-industry security teams"
+        ],
+        "sample_quotes": [
+          "Per-tenant isolation is non-negotiable for regulated clients \u2014 I need to see it enforced, not just promised.",
+          "If I have to manually correlate three dashboards to understand a single alert, that's three dashboards too many.",
+          "My job is to catch things before they become a breach. Every second of investigation time matters.",
+          "I don't trust a policy config I can't audit end-to-end.",
+          "Give me signal. I'll do the analysis \u2014 just don't bury the findings in noise."
+        ],
+        "journey_stages": [
+          {
+            "stage": "activation",
+            "mindset": "Evaluating whether the platform's security views surface actionable data faster than current tools",
+            "key_actions": [
+              "Navigates to /security/threats and /security/scans within first sessions",
+              "Reviews access anomaly and incident pages to benchmark data quality",
+              "Sends in-app message probing for per-tenant isolation guarantees"
+            ],
+            "content_preferences": [
+              "Technical documentation on data isolation architecture",
+              "Integration guides for SIEM and incident response tools",
+              "Compliance and regulatory alignment white papers"
+            ]
+          },
+          {
+            "stage": "retention",
+            "mindset": "Deep in daily operations \u2014 the platform is a core part of her security workflow, but she is always evaluating whether it keeps pace with her team's needs",
+            "key_actions": [
+              "Long daily sessions triaging threats and reviewing scans",
+              "Frequent policy configuration and updates",
+              "Escalates platform gaps via Intercom support when workflow friction appears"
+            ],
+            "content_preferences": [
+              "Release notes highlighting new security features",
+              "Webinars on threat intelligence and anomaly detection improvements",
+              "Benchmarks comparing detection latency and false positive rates"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct",
+          "formality": "professional",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom (in-app support)",
+            "Email (HubSpot-tracked)",
+            "Slack (internal)",
+            "Security platform UI"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "vigilant and focused",
+          "stress_triggers": [
+            "Ambiguous or low-fidelity threat alerts that require excessive manual investigation",
+            "Inability to verify data isolation guarantees for regulated tenants",
+            "Slow or fragmented incident response workflows that delay containment",
+            "Policy changes that lack clear audit trails"
+          ],
+          "coping_mechanisms": [
+            "Sends direct in-app support messages demanding specific answers",
+            "Runs extended deep-dive sessions to manually reconstruct the picture the platform should surface automatically",
+            "Escalates to vendor via HubSpot/email when critical compliance questions go unanswered",
+            "Documents gaps internally to build the case for tooling changes"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "Accountability",
+            "Compliance",
+            "Data integrity",
+            "Autonomy",
+            "Thoroughness"
+          ],
+          "ethical_stance": "deontological",
+          "moral_foundations": {
+            "care": 0.6,
+            "fairness": 0.7,
+            "authority": 0.8,
+            "liberty": 0.5,
+            "sanctity": 0.6
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Security Analyst at a 200\u2013500 employee fintech company",
+            "record_ids": [
+              "bench_00020",
+              "bench_00028",
+              "bench_00039"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Primary behaviors are threat_review, incident_response, vuln_scan_review, access_anomaly, and policy_config \u2014 all within the /security/* page cluster",
+            "record_ids": [
+              "bench_00007",
+              "bench_00065",
+              "bench_00001",
+              "bench_00040",
+              "bench_00019"
+            ],
+            "field_path": "channels.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Rapidly triage and contain threats before they escalate into incidents",
+            "record_ids": [
+              "bench_00007",
+              "bench_00065",
+              "bench_00021",
+              "bench_00028",
+              "bench_00039"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Maintain full visibility into vulnerability scan results and act on findings quickly",
+            "record_ids": [
+              "bench_00001",
+              "bench_00020",
+              "bench_00027"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Enforce strict per-tenant data isolation to satisfy regulatory requirements",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "goals.2",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Configure and audit security policies that keep the environment compliant and hardened",
+            "record_ids": [
+              "bench_00019",
+              "bench_00061"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Detect and investigate access anomalies before they become breaches",
+            "record_ids": [
+              "bench_00040",
+              "bench_00062"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Threat and anomaly data requires deep manual investigation instead of surfacing clear prioritized alerts \u2014 evidenced by long session durations on security pages",
+            "record_ids": [
+              "bench_00065",
+              "bench_00001",
+              "bench_00040",
+              "bench_00019"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Policy configuration is fragmented and time-consuming",
+            "record_ids": [
+              "bench_00019",
+              "bench_00061"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Per-tenant isolation guarantees are difficult to verify \u2014 evidenced by direct in-app statement 'Per-tenant isolation is non-negotiable for regulated clients'",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "pains.2",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Long session durations (up to 2440s) signal that extracting actionable signal from scan and incident data takes excessive time",
+            "record_ids": [
+              "bench_00001",
+              "bench_00065",
+              "bench_00019",
+              "bench_00039"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Incident response workflows lack speed and automation needed to match the pace of threats",
+            "record_ids": [
+              "bench_00065"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Motivated by protecting regulated customer data and meeting compliance mandates",
+            "record_ids": [
+              "bench_00061",
+              "bench_00020",
+              "bench_00028"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Motivated by being the person who catches threats early \u2014 high-frequency threat_review and incident_response behaviors",
+            "record_ids": [
+              "bench_00007",
+              "bench_00021",
+              "bench_00028",
+              "bench_00039"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivated by operational efficiency \u2014 reducing cognitive load of security operations",
+            "record_ids": [
+              "bench_00001",
+              "bench_00040",
+              "bench_00065"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated by building airtight configurations that hold up under audit scrutiny",
+            "record_ids": [
+              "bench_00019",
+              "bench_00061"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Per-tenant data isolation must be provably enforced \u2014 marketing claims without technical proof are dismissed",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Platforms requiring excessive manual correlation are a liability",
+            "record_ids": [
+              "bench_00001",
+              "bench_00065",
+              "bench_00040"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Security tooling that cannot integrate with existing incident response workflows won't be adopted",
+            "record_ids": [
+              "bench_00065"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Vendor lock-in on policy configuration is a risk",
+            "record_ids": [
+              "bench_00019",
+              "bench_00061"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Communication tone is direct and professional \u2014 'Per-tenant isolation is non-negotiable for regulated clients' uses unambiguous, authoritative language",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Baseline mood is vigilant and focused \u2014 consistent multi-hour sessions across security-critical pages with no casual browsing",
+            "record_ids": [
+              "bench_00007",
+              "bench_00065",
+              "bench_00001",
+              "bench_00040",
+              "bench_00019"
+            ],
+            "field_path": "emotional_profile.baseline_mood",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Stress trigger: inability to verify per-tenant data isolation for regulated clients",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "emotional_profile.stress_triggers.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Coping mechanism: sends direct in-app support messages demanding specific answers when critical issues arise",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Core value: compliance and accountability \u2014 'non-negotiable' language around regulated client isolation",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 1.0
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.067206,
+      "latency_s": 180.59399999980815,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_f8a92888edc0",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00003",
+        "bench_00017",
+        "bench_00011",
+        "bench_00034",
+        "bench_00052",
+        "bench_00005",
+        "bench_00013",
+        "bench_00014",
+        "bench_00018",
+        "bench_00023",
+        "bench_00030",
+        "bench_00036"
+      ],
+      "persona_name": "Pipeline-First Maya",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Pipeline-First Maya",
+        "summary": "Maya is a mid-career Data Engineer or Analytics Lead at a growth-stage SaaS or ecommerce company (50\u2013500 employees) who owns the full data stack \u2014 from ingestion pipelines and query authoring to dashboards and ML training runs. She spends long, focused sessions inside the platform obsessing over reliability and speed, and her biggest frustration is any gap between how automated and observable her pipelines feel versus how much manual babysitting they actually require. She wants her data infrastructure to be invisible to the rest of the org so she can focus on higher-leverage work.",
+        "demographics": {
+          "age_range": "28-40",
+          "gender_distribution": "mixed, slight male skew typical of data engineering roles",
+          "location_signals": [
+            "SaaS hubs (likely US/EU)",
+            "ecommerce sector signals"
+          ],
+          "education_level": "Bachelor's or Master's in Computer Science, Statistics, or related field",
+          "income_bracket": "$90,000\u2013$150,000"
+        },
+        "firmographics": {
+          "company_size": "50\u2013500 employees (SMB to mid-market)",
+          "industry": "SaaS, Ecommerce",
+          "role_titles": [
+            "Data Engineer",
+            "Analytics Lead",
+            "Data Platform Engineer"
+          ],
+          "tech_stack_signals": [
+            "Airflow",
+            "SQL query builders",
+            "BI dashboards",
+            "ML training platforms",
+            "data import/ETL tooling"
+          ]
+        },
+        "goals": [
+          "Automate scheduled pipeline execution so data runs without manual intervention",
+          "Build dashboards that load fast enough for stakeholders to actually use them",
+          "Maintain end-to-end visibility into pipeline health and failures in real time",
+          "Scale the data stack ahead of company growth without rebuilding from scratch",
+          "Ship ML training workflows that integrate cleanly with existing data infrastructure"
+        ],
+        "pains": [
+          "Lack of native Airflow integration forces manual scheduling workarounds for pipelines",
+          "Dashboard refresh latency is so slow that business users abandon the tool before results load",
+          "Pipeline monitoring requires long, active sessions \u2014 failures aren't surfaced proactively",
+          "No reliable observability layer means silent failures go undetected until downstream consumers notice",
+          "Lack of scheduling automation means pipelines require babysitting instead of running unattended",
+          "ML training workflows are isolated from the broader data pipeline, creating integration friction"
+        ],
+        "motivations": [
+          "Eliminate toil \u2014 every manual step in the data pipeline is a personal affront to good engineering",
+          "Be the person who makes the data stack invisible and reliable for the rest of the organization",
+          "Stay ahead of the data volume curve as the company scales",
+          "Earn trust from stakeholders by delivering data that is always fresh, accurate, and fast"
+        ],
+        "objections": [
+          "Won't adopt a tool that doesn't integrate with Airflow \u2014 it's already the scheduling backbone",
+          "Skeptical of dashboard performance claims until she's seen refresh times under real data volumes",
+          "Concerned about vendor lock-in if ML training is tightly coupled to a proprietary platform",
+          "Will push back on tools that lack pipeline observability \u2014 needs visibility into failures, not just success states"
+        ],
+        "not_this": [
+          "Would never accept 'just refresh manually' as a solution to a pipeline scheduling problem",
+          "Does not build dashboards for aesthetics \u2014 every chart must answer a concrete operational question",
+          "Won't greenlight a tool in a team demo before stress-testing it herself first",
+          "Does not tolerate vague error messages \u2014 needs stack traces, not 'something went wrong'",
+          "Would never describe herself as a 'data analyst' \u2014 she builds the systems analysts depend on",
+          "Does not trust a vendor roadmap over working integrations she can test today"
+        ],
+        "channels": [
+          "In-product (query builder, pipeline monitor, dashboard UI)",
+          "Intercom / in-app support chat",
+          "HubSpot email sequences",
+          "Airflow community forums",
+          "GitHub / open-source project discussions",
+          "Internal Slack (data team channels)",
+          "Technical documentation and changelog pages"
+        ],
+        "vocabulary": [
+          "pipeline",
+          "scheduled jobs",
+          "Airflow integration",
+          "DAG",
+          "refresh latency",
+          "observability",
+          "silent failure",
+          "ETL",
+          "data import",
+          "model training",
+          "monitoring",
+          "uptime",
+          "backfill",
+          "orchestration",
+          "data stack"
+        ],
+        "decision_triggers": [
+          "A direct Airflow integration is confirmed available or on near-term roadmap",
+          "Dashboard refresh benchmarks are demonstrated under realistic data volumes",
+          "Failure alerting and pipeline observability features are shown in a live demo",
+          "Peer recommendation from another Data Engineer at a comparable company",
+          "Free trial or sandbox environment lets her stress-test the platform herself"
+        ],
+        "sample_quotes": [
+          "Dashboard refresh is too slow \u2014 users give up waiting.",
+          "Need Airflow integration for scheduled pipelines \u2014 that's a hard requirement for us.",
+          "I can't spend my day babysitting jobs that should just run.",
+          "If I can't see why a pipeline failed, I can't trust that it succeeded.",
+          "My goal is for the data team to be invisible \u2014 everything just works."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Actively evaluating whether the platform can replace or integrate with her current stack. Focused on gaps \u2014 especially Airflow scheduling and dashboard performance.",
+            "key_actions": [
+              "Deep query builder sessions to validate SQL capability",
+              "Pipeline monitor sessions to assess observability features",
+              "Dataset import tests against real or representative data volumes"
+            ],
+            "content_preferences": [
+              "Integration documentation (Airflow, ETL connectors)",
+              "Performance benchmarks",
+              "Technical changelog / release notes",
+              "Peer case studies from SaaS or ecommerce data teams"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if a few hard blockers are resolved. Will champion internally if she's convinced, but needs technical proof points to bring to her manager.",
+            "key_actions": [
+              "Extended pipeline monitoring sessions to validate reliability",
+              "Dashboard creation to demo to stakeholders",
+              "ML training workflow evaluation for future use case fit"
+            ],
+            "content_preferences": [
+              "Live demo or sandbox trial",
+              "SLA and uptime documentation",
+              "Roadmap conversations with a solutions engineer",
+              "ROI framing around engineering hours saved"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct",
+          "formality": "casual-professional",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom in-app chat",
+            "email (HubSpot)",
+            "technical documentation"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and pragmatic, with undercurrent of impatience when tools fall short",
+          "stress_triggers": [
+            "Dashboard loads that time out or force users to abandon",
+            "Missing integrations (especially Airflow) that block automation goals",
+            "Long pipeline monitoring sessions with no proactive alerting \u2014 she has to find failures herself",
+            "Silent pipeline failures that surface only when downstream stakeholders complain"
+          ],
+          "coping_mechanisms": [
+            "Files detailed, technically precise support tickets via Intercom",
+            "Runs extended hands-on sessions to diagnose the problem herself",
+            "Seeks workarounds (manual scheduling, scripting) while waiting for native features",
+            "Escalates to vendor via HubSpot contact when in-app support is insufficient"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "reliability",
+            "automation",
+            "transparency",
+            "efficiency",
+            "craftsmanship"
+          ],
+          "ethical_stance": "utilitarian",
+          "moral_foundations": {
+            "care": 0.5,
+            "fairness": 0.6,
+            "liberty": 0.7,
+            "authority": 0.3
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Airflow integration is a hard requirement for scheduled pipeline automation",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "goals.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Dashboard speed is a pain point severe enough to cause user abandonment",
+            "record_ids": [
+              "bench_00017"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Long pipeline monitoring sessions indicate active investment in pipeline health visibility",
+            "record_ids": [
+              "bench_00018",
+              "bench_00030",
+              "bench_00036"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Active ML training behavior signals desire to scale data stack into model workflows",
+            "record_ids": [
+              "bench_00052"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Repeated Airflow integration requests indicate native scheduling is missing and painful",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Dashboard refresh is too slow \u2014 users give up waiting (verbatim)",
+            "record_ids": [
+              "bench_00017"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Long pipeline monitoring session durations (2117s, 1646s, 2295s) suggest reactive rather than proactive monitoring",
+            "record_ids": [
+              "bench_00018",
+              "bench_00030",
+              "bench_00011"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Absence of alerting features inferred from extended manual monitoring sessions",
+            "record_ids": [
+              "bench_00018",
+              "bench_00030",
+              "bench_00036"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Airflow integration requests combined with long pipeline monitoring sessions indicate pipelines require manual oversight rather than running autonomously",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034",
+              "bench_00018",
+              "bench_00030"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.9
+          },
+          {
+            "claim": "ML training activity alongside pipeline and import sessions signals integration friction between ML and data pipeline",
+            "record_ids": [
+              "bench_00052",
+              "bench_00034"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Frustration with manual pipeline steps (Airflow requests, long monitoring sessions) signals desire to eliminate toil",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034",
+              "bench_00018"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Long monitoring sessions and dashboard creation alongside Airflow requests indicate goal of making the data stack self-managing and reliable for org-wide use",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034",
+              "bench_00017",
+              "bench_00036"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Pipeline monitor and ML training behaviors in a scaling SMB/mid-market context signal forward-looking infrastructure thinking",
+            "record_ids": [
+              "bench_00052",
+              "bench_00018",
+              "bench_00030",
+              "bench_00036"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Dashboard creation and query builder sessions reflect desire to deliver trusted, fast data to stakeholders",
+            "record_ids": [
+              "bench_00017",
+              "bench_00023",
+              "bench_00003"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Airflow integration is explicitly named as a requirement \u2014 lack of it is a blocker",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Dashboard refresh slowness directly stated as a user-abandonment problem",
+            "record_ids": [
+              "bench_00017"
+            ],
+            "field_path": "objections.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "ML training activity combined with pipeline-centric behavior suggests concern about proprietary ML coupling limiting flexibility",
+            "record_ids": [
+              "bench_00052",
+              "bench_00034"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Long manual pipeline monitoring sessions with no evidence of automated alerting suggest she would demand observability as a prerequisite",
+            "record_ids": [
+              "bench_00011",
+              "bench_00018",
+              "bench_00030",
+              "bench_00036"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Direct, technically precise complaint language ('Dashboard refresh is too slow', 'Need Airflow integration') reflects advanced vocabulary and direct communication tone",
+            "record_ids": [
+              "bench_00017",
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Support messages are submitted via Intercom; contact records exist in HubSpot \u2014 these are her active communication channels",
+            "record_ids": [
+              "bench_00017",
+              "bench_00011",
+              "bench_00034",
+              "bench_00005",
+              "bench_00013"
+            ],
+            "field_path": "communication_style.preferred_channels",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Dashboard abandonment pain and Airflow frustration produce impatient, direct complaint messages",
+            "record_ids": [
+              "bench_00017",
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Extended session durations (2295s, 2421s, 2117s) on pipeline and import events indicate hands-on self-diagnosis as a coping behavior",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034",
+              "bench_00018"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Airflow integration and automation requests reflect a core value of efficiency and liberty from manual toil",
+            "record_ids": [
+              "bench_00011",
+              "bench_00034"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Data Engineer and Analytics Lead titles from HubSpot records confirm role and company size context",
+            "record_ids": [
+              "bench_00005",
+              "bench_00013",
+              "bench_00036"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          }
+        ]
+      },
+      "groundedness": 0.9473684210526315,
+      "attempts": 2,
+      "cost_usd": 0.129969,
+      "latency_s": 112.4539999999106,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_57f4d40cb21b",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00009",
+        "bench_00002",
+        "bench_00008",
+        "bench_00044",
+        "bench_00090",
+        "bench_00012",
+        "bench_00016",
+        "bench_00022",
+        "bench_00026",
+        "bench_00043",
+        "bench_00047",
+        "bench_00048"
+      ],
+      "persona_name": "",
+      "persona_json": {},
+      "groundedness": 0.0,
+      "attempts": 0,
+      "cost_usd": 0.0,
+      "latency_s": 1013.6399999998976,
+      "failed": true,
+      "error": "APIConnectionError: Connection error."
+    }
+  ],
+  "total_cost_usd": 0.268332,
+  "total_latency_s": 1126.1089999999385,
+  "mean_groundedness": 0.9649122807017543,
+  "success_rate": 0.75,
+  "error": ""
+}

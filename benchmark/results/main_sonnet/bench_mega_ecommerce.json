@@ -1,0 +1,1354 @@
+{
+  "tenant_id": "bench_mega_ecommerce",
+  "tenant_hash": "55159b480f37",
+  "industry": "E-commerce",
+  "product": "Merchant operations platform for multi-channel retail",
+  "n_records": 500,
+  "n_clusters": 5,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_a4cdb66f2c22",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00042",
+        "bench_00003",
+        "bench_00066",
+        "bench_00062",
+        "bench_00017",
+        "bench_00048",
+        "bench_00054",
+        "bench_00010",
+        "bench_00013",
+        "bench_00022",
+        "bench_00028",
+        "bench_00031"
+      ],
+      "persona_name": "Infrastructure-First Integration Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Infrastructure-First Integration Engineer",
+        "summary": "A senior technical practitioner \u2014 spanning Engineering Manager, Staff Engineer, DevOps, and Platform Engineer roles \u2014 who treats the merchant operations platform as a programmable infrastructure component, not a SaaS GUI. They live in code, manage everything through CI/CD pipelines and Terraform, and hold the platform to the same engineering standards they apply to their own systems. They are pragmatic advocates for clean APIs, IaC support, and automation-friendly integrations.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "global / remote-first",
+            "US tech hubs inferred from SaaS/fintech/enterprise software industry signals"
+          ],
+          "education_level": "Bachelor's or Master's in Computer Science or Engineering",
+          "income_bracket": "upper-middle to senior IC/manager compensation"
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "SaaS, Fintech, Enterprise Software",
+          "role_titles": [
+            "Engineering Manager",
+            "Staff Engineer",
+            "Senior DevOps Engineer",
+            "Platform Engineer"
+          ],
+          "tech_stack_signals": [
+            "Terraform",
+            "GitHub",
+            "CI/CD pipelines",
+            "REST API",
+            "GraphQL",
+            "Webhooks",
+            "SDK"
+          ]
+        },
+        "goals": [
+          "Manage all platform configuration as infrastructure-as-code (Terraform, GitOps) with zero manual UI steps",
+          "Integrate the merchant platform into existing CI/CD pipelines and GitHub workflows seamlessly",
+          "Automate bulk data exports and webhook-driven event processing for downstream systems",
+          "Build custom dashboards and observability tooling on top of a stable, well-documented API",
+          "Reduce operational toil by replacing manual platform interactions with programmatic automation"
+        ],
+        "pains": [
+          "No official Terraform provider forces workarounds and breaks infrastructure-as-code discipline",
+          "GraphQL endpoint has rough edges that create friction for teams standardizing on it over REST",
+          "Long sessions on docs pages suggest API documentation gaps and inconsistencies slow integration work",
+          "Webhook configuration requires time-consuming trial-and-error without robust testing or replay tooling",
+          "Bulk export workflows are opaque with limited control over format, filtering, or scheduling"
+        ],
+        "motivations": [
+          "Deep respect for engineering craft \u2014 wants every platform touchpoint to be automation-friendly and developer-first",
+          "Reducing organizational risk through reproducible, version-controlled infrastructure",
+          "Demonstrating platform maturity to stakeholders by embedding it into standardized engineering workflows",
+          "Personal pride in building elegant, low-maintenance integrations that don't require babysitting"
+        ],
+        "objections": [
+          "Won't adopt a feature that requires manual UI configuration with no API/IaC equivalent",
+          "Skeptical of new endpoints until they see thorough documentation and a stable versioning strategy",
+          "Hesitant to expand platform usage if GraphQL rough edges aren't addressed \u2014 may default to REST-only or seek alternatives",
+          "Concerned about vendor lock-in if IaC support is absent \u2014 makes migration harder"
+        ],
+        "not_this": [
+          "Would never configure a production system by clicking through a UI when a code-based option exists",
+          "Does not submit vague 'it's broken' support tickets \u2014 expects to diagnose with logs and structured error responses",
+          "Would not advocate for a platform internally without being able to show it fits the team's existing toolchain",
+          "Does not tolerate undocumented breaking changes \u2014 treats them as a trust violation",
+          "Would not use a no-code integration tool if a native SDK or API is available",
+          "Is not a buyer who responds to marketing copy \u2014 evaluates platforms by reading API reference docs first"
+        ],
+        "channels": [
+          "API reference documentation (/api/docs, /api/reference)",
+          "SDK documentation (/docs/sdk)",
+          "GitHub (integrations, issues, PRs)",
+          "Intercom (direct technical support messages)",
+          "Internal Slack channels and engineering wikis",
+          "Developer community forums and changelogs",
+          "CI/CD tooling dashboards (GitHub Actions, Jenkins, etc.)"
+        ],
+        "vocabulary": [
+          "infrastructure as code",
+          "IaC",
+          "Terraform provider",
+          "webhook",
+          "CI/CD",
+          "GitOps",
+          "SDK",
+          "REST API",
+          "GraphQL endpoint",
+          "bulk export",
+          "pipeline",
+          "programmatic",
+          "idempotent",
+          "as code",
+          "automation-friendly"
+        ],
+        "decision_triggers": [
+          "Availability of an official Terraform provider or IaC integration",
+          "Quality and completeness of API reference documentation",
+          "GitHub integration depth and CI/CD compatibility",
+          "Evidence of a stable API versioning and deprecation policy",
+          "Peer recommendations from engineers at comparable companies",
+          "Responsiveness of the platform team to technical feedback (e.g., GraphQL issues)"
+        ],
+        "sample_quotes": [
+          "Any plans for a Terraform provider? We manage everything as code.",
+          "Your REST API is solid but the GraphQL endpoint has some rough edges.",
+          "If I can't express this in a pipeline step, it's not going into our stack.",
+          "I shouldn't have to click anything in production \u2014 give me the API and get out of my way.",
+          "Show me the changelog and the deprecation policy before I commit to this integration."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the platform's API and integration surface meets engineering standards before proposing adoption",
+            "key_actions": [
+              "Reading API reference and SDK docs",
+              "Testing webhook configuration",
+              "Checking for Terraform or IaC support",
+              "Reviewing GitHub integration capabilities"
+            ],
+            "content_preferences": [
+              "API reference documentation",
+              "SDK quickstart guides",
+              "Integration changelogs",
+              "GitHub repo README and issue tracker"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Proving the platform fits into existing CI/CD and IaC workflows before committing to broader rollout",
+            "key_actions": [
+              "Setting up CI pipeline integration",
+              "Running bulk export tests",
+              "Building a custom dashboard prototype",
+              "Filing technical questions via Intercom"
+            ],
+            "content_preferences": [
+              "Webhook testing guides",
+              "Terraform provider docs (if available)",
+              "GraphQL schema documentation",
+              "Engineering blog posts on platform internals"
+            ]
+          },
+          {
+            "stage": "retention/expansion",
+            "mindset": "Automating and hardening the integration; advocating internally if the platform meets standards",
+            "key_actions": [
+              "Scaling bulk exports and webhook event processing",
+              "Contributing to or forking SDK",
+              "Monitoring API stability across versions",
+              "Internal knowledge sharing with team"
+            ],
+            "content_preferences": [
+              "API versioning and migration guides",
+              "Advanced SDK usage examples",
+              "Custom dashboard templating docs",
+              "Changelog and release notes"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and analytical",
+          "formality": "professional but terse \u2014 writes like a code comment, not a marketing email",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom (technical support escalations)",
+            "GitHub (issues and PRs)",
+            "API/SDK documentation pages"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "calm and focused with low tolerance for platform sloppiness",
+          "stress_triggers": [
+            "Missing or incomplete API documentation causing integration delays",
+            "GraphQL endpoint inconsistencies breaking expected contracts",
+            "Absence of Terraform/IaC support forcing manual workarounds",
+            "Undocumented changes that break existing pipelines",
+            "Long unresolved sessions on webhook or export config pages"
+          ],
+          "coping_mechanisms": [
+            "Files precise, technically detailed support messages via Intercom",
+            "Falls back to REST API when GraphQL is unreliable",
+            "Builds workaround scripts to compensate for missing platform features",
+            "Escalates internally to justify switching platforms if friction persists"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "engineering rigor",
+            "automation over manual process",
+            "reproducibility",
+            "transparency",
+            "developer autonomy"
+          ],
+          "ethical_stance": "utilitarian \u2014 optimizes for scalable, low-toil systems that benefit the whole engineering team",
+          "moral_foundations": {
+            "fairness": 0.75,
+            "liberty": 0.85,
+            "care": 0.4,
+            "authority": 0.3
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Wants Terraform provider to manage everything as infrastructure-as-code",
+            "record_ids": [
+              "bench_00062"
+            ],
+            "field_path": "goals.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Integrates platform into GitHub and CI/CD pipelines",
+            "record_ids": [
+              "bench_00054",
+              "bench_00010"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Automates bulk data exports and webhook-driven event processing",
+            "record_ids": [
+              "bench_00066",
+              "bench_00003",
+              "bench_00022",
+              "bench_00028",
+              "bench_00031"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Builds custom dashboards on top of platform APIs",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Seeks to replace manual platform interactions with programmatic automation",
+            "record_ids": [
+              "bench_00017",
+              "bench_00042"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "No Terraform provider forces infrastructure-as-code workarounds",
+            "record_ids": [
+              "bench_00062"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "GraphQL endpoint has rough edges causing friction",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Long doc sessions suggest API documentation gaps",
+            "record_ids": [
+              "bench_00003",
+              "bench_00017",
+              "bench_00066"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Webhook configuration requires time-consuming trial-and-error",
+            "record_ids": [
+              "bench_00013",
+              "bench_00028",
+              "bench_00022",
+              "bench_00031"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Bulk export workflows are opaque with limited control",
+            "record_ids": [
+              "bench_00066"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Values engineering craft and automation-friendly platform touchpoints",
+            "record_ids": [
+              "bench_00062",
+              "bench_00010",
+              "bench_00054"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Motivated by reproducible, version-controlled infrastructure",
+            "record_ids": [
+              "bench_00062",
+              "bench_00013"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Embeds platform into standardized engineering workflows to demonstrate maturity",
+            "record_ids": [
+              "bench_00010",
+              "bench_00054"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Builds low-maintenance integrations that don't require manual intervention",
+            "record_ids": [
+              "bench_00017",
+              "bench_00042"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Won't adopt features requiring manual UI configuration with no API equivalent",
+            "record_ids": [
+              "bench_00062"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Skeptical of new endpoints without thorough docs and stable versioning",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Hesitant to expand usage if GraphQL rough edges aren't addressed",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Concerned about vendor lock-in without IaC support",
+            "record_ids": [
+              "bench_00062"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Roles span Engineering Manager, Staff Engineer, DevOps, Platform Engineer at 50-500 employee companies in SaaS, Fintech, Enterprise Software",
+            "record_ids": [
+              "bench_00042",
+              "bench_00010",
+              "bench_00013",
+              "bench_00028"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Direct and terse communication style \u2014 files precise technical messages via Intercom",
+            "record_ids": [
+              "bench_00062",
+              "bench_00048"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Calm baseline with low tolerance for platform sloppiness; stress triggered by IaC gaps and API inconsistencies",
+            "record_ids": [
+              "bench_00062",
+              "bench_00048"
+            ],
+            "field_path": "emotional_profile.baseline_mood",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Files technically precise support messages as coping mechanism",
+            "record_ids": [
+              "bench_00062",
+              "bench_00048"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Values automation, reproducibility, and developer autonomy \u2014 optimizes for scalable low-toil systems",
+            "record_ids": [
+              "bench_00062",
+              "bench_00010",
+              "bench_00054"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.13272299999999998,
+      "latency_s": 292.905999999959,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_855455ed9c65",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00000",
+        "bench_00001",
+        "bench_00007",
+        "bench_00002",
+        "bench_00038",
+        "bench_00006",
+        "bench_00019",
+        "bench_00026",
+        "bench_00034",
+        "bench_00036",
+        "bench_00039",
+        "bench_00058"
+      ],
+      "persona_name": "Escalation-Driven Elena",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Escalation-Driven Elena",
+        "summary": "Elena is a Customer Success Manager at a mid-sized e-commerce company (200\u2013500 employees) who lives inside her helpdesk platform. She spends long sessions triaging tickets, firing off macros, and escalating issues that breach SLAs \u2014 all while keeping a close eye on CSAT scores. She's operationally sharp, data-aware, and perpetually frustrated that her self-service tools (especially knowledge base search) let customers down before they ever reach her team.",
+        "demographics": {
+          "age_range": "30-42",
+          "gender_distribution": "mixed, likely female-skewed for CS Manager roles",
+          "location_signals": [
+            "not specified \u2014 e-commerce industry signals broad US/global presence"
+          ],
+          "education_level": "Bachelor's degree or equivalent professional experience",
+          "income_bracket": "$65,000\u2013$95,000"
+        },
+        "firmographics": {
+          "company_size": "200-500 employees",
+          "industry": "E-commerce / Multi-channel Retail",
+          "role_titles": [
+            "CS Manager",
+            "Customer Success Manager",
+            "Head of Support Operations"
+          ],
+          "tech_stack_signals": [
+            "Helpdesk platform (tickets, macros, escalations)",
+            "CSAT analytics",
+            "Knowledge base / self-service portal",
+            "Multi-channel retail operations platform"
+          ]
+        },
+        "goals": [
+          "Reduce ticket escalation rates by improving first-contact resolution",
+          "Improve CSAT scores through faster, more consistent support workflows",
+          "Enable customers to self-serve effectively via a more powerful knowledge base search",
+          "Track and enforce SLAs by ticket priority to hit team performance targets",
+          "Scale team efficiency through macro automation and standardized responses"
+        ],
+        "pains": [
+          "Knowledge base search is too weak \u2014 customers can't find answers and escalate unnecessarily",
+          "No granular SLA tracking per ticket priority, making it hard to hold the team accountable",
+          "High volume of escalations consumes manager time that should go to strategy",
+          "Long session durations suggest clunky workflows \u2014 too many clicks to get things done",
+          "CSAT data is hard to act on without linking it to specific ticket outcomes or agent behavior"
+        ],
+        "motivations": [
+          "Keeping CSAT scores high to demonstrate team value to leadership",
+          "Building a scalable support operation that doesn't collapse under volume spikes",
+          "Proving that self-service and automation can reduce escalation load",
+          "Being recognized as a data-driven, operationally excellent CS leader"
+        ],
+        "objections": [
+          "'If the knowledge base search doesn't improve, self-service will never actually deflect tickets'",
+          "'We can't adopt a new tool if it doesn't give us SLA tracking at the priority level \u2014 that's table stakes'",
+          "'More macros help, but they're a band-aid if the root cause is bad content or routing'",
+          "'I need to see CSAT tied to specific agents and ticket types before I can trust the data'"
+        ],
+        "not_this": [
+          "Would not tolerate vague, feelings-based reporting \u2014 demands numbers and specifics",
+          "Would never ignore an escalation or let an SLA breach slide without documenting it",
+          "Does not spend time on trendy CS thought-leadership content if it doesn't have a practical takeaway",
+          "Would not accept a vendor demo that skips over search and SLA functionality",
+          "Would never manually copy-paste responses when a macro exists \u2014 efficiency is a reflex",
+          "Is not a frontline agent \u2014 doesn't spend time in ticket queues unless reviewing escalations"
+        ],
+        "channels": [
+          "Helpdesk platform (/helpdesk/tickets, /helpdesk/escalate, /helpdesk/macros)",
+          "Knowledge base portal (/knowledge-base)",
+          "CSAT analytics dashboard (/analytics/csat)",
+          "Intercom (in-app messaging with vendor support)",
+          "Email (HubSpot CRM-tracked outreach)",
+          "Slack (internal team coordination)"
+        ],
+        "vocabulary": [
+          "escalation",
+          "SLA",
+          "ticket priority",
+          "CSAT",
+          "first-contact resolution",
+          "macro",
+          "knowledge base",
+          "deflection rate",
+          "self-service",
+          "ticket volume",
+          "response time",
+          "ticket triage",
+          "accountability",
+          "workflow",
+          "agent performance"
+        ],
+        "decision_triggers": [
+          "A concrete demo of SLA tracking by ticket priority",
+          "Evidence that KB search improvements reduce escalation volume",
+          "CSAT analytics that link scores to specific agents or ticket types",
+          "Peer references from other mid-market e-commerce CS leaders",
+          "A clear ROI story tied to reduced escalation handling time"
+        ],
+        "sample_quotes": [
+          "'Knowledge base search is weak \u2014 customers can't find answers. That's why they're escalating to us instead of self-serving.'",
+          "'I need SLA tracking per ticket priority. Without that, I can't hold anyone accountable.'",
+          "'Every macro I can standardize is one less escalation waiting to happen.'",
+          "'My CSAT score is only as good as the data behind it \u2014 I need to know which tickets are dragging it down.'",
+          "'If the tool can't show me where my team is breaching SLAs in real time, it's not built for operations at our scale.'"
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Actively evaluating whether the current platform can be configured to meet operational needs, or whether a switch/upgrade is warranted. Frustrated by gaps in KB search and SLA tooling.",
+            "key_actions": [
+              "Viewing knowledge base articles to assess self-service quality",
+              "Running CSAT reviews to benchmark team performance",
+              "Using macros to stress-test workflow efficiency",
+              "Escalating tickets to surface platform limitations"
+            ],
+            "content_preferences": [
+              "Product comparison pages",
+              "Feature-specific demo videos (SLA tracking, KB search)",
+              "Case studies from similar-sized e-commerce teams",
+              "ROI calculators for support automation"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to advocate internally for a platform change or new feature investment if the vendor can demonstrate SLA tracking and KB search improvements meet her team's requirements.",
+            "key_actions": [
+              "Deep-dive sessions on /helpdesk/escalate and /analytics/csat",
+              "Engaging vendor via Intercom with specific feature requests",
+              "Reviewing CSAT data to build an internal business case"
+            ],
+            "content_preferences": [
+              "SLA and CSAT feature documentation",
+              "Onboarding and implementation timelines",
+              "Vendor support SLA commitments",
+              "Reference calls with peer CS Managers"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and results-oriented",
+          "formality": "professional",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom (in-app)",
+            "Email (HubSpot)",
+            "Helpdesk platform"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused but chronically stretched \u2014 calm under normal load, visibly frustrated when systems fail her team",
+          "stress_triggers": [
+            "Knowledge base search failures that push customers to live support unnecessarily",
+            "Inability to track SLA compliance at the ticket priority level",
+            "High escalation volumes that consume manager bandwidth",
+            "Long, clunky helpdesk workflows that waste session time"
+          ],
+          "coping_mechanisms": [
+            "Deploys macros to standardize and speed up responses",
+            "Escalates tickets formally via /helpdesk/escalate to create an audit trail",
+            "Reviews CSAT data to identify and quantify pain points",
+            "Files feature requests via Intercom with specific, actionable language"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "Accountability",
+            "Operational efficiency",
+            "Customer-centricity",
+            "Data transparency",
+            "Scalability"
+          ],
+          "ethical_stance": "utilitarian",
+          "moral_foundations": {
+            "care": 0.8,
+            "fairness": 0.9,
+            "authority": 0.6,
+            "liberty": 0.4
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "CS Manager at a 200\u2013500 employee e-commerce company",
+            "record_ids": [
+              "bench_00001"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Knowledge base search is weak \u2014 customers can't find answers",
+            "record_ids": [
+              "bench_00007",
+              "bench_00036"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Requests SLA tracking per ticket priority",
+            "record_ids": [
+              "bench_00034"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Frequent escalation behavior signals high escalation rate pain",
+            "record_ids": [
+              "bench_00000",
+              "bench_00006"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Long session durations on ticket and escalation pages suggest clunky workflows",
+            "record_ids": [
+              "bench_00038",
+              "bench_00039",
+              "bench_00058"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "CSAT review activity signals difficulty acting on CSAT data",
+            "record_ids": [
+              "bench_00001",
+              "bench_00034",
+              "bench_00036"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Goal: reduce escalation rates through better first-contact resolution",
+            "record_ids": [
+              "bench_00000",
+              "bench_00006",
+              "bench_00007"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Goal: improve CSAT scores via faster, more consistent support workflows",
+            "record_ids": [
+              "bench_00001",
+              "bench_00034",
+              "bench_00036"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Goal: enable customer self-service via stronger knowledge base search",
+            "record_ids": [
+              "bench_00007",
+              "bench_00036",
+              "bench_00002",
+              "bench_00019",
+              "bench_00026"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Goal: SLA tracking per ticket priority",
+            "record_ids": [
+              "bench_00034"
+            ],
+            "field_path": "goals.3",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Goal: scale team efficiency through macro automation",
+            "record_ids": [
+              "bench_00007",
+              "bench_00058"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivated by keeping CSAT scores high to demonstrate team value",
+            "record_ids": [
+              "bench_00001",
+              "bench_00034",
+              "bench_00036"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated by building a scalable, operationally efficient support org",
+            "record_ids": [
+              "bench_00058",
+              "bench_00007",
+              "bench_00034"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated by proving self-service/automation can reduce escalation load",
+            "record_ids": [
+              "bench_00007",
+              "bench_00036",
+              "bench_00000"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Objection: KB search must improve for self-service to be credible",
+            "record_ids": [
+              "bench_00007",
+              "bench_00036"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Objection: SLA tracking per priority is a non-negotiable requirement",
+            "record_ids": [
+              "bench_00034"
+            ],
+            "field_path": "objections.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Objection: macros are a band-aid without addressing root content/routing issues",
+            "record_ids": [
+              "bench_00007",
+              "bench_00058"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Objection: CSAT data must be tied to specific agents/ticket types to be trustworthy",
+            "record_ids": [
+              "bench_00001",
+              "bench_00034",
+              "bench_00036"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Direct, results-oriented communication tone \u2014 files specific feature requests in own words",
+            "record_ids": [
+              "bench_00007",
+              "bench_00034",
+              "bench_00036"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Preferred communication channel is Intercom (in-app messaging) for vendor feedback",
+            "record_ids": [
+              "bench_00007",
+              "bench_00034",
+              "bench_00036"
+            ],
+            "field_path": "communication_style.preferred_channels",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stress trigger: KB search failures push customers to live support unnecessarily",
+            "record_ids": [
+              "bench_00007",
+              "bench_00036"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Coping mechanism: deploys macros to standardize and speed up responses under load",
+            "record_ids": [
+              "bench_00007",
+              "bench_00058"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Core value: fairness/accountability \u2014 demands SLA tracking so team is held to measurable standards",
+            "record_ids": [
+              "bench_00034"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Core value: care for customers \u2014 frustrated when self-service fails customers",
+            "record_ids": [
+              "bench_00007",
+              "bench_00036"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "groundedness": 0.9444444444444444,
+      "attempts": 1,
+      "cost_usd": 0.065052,
+      "latency_s": 365.38999999989755,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_d1142974cba2",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00008",
+        "bench_00108",
+        "bench_00041",
+        "bench_00004",
+        "bench_00005",
+        "bench_00011",
+        "bench_00018",
+        "bench_00021",
+        "bench_00050",
+        "bench_00052",
+        "bench_00067",
+        "bench_00074"
+      ],
+      "persona_name": "",
+      "persona_json": {},
+      "groundedness": 0.0,
+      "attempts": 0,
+      "cost_usd": 0.0,
+      "latency_s": 761.938000000082,
+      "failed": true,
+      "error": "APIConnectionError: Connection error."
+    },
+    {
+      "cluster_id": "clust_322fe8b9ca15",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00016",
+        "bench_00024",
+        "bench_00063",
+        "bench_00023",
+        "bench_00009",
+        "bench_00020",
+        "bench_00025",
+        "bench_00027",
+        "bench_00029",
+        "bench_00032",
+        "bench_00040",
+        "bench_00046"
+      ],
+      "persona_name": "",
+      "persona_json": {},
+      "groundedness": 0.0,
+      "attempts": 0,
+      "cost_usd": 0.0,
+      "latency_s": 957.9529999999795,
+      "failed": true,
+      "error": "APIConnectionError: Connection error."
+    },
+    {
+      "cluster_id": "clust_3c42ecceb013",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00044",
+        "bench_00033",
+        "bench_00012",
+        "bench_00014",
+        "bench_00015",
+        "bench_00030",
+        "bench_00035",
+        "bench_00049",
+        "bench_00051",
+        "bench_00060",
+        "bench_00061",
+        "bench_00068"
+      ],
+      "persona_name": "Logan the Logistics Lead",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Logan the Logistics Lead",
+        "summary": "Logan is a hands-on Logistics Lead at a mid-sized e-commerce company (50\u2013200 employees) who lives in the merchant operations platform every day \u2014 checking inventory levels, tracking fulfillment queues, and wrangling a returns workflow that has too many manual steps. They are operationally focused, process-driven, and chronically short on bandwidth, making efficiency gains their north star. Logan evaluates new capabilities by whether they'll actually reduce friction in the day-to-day, not by feature lists or executive pitches.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "mixed, no strong signal",
+          "location_signals": [
+            "e-commerce hub regions inferred from multi-channel retail context"
+          ],
+          "education_level": "Bachelor's degree or equivalent operational experience",
+          "income_bracket": "mid-level operations professional"
+        },
+        "firmographics": {
+          "company_size": "50-200 employees",
+          "industry": "E-commerce / Multi-channel Retail",
+          "role_titles": [
+            "Logistics Lead",
+            "Operations Manager",
+            "Fulfillment Coordinator"
+          ],
+          "tech_stack_signals": [
+            "merchant operations platform",
+            "multi-channel retail tooling",
+            "returns workflow software",
+            "fulfillment tracking systems"
+          ]
+        },
+        "goals": [
+          "Reduce manual steps in the returns workflow to free up team capacity",
+          "Maintain real-time visibility into inventory levels across all channels",
+          "Accelerate fulfillment queue throughput to meet order SLAs",
+          "Create a reliable, repeatable order management process that scales without adding headcount"
+        ],
+        "pains": [
+          "Returns workflow is riddled with manual, time-consuming steps that slow down the team",
+          "Inventory checks require frequent, long platform sessions suggesting data isn't surfaced proactively",
+          "Fulfillment tracking demands constant attention \u2014 sessions are long and recurring, signaling lack of automation or alerts",
+          "Team is already stretched thin, leaving little room to absorb new tooling or process changes",
+          "Multi-channel complexity makes it difficult to get a single, accurate view of order and stock status"
+        ],
+        "motivations": [
+          "Protect the team from burnout by eliminating unnecessary manual work",
+          "Be the person who makes operations run smoothly and predictably",
+          "Demonstrate measurable operational improvements to leadership",
+          "Keep customers happy through faster returns resolution and accurate fulfillment"
+        ],
+        "objections": [
+          "'We don't have time to onboard a new workflow right now \u2014 our team is already stretched thin'",
+          "'How do I know this won't break our existing fulfillment process mid-peak season?'",
+          "'Your dashboard looks good in a demo, but our data is messier than that'",
+          "'I need to see this working in our environment before I can commit to rolling it out to the team'"
+        ],
+        "not_this": [
+          "Would not champion a tool based on a polished sales deck alone \u2014 needs to see real operational proof",
+          "Would not let a vendor skip straight to the executive team without ops buy-in first",
+          "Would not adopt a solution that adds steps or fields to an already overburdened team",
+          "Would not describe their work in abstract business strategy language \u2014 they talk in queues, SKUs, and SLAs",
+          "Would not ignore a recurring process bottleneck hoping it resolves itself"
+        ],
+        "channels": [
+          "In-app support chat (Intercom)",
+          "HubSpot CRM touchpoints (vendor outreach)",
+          "Internal Slack / team messaging",
+          "Email for vendor and cross-team communication",
+          "Platform dashboards (/inventory, /orders/dashboard, /returns/workflow, /fulfillment/queue)"
+        ],
+        "vocabulary": [
+          "manual steps",
+          "returns workflow",
+          "fulfillment queue",
+          "inventory check",
+          "order visibility",
+          "SLA",
+          "throughput",
+          "SKU",
+          "multi-channel",
+          "operational load",
+          "stretched thin",
+          "real-time",
+          "bottleneck",
+          "process",
+          "bandwidth"
+        ],
+        "decision_triggers": [
+          "Proof that the solution reduces manual steps in returns or fulfillment",
+          "A working pilot or sandbox in their own environment",
+          "Evidence that onboarding won't disrupt current operations",
+          "Clear ROI framed in time saved or errors reduced \u2014 not revenue projections",
+          "Peer validation from similar-sized e-commerce ops teams"
+        ],
+        "sample_quotes": [
+          "'The returns workflow has too many manual steps \u2014 my team is spending hours on something that should be automated.'",
+          "'I'm in the inventory dashboard every single morning. If something's off, I need to catch it before it becomes an order problem.'",
+          "'Don't show me a roadmap. Show me it working in our setup, with our SKUs.'",
+          "'We're already stretched thin. If this takes three weeks to onboard, it's not worth the disruption.'",
+          "'Fulfillment tracking shouldn't be a full-time job \u2014 but right now it kind of is.'"
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Recognizing that manual processes are becoming a ceiling on team capacity",
+            "key_actions": [
+              "Searching for alternatives to current returns and fulfillment workflows",
+              "Reading peer reviews and ops community forums"
+            ],
+            "content_preferences": [
+              "Case studies from similar-sized e-commerce operators",
+              "Before/after process comparison content"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Actively evaluating whether the platform can solve their specific operational pain points",
+            "key_actions": [
+              "Deep-diving into /returns/workflow and /fulfillment/queue features",
+              "Filing support tickets to test responsiveness",
+              "Asking for a sandbox or pilot environment"
+            ],
+            "content_preferences": [
+              "Product walkthroughs focused on returns and fulfillment automation",
+              "ROI calculators framed around time saved per week"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Needs internal confidence that rollout won't break current operations before committing",
+            "key_actions": [
+              "Requesting a proof-of-concept in their environment",
+              "Presenting findings to their manager or ops director",
+              "Negotiating onboarding timeline to fit team bandwidth"
+            ],
+            "content_preferences": [
+              "Implementation guides with realistic timelines",
+              "Customer success stories with measurable ops outcomes"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct",
+          "formality": "casual-to-professional",
+          "vocabulary_level": "intermediate",
+          "preferred_channels": [
+            "Intercom in-app chat",
+            "HubSpot email sequences",
+            "platform UI (self-serve)"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused but quietly frustrated",
+          "stress_triggers": [
+            "High-volume return periods with manual processing still in place",
+            "Inventory discrepancies discovered mid-session rather than via proactive alerts",
+            "Platform changes or new features that add steps to an already burdened workflow",
+            "Being asked to evaluate new tools without dedicated time to do so"
+          ],
+          "coping_mechanisms": [
+            "Files direct support messages through Intercom to escalate pain points",
+            "Runs repeated platform sessions to manually verify data accuracy",
+            "Advocates internally for process changes when frustration peaks",
+            "Pushes back on vendor pitches by demanding a working pilot"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "efficiency",
+            "reliability",
+            "fairness to team",
+            "pragmatism",
+            "accountability"
+          ],
+          "ethical_stance": "utilitarian",
+          "moral_foundations": {
+            "care": 0.8,
+            "fairness": 0.75,
+            "liberty": 0.6,
+            "authority": 0.4
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Returns workflow has too many manual steps",
+            "record_ids": [
+              "bench_00030"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Frequent, long inventory check sessions suggest data is not surfaced proactively",
+            "record_ids": [
+              "bench_00044",
+              "bench_00049",
+              "bench_00061",
+              "bench_00068"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Fulfillment tracking demands constant attention \u2014 sessions are long and recurring",
+            "record_ids": [
+              "bench_00014",
+              "bench_00030",
+              "bench_00051"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Team is already stretched thin, leaving little room to absorb new tooling",
+            "record_ids": [
+              "bench_00030",
+              "bench_00061"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Multi-channel complexity makes it difficult to get a single, accurate view of order and stock status",
+            "record_ids": [
+              "bench_00033",
+              "bench_00060",
+              "bench_00044"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Wants to reduce manual steps in the returns workflow",
+            "record_ids": [
+              "bench_00030",
+              "bench_00012",
+              "bench_00015",
+              "bench_00035"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Maintain real-time inventory visibility across all channels",
+            "record_ids": [
+              "bench_00044",
+              "bench_00049",
+              "bench_00061",
+              "bench_00068"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Accelerate fulfillment queue throughput to meet order SLAs",
+            "record_ids": [
+              "bench_00014",
+              "bench_00051",
+              "bench_00030"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Create a scalable order management process without adding headcount",
+            "record_ids": [
+              "bench_00033",
+              "bench_00060",
+              "bench_00061"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Motivated to protect the team from burnout by eliminating unnecessary manual work",
+            "record_ids": [
+              "bench_00030"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivated to make operations run smoothly and predictably",
+            "record_ids": [
+              "bench_00014",
+              "bench_00051",
+              "bench_00044"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated to demonstrate measurable operational improvements to leadership",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Motivated to keep customers happy through faster returns and accurate fulfillment",
+            "record_ids": [
+              "bench_00012",
+              "bench_00015",
+              "bench_00035",
+              "bench_00030"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Objection: team is stretched thin and cannot absorb new workflow onboarding",
+            "record_ids": [
+              "bench_00030",
+              "bench_00061"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Objection: risk of disrupting existing fulfillment process",
+            "record_ids": [
+              "bench_00014",
+              "bench_00051"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Objection: demo conditions don't reflect the messiness of real operational data",
+            "record_ids": [
+              "bench_00033",
+              "bench_00060"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.65
+          },
+          {
+            "claim": "Objection: needs to see the solution working in their own environment before committing",
+            "record_ids": [
+              "bench_00012",
+              "bench_00015",
+              "bench_00035",
+              "bench_00030"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Uses Intercom to file direct support messages about operational pain points",
+            "record_ids": [
+              "bench_00030"
+            ],
+            "field_path": "communication_style.preferred_channels",
+            "confidence": 1.0
+          },
+          {
+            "claim": "HubSpot contact record confirms Logistics Lead role at 50-200 employee e-commerce company",
+            "record_ids": [
+              "bench_00061"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Direct, frustration-tinged tone in support message: 'Returns workflow has too many manual steps'",
+            "record_ids": [
+              "bench_00030"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stress trigger: high-volume return periods with manual processing still in place",
+            "record_ids": [
+              "bench_00012",
+              "bench_00015",
+              "bench_00035",
+              "bench_00030"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Coping mechanism: files direct support messages to escalate pain points",
+            "record_ids": [
+              "bench_00030"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Core value of efficiency and fairness to team evidenced by complaint about manual steps burdening the team",
+            "record_ids": [
+              "bench_00030"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.129096,
+      "latency_s": 480.73500000010245,
+      "failed": false,
+      "error": ""
+    }
+  ],
+  "total_cost_usd": 0.32687099999999997,
+  "total_latency_s": 1250.8589999999385,
+  "mean_groundedness": 0.9814814814814815,
+  "success_rate": 0.6,
+  "error": ""
+}

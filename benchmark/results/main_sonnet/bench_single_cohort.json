@@ -1,0 +1,510 @@
+{
+  "tenant_id": "bench_single_cohort",
+  "tenant_hash": "3c3629244fde",
+  "industry": "Developer Tools",
+  "product": "API platform",
+  "n_records": 200,
+  "n_clusters": 1,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_089bf07015b7",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00005",
+        "bench_00002",
+        "bench_00000",
+        "bench_00006",
+        "bench_00011",
+        "bench_00029",
+        "bench_00001",
+        "bench_00010",
+        "bench_00003",
+        "bench_00004",
+        "bench_00007",
+        "bench_00008"
+      ],
+      "persona_name": "Pipeline Pat \u2014 The Infrastructure-First Staff Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Pipeline Pat \u2014 The Infrastructure-First Staff Engineer",
+        "summary": "Pipeline Pat is a senior-to-staff-level engineer at a mid-market SaaS or fintech company (50\u2013500 employees) who treats the API platform as critical infrastructure, not a convenience. They live in CI/CD pipelines, GitHub workflows, and Terraform configs, and they expect the platform to behave like production-grade software: reliable, scalable, and automatable. They are pragmatic advocates for their team \u2014 if something breaks at scale or has rough edges, they will say so directly and expect a fix.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "predominantly male (inferred from industry base rates)",
+          "location_signals": [
+            "SaaS hubs",
+            "fintech centers",
+            "remote-first distributed teams"
+          ],
+          "education_level": "BS/MS Computer Science or related engineering field",
+          "income_bracket": "$140,000\u2013$210,000 USD"
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "SaaS / Fintech",
+          "role_titles": [
+            "Staff Engineer",
+            "Senior DevOps Engineer",
+            "Platform Engineer",
+            "Senior Software Engineer"
+          ],
+          "tech_stack_signals": [
+            "GitHub",
+            "Terraform",
+            "CI/CD pipelines",
+            "REST API",
+            "GraphQL",
+            "webhooks",
+            "SDK",
+            "bulk export / ETL"
+          ]
+        },
+        "goals": [
+          "Automate API platform setup end-to-end using Terraform and CI/CD so zero manual steps remain in provisioning",
+          "Run large-scale bulk data exports (500k+ rows) reliably without timeouts or pipeline failures",
+          "Integrate the API platform deeply into existing GitHub workflows and developer toolchains",
+          "Build custom dashboards that give the team real-time visibility into API usage and health",
+          "Harden GraphQL endpoints to production quality \u2014 matching the reliability of the REST API"
+        ],
+        "pains": [
+          "Bulk export times out or degrades at high row counts (500k+), blocking data pipeline workflows",
+          "GraphQL endpoint has rough edges \u2014 inconsistent behavior, undocumented quirks, or error handling gaps compared to REST",
+          "Manual steps in API setup slow down onboarding and create drift between environments",
+          "Webhook configuration requires too much trial-and-error without sufficient debug tooling or event replay",
+          "SDK installation and versioning lacks clear documentation for complex monorepo or CI environments"
+        ],
+        "motivations": [
+          "Reduce operational toil so the team ships faster without babysitting infrastructure",
+          "Own a platform setup that any new engineer can reproduce from code \u2014 no tribal knowledge required",
+          "Be the person on the team who solved the hard integration problem, not just followed a tutorial",
+          "Protect system reliability and SLAs at scale \u2014 especially in fintech where data accuracy and uptime matter"
+        ],
+        "objections": [
+          "Won't adopt a feature that isn't stable enough for production \u2014 beta quality is a blocker, not a selling point",
+          "Skeptical of dashboard or UI-first workflows that can't be scripted or automated via API/CLI",
+          "Distrusts vendor lock-in \u2014 wants portable, standard protocols (REST, GraphQL, webhooks) not proprietary abstractions",
+          "Will not accept rate limits or export caps that don't match stated enterprise SLAs"
+        ],
+        "not_this": [
+          "Would not click through a no-code wizard to configure something that should be Terraform-managed",
+          "Would not file a vague support ticket \u2014 their messages are specific, technical, and include expected vs. actual behavior",
+          "Would not champion a tool internally without first stress-testing it at scale themselves",
+          "Would not stay silent about a product defect \u2014 expects direct two-way dialogue with the vendor engineering team",
+          "Would not prioritize aesthetics or marketing copy over API documentation quality and completeness",
+          "Would not use a vendor whose REST and GraphQL surfaces are inconsistently maintained \u2014 signals poor engineering culture"
+        ],
+        "channels": [
+          "GitHub (PRs, issues, Actions workflows)",
+          "Intercom / in-product support chat",
+          "Internal Slack (DevOps/Platform channels)",
+          "API reference docs and SDK docs (/api/docs, /api/reference, /docs/sdk)",
+          "HubSpot-tracked outbound (email from CSM or AE)",
+          "Terraform Registry / provider docs",
+          "CI/CD platform dashboards (GitHub Actions, CircleCI, etc.)",
+          "Custom internal dashboards"
+        ],
+        "vocabulary": [
+          "idempotent",
+          "terraform apply",
+          "pipeline",
+          "bulk export",
+          "webhook",
+          "endpoint",
+          "rough edges",
+          "timeout",
+          "SDK",
+          "provisioning",
+          "integration",
+          "GraphQL",
+          "REST",
+          "config-as-code",
+          "rate limit"
+        ],
+        "decision_triggers": [
+          "Proof that bulk export handles 500k+ rows reliably (benchmark or documented limit)",
+          "Terraform provider is available and actively maintained",
+          "GraphQL endpoint reaches documented parity with REST API",
+          "SDK has clear versioning and CI-compatible install path",
+          "Vendor responds to technical feedback with engineering-level specificity, not marketing deflection"
+        ],
+        "sample_quotes": [
+          "Your REST API is solid but the GraphQL endpoint has some rough edges.",
+          "We need the bulk export to handle 500k rows without timing out.",
+          "If I can't Terraform it, it doesn't exist as far as my pipeline is concerned.",
+          "Show me the API reference first \u2014 I'll figure out the rest myself.",
+          "I'm not testing this in prod. Give me a staging environment that actually mirrors real limits."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the platform is production-grade and automatable, not just demo-worthy. Actively probing limits and edge cases.",
+            "key_actions": [
+              "Reads /api/docs and /api/reference in depth",
+              "Installs SDK in a test environment",
+              "Checks Terraform provider availability and documentation"
+            ],
+            "content_preferences": [
+              "API reference documentation",
+              "SDK quickstart with CI examples",
+              "Terraform provider README",
+              "Changelog and known issues"
+            ]
+          },
+          {
+            "stage": "onboarding / activation",
+            "mindset": "Integrating the platform into real infrastructure. Tolerance for friction is low \u2014 every manual step is a red flag.",
+            "key_actions": [
+              "Runs terraform_setup",
+              "Configures CI/CD pipeline",
+              "Sets up GitHub integration",
+              "Configures webhooks"
+            ],
+            "content_preferences": [
+              "Step-by-step integration guides for CI/CD and GitHub",
+              "Webhook debug tooling / event logs",
+              "Code samples for SDK in monorepo setups"
+            ]
+          },
+          {
+            "stage": "expansion / power use",
+            "mindset": "Pushing the platform to its limits. Discovering gaps (bulk export timeouts, GraphQL rough edges) and filing detailed feedback.",
+            "key_actions": [
+              "Runs bulk_export at scale",
+              "Builds custom dashboards",
+              "Files specific technical feedback via Intercom"
+            ],
+            "content_preferences": [
+              "Performance benchmarks and export limits documentation",
+              "GraphQL schema changelog",
+              "Custom dashboard API reference",
+              "Direct access to platform engineering team"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and technical \u2014 states problems with precision, little hedging",
+          "formality": "professional but not formal; peer-to-peer with vendor engineers",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom (in-product support)",
+            "GitHub issues",
+            "Slack"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "calm and focused, with a low tolerance for avoidable friction",
+          "stress_triggers": [
+            "Bulk export timeouts that block data pipelines mid-run",
+            "Inconsistent API behavior between REST and GraphQL surfaces",
+            "Long, unproductive support sessions troubleshooting undocumented edge cases",
+            "CI pipelines breaking due to SDK versioning or breaking changes without notice"
+          ],
+          "coping_mechanisms": [
+            "Files a precise, technical Intercom message describing the exact failure mode",
+            "Switches to the more stable alternative (e.g., REST over GraphQL) as a workaround",
+            "Builds internal tooling or scripts to work around platform gaps",
+            "Escalates internally to evaluate alternative vendors if core issues go unresolved"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "reliability",
+            "automation",
+            "transparency",
+            "engineering craftsmanship",
+            "team autonomy"
+          ],
+          "ethical_stance": "utilitarian \u2014 makes decisions based on what reduces friction and increases throughput for the whole team, not personal preference",
+          "moral_foundations": {
+            "care": 0.5,
+            "fairness": 0.7,
+            "liberty": 0.8,
+            "authority": 0.3
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Automate API platform setup using Terraform and CI/CD \u2014 zero manual steps in provisioning",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Run large-scale bulk data exports (500k+ rows) reliably without timeouts",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "goals.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Integrate the API platform deeply into existing GitHub workflows",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Build custom dashboards for real-time API visibility",
+            "record_ids": [
+              "bench_00029"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Harden GraphQL endpoints to production quality matching the REST API",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003"
+            ],
+            "field_path": "goals.4",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Bulk export times out or degrades at high row counts (500k+), blocking data pipelines",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "GraphQL endpoint has rough edges \u2014 inconsistent behavior compared to REST",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Manual steps in API setup slow down onboarding and create environment drift",
+            "record_ids": [
+              "bench_00011",
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Webhook configuration requires too much trial-and-error without debug tooling",
+            "record_ids": [
+              "bench_00010"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "SDK installation lacks clear documentation for CI environments",
+            "record_ids": [
+              "bench_00000",
+              "bench_00003",
+              "bench_00008"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Motivated to reduce operational toil so the team ships faster without babysitting infrastructure",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00005"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Wants a fully code-reproducible platform setup \u2014 no tribal knowledge required",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Driven by the identity of being the engineer who solved the hard integration problem",
+            "record_ids": [
+              "bench_00002",
+              "bench_00010",
+              "bench_00011"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Focused on protecting reliability and SLAs at scale, especially in fintech",
+            "record_ids": [
+              "bench_00010",
+              "bench_00001"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Won't adopt a feature that isn't stable enough for production \u2014 beta quality is a blocker",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Skeptical of dashboard/UI-first workflows that can't be scripted or automated",
+            "record_ids": [
+              "bench_00029",
+              "bench_00001"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Distrusts vendor lock-in \u2014 wants portable, standard protocols",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003",
+              "bench_00010"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Will not accept rate limits or export caps that don't match enterprise SLAs",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Direct, technical tone \u2014 states problems with precision using domain vocabulary",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003",
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Advanced vocabulary level \u2014 uses terms like 'GraphQL endpoint', 'bulk export', 'terraform', 'REST API' natively",
+            "record_ids": [
+              "bench_00006",
+              "bench_00001",
+              "bench_00003",
+              "bench_00004"
+            ],
+            "field_path": "communication_style.vocabulary_level",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Preferred channel is Intercom for in-product technical support escalation",
+            "record_ids": [
+              "bench_00006",
+              "bench_00001",
+              "bench_00003",
+              "bench_00004"
+            ],
+            "field_path": "communication_style.preferred_channels",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stress triggered by bulk export timeouts blocking pipeline workflows",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Coping mechanism: files precise Intercom messages describing exact failure modes",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003",
+              "bench_00001",
+              "bench_00004"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Calm baseline with low tolerance for friction \u2014 long sessions suggest methodical troubleshooting, not panic",
+            "record_ids": [
+              "bench_00006",
+              "bench_00007",
+              "bench_00010"
+            ],
+            "field_path": "emotional_profile.baseline_mood",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Core values include reliability and automation \u2014 evidenced by terraform and CI/CD focus",
+            "record_ids": [
+              "bench_00001",
+              "bench_00004",
+              "bench_00005",
+              "bench_00007"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Liberty/autonomy weighted high \u2014 wants standard protocols and avoids vendor lock-in",
+            "record_ids": [
+              "bench_00006",
+              "bench_00003",
+              "bench_00010"
+            ],
+            "field_path": "moral_framework.moral_foundations",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Role titles include Staff Engineer and Senior DevOps Engineer at SaaS and fintech companies",
+            "record_ids": [
+              "bench_00011",
+              "bench_00010"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Company size range 50-500 employees across SaaS and fintech industries",
+            "record_ids": [
+              "bench_00011",
+              "bench_00010"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.07263,
+      "latency_s": 58.01600000006147,
+      "failed": false,
+      "error": ""
+    }
+  ],
+  "total_cost_usd": 0.07263,
+  "total_latency_s": 58.01600000006147,
+  "mean_groundedness": 1.0,
+  "success_rate": 1.0,
+  "error": ""
+}

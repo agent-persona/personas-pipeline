@@ -1,0 +1,1808 @@
+{
+  "tenant_id": "bench_mega_fintech",
+  "tenant_hash": "e853eb5ce05b",
+  "industry": "Fintech",
+  "product": "Financial services platform with compliance tooling",
+  "n_records": 500,
+  "n_clusters": 5,
+  "segment_latency_s": 0.0,
+  "clusters": [
+    {
+      "cluster_id": "clust_17784ca1d9c6",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00002",
+        "bench_00000",
+        "bench_00027",
+        "bench_00001",
+        "bench_00038",
+        "bench_00014",
+        "bench_00137",
+        "bench_00042",
+        "bench_00004",
+        "bench_00008",
+        "bench_00011",
+        "bench_00016"
+      ],
+      "persona_name": "Pipeline-First Platform Engineer \"Terraform Tomas\"",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Pipeline-First Platform Engineer \"Terraform Tomas\"",
+        "summary": "Tomas is a senior infrastructure or platform engineer at a mid-sized SaaS or fintech company (100\u2013500 employees) who treats the financial services platform as a first-class infrastructure dependency \u2014 configured via Terraform, integrated into CI/CD, and instrumented through webhooks and APIs. He values automation, repeatability, and developer ergonomics above all else. When the platform has rough edges or rate-limit surprises, he doesn't file polite tickets \u2014 he diagnoses the root cause, documents the failure mode, and expects a technical fix fast.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "North America",
+            "Western Europe"
+          ],
+          "education_level": "Bachelor's or Master's in Computer Science or Engineering",
+          "income_bracket": "$130,000\u2013$200,000"
+        },
+        "firmographics": {
+          "company_size": "100\u2013500 employees",
+          "industry": "SaaS / Fintech / Enterprise Software",
+          "role_titles": [
+            "Platform Engineer",
+            "Staff Engineer",
+            "Senior DevOps Engineer",
+            "Engineering Manager",
+            "Site Reliability Engineer"
+          ],
+          "tech_stack_signals": [
+            "Terraform",
+            "GitHub",
+            "CI/CD pipelines",
+            "REST API",
+            "GraphQL",
+            "Webhooks",
+            "SDKs",
+            "Custom dashboards"
+          ]
+        },
+        "goals": [
+          "Codify all platform configuration as infrastructure-as-code (Terraform) to enable reproducible, auditable environments",
+          "Integrate the financial services platform natively into CI/CD pipelines without manual intervention or rate-limit blockers",
+          "Bulk-export compliance and financial data programmatically for downstream analytics and reporting pipelines",
+          "Build custom dashboards that surface the exact operational metrics his team needs \u2014 not pre-packaged defaults",
+          "Establish reliable, low-latency webhook pipelines to drive event-driven automation across internal services"
+        ],
+        "pains": [
+          "Webhook endpoint rate limits break CI pipeline runs, causing cascading failures and wasted engineering time",
+          "GraphQL endpoint has rough edges and inconsistent behavior compared to the more polished REST API",
+          "Long sessions required to complete integrations suggest insufficient documentation or opaque error messages",
+          "SDK installation and setup is complex enough to require extended troubleshooting sessions",
+          "Bulk export workflows are time-consuming and may lack pagination, filtering, or async support needed at scale"
+        ],
+        "motivations": [
+          "Eliminate all manual, click-driven workflows by replacing them with declarative, version-controlled configuration",
+          "Make the financial platform invisible to his team \u2014 it should just work inside existing developer tooling",
+          "Protect CI/CD pipeline reliability as a proxy for team velocity and shipping confidence",
+          "Be the engineer who 'solved' the fintech compliance tooling problem for the whole organization"
+        ],
+        "objections": [
+          "Rate limits on core endpoints are a hard blocker for automated pipelines \u2014 not an acceptable trade-off",
+          "If the Terraform provider or SDK isn't officially maintained, adoption risk is too high to justify",
+          "GraphQL instability signals immaturity; the team may fall back to REST-only if parity isn't delivered",
+          "Lack of async bulk export means the platform can't scale to production data volumes"
+        ],
+        "not_this": [
+          "Would not manually click through a UI to configure something that could be scripted",
+          "Would not accept 'we're working on it' as a response to a rate-limit bug blocking production CI",
+          "Would not recommend a platform to his team without first stress-testing the API and reviewing the docs himself",
+          "Would not use a Slack integration or chatbot as a substitute for proper API documentation",
+          "Would not tolerate undocumented breaking changes in webhook payloads or SDK interfaces",
+          "Would not conflate a platform demo with production readiness"
+        ],
+        "channels": [
+          "GitHub (PRs, issues, Actions)",
+          "Intercom / in-product chat for technical escalations",
+          "API reference docs (/api/docs, /api/reference)",
+          "SDK documentation (/docs/sdk)",
+          "Internal Slack for team coordination",
+          "Terraform Registry",
+          "CI/CD pipeline logs (GitHub Actions, CircleCI, etc.)",
+          "Custom dashboards (/dashboards/custom)"
+        ],
+        "vocabulary": [
+          "infrastructure-as-code",
+          "idempotent",
+          "rate limit",
+          "webhook",
+          "CI/CD",
+          "Terraform provider",
+          "bulk export",
+          "GraphQL",
+          "REST endpoint",
+          "SDK",
+          "pipeline",
+          "declarative",
+          "reproducible",
+          "event-driven",
+          "rough edges"
+        ],
+        "decision_triggers": [
+          "Terraform provider is officially supported and actively maintained",
+          "Webhook rate limits are documented and high enough for CI workloads",
+          "GraphQL endpoint reaches parity with REST (or a clear roadmap exists)",
+          "Bulk export supports async operations and pagination at scale",
+          "SDK has strong type coverage and versioned changelogs",
+          "A peer engineer at a comparable company has already validated the integration in production"
+        ],
+        "sample_quotes": [
+          "Rate limits on the webhook endpoint are killing our CI pipeline.",
+          "Your REST API is solid but the GraphQL endpoint has some rough edges.",
+          "If I can't Terraform it, I'm not deploying it.",
+          "I need the bulk export to be async \u2014 polling a sync endpoint at this data volume isn't viable.",
+          "Show me the changelog. If breaking changes aren't documented, this SDK isn't production-ready."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the platform's developer experience meets the bar required for infrastructure-level adoption",
+            "key_actions": [
+              "Reading /api/docs and /api/reference in depth",
+              "Testing SDK install in a sandbox environment",
+              "Reviewing Terraform provider on GitHub for maintenance signals"
+            ],
+            "content_preferences": [
+              "API reference documentation",
+              "SDK quickstart guides",
+              "Terraform provider README and examples",
+              "GitHub issue trackers"
+            ]
+          },
+          {
+            "stage": "activation",
+            "mindset": "Configuring the platform as a first-class infrastructure component; hitting real friction points",
+            "key_actions": [
+              "terraform_setup sessions",
+              "webhook_config",
+              "api_setup",
+              "github_integration"
+            ],
+            "content_preferences": [
+              "Step-by-step integration guides",
+              "Rate limit documentation",
+              "Webhook payload schemas",
+              "Error code references"
+            ]
+          },
+          {
+            "stage": "expansion",
+            "mindset": "Scaling adoption org-wide; needs bulk workflows and custom observability",
+            "key_actions": [
+              "bulk_export",
+              "custom_dashboard",
+              "ci_pipeline integration"
+            ],
+            "content_preferences": [
+              "Bulk export API docs with pagination examples",
+              "Custom dashboard configuration guides",
+              "CI/CD integration tutorials"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and analytical \u2014 identifies specific failure modes by name, offers technical context unprompted",
+          "formality": "professional but concise; drops pleasantries in favor of precision",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom (in-product, for technical escalations)",
+            "API/SDK documentation pages",
+            "GitHub issues"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and pragmatic with a low tolerance for preventable friction",
+          "stress_triggers": [
+            "Webhook rate limits causing CI pipeline failures",
+            "Undocumented or inconsistent API behavior (GraphQL rough edges)",
+            "Extended sessions with no resolution path (session durations > 1700s suggest stuck state)",
+            "SDK complexity requiring prolonged troubleshooting"
+          ],
+          "coping_mechanisms": [
+            "Files precise, technically detailed Intercom messages citing the specific endpoint and failure mode",
+            "Extends session to self-debug before escalating",
+            "Falls back to REST API when GraphQL is unreliable",
+            "Searches /api/reference and /docs/sdk directly rather than waiting for support"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "Reliability \u2014 systems should do what they say they do, every time",
+            "Transparency \u2014 breaking changes, rate limits, and limitations must be documented",
+            "Autonomy \u2014 engineers should be able to self-serve without gating by sales or support",
+            "Efficiency \u2014 manual processes are a form of technical debt",
+            "Craftsmanship \u2014 rough edges in APIs are a sign of careless engineering"
+          ],
+          "ethical_stance": "utilitarian",
+          "moral_foundations": {
+            "fairness": 0.85,
+            "liberty": 0.9,
+            "care": 0.5,
+            "authority": 0.3
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Codify all platform configuration as infrastructure-as-code (Terraform)",
+            "record_ids": [
+              "bench_00000",
+              "bench_00004",
+              "bench_00011"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Integrate the platform into CI/CD pipelines without rate-limit blockers",
+            "record_ids": [
+              "bench_00002",
+              "bench_00038"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Bulk-export compliance and financial data programmatically",
+            "record_ids": [
+              "bench_00027"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Build custom dashboards surfacing operational metrics",
+            "record_ids": [
+              "bench_00008",
+              "bench_00002"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Establish reliable webhook pipelines for event-driven automation",
+            "record_ids": [
+              "bench_00042",
+              "bench_00002"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Webhook endpoint rate limits break CI pipeline runs",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "GraphQL endpoint has rough edges and inconsistent behavior",
+            "record_ids": [
+              "bench_00016"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Long sessions suggest insufficient documentation or opaque error messages",
+            "record_ids": [
+              "bench_00001",
+              "bench_00008",
+              "bench_00042",
+              "bench_00027"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "SDK installation requires extended troubleshooting sessions",
+            "record_ids": [
+              "bench_00137"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Bulk export workflows are time-consuming and may lack async support",
+            "record_ids": [
+              "bench_00027"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Motivated by eliminating manual workflows via declarative, version-controlled configuration",
+            "record_ids": [
+              "bench_00000",
+              "bench_00004",
+              "bench_00011"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Motivated by making the platform invisible inside existing developer tooling",
+            "record_ids": [
+              "bench_00014",
+              "bench_00038",
+              "bench_00001"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Protecting CI/CD pipeline reliability as a proxy for team velocity",
+            "record_ids": [
+              "bench_00002",
+              "bench_00038"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Being the engineer who solved the fintech compliance tooling problem org-wide",
+            "record_ids": [
+              "bench_00137",
+              "bench_00000"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Rate limits on core endpoints are a hard blocker for automated pipelines",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Terraform provider maintenance status is a critical adoption gate",
+            "record_ids": [
+              "bench_00000",
+              "bench_00004",
+              "bench_00011"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "GraphQL instability may cause fallback to REST-only usage",
+            "record_ids": [
+              "bench_00016"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Lack of async bulk export limits scalability at production volumes",
+            "record_ids": [
+              "bench_00027"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Direct and analytical tone \u2014 identifies specific failure modes by name with technical context",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Preferred channels include Intercom for technical escalations and API/SDK docs",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016",
+              "bench_00001",
+              "bench_00137"
+            ],
+            "field_path": "communication_style.preferred_channels",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Baseline mood is focused and pragmatic with low tolerance for preventable friction",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016"
+            ],
+            "field_path": "emotional_profile.baseline_mood",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Stress trigger: webhook rate limits causing CI pipeline failures",
+            "record_ids": [
+              "bench_00002"
+            ],
+            "field_path": "emotional_profile.stress_triggers.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stress trigger: inconsistent API behavior (GraphQL rough edges)",
+            "record_ids": [
+              "bench_00016"
+            ],
+            "field_path": "emotional_profile.stress_triggers.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Coping mechanism: files precise Intercom messages citing specific endpoint and failure mode",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Core values include autonomy and transparency \u2014 engineers should self-serve; limits/changes must be documented",
+            "record_ids": [
+              "bench_00002",
+              "bench_00016"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.9
+          },
+          {
+            "claim": "High liberty moral foundation \u2014 strongly values engineering autonomy and self-service",
+            "record_ids": [
+              "bench_00000",
+              "bench_00001",
+              "bench_00016"
+            ],
+            "field_path": "moral_framework.moral_foundations",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Role titles include Platform Engineer, Staff Engineer, Senior DevOps Engineer, Engineering Manager",
+            "record_ids": [
+              "bench_00000",
+              "bench_00027",
+              "bench_00014",
+              "bench_00137"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Company size is 100\u2013500 employees in SaaS, fintech, and enterprise software",
+            "record_ids": [
+              "bench_00000",
+              "bench_00027",
+              "bench_00014",
+              "bench_00137"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.06978,
+      "latency_s": 55.468000000109896,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_028028b8f3c0",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00076",
+        "bench_00003",
+        "bench_00009",
+        "bench_00039",
+        "bench_00012",
+        "bench_00020",
+        "bench_00040",
+        "bench_00057",
+        "bench_00078",
+        "bench_00099",
+        "bench_00104",
+        "bench_00125"
+      ],
+      "persona_name": "Priya the Security-First Platform Guardian",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Priya the Security-First Platform Guardian",
+        "summary": "Priya is a senior security professional \u2014 spanning Security Engineer to CISO \u2014 at a mid-to-large fintech or SaaS company who owns the full security operations lifecycle. She lives in the platform's security dashboards, obsessing over anomaly detection, policy configuration, incident response automation, and vulnerability triage. She demands per-tenant isolation, automated runbooks, and correlated threat intelligence, and holds vendors to strict compliance and audit standards.",
+        "demographics": {
+          "age_range": "32-45",
+          "gender_distribution": "mixed, slight male skew based on industry norms",
+          "location_signals": [
+            "US-based SaaS/fintech hubs",
+            "Remote-first security teams"
+          ],
+          "education_level": "Bachelor's or Master's in Computer Science, Information Security, or related field",
+          "income_bracket": "$130,000\u2013$220,000"
+        },
+        "firmographics": {
+          "company_size": "100\u2013500+ employees",
+          "industry": "Fintech / SaaS / Enterprise Software",
+          "role_titles": [
+            "Security Engineer",
+            "CISO",
+            "Head of Security",
+            "Security Operations Lead"
+          ],
+          "tech_stack_signals": [
+            "SIEM platforms",
+            "vulnerability scanners",
+            "SOAR tooling",
+            "compliance automation",
+            "cloud-native security (AWS/GCP/Azure)",
+            "log aggregation pipelines"
+          ]
+        },
+        "goals": [
+          "Automate end-to-end incident response so runbooks trigger directly from alerts without manual intervention",
+          "Achieve per-tenant data isolation to satisfy regulated enterprise clients",
+          "Correlate threat intelligence across all log sources automatically to reduce blind spots",
+          "Maintain a continuously audit-ready security posture with minimal manual intervention",
+          "Reduce mean time to respond (MTTR) to security incidents across the organization"
+        ],
+        "pains": [
+          "Incident response runbooks require manual triggering, slowing response time during active threats",
+          "Lack of automated threat correlation across disparate log sources creates coverage gaps",
+          "Per-tenant isolation is difficult to enforce consistently across the platform for regulated clients",
+          "Vulnerability scan results require excessive manual review and triage before action",
+          "Policy configuration is time-consuming and error-prone without templating or inheritance",
+          "Compliance audit prep is a recurring fire drill rather than a continuous automated process"
+        ],
+        "motivations": [
+          "Eliminating manual toil so the security team can focus on high-judgment threat analysis",
+          "Protecting regulated clients through airtight isolation and demonstrable compliance controls",
+          "Building a security architecture that scales with company growth without adding headcount",
+          "Proving security maturity to enterprise customers and compliance auditors"
+        ],
+        "objections": [
+          "Will automated runbooks handle edge cases without false positives that wake on-call engineers unnecessarily?",
+          "How does the platform enforce per-tenant isolation at the data and network layer \u2014 not just the application layer?",
+          "Does threat correlation actually work across heterogeneous log formats, or does it require custom parsers?",
+          "Audit log exports need to meet our compliance format requirements \u2014 can the platform support that out of the box?"
+        ],
+        "not_this": [
+          "Would never accept a 'good enough' security posture to ship faster \u2014 security is a hard blocker, not a checkbox",
+          "Does not tolerate shared-tenant data commingling under any circumstances for regulated workloads",
+          "Would not rely on a vendor's word about compliance \u2014 always demands audit logs, third-party attestations, and technical proof",
+          "Does not treat security tooling as a cost center to be minimized \u2014 advocates loudly for security budget",
+          "Would never ignore a high-severity vulnerability because it's inconvenient to patch",
+          "Is not impressed by marketing language like 'enterprise-grade security' without specifics"
+        ],
+        "channels": [
+          "Intercom (in-app support for urgent platform issues)",
+          "HubSpot-tracked sales and onboarding email threads",
+          "Internal Slack security channels",
+          "Security vendor webinars and threat briefings",
+          "CISO/SecEng community forums (e.g., CISO Circle, Security Weekly)",
+          "GitHub / internal wikis for runbook documentation",
+          "LinkedIn for peer benchmarking"
+        ],
+        "vocabulary": [
+          "per-tenant isolation",
+          "automated runbooks",
+          "threat correlation",
+          "MTTR",
+          "log sources",
+          "policy enforcement",
+          "anomaly detection",
+          "incident response pipeline",
+          "audit-ready",
+          "regulated clients",
+          "vuln triage",
+          "blast radius",
+          "SOAR",
+          "compliance posture",
+          "zero-trust"
+        ],
+        "decision_triggers": [
+          "Platform demonstrates automated runbook triggering from real alert events, not just manual initiation",
+          "Vendor can provide documented per-tenant isolation architecture with technical specifics",
+          "Threat correlation works across their existing log sources without requiring full pipeline replacement",
+          "Proof of SOC 2 Type II / ISO 27001 / FedRAMP with exportable audit logs in standard formats",
+          "Reference customers in regulated fintech or SaaS verticals with similar compliance requirements",
+          "Clear SLA commitments on incident detection and response tooling uptime"
+        ],
+        "sample_quotes": [
+          "Per-tenant isolation is non-negotiable for regulated clients \u2014 I need architecture docs, not marketing slides.",
+          "Incident response runbooks should trigger from alerts automatically. Manual steps during an incident are how breaches escalate.",
+          "We need automated threat correlation across log sources. I can't have analysts pivoting between five dashboards during an active threat.",
+          "If I have to explain to an auditor why our posture isn't continuously monitored, something has failed upstream.",
+          "Show me the telemetry. I'll evaluate the platform in the anomaly and policy screens before I talk to sales."
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Searching for platforms that go beyond checkbox compliance and offer genuine security automation depth",
+            "key_actions": [
+              "Reading threat intelligence blogs and security conference talks",
+              "Evaluating SIEM/SOAR integrations",
+              "Lurking in CISO community forums for peer recommendations"
+            ],
+            "content_preferences": [
+              "Technical architecture whitepapers",
+              "Threat detection methodology documentation",
+              "Peer case studies from regulated industries"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Actively testing the platform's security controls against internal requirements \u2014 skeptical but open if the data checks out",
+            "key_actions": [
+              "Deep-diving /security/anomalies and /security/policies pages",
+              "Reviewing vulnerability scan workflows",
+              "Asking pointed technical questions via Intercom support"
+            ],
+            "content_preferences": [
+              "Product demo walkthroughs of automation flows",
+              "Compliance certification documentation",
+              "API/integration docs for log ingestion"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Looking for a final technical proof point and compliance documentation before pushing for internal budget approval",
+            "key_actions": [
+              "Requesting audit log export samples",
+              "Running a proof-of-concept incident response simulation",
+              "Escalating to CISO for sign-off with vendor security questionnaire"
+            ],
+            "content_preferences": [
+              "SOC 2 / ISO 27001 reports",
+              "Reference customer contacts in fintech",
+              "SLA and data isolation architecture documentation"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and analytical \u2014 asks precise technical questions, tolerates no ambiguity",
+          "formality": "professional",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom (in-app)",
+            "email (HubSpot-tracked)",
+            "Slack (internal)"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and vigilant \u2014 calm under normal conditions but quickly shifts to urgency during active threats or compliance deadlines",
+          "stress_triggers": [
+            "Manual steps required during live incidents",
+            "Ambiguous vendor claims about isolation or compliance",
+            "Alert fatigue from uncorrelated log noise",
+            "Audit deadlines with no continuous monitoring baseline",
+            "Vulnerability backlog growing without automated prioritization"
+          ],
+          "coping_mechanisms": [
+            "Opens Intercom support with precise, detailed technical questions",
+            "Spends long focused sessions (1400\u20132000s) in security dashboards diagnosing issues directly",
+            "Documents findings internally in runbooks or wikis",
+            "Escalates to vendor account team with written evidence of the gap"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "Accountability \u2014 security failures have real consequences for customers and must be owned",
+            "Precision \u2014 vague controls are not controls",
+            "Autonomy \u2014 security teams must have tooling authority without waiting on vendor roadmaps",
+            "Fairness \u2014 regulated clients deserve the same isolation guarantees as any other tenant",
+            "Transparency \u2014 audit trails and documentation are a moral floor, not a nice-to-have"
+          ],
+          "ethical_stance": "principlist",
+          "moral_foundations": {
+            "care": 0.75,
+            "fairness": 0.9,
+            "liberty": 0.8,
+            "authority": 0.6,
+            "loyalty": 0.45
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Automate end-to-end incident response so runbooks trigger directly from alerts without manual intervention",
+            "record_ids": [
+              "bench_00009"
+            ],
+            "field_path": "goals.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Achieve per-tenant data isolation to satisfy regulated enterprise clients",
+            "record_ids": [
+              "bench_00076"
+            ],
+            "field_path": "goals.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Correlate threat intelligence across all log sources automatically to reduce blind spots",
+            "record_ids": [
+              "bench_00057"
+            ],
+            "field_path": "goals.2",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Maintain a continuously audit-ready security posture with minimal manual intervention",
+            "record_ids": [
+              "bench_00003",
+              "bench_00078",
+              "bench_00039"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Reduce mean time to respond (MTTR) to security incidents across the organization",
+            "record_ids": [
+              "bench_00040",
+              "bench_00009",
+              "bench_00104"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Incident response runbooks require manual triggering, slowing response time during active threats",
+            "record_ids": [
+              "bench_00009",
+              "bench_00040"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Lack of automated threat correlation across disparate log sources creates coverage gaps",
+            "record_ids": [
+              "bench_00057"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Per-tenant isolation is difficult to enforce consistently across the platform for regulated clients",
+            "record_ids": [
+              "bench_00076"
+            ],
+            "field_path": "pains.2",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Vulnerability scan results require excessive manual review and triage before action",
+            "record_ids": [
+              "bench_00012",
+              "bench_00020",
+              "bench_00099"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Policy configuration is time-consuming and error-prone without templating or inheritance",
+            "record_ids": [
+              "bench_00003",
+              "bench_00078"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Compliance audit prep is a recurring fire drill rather than a continuous automated process",
+            "record_ids": [
+              "bench_00039",
+              "bench_00104"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Eliminating manual toil so the security team can focus on high-judgment threat analysis",
+            "record_ids": [
+              "bench_00009",
+              "bench_00057"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Protecting regulated clients through airtight isolation and demonstrable compliance controls",
+            "record_ids": [
+              "bench_00076",
+              "bench_00039"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Building a security architecture that scales with company growth without adding headcount",
+            "record_ids": [
+              "bench_00039",
+              "bench_00104",
+              "bench_00057"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Proving security maturity to enterprise customers and compliance auditors",
+            "record_ids": [
+              "bench_00104",
+              "bench_00076",
+              "bench_00039"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.72
+          },
+          {
+            "claim": "Skepticism about whether automated runbooks handle edge cases without generating false positive alerts",
+            "record_ids": [
+              "bench_00009",
+              "bench_00040"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Demands technical architecture specifics on per-tenant isolation, not just marketing claims",
+            "record_ids": [
+              "bench_00076"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Concerns about whether threat correlation works across heterogeneous log formats without custom parsers",
+            "record_ids": [
+              "bench_00057"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Audit log exports need to meet compliance format requirements out of the box",
+            "record_ids": [
+              "bench_00039",
+              "bench_00104",
+              "bench_00003"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.68
+          },
+          {
+            "claim": "Direct, analytical tone with precise technical language in support interactions",
+            "record_ids": [
+              "bench_00076",
+              "bench_00009",
+              "bench_00057"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Focused and vigilant baseline mood; urgency triggered by active incidents or compliance pressure",
+            "record_ids": [
+              "bench_00040",
+              "bench_00099",
+              "bench_00009"
+            ],
+            "field_path": "emotional_profile.baseline_mood",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Stress triggered by manual steps during live incidents and ambiguous vendor compliance claims",
+            "record_ids": [
+              "bench_00009",
+              "bench_00076"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Coping via long focused sessions in security dashboards and precise Intercom support escalations",
+            "record_ids": [
+              "bench_00099",
+              "bench_00040",
+              "bench_00078"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Core values of fairness (regulated clients deserve equal protections) and accountability are evident",
+            "record_ids": [
+              "bench_00076",
+              "bench_00039",
+              "bench_00104"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 3,
+      "cost_usd": 0.203124,
+      "latency_s": 416.6710000000894,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_1ccdb7c8c0a4",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00026",
+        "bench_00006",
+        "bench_00025",
+        "bench_00005",
+        "bench_00015",
+        "bench_00030",
+        "bench_00045",
+        "bench_00048",
+        "bench_00052",
+        "bench_00053",
+        "bench_00055",
+        "bench_00062"
+      ],
+      "persona_name": "Pipeline-Driven Pat",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Pipeline-Driven Pat",
+        "summary": "Pat is a B2B sales professional \u2014 spanning Account Executive, Sales Manager, and BDR Lead roles \u2014 working at mid-to-large enterprise software, SaaS, and fintech companies. Their day revolves around the CRM: logging calls, looking up contacts, reviewing pipeline health, and sending proposals. They need their sales tools to work seamlessly together and get frustrated by integration friction that slows their revenue-generating activities.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "mixed, slightly male-skewed based on role distribution",
+          "location_signals": [
+            "North America",
+            "English-speaking markets"
+          ],
+          "education_level": "Bachelor's degree, business or related field",
+          "income_bracket": "$70,000\u2013$140,000 OTE"
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "Enterprise Software, SaaS, Fintech",
+          "role_titles": [
+            "Account Executive",
+            "Sales Manager",
+            "BDR Lead"
+          ],
+          "tech_stack_signals": [
+            "Salesforce",
+            "HubSpot",
+            "Zapier",
+            "financial services platform",
+            "CRM tooling"
+          ]
+        },
+        "goals": [
+          "Close more deals by maintaining an accurate, up-to-date pipeline with minimal manual overhead",
+          "Send polished, timely proposals that move prospects quickly through the funnel",
+          "Log calls and contact activity efficiently without breaking their workflow rhythm",
+          "Integrate the financial services platform natively with Salesforce to eliminate dependency on Zapier or manual data bridging"
+        ],
+        "pains": [
+          "Native Salesforce sync is unavailable, forcing reliance on workarounds like Zapier",
+          "Time lost switching between CRM activities, contact records, and proposal tools \u2014 all within a single session",
+          "Long session durations on routine CRM tasks suggest friction in navigation or data loading",
+          "Pipeline visibility is fragmented, making it hard to prioritize deals and forecast accurately"
+        ],
+        "motivations": [
+          "Hitting and exceeding quota \u2014 every feature is evaluated through the lens of revenue impact",
+          "Speed and efficiency: fewer clicks, faster data, more time selling",
+          "Trust in their tools \u2014 they need data to be accurate and synced in real time"
+        ],
+        "objections": [
+          "Why would I add another tool if it doesn't talk to Salesforce natively?",
+          "I can't afford to retrain my team on complex workflows mid-quarter",
+          "If the compliance features slow down my proposal process, it's not worth it"
+        ],
+        "not_this": [
+          "Would not adopt a tool that requires a dedicated admin to configure or maintain",
+          "Would not tolerate a workflow that requires manual CSV exports between systems",
+          "Does not attend feature webinars \u2014 they want documentation or a sandbox, not a pitch",
+          "Would not advocate for a platform internally if it lacks a clear ROI story in quota terms",
+          "Does not accept 'it's on the roadmap' as an answer to a missing Salesforce integration",
+          "Would not describe themselves as a 'tech person' \u2014 they want tools that just work"
+        ],
+        "channels": [
+          "HubSpot CRM",
+          "Salesforce",
+          "Intercom (support chat)",
+          "Google Analytics-tracked web app (/crm/* pages)",
+          "Email (proposals)",
+          "Phone/call logging tools"
+        ],
+        "vocabulary": [
+          "pipeline",
+          "deals",
+          "close rate",
+          "contact lookup",
+          "call log",
+          "proposal send",
+          "sync",
+          "native integration",
+          "forecast",
+          "quota",
+          "BDR",
+          "AE",
+          "activity log",
+          "CRM",
+          "stage"
+        ],
+        "decision_triggers": [
+          "Confirmed native Salesforce integration (no Zapier required)",
+          "Demonstrable reduction in time-per-CRM-task",
+          "Peer referral from another AE or Sales Manager in a similar vertical",
+          "Trial or sandbox access that fits within a sales cycle's timeline",
+          "Clear compliance tooling that doesn't add friction to proposal sending"
+        ],
+        "sample_quotes": [
+          "Does this sync with Salesforce directly, or do I need Zapier again?",
+          "I spend half my morning just updating pipeline \u2014 there has to be a faster way.",
+          "If I can send a compliant proposal in under two minutes, I'm sold.",
+          "My BDRs need to log calls on the fly \u2014 if it's clunky, they won't use it.",
+          "Show me what my win rate looks like across stages and I'll know if this is working."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the platform can replace or consolidate existing CRM workflows without adding friction",
+            "key_actions": [
+              "Exploring /crm/pipeline and /crm/deals pages",
+              "Looking up contacts to test data quality",
+              "Reviewing activity logs for completeness"
+            ],
+            "content_preferences": [
+              "Integration documentation",
+              "Side-by-side CRM comparison sheets",
+              "Short demo videos of call logging and pipeline views"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if integration with Salesforce is confirmed and proposal tooling meets compliance needs",
+            "key_actions": [
+              "Sending test proposals via /proposals/send",
+              "Logging test calls to verify sync fidelity",
+              "Escalating integration question via Intercom support"
+            ],
+            "content_preferences": [
+              "Technical integration guides",
+              "Security and compliance one-pager",
+              "ROI calculator or quota-impact case study"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct",
+          "formality": "casual-professional",
+          "vocabulary_level": "intermediate",
+          "preferred_channels": [
+            "Intercom (in-app chat)",
+            "HubSpot activity feed",
+            "Email"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and goal-oriented, with underlying impatience",
+          "stress_triggers": [
+            "Integration gaps that require manual workarounds (e.g., no native Salesforce sync)",
+            "Long session durations on tasks that should be quick (contact lookup, call log)",
+            "Proposal delays caused by compliance tooling friction"
+          ],
+          "coping_mechanisms": [
+            "Fires off a direct support chat message (Intercom)",
+            "Searches for workarounds or third-party connectors",
+            "Escalates to their Sales Manager or ops team"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "efficiency",
+            "reliability",
+            "accountability",
+            "results-orientation"
+          ],
+          "ethical_stance": "utilitarian",
+          "moral_foundations": {
+            "fairness": 0.7,
+            "liberty": 0.8,
+            "care": 0.4,
+            "authority": 0.3
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Persona spans Sales Manager, Account Executive, and BDR Lead roles at companies ranging 50\u2013500 employees in enterprise software, SaaS, and fintech",
+            "record_ids": [
+              "bench_00026",
+              "bench_00045",
+              "bench_00055"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Primary behaviors are call logging, contact lookup, pipeline review, deal viewing, and proposal sending \u2014 all CRM-centric",
+            "record_ids": [
+              "bench_00026",
+              "bench_00006",
+              "bench_00025",
+              "bench_00005",
+              "bench_00015",
+              "bench_00062"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Sending polished, timely proposals is a core goal \u2014 proposal_send events observed across multiple sessions",
+            "record_ids": [
+              "bench_00015",
+              "bench_00052"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Call logging is a frequent, time-consuming workflow \u2014 sessions range from 465 to 1663 seconds on call_log events",
+            "record_ids": [
+              "bench_00026",
+              "bench_00055",
+              "bench_00062"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "User explicitly asked about native Salesforce sync to replace Zapier, indicating a desire to eliminate integration middleware",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "goals.3",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Native Salesforce sync is unavailable \u2014 user directly asked 'Salesforce sync without Zapier?' via Intercom support",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Long session durations on routine tasks (contact_lookup, call_log, deal_view) suggest navigation or data friction",
+            "record_ids": [
+              "bench_00006",
+              "bench_00030",
+              "bench_00053",
+              "bench_00026",
+              "bench_00062"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Pipeline review sessions are lengthy (e.g., 2364 seconds), suggesting fragmented or hard-to-parse pipeline visibility",
+            "record_ids": [
+              "bench_00025"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Quota attainment drives tool evaluation \u2014 role titles and CRM-centric behaviors reflect revenue-accountability roles",
+            "record_ids": [
+              "bench_00026",
+              "bench_00045",
+              "bench_00055"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Speed and efficiency motivation inferred from high-frequency, short-duration sessions on lookup and log tasks",
+            "record_ids": [
+              "bench_00053",
+              "bench_00055",
+              "bench_00005"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Real-time data trust motivation \u2014 Salesforce sync question signals reliance on accurate, synced records",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Salesforce integration is a primary objection/blocker \u2014 direct support message asks about sync without Zapier",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Retraining concern inferred from mid-quarter active usage patterns across BDR Lead and Sales Manager roles",
+            "record_ids": [
+              "bench_00026",
+              "bench_00055"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.65
+          },
+          {
+            "claim": "Proposal friction objection inferred from proposal_send activity and the compliance context of the platform",
+            "record_ids": [
+              "bench_00015",
+              "bench_00052"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Direct, casual-professional communication style evidenced by terse Intercom message: 'Salesforce sync without Zapier?'",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Intercom is a confirmed support channel \u2014 user submitted a deal_view session support message via Intercom",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "communication_style.preferred_channels",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stress trigger: integration gaps requiring manual workarounds \u2014 evidenced by Salesforce/Zapier question in support",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stress trigger: long sessions on quick tasks \u2014 contact_lookup sessions of 2124s and 1725s indicate friction-induced frustration",
+            "record_ids": [
+              "bench_00006",
+              "bench_00030"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Coping mechanism: fires off direct Intercom support chat when hitting integration blockers",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Liberty and fairness values inferred from desire for open, direct integrations and frustration with tool lock-in via Zapier",
+            "record_ids": [
+              "bench_00048"
+            ],
+            "field_path": "moral_framework.moral_foundations",
+            "confidence": 0.75
+          }
+        ]
+      },
+      "groundedness": 0.9285714285714286,
+      "attempts": 1,
+      "cost_usd": 0.059919,
+      "latency_s": 440.63999999989755,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_6f5aad160fce",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00013",
+        "bench_00010",
+        "bench_00017",
+        "bench_00007",
+        "bench_00070",
+        "bench_00018",
+        "bench_00019",
+        "bench_00043",
+        "bench_00044",
+        "bench_00049",
+        "bench_00051",
+        "bench_00054"
+      ],
+      "persona_name": "",
+      "persona_json": {},
+      "groundedness": 0.0,
+      "attempts": 0,
+      "cost_usd": 0.0,
+      "latency_s": 762.3909999998286,
+      "failed": true,
+      "error": "APIConnectionError: Connection error."
+    },
+    {
+      "cluster_id": "clust_f322b79e76fe",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00022",
+        "bench_00102",
+        "bench_00033",
+        "bench_00032",
+        "bench_00060",
+        "bench_00034",
+        "bench_00035",
+        "bench_00046",
+        "bench_00050",
+        "bench_00067",
+        "bench_00080",
+        "bench_00087"
+      ],
+      "persona_name": "Pipeline-First Morgan",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Pipeline-First Morgan",
+        "summary": "Morgan is a hands-on Data/ML Engineer at a mid-sized SaaS or Fintech company (100\u2013500 employees) who lives inside data pipelines, model training workflows, and query builders. They are deeply technical, metrics-driven, and judge every tool by its reliability, performance, and how little it disrupts their existing infrastructure. Compliance and business-layer features are secondary concerns \u2014 Morgan cares most about keeping data flowing, models training, and dashboards accurate.",
+        "demographics": {
+          "age_range": "28-38",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US-based SaaS/Fintech hubs",
+            "remote-friendly engineering teams"
+          ],
+          "education_level": "Bachelor's or Master's in Computer Science, Data Science, or related field",
+          "income_bracket": "$110,000\u2013$160,000"
+        },
+        "firmographics": {
+          "company_size": "100\u2013500 employees",
+          "industry": "SaaS / Fintech",
+          "role_titles": [
+            "Data Engineer",
+            "ML Engineer",
+            "Senior Data Engineer",
+            "Machine Learning Engineer"
+          ],
+          "tech_stack_signals": [
+            "Python",
+            "SQL",
+            "ML training pipelines",
+            "data import/ETL tooling",
+            "dashboard/BI tools",
+            "pipeline monitoring"
+          ]
+        },
+        "goals": [
+          "Build and maintain reliable, high-throughput data pipelines with minimal downtime",
+          "Train and iterate on ML models quickly without infrastructure bottlenecks",
+          "Reduce manual overhead in dataset import and data wrangling workflows",
+          "Gain real-time visibility into pipeline health through monitoring dashboards",
+          "Integrate new tooling without requiring a full rewrite of existing infrastructure"
+        ],
+        "pains": [
+          "Long or unpredictable session times debugging failed pipeline runs or import errors",
+          "Onboarding new platforms that break compatibility with existing data workflows",
+          "Lack of granular pipeline monitoring that makes it hard to catch failures early",
+          "Slow model training feedback loops that delay iteration cycles",
+          "Compliance and governance features that add friction without clear engineering value",
+          "Dataset import failures or inconsistencies that corrupt downstream models and dashboards"
+        ],
+        "motivations": [
+          "Obsession with system reliability \u2014 downtime or data loss feels like a personal failure",
+          "Pride in engineering elegance: clean, composable, maintainable pipelines",
+          "Desire to ship faster ML experiments and see results without waiting on infrastructure",
+          "Keeping dashboards and reports trustworthy so business teams don't question the data"
+        ],
+        "objections": [
+          "'How does this perform at scale? I need benchmarks, not marketing copy.'",
+          "'What's the migration path? I'm not ripping out our current stack to try this.'",
+          "'I don't want to rewrite all our existing pipelines just to onboard a new tool.'",
+          "'Compliance features are the business team's problem \u2014 show me raw performance and reliability first.'"
+        ],
+        "not_this": [
+          "Would not attend a webinar on 'digital transformation strategy' \u2014 wants technical docs and API references",
+          "Would not advocate for a tool based on UI aesthetics alone; performance and reliability always win",
+          "Would not let a business stakeholder override an engineering architecture decision without a fight",
+          "Would not deploy a tool to production without stress-testing it in a staging environment first",
+          "Would not describe their work using buzzwords like 'synergy' or 'leverage' in a non-technical sense",
+          "Would not ignore a failing pipeline alert just because it's outside business hours"
+        ],
+        "channels": [
+          "GitHub / GitLab (code and issue tracking)",
+          "Slack (internal team communication)",
+          "Intercom (vendor support escalations)",
+          "HubSpot-connected sales/demo flows",
+          "Stack Overflow / technical forums",
+          "Engineering blogs and documentation sites",
+          "LinkedIn (passive, mostly lurking)"
+        ],
+        "vocabulary": [
+          "pipeline",
+          "throughput",
+          "latency",
+          "data ingestion",
+          "ETL",
+          "model training",
+          "feature store",
+          "orchestration",
+          "idempotent",
+          "schema drift",
+          "backfill",
+          "observability",
+          "SLA",
+          "data lineage",
+          "benchmark"
+        ],
+        "decision_triggers": [
+          "Proven performance benchmarks from comparable engineering environments",
+          "Native compatibility with their existing stack (no forced rewrites)",
+          "Transparent documentation and honest migration guides",
+          "A working technical demo or sandbox environment they can probe themselves",
+          "Peer recommendations from engineers at similar-scale companies",
+          "Clear SLA and uptime guarantees backed by real incident history"
+        ],
+        "sample_quotes": [
+          "'If I can't monitor it in real time, I don't trust it in production.'",
+          "'Show me the benchmark numbers \u2014 I'll decide if it's worth the migration cost.'",
+          "'Our pipelines are the product. If they break, everything downstream breaks.'",
+          "'I spent three hours tracking down a schema drift issue that your import tool introduced. That's not acceptable.'",
+          "'I'll try the compliance module after I know the core engine doesn't fall over under load.'"
+        ],
+        "journey_stages": [
+          {
+            "stage": "awareness",
+            "mindset": "Skeptical but curious \u2014 hunting for a tool that won't slow them down or break their stack",
+            "key_actions": [
+              "Reads engineering blog posts and benchmarks",
+              "Searches documentation for API compatibility",
+              "Asks peers in Slack communities for recommendations"
+            ],
+            "content_preferences": [
+              "Technical deep-dives",
+              "Performance benchmarks",
+              "Architecture diagrams",
+              "GitHub repos"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating fit \u2014 running the tool against their actual data and pipelines in a sandbox",
+            "key_actions": [
+              "Imports sample datasets and stress-tests import reliability",
+              "Runs pipeline monitoring side-by-side with existing tooling",
+              "Fires off support/Intercom questions about edge cases"
+            ],
+            "content_preferences": [
+              "Migration guides",
+              "API reference docs",
+              "Sandbox/trial environments",
+              "Technical FAQs"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Pragmatic and risk-averse \u2014 needs confidence that onboarding won't cause production incidents",
+            "key_actions": [
+              "Requests SLA documentation",
+              "Confirms integration path with existing stack",
+              "Builds internal business case focused on reliability gains"
+            ],
+            "content_preferences": [
+              "Case studies from similar engineering teams",
+              "Uptime/incident history",
+              "Vendor support response time data"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and analytical",
+          "formality": "casual-to-professional (technical register, low corporate polish)",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Slack",
+            "Intercom",
+            "GitHub Issues",
+            "technical documentation portals"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and pragmatic, with undercurrent of low-grade impatience toward tooling friction",
+          "stress_triggers": [
+            "Pipeline failures or import errors that corrupt downstream data",
+            "Long debugging sessions with unclear root causes",
+            "Tooling changes that require significant re-engineering of existing workflows",
+            "Slow model training cycles that block experiment iteration",
+            "Compliance-driven feature bloat that adds friction without engineering value"
+          ],
+          "coping_mechanisms": [
+            "Opens Intercom support ticket with detailed error reproduction steps",
+            "Stress-tests the system further to isolate the failure mode",
+            "Posts in internal Slack channel to see if teammates hit the same issue",
+            "Switches to a workaround or fallback pipeline while root cause is investigated",
+            "Documents the incident internally to justify switching tools"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "reliability",
+            "engineering integrity",
+            "efficiency",
+            "transparency",
+            "autonomy"
+          ],
+          "ethical_stance": "utilitarian",
+          "moral_foundations": {
+            "care": 0.5,
+            "fairness": 0.6,
+            "liberty": 0.8,
+            "authority": 0.3
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Primary role titles are Data Engineer and ML Engineer at 100\u2013500 employee SaaS/Fintech companies",
+            "record_ids": [
+              "bench_00032",
+              "bench_00035",
+              "bench_00060",
+              "bench_00046"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Company size is 100\u2013500 employees in SaaS and Fintech industries",
+            "record_ids": [
+              "bench_00032",
+              "bench_00035",
+              "bench_00060",
+              "bench_00046"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Wants to build and maintain reliable, high-throughput data pipelines",
+            "record_ids": [
+              "bench_00032",
+              "bench_00087"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Invests heavily in model training workflows \u2014 repeated model_train events with long sessions",
+            "record_ids": [
+              "bench_00022",
+              "bench_00080",
+              "bench_00046"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Seeks to reduce manual overhead in dataset import workflows \u2014 dataset_import is the most frequent event",
+            "record_ids": [
+              "bench_00033",
+              "bench_00034",
+              "bench_00035",
+              "bench_00050",
+              "bench_00067"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Wants real-time visibility into pipeline health via monitoring dashboards",
+            "record_ids": [
+              "bench_00032",
+              "bench_00060",
+              "bench_00087"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Wants to integrate new tooling without rewriting existing infrastructure \u2014 inferred from pipeline_monitor and query_builder behavior showing deep investment in current stack",
+            "record_ids": [
+              "bench_00102",
+              "bench_00032",
+              "bench_00087"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Long debugging sessions on pipelines and imports \u2014 evidenced by high session durations on dataset_import and pipeline_monitor events",
+            "record_ids": [
+              "bench_00067",
+              "bench_00033",
+              "bench_00032"
+            ],
+            "field_path": "pains.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Onboarding new platforms that break existing workflows is a pain \u2014 inferred from heavy pipeline_monitor and query_builder investment",
+            "record_ids": [
+              "bench_00102",
+              "bench_00032",
+              "bench_00087"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Lack of granular pipeline monitoring is a pain \u2014 pipeline_monitor is a top behavior",
+            "record_ids": [
+              "bench_00032",
+              "bench_00087"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Slow model training feedback loops are a pain \u2014 model_train sessions show high time investment",
+            "record_ids": [
+              "bench_00022",
+              "bench_00080",
+              "bench_00046"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Compliance features add friction without clear engineering value \u2014 inferred from ML/data engineering role focus with no compliance-related page visits",
+            "record_ids": [
+              "bench_00046",
+              "bench_00032"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.65
+          },
+          {
+            "claim": "Dataset import failures corrupt downstream models and dashboards \u2014 dataset_import is the top event with variable session durations suggesting inconsistent success",
+            "record_ids": [
+              "bench_00033",
+              "bench_00034",
+              "bench_00035",
+              "bench_00050",
+              "bench_00067"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated by system reliability \u2014 pipeline_monitor is a core repeated behavior",
+            "record_ids": [
+              "bench_00032",
+              "bench_00087"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Motivated by engineering pride and clean, composable pipelines \u2014 evidenced by repeated investment in query_builder and pipeline_monitor",
+            "record_ids": [
+              "bench_00102",
+              "bench_00032"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated by faster ML experimentation \u2014 model_train is a top recurring behavior",
+            "record_ids": [
+              "bench_00022",
+              "bench_00080",
+              "bench_00046"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Motivated by keeping dashboards trustworthy \u2014 dashboard_create is a top behavior",
+            "record_ids": [
+              "bench_00060"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "'How does this perform at scale? I need benchmarks' \u2014 skepticism toward unproven tooling inferred from deep technical engagement patterns",
+            "record_ids": [
+              "bench_00022",
+              "bench_00080",
+              "bench_00046"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.7
+          },
+          {
+            "claim": "'What's the migration path?' \u2014 heavy investment in existing pipeline and query infrastructure implies migration cost concern",
+            "record_ids": [
+              "bench_00032",
+              "bench_00102",
+              "bench_00087"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.75
+          },
+          {
+            "claim": "'I don't want to rewrite all our existing pipelines just to onboard a new tool' \u2014 deeply embedded pipeline_monitor and dataset_import behaviors signal existing stack investment",
+            "record_ids": [
+              "bench_00032",
+              "bench_00033",
+              "bench_00035",
+              "bench_00067"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "'Compliance features are the business team's problem \u2014 show me raw performance and reliability first' \u2014 ML/data engineering roles with no compliance page visits signal prioritization of performance over compliance",
+            "record_ids": [
+              "bench_00046",
+              "bench_00032",
+              "bench_00035"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.65
+          },
+          {
+            "claim": "Direct and analytical tone, advanced technical vocabulary \u2014 inferred from ML Engineer and Data Engineer role titles and technical event patterns",
+            "record_ids": [
+              "bench_00046",
+              "bench_00032",
+              "bench_00060"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Stress triggered by pipeline failures and long debugging sessions \u2014 evidenced by high-duration sessions on dataset_import and pipeline_monitor events",
+            "record_ids": [
+              "bench_00067",
+              "bench_00033",
+              "bench_00087"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Core values of reliability and engineering autonomy \u2014 evidenced by repeated pipeline monitoring and self-directed deep technical sessions",
+            "record_ids": [
+              "bench_00032",
+              "bench_00087",
+              "bench_00022"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.8
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.13914900000000002,
+      "latency_s": 301.4379999998491,
+      "failed": false,
+      "error": ""
+    }
+  ],
+  "total_cost_usd": 0.471972,
+  "total_latency_s": 817.875,
+  "mean_groundedness": 0.9821428571428572,
+  "success_rate": 0.8,
+  "error": ""
+}

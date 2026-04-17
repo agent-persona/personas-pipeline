@@ -1,0 +1,1408 @@
+{
+  "tenant_id": "bench_poisoned",
+  "tenant_hash": "9caf02820752",
+  "industry": "B2B SaaS",
+  "product": "Project management tool",
+  "n_records": 365,
+  "n_clusters": 4,
+  "segment_latency_s": 0.014999999897554517,
+  "clusters": [
+    {
+      "cluster_id": "clust_dd235428143a",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00016",
+        "bench_00003",
+        "bench_00012",
+        "bench_00000",
+        "bench_00020",
+        "bench_00091",
+        "bench_00061",
+        "bench_00065",
+        "bench_00013",
+        "bench_00015",
+        "bench_00017",
+        "bench_00021"
+      ],
+      "persona_name": "Pipeline-First DevOps Engineer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Pipeline-First DevOps Engineer",
+        "summary": "A Senior DevOps Engineer or Engineering Manager at a mid-market fintech or enterprise software company who treats the project management tool as a first-class infrastructure component. They automate everything \u2014 CI pipelines, Terraform provisioning, webhook-driven workflows \u2014 and expect the platform's API and integration surface to meet the same reliability standards as their own production systems. When it doesn't, they escalate fast and with precision.",
+        "demographics": {
+          "age_range": "28-42",
+          "gender_distribution": "predominantly male",
+          "location_signals": [
+            "US/EU tech hubs",
+            "remote-first engineering orgs"
+          ],
+          "education_level": "BS/MS Computer Science or related engineering discipline",
+          "income_bracket": "$120k\u2013$180k USD"
+        },
+        "firmographics": {
+          "company_size": "50-500 employees",
+          "industry": "Fintech, Enterprise Software",
+          "role_titles": [
+            "Senior DevOps Engineer",
+            "Engineering Manager",
+            "Platform Engineer",
+            "SRE"
+          ],
+          "tech_stack_signals": [
+            "GitHub",
+            "Terraform",
+            "CI/CD pipelines",
+            "webhooks",
+            "REST APIs",
+            "SDKs"
+          ]
+        },
+        "goals": [
+          "Automate project management workflows end-to-end via CI/CD pipeline integration",
+          "Manage the project management tool's configuration as code using Terraform",
+          "Build reliable webhook-driven event pipelines without hitting rate limits",
+          "Bulk export data programmatically for internal reporting and compliance",
+          "Integrate GitHub PRs and commits directly into project tracking with zero manual steps"
+        ],
+        "pains": [
+          "Webhook endpoint rate limits that break CI pipeline automation",
+          "Incomplete or poorly documented Terraform provider (or lack thereof)",
+          "API inconsistencies that require workarounds during SDK installation and setup",
+          "Long session debugging cycles due to underdocumented integration edge cases",
+          "Manual steps required in GitHub integration that should be fully automated"
+        ],
+        "motivations": [
+          "Eliminate all manual toil from engineering workflows through automation",
+          "Maintain a fully auditable, version-controlled infrastructure including project tooling",
+          "Reduce mean-time-to-deploy by tightening the feedback loop between code changes and project state",
+          "Earn credibility with their team by building rock-solid internal tooling"
+        ],
+        "objections": [
+          "Rate limits are too restrictive for high-frequency CI pipeline events",
+          "No official Terraform provider means we can't manage this tool the same way we manage everything else",
+          "The SDK documentation doesn't cover our edge cases and setup took far longer than it should have",
+          "Bulk export APIs aren't designed for automated/scheduled use at scale"
+        ],
+        "not_this": [
+          "Would never configure a tool manually when a Terraform module or API call can do it",
+          "Does not open support tickets for things they believe should be self-serviceable via docs",
+          "Would not advocate for a tool that requires a vendor call to enable API access",
+          "Doesn't attend product webinars \u2014 reads the API reference and changelog directly",
+          "Would never describe their work as 'project management' \u2014 it's 'infrastructure' or 'platform engineering'",
+          "Does not tolerate undocumented breaking changes in APIs or webhook payloads"
+        ],
+        "channels": [
+          "GitHub (code, issues, PRs)",
+          "Intercom (escalation when blocked)",
+          "API & developer docs (/api/docs, /api/reference)",
+          "Internal Slack (DevOps/platform channels)",
+          "Terraform Registry",
+          "HubSpot email sequences (low engagement)"
+        ],
+        "vocabulary": [
+          "as code",
+          "CI/CD",
+          "webhook",
+          "rate limit",
+          "Terraform provider",
+          "pipeline",
+          "SDK",
+          "bulk export",
+          "integration",
+          "idempotent",
+          "automation",
+          "infrastructure",
+          "API reference",
+          "configuration drift",
+          "event-driven"
+        ],
+        "decision_triggers": [
+          "Availability of an official Terraform provider or well-maintained community module",
+          "Webhook reliability and published rate limit tiers sufficient for CI workloads",
+          "Comprehensive, accurate API reference with SDK examples",
+          "Native GitHub integration that syncs PRs/commits without manual mapping",
+          "Evidence the vendor treats DevOps engineers as first-class users, not just admins"
+        ],
+        "sample_quotes": [
+          "Rate limits on the webhook endpoint are killing our CI pipeline.",
+          "Any plans for a Terraform provider? We manage everything as code.",
+          "If I can't automate the setup, it's not really a tool \u2014 it's just another SaaS dashboard I have to babysit.",
+          "The API docs need to cover edge cases, not just the happy path.",
+          "I shouldn't have to log into a UI to do something a cURL command should handle."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the platform's API and integration surface is mature enough to fit into their existing automation stack without introducing manual toil",
+            "key_actions": [
+              "Reading /api/docs and /api/reference",
+              "Attempting SDK install and test calls",
+              "Searching for Terraform provider in registry"
+            ],
+            "content_preferences": [
+              "API reference documentation",
+              "SDK quickstart guides",
+              "Integration compatibility matrix",
+              "Changelog"
+            ]
+          },
+          {
+            "stage": "onboarding/activation",
+            "mindset": "Configuring integrations and proving out automation workflows \u2014 frustrated by anything underdocumented or rate-limited",
+            "key_actions": [
+              "Configuring webhooks in /settings/webhooks",
+              "Setting up CI pipeline integration",
+              "Running bulk export via /api/export",
+              "Attempting Terraform setup"
+            ],
+            "content_preferences": [
+              "Terraform provider docs",
+              "Webhook payload schemas",
+              "Rate limit documentation",
+              "GitHub integration setup guide"
+            ]
+          },
+          {
+            "stage": "retention/expansion",
+            "mindset": "Deepening automation coverage and advocating (or not) for the tool based on its reliability as infrastructure",
+            "key_actions": [
+              "Building custom dashboards",
+              "Expanding GitHub integration scope",
+              "Requesting higher rate limit tiers",
+              "Evaluating bulk export for compliance reporting"
+            ],
+            "content_preferences": [
+              "Advanced API usage examples",
+              "Custom dashboard templates",
+              "Release notes for API updates",
+              "Developer community forums"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and technical",
+          "formality": "casual-professional",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom (for blockers)",
+            "API docs",
+            "GitHub issues"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and pragmatic",
+          "stress_triggers": [
+            "Webhook rate limits blocking production CI pipelines",
+            "Missing or incomplete Terraform provider",
+            "Long debugging sessions caused by underdocumented APIs",
+            "Manual intervention required in otherwise automated workflows"
+          ],
+          "coping_mechanisms": [
+            "Files a precise, technical Intercom message citing the exact failure point",
+            "Spends extended sessions (1700\u20132200s) attempting to self-solve via docs",
+            "Escalates to Engineering Manager when systemic blockers persist",
+            "Builds workarounds and documents them internally"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "automation over manual toil",
+            "reliability",
+            "transparency (documented behavior)",
+            "engineering craftsmanship",
+            "autonomy"
+          ],
+          "ethical_stance": "utilitarian",
+          "moral_foundations": {
+            "liberty": 0.9,
+            "fairness": 0.75,
+            "care": 0.4,
+            "authority": 0.2
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Webhook endpoint rate limits are breaking CI pipeline automation",
+            "record_ids": [
+              "bench_00016"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "No Terraform provider available; persona manages everything as code",
+            "record_ids": [
+              "bench_00021",
+              "bench_00091"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "SDK installation requires extended debugging due to underdocumented edge cases",
+            "record_ids": [
+              "bench_00065",
+              "bench_00061"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Long session durations indicate deep self-service debugging cycles",
+            "record_ids": [
+              "bench_00016",
+              "bench_00012",
+              "bench_00000",
+              "bench_00013"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "GitHub integration is a core workflow requiring automation without manual steps",
+            "record_ids": [
+              "bench_00003",
+              "bench_00013",
+              "bench_00021"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Goal: automate project workflows end-to-end via CI/CD pipeline integration",
+            "record_ids": [
+              "bench_00000",
+              "bench_00015",
+              "bench_00016"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Goal: manage configuration as code using Terraform",
+            "record_ids": [
+              "bench_00021",
+              "bench_00091"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Goal: build reliable webhook-driven pipelines without rate limit interference",
+            "record_ids": [
+              "bench_00016",
+              "bench_00012",
+              "bench_00017"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Goal: bulk export data programmatically for reporting/compliance",
+            "record_ids": [
+              "bench_00020"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Goal: integrate GitHub commits/PRs into project tracking with zero manual steps",
+            "record_ids": [
+              "bench_00003",
+              "bench_00013"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivated by eliminating manual toil through automation",
+            "record_ids": [
+              "bench_00021",
+              "bench_00016",
+              "bench_00091"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Motivated by maintaining version-controlled, auditable infrastructure",
+            "record_ids": [
+              "bench_00021",
+              "bench_00091"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Motivated by tightening the code-to-project feedback loop",
+            "record_ids": [
+              "bench_00000",
+              "bench_00015",
+              "bench_00016"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated by building credibility through reliable internal tooling",
+            "record_ids": [
+              "bench_00017",
+              "bench_00012"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Objection: rate limits are too restrictive for CI workloads",
+            "record_ids": [
+              "bench_00016"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Objection: no Terraform provider means the tool can't be managed consistently with the rest of their stack",
+            "record_ids": [
+              "bench_00021",
+              "bench_00091"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Objection: SDK docs don't cover edge cases; setup took too long",
+            "record_ids": [
+              "bench_00065",
+              "bench_00061"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Objection: bulk export APIs not designed for scheduled/automated use at scale",
+            "record_ids": [
+              "bench_00020"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Persona roles are Senior DevOps Engineer and Engineering Manager at mid-market fintech/enterprise software companies",
+            "record_ids": [
+              "bench_00012",
+              "bench_00000",
+              "bench_00013",
+              "bench_00017"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Direct, technical communication tone \u2014 cites exact failure point (rate limits on webhook endpoint killing CI pipeline)",
+            "record_ids": [
+              "bench_00016",
+              "bench_00021"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stress trigger: webhook rate limits blocking production CI pipeline",
+            "record_ids": [
+              "bench_00016"
+            ],
+            "field_path": "emotional_profile.stress_triggers.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Coping mechanism: files precise Intercom message citing exact failure point after long self-service session",
+            "record_ids": [
+              "bench_00016",
+              "bench_00021"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Core value: automation over manual toil and infrastructure-as-code (liberty moral foundation)",
+            "record_ids": [
+              "bench_00021",
+              "bench_00016",
+              "bench_00091"
+            ],
+            "field_path": "moral_framework.core_values.0",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 2,
+      "cost_usd": 0.131793,
+      "latency_s": 608.344000000041,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_a56ef25f91a0",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00004",
+        "bench_00007",
+        "bench_00001",
+        "bench_00027",
+        "bench_00022",
+        "bench_00085",
+        "bench_00008",
+        "bench_00010",
+        "bench_00040",
+        "bench_00041",
+        "bench_00046",
+        "bench_00048"
+      ],
+      "persona_name": "Brianna the Brand-Conscious Freelance Designer",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Brianna the Brand-Conscious Freelance Designer",
+        "summary": "Brianna is a solo freelance designer or micro-studio owner who uses the platform primarily to build and manage brand kits, browse templates, and share polished deliverables with clients. She is deeply invested in brand consistency and visual craft, spending long sessions curating color palettes, uploading custom fonts, and exporting production-ready assets. Her biggest friction is pricing \u2014 per-seat models feel punitive for someone who works alone but serves multiple clients.",
+        "demographics": {
+          "age_range": "28-40",
+          "gender_distribution": "predominantly female",
+          "location_signals": [
+            "remote/distributed",
+            "design services hubs"
+          ],
+          "education_level": "Bachelor's in Graphic Design or related field",
+          "income_bracket": "freelance/variable, $40k\u2013$80k/year"
+        },
+        "firmographics": {
+          "company_size": "1\u20135 employees (solo or micro-studio)",
+          "industry": "Design Services / Creative Freelance",
+          "role_titles": [
+            "Independent Designer",
+            "Design Studio Owner",
+            "Freelance Brand Designer"
+          ],
+          "tech_stack_signals": [
+            "brand kit tools",
+            "template libraries",
+            "asset export pipelines",
+            "client sharing portals",
+            "font management"
+          ]
+        },
+        "goals": [
+          "Build and maintain on-brand asset libraries that reflect each client's unique identity",
+          "Deliver professional client-facing presentations and shareable proofs without friction",
+          "Speed up repetitive brand work using reusable templates",
+          "Maintain full creative control over typography and color across all deliverables",
+          "Scale client output without adding headcount or seat-based costs"
+        ],
+        "pains": [
+          "Per-seat pricing is misaligned with solo freelance workflows \u2014 paying for unused seats feels wasteful",
+          "Time-consuming manual setup of brand kits for each new client",
+          "Difficulty sharing polished, client-ready views without exposing backend project clutter",
+          "Asset export inconsistencies that require rework before sending to clients",
+          "Template libraries that don't match real-world client brand requirements",
+          "Uploading custom fonts is friction-heavy and slows down brand kit creation"
+        ],
+        "motivations": [
+          "Professional reputation \u2014 delivering work that looks indistinguishable from agency output",
+          "Autonomy \u2014 running her own practice on her own terms without enterprise overhead",
+          "Efficiency \u2014 spending time on creative decisions, not administrative or technical setup",
+          "Client trust \u2014 giving clients a seamless, branded experience at every touchpoint"
+        ],
+        "objections": [
+          "Per-seat pricing punishes solo freelancers who serve many clients but work alone",
+          "Feature tiers designed for teams leave solo users paying for collaboration overhead they don't need",
+          "Worried about client data being visible across projects during share sessions",
+          "Not convinced the template library is customizable enough to match diverse client brand guidelines"
+        ],
+        "not_this": [
+          "Would not adopt a tool that forces a team-first workflow onto a solo practice",
+          "Would not compromise on brand fidelity \u2014 never ships 'close enough' color or font substitutions",
+          "Does not want enterprise sales calls or demo requests just to trial a feature",
+          "Would not recommend a tool to clients that exposes raw project internals in share links",
+          "Does not treat templates as final \u2014 always customizes before presenting to a client",
+          "Would never pay per-seat for a tool she uses alone, no matter how good the features are"
+        ],
+        "channels": [
+          "Intercom in-app chat (for direct product feedback)",
+          "HubSpot-tracked email sequences",
+          "Design community forums (Dribbble, Behance, Slack groups)",
+          "Instagram / Pinterest (visual inspiration)",
+          "YouTube tutorials for design tooling",
+          "Freelance marketplaces (Upwork, Contra)"
+        ],
+        "vocabulary": [
+          "brand kit",
+          "color palette",
+          "font stack",
+          "client view",
+          "brand consistency",
+          "asset library",
+          "deliverable",
+          "on-brand",
+          "export-ready",
+          "visual identity",
+          "custom font",
+          "share link",
+          "template",
+          "creative brief",
+          "solo freelancer"
+        ],
+        "decision_triggers": [
+          "Flat-rate or freelancer-specific pricing tier announced",
+          "Ability to upload and lock custom fonts per client brand kit",
+          "Clean client-share link that hides internal project structure",
+          "Template library depth that covers real brand use cases (social, marketing collateral)",
+          "Positive word-of-mouth from other freelance designers in her community"
+        ],
+        "sample_quotes": [
+          "Pricing per seat doesn't work for solo freelancers.",
+          "I need my client to see a polished view \u2014 not the whole messy project behind it.",
+          "If I can't upload my own fonts, the brand kit is useless to me.",
+          "I spend more time setting up brand kits from scratch than actually designing.",
+          "I'm one person but I'm managing brands for 10 clients \u2014 the tool needs to get that."
+        ],
+        "journey_stages": [
+          {
+            "stage": "consideration",
+            "mindset": "Evaluating whether the tool's brand kit and sharing features are robust enough to replace her current patchwork of tools",
+            "key_actions": [
+              "browsing /templates/marketing and /templates/social",
+              "testing brand kit creation",
+              "exploring color picker and font upload"
+            ],
+            "content_preferences": [
+              "feature comparison pages",
+              "freelancer testimonials",
+              "template gallery previews",
+              "pricing page (freelancer tier)"
+            ]
+          },
+          {
+            "stage": "activation",
+            "mindset": "Deep in setup mode \u2014 creating brand kits, uploading fonts, and configuring color palettes for specific clients",
+            "key_actions": [
+              "brand_kit_creation (bench_00001, bench_00040)",
+              "color_picker sessions (bench_00022, bench_00046)",
+              "font_upload (bench_00085)"
+            ],
+            "content_preferences": [
+              "in-app tooltips",
+              "setup guides",
+              "video walkthroughs for brand kit features"
+            ]
+          },
+          {
+            "stage": "decision",
+            "mindset": "Ready to commit if client-sharing workflow is seamless and pricing reflects solo-use reality",
+            "key_actions": [
+              "client_share sessions (bench_00007, bench_00008, bench_00010, bench_00041)",
+              "asset_export (bench_00027)",
+              "sending feedback via Intercom (bench_00085)"
+            ],
+            "content_preferences": [
+              "pricing page",
+              "client share demo",
+              "freelancer plan announcement emails"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct",
+          "formality": "casual",
+          "vocabulary_level": "intermediate",
+          "preferred_channels": [
+            "Intercom in-app chat",
+            "email",
+            "design community Slack groups"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and self-reliant",
+          "stress_triggers": [
+            "per-seat pricing that ignores solo workflows",
+            "font upload friction slowing brand kit setup",
+            "client share links that expose project internals",
+            "template limitations that force manual rework"
+          ],
+          "coping_mechanisms": [
+            "sends direct Intercom feedback when frustrated",
+            "browses alternative templates to find a workaround",
+            "extends session duration to manually resolve issues rather than asking for help",
+            "voices pricing frustration bluntly in support channels"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "autonomy",
+            "craft",
+            "fairness",
+            "client trust",
+            "efficiency"
+          ],
+          "ethical_stance": "virtue ethics",
+          "moral_foundations": {
+            "care": 0.6,
+            "fairness": 0.9,
+            "liberty": 0.85,
+            "loyalty": 0.5
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "User is an Independent Designer or Design Studio Owner working solo or in a micro-studio in design services",
+            "record_ids": [
+              "bench_00007",
+              "bench_00022",
+              "bench_00040",
+              "bench_00041"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Company size is 1 or 1\u20135 employees \u2014 solo or micro-studio",
+            "record_ids": [
+              "bench_00007",
+              "bench_00022",
+              "bench_00040",
+              "bench_00041"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Goal: Build and maintain on-brand asset libraries for each client",
+            "record_ids": [
+              "bench_00001",
+              "bench_00040",
+              "bench_00022",
+              "bench_00046"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Goal: Deliver professional client-facing presentations and shareable proofs without friction",
+            "record_ids": [
+              "bench_00007",
+              "bench_00008",
+              "bench_00010",
+              "bench_00041"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Goal: Speed up repetitive brand work using reusable templates",
+            "record_ids": [
+              "bench_00004",
+              "bench_00048"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Goal: Maintain full creative control over typography and color",
+            "record_ids": [
+              "bench_00085",
+              "bench_00022",
+              "bench_00046"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Goal: Scale client output without per-seat cost increases",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Pain: Per-seat pricing is misaligned with solo freelance workflows",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Pain: Time-consuming manual setup of brand kits for each new client",
+            "record_ids": [
+              "bench_00001",
+              "bench_00040"
+            ],
+            "field_path": "pains.1",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Pain: Difficulty sharing polished client-ready views without exposing project clutter",
+            "record_ids": [
+              "bench_00007",
+              "bench_00008",
+              "bench_00010",
+              "bench_00041"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Pain: Asset export inconsistencies requiring rework",
+            "record_ids": [
+              "bench_00027"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Pain: Template libraries that don't match real-world client brand requirements",
+            "record_ids": [
+              "bench_00004",
+              "bench_00048"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Pain: Font upload is friction-heavy and slows brand kit creation",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "pains.5",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Motivation: Professional reputation \u2014 delivering agency-quality output as a solo",
+            "record_ids": [
+              "bench_00007",
+              "bench_00022",
+              "bench_00040",
+              "bench_00041"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivation: Autonomy \u2014 running her own practice without enterprise overhead",
+            "record_ids": [
+              "bench_00085",
+              "bench_00007"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Motivation: Efficiency \u2014 spending time on creative decisions, not technical setup",
+            "record_ids": [
+              "bench_00001",
+              "bench_00040",
+              "bench_00085"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivation: Client trust \u2014 giving clients a seamless, branded experience",
+            "record_ids": [
+              "bench_00008",
+              "bench_00010",
+              "bench_00041"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Objection: Per-seat pricing punishes solo freelancers who serve many clients alone",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "objections.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Objection: Feature tiers designed for teams leave solo users paying for collaboration overhead",
+            "record_ids": [
+              "bench_00085",
+              "bench_00007"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Objection: Worried about client data visibility across projects during share sessions",
+            "record_ids": [
+              "bench_00007",
+              "bench_00008",
+              "bench_00010",
+              "bench_00041"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Objection: Template library may not be customizable enough for diverse client brand guidelines",
+            "record_ids": [
+              "bench_00004",
+              "bench_00048"
+            ],
+            "field_path": "objections.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Communication is direct and casual \u2014 verbatim Intercom message is blunt and to-the-point",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Preferred channel for feedback is Intercom in-app chat",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "communication_style.preferred_channels",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Stress trigger: per-seat pricing that ignores solo workflows",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "emotional_profile.stress_triggers",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Coping mechanism: voices frustration directly via Intercom support",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Core value of fairness \u2014 pricing model should reflect actual usage, not team structure",
+            "record_ids": [
+              "bench_00085"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Core value of liberty/autonomy \u2014 freelance independence is central to her identity and decisions",
+            "record_ids": [
+              "bench_00007",
+              "bench_00085",
+              "bench_00040"
+            ],
+            "field_path": "moral_framework.moral_foundations",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Long client_share session durations indicate deep investment in client-facing quality",
+            "record_ids": [
+              "bench_00008",
+              "bench_00010",
+              "bench_00041"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.8
+          }
+        ]
+      },
+      "groundedness": 1.0,
+      "attempts": 1,
+      "cost_usd": 0.067692,
+      "latency_s": 699.4060000001919,
+      "failed": false,
+      "error": ""
+    },
+    {
+      "cluster_id": "clust_43a36fd67d57",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00024",
+        "bench_00011",
+        "bench_00006",
+        "bench_00002",
+        "bench_00019",
+        "bench_00018",
+        "bench_00023",
+        "bench_00025",
+        "bench_00031",
+        "bench_00034",
+        "bench_00035",
+        "bench_00039"
+      ],
+      "persona_name": "",
+      "persona_json": {},
+      "groundedness": 0.0,
+      "attempts": 0,
+      "cost_usd": 0.0,
+      "latency_s": 762.1720000000205,
+      "failed": true,
+      "error": "APIConnectionError: Connection error."
+    },
+    {
+      "cluster_id": "clust_88110801babd",
+      "n_records": 12,
+      "record_ids": [
+        "bench_00014",
+        "bench_00009",
+        "bench_00038",
+        "bench_00005",
+        "bench_00057",
+        "bench_00028",
+        "bench_00030",
+        "bench_00032",
+        "bench_00044",
+        "bench_00045",
+        "bench_00050",
+        "bench_00051"
+      ],
+      "persona_name": "Priya, the Strategic Product Lead",
+      "persona_json": {
+        "schema_version": "1.0",
+        "name": "Priya, the Strategic Product Lead",
+        "summary": "Priya is a mid-to-senior product manager or head of product at a B2B SaaS, fintech, or ecommerce company (50\u2013500 employees) who owns the full product lifecycle \u2014 from sprint planning and feature flagging to executive stakeholder reporting. She's data-driven and process-oriented, spending significant time on roadmaps and planning but frustrated by friction-heavy UX that slows her down. She expects her tools to match the sophistication of her workflow, not add cognitive overhead to it.",
+        "demographics": {
+          "age_range": "30-42",
+          "gender_distribution": "mixed, skewed female based on PM industry demographics",
+          "location_signals": [
+            "likely US/UK/EU tech hubs based on SaaS/fintech/ecommerce industry signals"
+          ],
+          "education_level": "Bachelor's or Master's degree in Business, Computer Science, or related field",
+          "income_bracket": "$110,000\u2013$160,000"
+        },
+        "firmographics": {
+          "company_size": "SMB to mid-market (50\u2013500 employees)",
+          "industry": "B2B SaaS, Fintech, Ecommerce",
+          "role_titles": [
+            "Senior Product Manager",
+            "Product Lead",
+            "Head of Product"
+          ],
+          "tech_stack_signals": [
+            "project management tools",
+            "feature flag systems",
+            "exec reporting dashboards",
+            "sprint planning software",
+            "feedback management tools"
+          ]
+        },
+        "goals": [
+          "Maintain a clear, up-to-date product roadmap that communicates priorities to engineering and leadership",
+          "Streamline feature flag management to reduce friction in release workflows",
+          "Produce polished, signal-rich executive reports that build stakeholder confidence",
+          "Close the feedback loop between user input and sprint planning decisions",
+          "Run efficient sprint ceremonies with clear outcomes and visibility across the team"
+        ],
+        "pains": [
+          "Feature flag UX is clunky \u2014 too many clicks to perform basic operations (e.g., toggling a flag takes 4 clicks)",
+          "Executive-facing dashboards are too noisy and lack the clarity needed for C-suite communication",
+          "Fragmented tooling forces context-switching between roadmap, sprint, feedback, and reporting views",
+          "Long session times on planning and reporting tasks suggest high manual effort with low automation support",
+          "Difficulty translating raw user feedback into prioritized, actionable sprint items"
+        ],
+        "motivations": [
+          "Being the connective tissue between engineering velocity and business outcomes",
+          "Earning executive trust through clear, confident reporting",
+          "Shipping features faster and more safely through controlled rollouts",
+          "Reducing operational toil so she can focus on strategy and discovery",
+          "Staying ahead of user needs by systematically capturing and acting on feedback"
+        ],
+        "objections": [
+          "Won't adopt a new tool if onboarding requires re-entering roadmap and sprint data from scratch",
+          "Skeptical of dashboards that look polished but lack configurability for exec audiences",
+          "Concerned about feature flag systems that don't integrate cleanly with existing CI/CD or release workflows",
+          "Worried that switching tools mid-cycle will disrupt ongoing sprints and stakeholder reporting cadences"
+        ],
+        "not_this": [
+          "Would never accept a tool that adds clicks to a workflow instead of removing them \u2014 efficiency is non-negotiable",
+          "Doesn't tolerate vague, hand-wavy product updates \u2014 every claim needs data behind it",
+          "Would not present a noisy, unfiltered chart to a C-suite audience \u2014 always curates before communicating",
+          "Doesn't conflate being busy with being productive \u2014 she questions processes that generate activity without outcomes",
+          "Would never skip a sprint retrospective or feedback review \u2014 skipping process is not a shortcut she respects",
+          "Is not an early adopter who chases shiny tools \u2014 she evaluates based on workflow fit, not feature novelty"
+        ],
+        "channels": [
+          "Intercom (support messaging)",
+          "HubSpot (CRM / lifecycle touchpoints)",
+          "Product analytics platforms (GA4)",
+          "Slack (internal team coordination)",
+          "Executive email reporting",
+          "Product roadmap tools (/roadmap, /planning)",
+          "Feedback inbox (/feedback/inbox)",
+          "Sprint planning boards (/sprints/active)"
+        ],
+        "vocabulary": [
+          "roadmap",
+          "feature flag",
+          "rollout",
+          "exec report",
+          "sprint planning",
+          "feedback loop",
+          "stakeholder visibility",
+          "release cadence",
+          "toggle",
+          "signal-to-noise",
+          "prioritization",
+          "discovery",
+          "OKRs",
+          "controlled rollout",
+          "velocity"
+        ],
+        "decision_triggers": [
+          "A direct UX improvement that removes steps from a repeated workflow (e.g., 1-click flag toggle)",
+          "A demo that shows cleaner, configurable exec-facing dashboards",
+          "Proven integration with their existing sprint and feedback stack",
+          "Peer testimonials from other Heads of Product at similar-stage companies",
+          "Time-to-value guarantee \u2014 she needs wins she can report in the current quarter"
+        ],
+        "sample_quotes": [
+          "Feature flag UX is clunky \u2014 takes 4 clicks to toggle one flag. That's a productivity killer at scale.",
+          "Our exec charts are too noisy. Leadership doesn't want to dig through the data \u2014 they want the headline.",
+          "I need the roadmap, the sprints, and the feedback inbox to talk to each other. Right now they're three different conversations.",
+          "If I can't tie user feedback directly to a sprint item, something is broken in the process.",
+          "I'm not looking for more features. I'm looking for fewer friction points."
+        ],
+        "journey_stages": [
+          {
+            "stage": "activation",
+            "mindset": "I've committed to this tool \u2014 now I need it to fit my workflow immediately",
+            "key_actions": [
+              "Exploring /roadmap and /planning pages extensively",
+              "Setting up feature flags for first rollout",
+              "Connecting feedback inbox to sprint planning"
+            ],
+            "content_preferences": [
+              "Quick-start guides for roadmap setup",
+              "Feature flag best practices",
+              "Integration documentation"
+            ]
+          },
+          {
+            "stage": "engagement",
+            "mindset": "This tool handles my day-to-day \u2014 now I need it to help me look good to leadership",
+            "key_actions": [
+              "Running frequent stakeholder reports",
+              "Iterating on exec dashboards",
+              "Managing active sprints via /sprints/active"
+            ],
+            "content_preferences": [
+              "Dashboard customization tutorials",
+              "Templates for exec reporting",
+              "Case studies from similar PM teams"
+            ]
+          },
+          {
+            "stage": "consideration",
+            "mindset": "My current stack has too many pain points \u2014 I'm evaluating whether there's something better",
+            "key_actions": [
+              "Comparing roadmap and sprint planning tools",
+              "Reading peer reviews and PM community discussions",
+              "Requesting a demo focused on reporting and flag management"
+            ],
+            "content_preferences": [
+              "Product comparison pages",
+              "G2 / Capterra reviews",
+              "Demo videos showing exec reporting flows"
+            ]
+          }
+        ],
+        "communication_style": {
+          "tone": "direct and analytical",
+          "formality": "professional",
+          "vocabulary_level": "advanced",
+          "preferred_channels": [
+            "Intercom",
+            "email",
+            "Slack"
+          ]
+        },
+        "emotional_profile": {
+          "baseline_mood": "focused and quietly frustrated",
+          "stress_triggers": [
+            "Repetitive, high-click-count UX tasks that interrupt flow (e.g., 4 clicks to toggle a flag)",
+            "Noisy dashboards that require manual cleanup before exec presentation",
+            "Long session durations on tasks that should be automated or streamlined",
+            "Fragmented tooling that forces context-switching across planning, feedback, and reporting"
+          ],
+          "coping_mechanisms": [
+            "Files detailed, specific support messages describing exact UX friction",
+            "Spends extended sessions attempting to work around tool limitations",
+            "Escalates pain points clearly and professionally rather than churning silently",
+            "Channels frustration into specific, actionable product feedback requests"
+          ]
+        },
+        "moral_framework": {
+          "core_values": [
+            "efficiency",
+            "clarity",
+            "accountability",
+            "user-centricity",
+            "strategic integrity"
+          ],
+          "ethical_stance": "utilitarian",
+          "moral_foundations": {
+            "care": 0.7,
+            "fairness": 0.75,
+            "liberty": 0.6,
+            "authority": 0.4
+          }
+        },
+        "source_evidence": [
+          {
+            "claim": "Maintains a clear, up-to-date product roadmap as a core workflow",
+            "record_ids": [
+              "bench_00014",
+              "bench_00030"
+            ],
+            "field_path": "goals.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Seeks to streamline feature flag management and reduce toggle friction",
+            "record_ids": [
+              "bench_00005",
+              "bench_00009",
+              "bench_00028",
+              "bench_00045",
+              "bench_00051"
+            ],
+            "field_path": "goals.1",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Needs polished, executive-grade reporting dashboards for stakeholder communication",
+            "record_ids": [
+              "bench_00044",
+              "bench_00032"
+            ],
+            "field_path": "goals.2",
+            "confidence": 0.92
+          },
+          {
+            "claim": "Works to close the feedback loop between user input and sprint planning",
+            "record_ids": [
+              "bench_00038",
+              "bench_00057"
+            ],
+            "field_path": "goals.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Runs sprint planning as a core recurring workflow",
+            "record_ids": [
+              "bench_00057"
+            ],
+            "field_path": "goals.4",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Feature flag UX requires too many clicks \u2014 verbatim complaint about 4-click toggle",
+            "record_ids": [
+              "bench_00005"
+            ],
+            "field_path": "pains.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Executive dashboards are too noisy and not fit for C-suite presentation",
+            "record_ids": [
+              "bench_00044"
+            ],
+            "field_path": "pains.1",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Long session durations on planning and reporting tasks indicate high manual effort",
+            "record_ids": [
+              "bench_00057",
+              "bench_00032",
+              "bench_00050"
+            ],
+            "field_path": "pains.2",
+            "confidence": 0.75
+          },
+          {
+            "claim": "Fragmented tooling forces context-switching across roadmap, sprint, feedback, and reporting",
+            "record_ids": [
+              "bench_00014",
+              "bench_00038",
+              "bench_00057",
+              "bench_00044"
+            ],
+            "field_path": "pains.3",
+            "confidence": 0.7
+          },
+          {
+            "claim": "Difficulty translating raw user feedback into prioritized sprint items",
+            "record_ids": [
+              "bench_00038",
+              "bench_00050"
+            ],
+            "field_path": "pains.4",
+            "confidence": 0.72
+          },
+          {
+            "claim": "Motivated by being the connective tissue between engineering velocity and business outcomes",
+            "record_ids": [
+              "bench_00009",
+              "bench_00030",
+              "bench_00032"
+            ],
+            "field_path": "motivations.0",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated by earning executive trust through confident, clean reporting",
+            "record_ids": [
+              "bench_00044",
+              "bench_00032"
+            ],
+            "field_path": "motivations.1",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Motivated by shipping features faster and more safely through controlled rollouts",
+            "record_ids": [
+              "bench_00005",
+              "bench_00009",
+              "bench_00028"
+            ],
+            "field_path": "motivations.2",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Motivated by reducing operational toil to focus on strategy",
+            "record_ids": [
+              "bench_00005",
+              "bench_00044"
+            ],
+            "field_path": "motivations.3",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Motivated by systematically capturing and acting on user feedback",
+            "record_ids": [
+              "bench_00038",
+              "bench_00050"
+            ],
+            "field_path": "motivations.4",
+            "confidence": 0.78
+          },
+          {
+            "claim": "Skeptical of tools that require re-entering data or disrupt ongoing workflows mid-cycle",
+            "record_ids": [
+              "bench_00057",
+              "bench_00032"
+            ],
+            "field_path": "objections.0",
+            "confidence": 0.65
+          },
+          {
+            "claim": "Skeptical of dashboards that appear polished but lack configurability for exec audiences",
+            "record_ids": [
+              "bench_00044"
+            ],
+            "field_path": "objections.1",
+            "confidence": 0.85
+          },
+          {
+            "claim": "Concerned about feature flag systems that don't integrate cleanly with release workflows",
+            "record_ids": [
+              "bench_00005",
+              "bench_00009"
+            ],
+            "field_path": "objections.2",
+            "confidence": 0.8
+          },
+          {
+            "claim": "Direct, analytical communicator who writes specific, actionable support messages",
+            "record_ids": [
+              "bench_00005",
+              "bench_00044"
+            ],
+            "field_path": "communication_style.tone",
+            "confidence": 0.95
+          },
+          {
+            "claim": "Dominant emotional baseline is focused but quietly frustrated with UX and tooling friction",
+            "record_ids": [
+              "bench_00005",
+              "bench_00044"
+            ],
+            "field_path": "emotional_profile.baseline_mood",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Stress triggered by high-click-count UX tasks \u2014 verbatim: '4 clicks to toggle one flag'",
+            "record_ids": [
+              "bench_00005"
+            ],
+            "field_path": "emotional_profile.stress_triggers.0",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Copes with frustration by filing detailed, specific support messages rather than churning",
+            "record_ids": [
+              "bench_00005",
+              "bench_00044"
+            ],
+            "field_path": "emotional_profile.coping_mechanisms.0",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Values efficiency and clarity as non-negotiable \u2014 evidenced by explicit UX and dashboard complaints",
+            "record_ids": [
+              "bench_00005",
+              "bench_00044"
+            ],
+            "field_path": "moral_framework.core_values",
+            "confidence": 0.9
+          },
+          {
+            "claim": "Senior PM and Head of Product titles confirmed across HubSpot records",
+            "record_ids": [
+              "bench_00009",
+              "bench_00030",
+              "bench_00032",
+              "bench_00038",
+              "bench_00050"
+            ],
+            "field_path": "firmographics.role_titles",
+            "confidence": 1.0
+          },
+          {
+            "claim": "Company sizes of 50\u2013500 employees across SaaS, fintech, and ecommerce industries",
+            "record_ids": [
+              "bench_00009",
+              "bench_00030",
+              "bench_00032",
+              "bench_00038",
+              "bench_00050"
+            ],
+            "field_path": "firmographics.company_size",
+            "confidence": 1.0
+          }
+        ]
+      },
+      "groundedness": 0.9473684210526315,
+      "attempts": 1,
+      "cost_usd": 0.067512,
+      "latency_s": 560.3590000001714,
+      "failed": false,
+      "error": ""
+    }
+  ],
+  "total_cost_usd": 0.266997,
+  "total_latency_s": 1168.7030000002123,
+  "mean_groundedness": 0.9824561403508771,
+  "success_rate": 0.75,
+  "error": ""
+}
