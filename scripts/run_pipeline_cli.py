@@ -136,9 +136,13 @@ async def run(args: argparse.Namespace) -> dict:
         client = AsyncAnthropic(api_key=api_key)
         backend = AnthropicBackend(client=client, model=model)
 
+        # exp-4.21: enable the texting-register addendum via env flag.
+        # Default off = byte-identical to pre-4.21 pipeline runs.
+        humanize = os.environ.get("PERSONAS_HUMANIZE", "0") not in ("0", "false", "False", "")
+
         for cluster in clusters:
             try:
-                result = await synthesize(cluster, backend)
+                result = await synthesize(cluster, backend, humanize=humanize)
                 personas.append({
                     "cluster_id": cluster.cluster_id,
                     "persona": result.persona.model_dump(mode="json"),

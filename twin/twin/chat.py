@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Callable
 
 from anthropic import AsyncAnthropic
+
+from .humanize import HumanChunk, HumanizeConfig, humanize as _humanize
 
 
 @dataclass
@@ -17,6 +19,9 @@ class TwinReply:
     model_latency_ms: int = 0  # time spent inside the Anthropic API call
     artificial_delay_ms: int = 0  # additional sleep injected before return
     total_latency_ms: int = 0  # model_latency_ms + artificial_delay_ms
+    # exp-4.21: optional humanized chunk breakdown. None when humanize_config
+    # is not supplied to TwinChat, so existing callers see no change.
+    human_chunks: list[HumanChunk] | None = None
 
     @property
     def estimated_cost_usd(self) -> float:
@@ -114,11 +119,14 @@ class TwinChat:
         client: AsyncAnthropic,
         model: str = "claude-haiku-4-5-20251001",
         artificial_delay_ms: int | Callable[[str, int], int] | None = None,
+        humanize_config: HumanizeConfig | None = None,
     ) -> None:
         self.persona = persona
         self.client = client
         self.model = model
         self.artificial_delay_ms = artificial_delay_ms
+        # exp-4.21: opt-in post-processor. None => unchanged behavior.
+        self.humanize_config = humanize_config
         self.system_prompt = build_persona_system_prompt(persona)
 
     def _resolve_delay_ms(self, text: str, output_tokens: int) -> int:
@@ -154,6 +162,11 @@ class TwinChat:
         if delay_ms > 0:
             await asyncio.sleep(delay_ms / 1000.0)
         t2 = time.monotonic()
+
+        chunks: list[HumanChunk] | None = None
+        if self.humanize_config is not None:
+            chunks = _humanize(text_block, self.persona, self.humanize_config)
+
         return TwinReply(
             text=text_block,
             input_tokens=response.usage.input_tokens,
@@ -162,4 +175,5 @@ class TwinChat:
             model_latency_ms=int((t1 - t0) * 1000),
             artificial_delay_ms=delay_ms,
             total_latency_ms=int((t2 - t0) * 1000),
+            human_chunks=chunks,
         )

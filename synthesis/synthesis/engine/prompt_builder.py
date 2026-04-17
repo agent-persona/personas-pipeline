@@ -63,6 +63,48 @@ Example source_evidence entry:
 """
 
 
+# exp-4.21: optional humanize addendum. Appended to SYSTEM_PROMPT only when
+# build_system_prompt(humanize=True) is called. Default path keeps SYSTEM_PROMPT
+# byte-identical so all prior experiment runs, regression tests, and
+# groundedness metrics are unaffected.
+#
+# Why this is an addendum instead of edits to SYSTEM_PROMPT itself: the base
+# prompt is load-bearing (exp-2.06 pinned temp=0.0 here, exp-2.07 pinned field
+# order, exp-1.XX pinned schema width). Adding NEW rules is safer than editing
+# existing ones. Scope is deliberately narrow: only vocabulary and sample_quotes
+# (the voice carriers), not goals/pains/motivations (already evidence-bound).
+HUMANIZE_ADDENDUM = """\
+
+Voice register (applies to `vocabulary` and `sample_quotes` only):
+- `vocabulary` should list words this persona would actually TYPE in Slack, \
+Discord, or a text message — everyday, short, sometimes fragmented. Not \
+LinkedIn words. "yeah", "ugh", "nope", "fair", "lol", domain shorthand, \
+slang that fits their role — all OK. "paradigm", "leverage", "facilitate", \
+"synergy" — not OK unless the source records literally show them using those.
+- `sample_quotes` should read like things this persona has TEXTED or posted \
+casually, not testimonial copy. Fragments are fine. Lowercase starts are \
+fine. Typical length is one short sentence, not a polished paragraph. \
+Preserve grounding: quotes should still reflect what the source records \
+show this persona saying or plausibly extending from it.
+- All other fields (goals, pains, motivations, objections, moral_framework, \
+etc.) follow the same rules as before — evidence-grounded, schema-valid, \
+no change in structure.
+"""
+
+
+def build_system_prompt(humanize: bool = False) -> str:
+    """Return the synthesis system prompt, optionally with the humanize addendum.
+
+    humanize=False (default) → returns SYSTEM_PROMPT unchanged. All existing
+    callers and experiments see byte-identical output.
+    humanize=True → appends the texting-register addendum for vocabulary and
+    sample_quotes. Evidence rules and schema constraints are unaffected.
+    """
+    if humanize:
+        return SYSTEM_PROMPT + HUMANIZE_ADDENDUM
+    return SYSTEM_PROMPT
+
+
 def build_tool_definition(schema_cls: type = PersonaV1) -> dict:
     """Build the Claude tool definition from a persona schema class.
 
