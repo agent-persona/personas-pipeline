@@ -14,6 +14,7 @@ from .prompt_builder import (
     SYSTEM_PROMPT,
     build_messages,
     build_retry_messages,
+    build_system_prompt,
     build_tool_definition,
 )
 
@@ -58,6 +59,7 @@ async def synthesize(
     max_retries: int = MAX_RETRIES,
     schema_cls: type = PersonaV1,
     existing_personas: list[dict] | None = None,
+    humanize: bool = False,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
@@ -86,9 +88,11 @@ async def synthesize(
         else:
             messages = build_messages(cluster, existing_personas=existing_personas)
 
-        # Call the LLM
+        # Call the LLM — humanize=True appends a texting-register addendum
+        # for vocabulary/sample_quotes; default False keeps the prompt
+        # byte-identical to pre-4.21 runs.
         llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
+            system=build_system_prompt(humanize=humanize),
             messages=messages,
             tool=tool,
         )
