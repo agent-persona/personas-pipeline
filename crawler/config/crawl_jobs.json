@@ -1,0 +1,58 @@
+{
+  "jobs": [
+    {
+      "name": "reddit-webscraping-public-json",
+      "enabled": true,
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "feature_crawler.crawler.cli",
+        "crawl-reddit",
+        "--subreddit",
+        "webscraping",
+        "--output-dir",
+        "feature_crawler/data",
+        "--auth-mode",
+        "public-json",
+        "--sort",
+        "new",
+        "--limit",
+        "25",
+        "--comment-limit",
+        "128",
+        "--cursor-store",
+        "feature_crawler/data/cursors"
+      ]
+    },
+    {
+      "name": "linkedin-example-linkdapi",
+      "enabled": false,
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "feature_crawler.crawler.cli",
+        "crawl-linkedin",
+        "--url",
+        "https://www.linkedin.com/in/example-person/",
+        "--output-dir",
+        "feature_crawler/data",
+        "--mode",
+        "linkdapi",
+        "--collection-basis",
+        "consented",
+        "--scope",
+        "profile,activity,network",
+        "--activity-limit",
+        "25",
+        "--comment-limit",
+        "64",
+        "--network-limit",
+        "50",
+        "--max-pages",
+        "3",
+        "--cursor-store",
+        "feature_crawler/data/cursors"
+      ]
+    }
+  ]
+}

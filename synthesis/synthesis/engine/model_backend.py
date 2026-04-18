@@ -6,6 +6,11 @@ from typing import Protocol
 
 from anthropic import AsyncAnthropic
 
+try:
+    from openai import AsyncOpenAI
+except ImportError:  # pragma: no cover - optional dependency at runtime
+    AsyncOpenAI = None  # type: ignore[assignment]
+
 
 @dataclass
 class LLMResult:
@@ -26,6 +31,8 @@ class LLMResult:
             return (self.input_tokens * 15 + self.output_tokens * 75) / 1_000_000
         if "haiku" in self.model:
             return (self.input_tokens * 1 + self.output_tokens * 5) / 1_000_000
+        if "gpt-5-nano" in self.model:
+            return (self.input_tokens * 0.05 + self.output_tokens * 0.4) / 1_000_000
         return (self.input_tokens * 3 + self.output_tokens * 15) / 1_000_000
 
 
@@ -73,3 +80,62 @@ class AnthropicBackend:
             output_tokens=response.usage.output_tokens,
             model=self.model,
         )
+
+
+class OpenAIJsonBackend:
+    """OpenAI Responses backend that returns validated persona JSON."""
+
+    def __init__(self, client: AsyncOpenAI, model: str) -> None:
+        self.client = client
+        self.model = model
+
+    async def generate(
+        self,
+        system: str,
+        messages: list[dict],
+        tool: dict,
+    ) -> LLMResult:
+        if AsyncOpenAI is None:  # pragma: no cover - import guard
+            raise RuntimeError("openai package not installed")
+
+        response = await self.client.responses.create(
+            model=self.model,
+            instructions=(
+                f"{system}\n\n"
+                "Return only valid JSON. No markdown. No prose. "
+                "The JSON must match the supplied response schema."
+            ),
+            input=messages,
+            max_output_tokens=8000,
+            reasoning={"effort": "low"},
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": tool["name"],
+                    "description": tool["description"],
+                    "schema": tool["input_schema"],
+                    "strict": False,
+                },
+            },
+        )
+
+        text = response.output_text or "{}"
+        tool_input = _extract_first_json_object(text)
+        usage = response.usage
+        return LLMResult(
+            tool_input=tool_input,
+            input_tokens=getattr(usage, "input_tokens", 0) or 0,
+            output_tokens=getattr(usage, "output_tokens", 0) or 0,
+            model=self.model,
+        )
+
+
+def _extract_first_json_object(text: str) -> dict:
+    decoder = json.JSONDecoder()
+    start = text.find("{")
+    if start < 0:
+        raise json.JSONDecodeError("No JSON object found", text, 0)
+    parsed, _ = decoder.raw_decode(text[start:])
+    if not isinstance(parsed, dict):
+        raise json.JSONDecodeError("Top-level JSON value is not an object", text, start)
+    return parsed
