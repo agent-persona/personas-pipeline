@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -17,3 +19,10 @@ class SourceEvidence(BaseModel):
         le=1.0,
         description="How strongly the data supports this claim",
     )
+    source_url: str | None = None
+    platform: str | None = None
+    excerpt: str | None = None
+    observed_at: str | None = None
+    match_reason: str | None = None
+    match_signals: list[str] | None = None
+    status: Literal["used", "candidate", "blocked"] | None = None

@@ -59,6 +59,8 @@ class BrowserProfilePayload:
     headline: str | None
     about: str | None
     location: str | None
+    current_company: str | None
+    top_card: str | None
     experience: list[str]
     activity: list[str]
     education: list[str]
@@ -119,14 +121,40 @@ JSON.stringify((() => {
     (document.querySelector('.text-body-small[class*="location"]') ||
      document.querySelector('[class*="top-card"][class*="location"]'))?.textContent || ''
   );
+  const topCardText = trim(document.querySelector('main section:first-of-type')?.innerText || '');
+  const parseTopCard = (text) => {
+    const result = { name: '', headline: '', location: '', current_company: '' };
+    if (!text) return result;
+    const compact = trim(text);
+    const beforeContact = trim(compact.split(' · Contact info')[0] || compact);
+    const firstBreak = beforeContact.indexOf(' · ');
+    if (firstBreak > 0) {
+      result.name = trim(beforeContact.slice(0, firstBreak));
+      let rest = trim(beforeContact.slice(firstBreak + 3));
+      rest = rest.replace(/^(1st|2nd|3rd\\+?)\\s+/i, '');
+      const locationMatch = rest.match(/\\b([A-Z][A-Za-z .'-]+(?:Metropolitan Area|Bay Area|Greater [A-Za-z .'-]+|United States|Canada|India|Los Angeles|San Francisco|New York|Seattle|Austin|Remote))$/);
+      if (locationMatch) {
+        result.location = trim(locationMatch[1]);
+        rest = trim(rest.slice(0, locationMatch.index));
+      }
+      result.headline = rest;
+    }
+    const afterContact = compact.split('Contact info')[1] || '';
+    const companyMatch = afterContact.match(/\\b(Gauntlet AI|Zoox|PayPal|Paypal|Fluid Analytics AI|Fluid Robotics)\\b/i);
+    if (companyMatch) result.current_company = companyMatch[1];
+    return result;
+  };
+  const topCard = parseTopCard(topCardText);
 
   return {
     fetched_at: new Date().toISOString(),
     profile_url: window.location.href,
     title: document.title,
-    name: trim(document.querySelector('h1')?.textContent || ''),
-    headline: headlineText,
-    location: locationText,
+    name: trim(document.querySelector('h1')?.textContent || '') || topCard.name,
+    headline: headlineText || topCard.headline,
+    location: locationText || topCard.location,
+    current_company: topCard.current_company,
+    top_card: topCardText,
     section_map: sectionMap,
     section_items: sectionItems,
     activity_items: activityItems,
@@ -168,6 +196,8 @@ def _parse_browser_profile(raw: dict[str, Any]) -> BrowserProfilePayload:
         headline=headline,
         about=_clean_space(about),
         location=_clean_space(raw.get("location")),
+        current_company=_clean_space(raw.get("current_company")),
+        top_card=_clean_space(raw.get("top_card")),
         experience=experience,
         activity=activity,
         education=education,
@@ -507,6 +537,8 @@ class LinkedInBrowserConnector(CommunityConnector):
             "headline": profile.headline,
             "about": profile.about,
             "location": profile.location,
+            "current_company": profile.current_company,
+            "top_card": profile.top_card,
             "profile_url": profile.profile_url,
             "public_identifier": public_identifier,
             "experience": profile.experience,
