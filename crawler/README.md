@@ -9,12 +9,24 @@ them into a single `Record` shape that segmentation can read.
 crawler/
 ├── crawler/
 │   ├── base.py           # Connector ABC — extend to add a source
+│   ├── adapter.py        # Vendored bronze records -> flat segmentation records
+│   ├── feature_crawler/  # Vendored real crawler runtime and CLI
 │   ├── models.py         # Record — the normalized output contract
-│   ├── pipeline.py       # fetch_all() — runs every registered connector
+│   ├── pipeline.py       # fetch_all()/fetch_from_run()
 │   └── connectors/
 │       ├── ga4.py        # Mock GA4 events (engineer + designer clusters)
 │       ├── intercom.py   # Mock Intercom messages (lift into sample_quotes)
 │       └── hubspot.py    # Mock HubSpot contacts (firmographic context)
+├── config/
+│   └── crawl_jobs.json   # Vendored runtime scheduling config
+├── docs/
+│   └── feature_crawler/  # Vendored runtime docs
+├── scripts/
+│   └── feature_crawler/  # Vendored helper scripts
+└── tests/
+    ├── feature_crawler/  # Vendored runtime tests
+    └── test_adapter.py   # Segmentation seam tests
+├── .env.example
 └── pyproject.toml
 ```
 
@@ -49,10 +61,41 @@ records = fetch_all(tenant_id="tenant_acme_corp")
 print(len(records), records[0])
 ```
 
+## Real crawler compatibility
+
+The monorepo now vendors the standalone runtime under `crawler.feature_crawler`.
+It still emits bronze-style `account`, `thread`, `message`, `community`,
+`interaction`, `profile_snapshot`, and `tombstone` records.
+
+To keep segmentation unchanged, use the adapter seam:
+
+```python
+from crawler import fetch_from_run
+
+records = fetch_from_run(
+    "output/runs/linkedin-demo",
+    tenant_id="tenant_acme_corp",
+)
+```
+
+`fetch_from_run()` accepts either:
+
+- one mixed `.jsonl` file written by `crawler.feature_crawler.core.sink.JsonlSink`
+- a bronze run directory containing one or more `*.jsonl` files
+
+The adapter preserves the existing flat `Record` contract by deriving:
+
+- `user_id` from bronze actor ids
+- `behaviors` from thread/message/profile heuristics
+- `pages` from synthetic conversation/profile paths plus evidence URLs
+- `payload` as the original source-specific bronze payload
+
 ## Knobs you can turn
 
 - **Add a connector.** Subclass `Connector`, implement `fetch()`, return a
   list of `Record`s, register it in `crawler/pipeline.py::DEFAULT_CONNECTORS`.
+- **Use the vendored runtime.** Run `python -m crawler.feature_crawler.cli ...`
+  to write real JSONL output, then adapt it back with `fetch_from_run()`.
 - **Swap fixtures.** The three connectors ship with in-file mock data.
   Replace the constants (`_GA4_EVENTS`, `_INTERCOM_MESSAGES`, `_HUBSPOT_CONTACTS`)
   with larger fixtures to stress segmentation, or point them at disk files.
