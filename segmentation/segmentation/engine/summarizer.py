@@ -240,35 +240,59 @@ def _pick_representative_sample(
 #     prior behavior.
 
 
-# Heuristic fingerprints for bot / system / templated messages that shouldn't
-# be used to ground a human persona's voice. Matched case-insensitively.
+# Heuristic fingerprints for bot / system / templated / broadcast messages
+# that shouldn't be used to ground a human persona's voice.
+#
+# Segmentation-level filtering is a DEFENSIVE FALLBACK — the right home for
+# platform-aware filtering is the connector/crawler (which has is_bot,
+# is_admin, message_type signals). These heuristics catch the most common
+# cross-platform patterns so we don't silently regress on a new data source.
+#
+# Patterns are intentionally conservative — a handful of admin announcements
+# slipping through into the voice pool is better than filtering out real
+# peer chat. Callers can pass a custom is_bot_filter to extract_verbatim_samples
+# for platform-specific rules.
 _BOT_PATTERNS = (
-    r"\bhas\s+(joined|left)\s+the\s+(channel|server|group)\b",
+    # Join / leave / membership events (all chat platforms)
+    r"\bhas\s+(joined|left)\s+the\s+(channel|server|group|room|space|team)\b",
     r"\bpinned\s+a\s+message\b",
-    r"\bwelcome\s+to\s+(the\s+)?(channel|server|community|workspace)\b",
+    r"\bwelcome\s+to\s+(the\s+)?(channel|server|community|workspace|discord|slack|team|room|subreddit)\b",
     r"\byou('?ve|\s+have)\s+been\s+(added|invited)\s+to\b",
-    r"\bthis\s+channel\s+is\s+for\b",
+    r"\bthis\s+(channel|room|space|thread)\s+is\s+for\b",
     r"\brule\s+(violation|enforcement)\b",
-    r"^@?(system|admin|mod|moderator|bot)\b",
-    r"\bauto-?(reply|response|generated)\b",
-    r"^\s*\[?\s*(bot|system|auto)\s*[\]:]",
-    # @channel / @here / @everyone broadcasts are admin/moderator announcements
-    # with formal register, not representative peer chat. Exclude from voice
-    # pool — found empirically on real Slack crawls where these were clustering
-    # together and crowding out real peer messages.
-    # No \b after the keyword: Slack export often concatenates without a
-    # space, e.g. "@hereOffice hours will begin..." or "@channelHere's the..."
-    # so word-boundary anchors would miss them.
-    r"@(channel|here|everyone)",
+    r"^@?(system|admin|mod|moderator|bot|automod|automoderator)\b",
+    r"\bauto-?(reply|response|generated|moderated|modded)\b",
+    r"^\s*\[?\s*(bot|system|auto|mod)\s*[\]:]",
+    # Platform-wide mention broadcasts across chat platforms. Distinctive
+    # enough tokens that unanchored matching (no \b) is safe — crawl exports
+    # often concatenate without a space, e.g. "@hereOffice hours will begin..."
+    #   Slack:   @channel, @here, @everyone
+    #   Discord: @here, @everyone, (role mentions @&role)
+    #   Teams:   @channel, @team, @general
+    #   Matrix:  @room
+    #   Zulip:   @all, @everyone
+    #   Forums:  @staff, @everyone
+    r"@(channel|here|everyone|room|all|team|general|staff)",
+    # Generic, distinctive announcement openers across platforms and email.
+    # Keep conservative — don't match "Hey team" or "hi everyone" peer chat.
+    r"^\s*(attention|psa|fyi|reminder|friendly\s+reminder|heads\s+up)\s*[:!,]",
+    r"^\s*public\s+service\s+announcement\b",
+    r"^\s*\[?\s*(announcement|update|important|urgent)\s*[\]:]",
 )
 _BOT_RE = re.compile("|".join(_BOT_PATTERNS), re.IGNORECASE)
 
 
 def _is_likely_bot_or_system(text: str) -> bool:
-    """True if the text smells like a bot or system message."""
+    """True if the text smells like a bot or system message.
+
+    Platform-agnostic defensive filter. For platform-aware logic (checking
+    author.is_bot flags, message_type enums, role-based filtering), do it
+    at the connector/crawler layer and pass cleaner records down.
+    """
     if _BOT_RE.search(text):
         return True
-    # All-caps announcements (>= 80% of alphabetic chars are uppercase)
+    # All-caps announcements (>= 80% of alphabetic chars are uppercase).
+    # Length gate ensures short acronyms ("API", "SDK") don't false-positive.
     letters = [c for c in text if c.isalpha()]
     if len(letters) >= 20:
         upper = sum(1 for c in letters if c.isupper())
@@ -289,8 +313,19 @@ def _iter_string_values(obj: object):
             yield from _iter_string_values(item)
 
 
-def _candidate_texts(records: list[RawRecord]) -> list[str]:
-    """Pull all usable text strings from record payloads, deduped."""
+def _candidate_texts(
+    records: list[RawRecord],
+    is_bot_filter=None,
+) -> list[str]:
+    """Pull all usable text strings from record payloads, deduped.
+
+    is_bot_filter: optional callable (text: str) -> bool. When provided,
+    replaces the default heuristic filter — connectors can pass a
+    platform-aware filter that uses e.g. author-is-bot flags or
+    message-type enums they've already extracted at ingestion. When
+    None, falls back to _is_likely_bot_or_system defensive heuristics.
+    """
+    filter_fn = is_bot_filter if is_bot_filter is not None else _is_likely_bot_or_system
     seen: set[str] = set()
     out: list[str] = []
     for r in records:
@@ -298,7 +333,7 @@ def _candidate_texts(records: list[RawRecord]) -> list[str]:
             text = value.strip()
             if not (VERBATIM_MIN_LEN <= len(text) <= VERBATIM_MAX_LEN):
                 continue
-            if _is_likely_bot_or_system(text):
+            if filter_fn(text):
                 continue
             if text in seen:
                 continue
@@ -396,13 +431,21 @@ def _pick_style_coherent(
     return [candidates[i] for i in chosen_indices]
 
 
-def _extract_verbatim_samples(records: list[RawRecord], k: int) -> list[str]:
+def _extract_verbatim_samples(
+    records: list[RawRecord],
+    k: int,
+    is_bot_filter=None,
+) -> list[str]:
     """Extract k style-coherent verbatim voice samples from a cluster's records.
 
     Empty list when cluster has no text-bearing records — callers handle as
     "no voice signal available."
+
+    is_bot_filter: optional callable (text: str) -> bool for connectors
+    that want to inject platform-specific filtering. Falls back to the
+    default defensive heuristics when None.
     """
-    candidates = _candidate_texts(records)
+    candidates = _candidate_texts(records, is_bot_filter=is_bot_filter)
     if not candidates:
         return []
     return _pick_style_coherent(candidates, k)

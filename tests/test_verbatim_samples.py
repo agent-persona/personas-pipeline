@@ -85,6 +85,74 @@ def test_bot_filter_catches_channel_broadcasts():
     )
 
 
+def test_bot_filter_catches_cross_platform_broadcasts():
+    """@room (Matrix), @all (Zulip), @team (MS Teams), @staff (forums)."""
+    assert _is_likely_bot_or_system("@room maintenance starting in 10 minutes")
+    assert _is_likely_bot_or_system("@all please stop using legacy endpoints")
+    assert _is_likely_bot_or_system("@team new onboarding flow is live")
+    assert _is_likely_bot_or_system("@staff escalation needed here please")
+
+
+def test_bot_filter_catches_announcement_openers():
+    """Distinctive announcement prefixes that show up across platforms."""
+    assert _is_likely_bot_or_system("Attention: the meeting has moved to 3pm.")
+    assert _is_likely_bot_or_system("FYI: we're rolling out the new feature tomorrow.")
+    assert _is_likely_bot_or_system("PSA: password reset required for all accounts.")
+    assert _is_likely_bot_or_system("Heads up: expect slow API responses tonight.")
+    assert _is_likely_bot_or_system("[Announcement] New cohort starts Monday")
+    assert _is_likely_bot_or_system("Reminder: submit your MVPs by EOD Friday")
+    # Natural usage should pass through
+    assert not _is_likely_bot_or_system("fyi i switched to supabase, magic links work now")
+    assert not _is_likely_bot_or_system("just a heads up, the demo is on tuesday not wednesday")
+
+
+def test_bot_filter_catches_membership_events_cross_platform():
+    """Join/leave events across chat platforms use different nouns."""
+    assert _is_likely_bot_or_system("@alice has joined the room")
+    assert _is_likely_bot_or_system("bob has joined the space")
+    assert _is_likely_bot_or_system("carol has joined the team")
+    assert _is_likely_bot_or_system("Welcome to the subreddit! Please read the rules.")
+    assert _is_likely_bot_or_system("Welcome to the discord server!")
+
+
+def test_candidate_texts_accepts_custom_filter():
+    """Connectors can inject platform-aware filters (is_bot, role-based, etc.)
+    that override the default heuristics."""
+    records = [
+        _slack_record("r1", "a normal peer message passing the length filter fine"),
+        _slack_record("r2", "another normal message also long enough for the filter"),
+        _slack_record("r3", "a message from a specific author to skip"),
+    ]
+    # Custom filter: reject messages mentioning "author to skip"
+    custom = lambda t: "author to skip" in t
+    texts = _candidate_texts(records, is_bot_filter=custom)
+    assert len(texts) == 2
+    assert all("author to skip" not in t for t in texts)
+
+
+def test_extract_respects_custom_filter():
+    """End-to-end: custom filter propagates through _extract_verbatim_samples."""
+    records = [
+        _slack_record(f"r{i}", f"this is peer message number {i} with real content in it")
+        for i in range(5)
+    ] + [
+        _slack_record("admin", "OFFICIAL: maintenance at 2am UTC, please plan accordingly"),
+    ]
+    # Default filter does NOT match "OFFICIAL:" — let's verify
+    default_samples = _extract_verbatim_samples(records, k=6)
+    assert any("OFFICIAL" in s for s in default_samples), (
+        "default filter shouldn't match 'OFFICIAL:' prefix"
+    )
+    # Custom filter rejecting OFFICIAL:
+    custom_samples = _extract_verbatim_samples(
+        records, k=6,
+        is_bot_filter=lambda t: t.startswith("OFFICIAL:"),
+    )
+    assert not any("OFFICIAL" in s for s in custom_samples), (
+        "custom filter should exclude OFFICIAL: prefix"
+    )
+
+
 def test_bot_filter_lets_real_messages_through():
     assert not _is_likely_bot_or_system(
         "hey, just wrapped up that webhook issue. the retry logic was broken."
