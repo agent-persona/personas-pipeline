@@ -1,0 +1,246 @@
+{
+  "experiment": "exp-7.01-oss-bench-fullpipe",
+  "tenant": "tenant_acme_corp",
+  "synth_model": "claude-haiku-4-5-20251001",
+  "judge_model": "claude-haiku-4-5-20251001",
+  "clusters": [
+    {
+      "cluster_id": "clust_7dc89b8e9f89",
+      "summary": {
+        "cluster_size": 4,
+        "top_behaviors": [
+          "api_setup",
+          "technical_role",
+          "webhook_config",
+          "github_integration",
+          "custom_dashboard",
+          "team_invite",
+          "terraform_setup",
+          "graphql_question"
+        ],
+        "top_pages": [
+          "/api/docs",
+          "/settings/webhooks",
+          "/integrations/github",
+          "/settings/integrations",
+          "/api/reference",
+          "/dashboards/custom",
+          "/team/manage",
+          "/integrations/slack"
+        ],
+        "conversion_rate": null,
+        "avg_session_duration_seconds": null,
+        "top_referrers": [],
+        "extra": {
+          "n_records": 19,
+          "source_breakdown": {
+            "ga4": 11,
+            "intercom": 4,
+            "hubspot": 4
+          }
+        }
+      }
+    },
+    {
+      "cluster_id": "clust_914dfd0f6510",
+      "summary": {
+        "cluster_size": 4,
+        "top_behaviors": [
+          "template_browsing",
+          "creative_role",
+          "color_picker",
+          "asset_export",
+          "client_share",
+          "comment_threading",
+          "brand_kit_creation",
+          "white_label_request"
+        ],
+        "top_pages": [
+          "/templates/marketing",
+          "/brand-kit/colors",
+          "/assets/library",
+          "/share/client-view",
+          "/share/comments",
+          "/brand-kit"
+        ],
+        "conversion_rate": null,
+        "avg_session_duration_seconds": null,
+        "top_referrers": [],
+        "extra": {
+          "n_records": 19,
+          "source_breakdown": {
+            "ga4": 11,
+            "intercom": 4,
+            "hubspot": 4
+          }
+        }
+      }
+    }
+  ],
+  "ours_shipped": [
+    {
+      "persona_file": "persona_00.json",
+      "name": "Dev-First Engineering Lead",
+      "groundedness": 1.0,
+      "cost_usd": 0.058387
+    },
+    {
+      "persona_file": "persona_01.json",
+      "name": "The Time-Conscious Creative Entrepreneur",
+      "groundedness": 1.0,
+      "cost_usd": 0.02006
+    }
+  ],
+  "pgw_results": [
+    {
+      "cluster_id": "clust_7dc89b8e9f89",
+      "persona": {
+        "name": "Alex Chen",
+        "age": 32,
+        "occupation": "Senior DevOps Engineer",
+        "background": "Works at a fintech company with 50-200 employees where infrastructure automation and system integration are critical. Has deep technical expertise and is responsible for setting up and maintaining development tooling and CI/CD pipelines.",
+        "personality": "Detail-oriented and pragmatic, focused on solving integration challenges and automating workflows. Values well-documented APIs and provides constructive technical feedback to improve product quality.",
+        "plans": [
+          "Integrate the project management tool with GitHub for automated workflow tracking",
+          "Set up webhooks and Terraform configurations to automate team provisioning and project setup",
+          "Build custom dashboards to monitor project metrics and team performance",
+          "Evaluate and potentially improve GraphQL API implementation for better schema design"
+        ],
+        "motivations": [
+          "Reduce manual configuration and setup time through API-driven automation",
+          "Enable seamless integration between the project management tool and existing development infrastructure",
+          "Improve team collaboration by centralizing project visibility across tools",
+          "Ensure robust and well-designed APIs that support advanced use cases"
+        ]
+      },
+      "cost_usd": 0.002012,
+      "input_tokens": 602,
+      "output_tokens": 282,
+      "error": null
+    },
+    {
+      "cluster_id": "clust_914dfd0f6510",
+      "persona": {
+        "name": "Maya",
+        "age": 32,
+        "occupation": "Freelance Brand Designer",
+        "background": "Maya runs a solo design services business and works with multiple clients on branding projects. She bills clients hourly and is highly conscious of time efficiency in her workflow.",
+        "personality": "Maya is pragmatic and ROI-focused, viewing tools through the lens of billable hours saved. She's collaborative with clients and values streamlined communication and professional presentation.",
+        "plans": [
+          "Expand her freelance client base by offering white-labeled deliverables",
+          "Reduce project turnaround time to increase hourly billable capacity",
+          "Build reusable brand kits and templates to accelerate future projects",
+          "Improve client collaboration and feedback loops"
+        ],
+        "motivations": [
+          "Time savings directly translate to increased income",
+          "Ability to present professional, branded client experiences",
+          "Streamlined asset management and template reuse",
+          "White-label capabilities to offer premium services"
+        ]
+      },
+      "cost_usd": 0.001873,
+      "input_tokens": 608,
+      "output_tokens": 253,
+      "error": null
+    }
+  ],
+  "judged_ours": [
+    {
+      "cluster_id": "clust_7dc89b8e9f89",
+      "persona_name": "Dev-First Engineering Lead",
+      "scores": {
+        "specificity": 4,
+        "plausibility": 5,
+        "actionability": 5,
+        "evidence_bind": 5,
+        "comment": "Highly concrete persona grounded in observed technical behaviors (API/webhook/Terraform/GraphQL usage), internally consistent with senior infrastructure mindset, and directly actionable for product decisions around API completeness and automation capabilities."
+      },
+      "judge_cost_usd": 0.00113,
+      "judge_raw": "```json\n{\n  \"specificity\": 4,\n  \"plausibility\": 5,\n  \"actionability\": 5,\n  \"evidence_bind\": 5,\n  \"comment\": \"Highly concrete persona grounded in observed technical behaviors (API/webhook/Terraform/GraphQL usage), internally consistent with senior infrastructure mindset, and directly actionable for product decisions around API completeness and automation capabilities.\"\n}\n```"
+    },
+    {
+      "cluster_id": "clust_914dfd0f6510",
+      "persona_name": "The Time-Conscious Creative Entrepreneur",
+      "scores": {
+        "specificity": 4,
+        "plausibility": 5,
+        "actionability": 5,
+        "evidence_bind": 4,
+        "comment": "Well-grounded persona with strong behavioral alignment to cluster (templates, assets, white-label, client-share, brand-kit), concrete hourly-billing context, and specific feature requests traceable to recorded behaviors."
+      },
+      "judge_cost_usd": 0.00111,
+      "judge_raw": "```json\n{\n  \"specificity\": 4,\n  \"plausibility\": 5,\n  \"actionability\": 5,\n  \"evidence_bind\": 4,\n  \"comment\": \"Well-grounded persona with strong behavioral alignment to cluster (templates, assets, white-label, client-share, brand-kit), concrete hourly-billing context, and specific feature requests traceable to recorded behaviors.\"\n}\n```"
+    }
+  ],
+  "judged_pgw": [
+    {
+      "cluster_id": "clust_7dc89b8e9f89",
+      "persona_name": "Alex Chen",
+      "scores": {
+        "specificity": 4,
+        "plausibility": 5,
+        "actionability": 5,
+        "evidence_bind": 5,
+        "comment": "Highly concrete persona directly grounded in observed technical behaviors (API setup, webhook config, GitHub integration, Terraform, GraphQL) with clear motivations and plans that map directly to cluster activities."
+      },
+      "judge_cost_usd": 0.001053,
+      "judge_raw": "```json\n{\n  \"specificity\": 4,\n  \"plausibility\": 5,\n  \"actionability\": 5,\n  \"evidence_bind\": 5,\n  \"comment\": \"Highly concrete persona directly grounded in observed technical behaviors (API setup, webhook config, GitHub integration, Terraform, GraphQL) with clear motivations and plans that map directly to cluster activities.\"\n}\n```"
+    },
+    {
+      "cluster_id": "clust_914dfd0f6510",
+      "persona_name": "Maya",
+      "scores": {
+        "specificity": 4,
+        "plausibility": 5,
+        "actionability": 5,
+        "evidence_bind": 4,
+        "comment": "Well-grounded persona with strong alignment to observed behaviors (brand kit creation, white-label requests, template browsing, client sharing); minor gap is lack of specific tool pain points or feature requests that would deepen evidence binding."
+      },
+      "judge_cost_usd": 0.00105,
+      "judge_raw": "```json\n{\n  \"specificity\": 4,\n  \"plausibility\": 5,\n  \"actionability\": 5,\n  \"evidence_bind\": 4,\n  \"comment\": \"Well-grounded persona with strong alignment to observed behaviors (brand kit creation, white-label requests, template browsing, client sharing); minor gap is lack of specific tool pain points or feature requests that would deepen evidence binding.\"\n}\n```"
+    }
+  ],
+  "schema_metrics": {
+    "ours": [
+      {
+        "cluster_id": "clust_0f900dd0afca",
+        "populated_fields": 10,
+        "has_source_evidence": true,
+        "n_source_evidence": 23,
+        "n_sample_quotes": 5,
+        "n_goals": 5,
+        "n_pains": 5
+      },
+      {
+        "cluster_id": "clust_d2e5842fe02e",
+        "populated_fields": 10,
+        "has_source_evidence": true,
+        "n_source_evidence": 20,
+        "n_sample_quotes": 5,
+        "n_goals": 5,
+        "n_pains": 5
+      }
+    ],
+    "pgw": [
+      {
+        "cluster_id": "clust_7dc89b8e9f89",
+        "populated_fields": 7,
+        "has_source_evidence": false,
+        "n_source_evidence": 0,
+        "n_sample_quotes": 0,
+        "n_goals": 4,
+        "n_pains": 0
+      },
+      {
+        "cluster_id": "clust_914dfd0f6510",
+        "populated_fields": 7,
+        "has_source_evidence": false,
+        "n_source_evidence": 0,
+        "n_sample_quotes": 0,
+        "n_goals": 4,
+        "n_pains": 0
+      }
+    ]
+  }
+}
