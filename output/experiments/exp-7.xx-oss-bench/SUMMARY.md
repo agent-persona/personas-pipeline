@@ -12,7 +12,7 @@ results under `output/experiments/exp-7.0{1..4}*/`.
 | Exp | Compared | One-line result |
 |---|---|---|
 | [7.01](../exp-7.01-oss-bench-fullpipe/FINDINGS.md) | **ours** vs `persona-generation-workflow` (DIS'24, LLM-summarizing++) | narrative judge ties (4.5/5 both); schema fidelity heavily favors ours (21.5 vs 0 `source_evidence` rows); pgw-port is ~20× cheaper for equal narrative quality |
-| [7.02](../exp-7.02-oss-bench-twin/FINDINGS.md) | **ours** vs TinyTroupe-style port | *(pending: results will populate after exp-7.02 run completes)* |
+| [7.02](../exp-7.02-oss-bench-twin/FINDINGS.md) | **ours** vs TinyTroupe-style port | ours `in_character` 4.80 vs 4.20; `prompt_type_handled` 5.00 vs 4.30; **0 vs 4 replies** break character as AI; both refuse literal jailbreaks (0 each) |
 | [7.03](../exp-7.03-oss-bench-coverage/FINDINGS.md) | **ours** personas vs 100 sampled from `persona-hub` | paired per-record win-rate for ours: 58%; mean-max-sim gap +0.012 (small but real; 34.2% coverage@0.20 vs 31.6% for persona-hub with 50× more personas) |
 | [7.04](../exp-7.04-oss-bench-segment/intrinsic_FINDINGS.md) intrinsic | **ours-jaccard** vs BERTopic vs Top2Vec vs kmeans-emb | on 8-user corpus, ours/bertopic/kmeans-emb all 100% coverage / 2 clusters / cross-method ARI 1.0 (shuffled); BERTopic order-sensitive (ARI 0.774 vs ours on unshuffled order, see downstream); Top2Vec fails on tiny corpus |
 | [7.04](../exp-7.04-oss-bench-segment/downstream_FINDINGS.md) downstream | same clusters → same synthesis | when synthesis succeeds, all methods ground=1.0; 3/6 runs failed identically across methods due to harness adapter bug (not a segmentation signal) |
@@ -24,7 +24,7 @@ results under `output/experiments/exp-7.0{1..4}*/`.
 | Ingest behavioral records | crawler + mock connectors | persona-generation-workflow (CSV only) | strictly broader |
 | Behavioral segmentation | greedy Jaccard on behavior sets | BERTopic / kmeans-emb / persona-generation-workflow k-means | **matches on golden set (ARI 1.0 shuffled)**; order-insensitive where BERTopic isn't |
 | Grounded synthesis (`source_evidence`) | PersonaV1 with 21.5 evidence rows avg | *no OSS comparator ships this* | **qualitatively unique**; pgw-port/TinyTroupe/persona-hub all 0 |
-| Twin runtime (boundary / refusal / meta) | TwinChat with explicit system-prompt protections | *(pending exp-7.02)* | — |
+| Twin runtime (boundary / refusal / meta) | TwinChat with explicit system-prompt protections | TinyTroupe-style vanilla persona-in-prompt | **0 vs 4** character breaks as AI on meta/boundary/jailbreak prompts; +0.60 in-character score |
 | Evaluation harness | groundedness / judge rubric / golden set | DeepEval (generic) | **persona-specific** metrics the others lack |
 | Logged experiments | `output/experiments/` now includes exp-7.01–7.04 | none | — |
 
@@ -36,10 +36,10 @@ at the end of each run:
 - exp-7.04 intrinsic: $0.00 (no LLM)
 - exp-7.03: $0.00 (no LLM)
 - exp-7.04 downstream: $0.2092
-- exp-7.01: ~$0.01 (pgw synthesis 2x + judge 4x)
-- exp-7.02: *(pending — capped at ~$3.00)*
+- exp-7.01: ~$0.01 (pgw synthesis 2× + judge 4×)
+- exp-7.02: $0.1026 (40 twin replies + 40 judge calls)
 
-Running under the $15 session ceiling.
+**Total session spend: ~$0.32** against the $15 session ceiling and your $20 top-up.
 
 ## What these benchmarks do and don't prove
 
@@ -53,12 +53,16 @@ Running under the $15 session ceiling.
   matches modern topic modelers (exp-7.04 intrinsic, cross-method ARI 1.0).
 - Grounded personas cover a tenant's records better than 50× more
   ungrounded samples from a generic persona pool (exp-7.03).
+- The TwinChat system-prompt protections are measurably load-bearing:
+  4 character breaks in 20 tt-port replies vs 0 in ours on identical
+  prompts (exp-7.02). Both systems correctly refuse literal jailbreaks,
+  so the delta comes from the meta/boundary prompts, not raw safety.
 
 **Don't prove:**
 - How our pipeline scales to larger corpora (38 records is small).
-- How our twin handles a full adversarial prompt suite (exp-7.02 uses 10
-  prompts × 2 personas — enough for signal, not for significance).
 - Segmentation quality differences on datasets where methods actually
   diverge (this tenant is too clean to discriminate them on intrinsic).
+- Twin-runtime behavior at statistical significance (20 prompts per
+  system is enough for signal, not for a tight confidence interval).
 
 See each experiment's `FINDINGS.md` for honest per-run caveats.

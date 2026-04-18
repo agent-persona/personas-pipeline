@@ -70,9 +70,25 @@ Comparators (linked once here, referenced by short name in the table):
 | MIT-licensed / self-host | **yes** | yes | yes | yes (Apache-2.0) | yes | yes |
 
 Every row has exactly one "yes" in the **personas-pipeline** column. No other
-column has yes in more than three rows. Head-to-head benchmarks against the
-strongest comparators per row live at `output/experiments/exp-7.01`…`exp-7.04`
-once run.
+column has yes in more than three rows.
+
+Head-to-head benchmarks against the strongest comparators per row ran live
+on this branch — see [`output/experiments/exp-7.xx-oss-bench/SUMMARY.md`](output/experiments/exp-7.xx-oss-bench/SUMMARY.md)
+for the one-line-per-experiment rollup, or the per-experiment `FINDINGS.md`
+under `output/experiments/exp-7.0{1..4}*/`. Selected numbers:
+
+- **vs `persona-generation-workflow` port** (exp-7.01): narrative-judge ties
+  (4.5/5 both sides), but schema fidelity favors ours heavily — 21.5 vs 0
+  `source_evidence` rows per persona.
+- **vs TinyTroupe-style port** (exp-7.02): 20 prompts × 2 personas each.
+  Ours 0 character breaks as AI, tt-port 4 breaks; in-character score 4.80
+  vs 4.20; both correctly refuse literal jailbreaks.
+- **vs `persona-hub`** (exp-7.03): paired per-record win-rate 58% for ours
+  using 2 personas against 100 sampled persona-hub archetypes.
+- **vs BERTopic + Top2Vec + kmeans-emb** (exp-7.04): on `tenant_acme_corp`
+  ours/BERTopic/kmeans-emb all reach 100% coverage and cross-method
+  ARI 1.0 on shuffled input; BERTopic is order-sensitive (ARI drops to 0.774
+  on natural order); Top2Vec fails on the 8-doc corpus.
 
 ---
 
