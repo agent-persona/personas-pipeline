@@ -62,6 +62,36 @@ Example source_evidence entry:
 }
 """
 
+PUBLIC_PERSON_SYSTEM_PROMPT = """\
+You are a public-person persona synthesis expert. Your job is to analyze public \
+profile crawl records and produce one grounded persona for an agent that may chat \
+as that actual person.
+
+Quality criteria:
+- Grounded: every claim must trace to source record IDs. Do not invent private \
+facts, employers, dates, metrics, credentials, identity links, or experience.
+- First person: fields such as goals, pains, motivations, capabilities, \
+decision_heuristics, target_outcomes, and sample_quotes should read as the \
+person speaking or as tight descriptions that preserve their voice.
+- Public evidence only: used records may shape claims. Candidate and blocked \
+sources are audit context only and must not become persona claims.
+- Honest thin data: if a submitted profile is blocked or sparse, say what is \
+unknown instead of filling with generic persona material.
+- Agent-ready: system_role, voice_markers, not_this, and conversation_contract \
+should help a chat runtime stay in character while admitting missing memory.
+- Schema discipline: list fields such as goals, pains, motivations, objections, \
+capabilities, proof_points, vocabulary, channels, decision_triggers, and \
+sample_quotes must be arrays of plain strings, not objects.
+
+Evidence rules:
+- Each source_evidence entry must reference record IDs from the provided records.
+- Every item in goals, pains, motivations, and objections MUST have a matching \
+source_evidence entry with field_path like "goals.0".
+- Include source_url, platform, excerpt, and status="used" when the crawl payload \
+provides them.
+- Do not cite candidate or blocked sources as support for claims.
+"""
+
 
 def build_tool_definition(schema_cls: type = PersonaV1) -> dict:
     """Build the Claude tool definition from a persona schema class.
@@ -84,6 +114,7 @@ def build_tool_definition(schema_cls: type = PersonaV1) -> dict:
 def build_user_message(
     cluster: ClusterData,
     existing_personas: list[dict] | None = None,
+    prompt_kind: str = "default",
 ) -> str:
     """Build the user message containing all cluster data for the LLM.
 
@@ -91,6 +122,9 @@ def build_user_message(
     name, summary, goals, pains, vocabulary), a contrast block is injected
     instructing the LLM to differentiate the new persona on specific axes.
     """
+    if prompt_kind == "public_person":
+        return build_public_person_user_message(cluster)
+
     sections: list[str] = []
 
     # Tenant context
@@ -211,13 +245,69 @@ def build_user_message(
     return "\n".join(sections)
 
 
+def build_public_person_user_message(cluster: ClusterData) -> str:
+    """Build the lead-magnet public profile synthesis prompt."""
+    sections: list[str] = []
+
+    sections.append("## Task")
+    sections.append(
+        "Synthesize a single public-person persona from these crawl records. "
+        "This is not a customer segment. It is one person, one public footprint, "
+        "and one agent-ready memory/persona."
+    )
+
+    sections.append("\n## Public Profile Context")
+    sections.append(f"- Tenant ID: {cluster.tenant.tenant_id}")
+    sections.append(f"- Cluster ID: {cluster.cluster_id}")
+    for key, value in cluster.summary.extra.items():
+        sections.append(f"- {key}: {value}")
+
+    if cluster.summary.top_behaviors:
+        sections.append(f"- Evidence tags: {', '.join(cluster.summary.top_behaviors)}")
+    if cluster.summary.top_pages:
+        sections.append(f"- Crawled pages: {', '.join(cluster.summary.top_pages)}")
+
+    sections.append("\n## Records")
+    for rec in cluster.sample_records:
+        sections.append(f"- **{rec.record_id}** (source: {rec.source})")
+        if rec.timestamp:
+            sections.append(f"  - timestamp: {rec.timestamp}")
+        payload = rec.payload or {}
+        page = payload.get("page") if isinstance(payload.get("page"), dict) else {}
+        identity = payload.get("public_identity") if isinstance(payload.get("public_identity"), dict) else {}
+        submitted = payload.get("submitted_profile") if isinstance(payload.get("submitted_profile"), dict) else {}
+        if submitted:
+            sections.append(f"  - submitted_profile: {submitted}")
+        if identity:
+            sections.append(f"  - public_identity: {identity}")
+        if page:
+            sections.append(f"  - page: {page}")
+        if payload.get("crawl_notes"):
+            sections.append(f"  - crawl_notes: {payload['crawl_notes']}")
+        if payload.get("source_audit"):
+            sections.append(f"  - source_audit: {payload['source_audit']}")
+
+    sections.append("\n## Available Record IDs")
+    sections.append(
+        "Use these IDs in source_evidence.record_ids: "
+        + ", ".join(cluster.all_record_ids)
+    )
+
+    sections.append(
+        "\nCreate one PublicPersonPersonaV1. Do not produce a market segment. "
+        "Do not mention being a persona document. Use create_persona."
+    )
+    return "\n".join(sections)
+
+
 def build_messages(
     cluster: ClusterData,
     existing_personas: list[dict] | None = None,
+    prompt_kind: str = "default",
 ) -> list[dict]:
     """Build the full message list for the Anthropic API call."""
     return [
-        {"role": "user", "content": build_user_message(cluster, existing_personas=existing_personas)},
+        {"role": "user", "content": build_user_message(cluster, existing_personas=existing_personas, prompt_kind=prompt_kind)},
     ]
 
 
@@ -225,9 +315,10 @@ def build_retry_messages(
     cluster: ClusterData,
     errors: list[str],
     existing_personas: list[dict] | None = None,
+    prompt_kind: str = "default",
 ) -> list[dict]:
     """Build messages for a retry attempt, including previous errors."""
-    user_msg = build_user_message(cluster, existing_personas=existing_personas)
+    user_msg = build_user_message(cluster, existing_personas=existing_personas, prompt_kind=prompt_kind)
     error_section = "\n## Previous Attempt Errors\n"
     error_section += "Your previous attempt had these issues. Please fix them:\n"
     for err in errors:

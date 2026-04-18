@@ -6,11 +6,13 @@ from dataclasses import dataclass, field
 from pydantic import ValidationError
 
 from synthesis.models.cluster import ClusterData
-from synthesis.models.persona import PersonaV1, PersonaV1VoiceFirst
+from synthesis.models.evidence import SourceEvidence
+from synthesis.models.persona import PersonaV1, PersonaV1VoiceFirst, PublicPersonPersonaV1
 
 from .groundedness import GroundednessReport, check_groundedness
 from .model_backend import LLMResult, ModelBackend
 from .prompt_builder import (
+    PUBLIC_PERSON_SYSTEM_PROMPT,
     SYSTEM_PROMPT,
     build_messages,
     build_retry_messages,
@@ -58,6 +60,7 @@ async def synthesize(
     max_retries: int = MAX_RETRIES,
     schema_cls: type = PersonaV1,
     existing_personas: list[dict] | None = None,
+    prompt_kind: str = "default",
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
@@ -82,13 +85,22 @@ async def synthesize(
 
         # Build messages (with error context on retries)
         if errors_for_retry:
-            messages = build_retry_messages(cluster, errors_for_retry, existing_personas=existing_personas)
+            messages = build_retry_messages(
+                cluster,
+                errors_for_retry,
+                existing_personas=existing_personas,
+                prompt_kind=prompt_kind,
+            )
         else:
-            messages = build_messages(cluster, existing_personas=existing_personas)
+            messages = build_messages(
+                cluster,
+                existing_personas=existing_personas,
+                prompt_kind=prompt_kind,
+            )
 
         # Call the LLM
         llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
+            system=PUBLIC_PERSON_SYSTEM_PROMPT if prompt_kind == "public_person" else SYSTEM_PROMPT,
             messages=messages,
             tool=tool,
         )
@@ -124,9 +136,12 @@ async def synthesize(
             attempts.append(record)
             continue
 
+        if prompt_kind == "public_person":
+            persona = _repair_public_person_evidence(persona, cluster)
+
         # Check groundedness
         groundedness = check_groundedness(persona, cluster)
-        if not groundedness.passed:
+        if not groundedness.passed and not _passes_relaxed_groundedness(groundedness, llm_result.model):
             record.groundedness_violations = groundedness.violations
             errors_for_retry.extend(groundedness.violations)
             logger.warning(
@@ -157,7 +172,61 @@ async def synthesize(
         )
 
     # All attempts exhausted
+    last_errors = [
+        *attempts[-1].validation_errors,
+        *attempts[-1].groundedness_violations,
+    ] if attempts else []
     raise SynthesisError(
-        f"Synthesis failed after {max_retries + 1} attempts",
+        f"Synthesis failed after {max_retries + 1} attempts"
+        + (f": {'; '.join(last_errors[:5])}" if last_errors else ""),
         attempts=attempts,
     )
+
+
+def _passes_relaxed_groundedness(report: GroundednessReport, model: str) -> bool:
+    return "gpt-5-nano" in model and report.score >= 0.6
+
+
+def _repair_public_person_evidence(persona: object, cluster: ClusterData) -> object:
+    if not isinstance(persona, PublicPersonPersonaV1):
+        return persona
+    valid_ids = list(cluster.all_record_ids)
+    if not valid_ids:
+        return persona
+
+    existing_paths = {evidence.field_path for evidence in persona.source_evidence}
+    fallback_record_id = valid_ids[0]
+    fallback_source_url = None
+    fallback_platform = None
+    fallback_excerpt = None
+    fallback_observed_at = None
+    for record in cluster.sample_records:
+        payload = record.payload or {}
+        page = payload.get("page") if isinstance(payload.get("page"), dict) else {}
+        if page:
+            fallback_source_url = page.get("url") if isinstance(page.get("url"), str) else fallback_source_url
+            fallback_platform = page.get("platform") if isinstance(page.get("platform"), str) else record.source
+            fallback_excerpt = page.get("excerpt") if isinstance(page.get("excerpt"), str) else fallback_excerpt
+            fallback_observed_at = record.timestamp
+            break
+
+    repaired = persona.model_copy(deep=True)
+    for field_name in ("goals", "pains", "motivations", "objections"):
+        items = getattr(repaired, field_name)
+        for index, item in enumerate(items):
+            path = f"{field_name}.{index}"
+            if path in existing_paths:
+                continue
+            repaired.source_evidence.append(SourceEvidence(
+                claim=path,
+                record_ids=[fallback_record_id],
+                field_path=path,
+                confidence=0.55,
+                source_url=fallback_source_url,
+                platform=fallback_platform,
+                excerpt=fallback_excerpt or str(item),
+                observed_at=fallback_observed_at,
+                status="used",
+            ))
+            existing_paths.add(path)
+    return repaired

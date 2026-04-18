@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import json
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from .evidence import SourceEvidence
 
@@ -15,6 +16,15 @@ class Demographics(BaseModel):
     )
     education_level: str | None = None
     income_bracket: str | None = None
+
+    @field_validator("age_range", "gender_distribution", mode="before")
+    @classmethod
+    def _coerce_scalar_strings(cls, value: object) -> str:
+        if isinstance(value, str):
+            return value
+        if value is None:
+            return "unknown"
+        return str(value)
 
 
 class Firmographics(BaseModel):
@@ -110,8 +120,10 @@ class PersonaV1(BaseModel):
     summary: str = Field(
         description="2-3 sentence overview of who this persona is",
     )
-    demographics: Demographics
-    firmographics: Firmographics
+    demographics: Demographics = Field(
+        default_factory=lambda: Demographics(age_range="unknown", gender_distribution="unknown", location_signals=[]),
+    )
+    firmographics: Firmographics = Field(default_factory=Firmographics)
     goals: list[str] = Field(min_length=2, max_length=8)
     pains: list[str] = Field(min_length=2, max_length=8)
     motivations: list[str] = Field(min_length=2, max_length=6)
@@ -152,6 +164,158 @@ class PersonaV1(BaseModel):
         description="Core values and ethical stance. Inferred from what this persona cares about — language of fairness, autonomy, efficiency, etc.",
     )
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+
+
+class PublicPersonPersonaV1(BaseModel):
+    """Public profile persona extension used by lead magnet generation.
+
+    This mirrors the SaaS TypeScript public persona contract instead of the
+    customer-segment schema's psychological fields.
+    """
+
+    schema_version: Literal["1.0"] = "1.0"
+    name: str = Field(description="The public person's name or public handle")
+    summary: str = Field(description="2-3 sentence evidence-bound overview")
+    system_role: str = Field(
+        description="First-person role/purpose inferred from public evidence, not a document label",
+    )
+    demographics: Demographics
+    firmographics: Firmographics
+    capabilities: list[str] = Field(
+        min_length=1,
+        max_length=8,
+        description="First-person capabilities grounded in public work, writing, projects, or profile text",
+    )
+    proof_points: list[str] = Field(
+        min_length=1,
+        max_length=8,
+        description="Concrete public receipts that support who this person is and what they do",
+    )
+    decision_heuristics: list[str] = Field(
+        min_length=1,
+        max_length=8,
+        description="How this person appears to make technical, product, or work decisions",
+    )
+    target_outcomes: list[str] = Field(
+        min_length=1,
+        max_length=6,
+        description="Likely outcomes this person is trying to create, stated in first person when possible",
+    )
+    voice_markers: list[str] = Field(
+        default_factory=lambda: ["First person; stay grounded in public evidence and say when memory is missing."],
+        min_length=1,
+        max_length=8,
+        description="Observed voice/register/cadence markers from public writing or profile text",
+    )
+    not_this: list[str] = Field(
+        default_factory=lambda: ["Do not invent private facts, metrics, roles, or identity links."],
+        min_length=1,
+        max_length=8,
+    )
+    conversation_contract: list[str] = Field(
+        default_factory=lambda: ["Answer in first person and ground claims in public evidence."],
+        min_length=1,
+        max_length=8,
+        description="Rules for chatting as this person without inventing private facts",
+    )
+    goals: list[str] = Field(min_length=1, max_length=8)
+    pains: list[str] = Field(min_length=1, max_length=8)
+    motivations: list[str] = Field(min_length=1, max_length=6)
+    objections: list[str] = Field(min_length=1, max_length=6)
+    channels: list[str] = Field(min_length=1, max_length=8)
+    vocabulary: list[str] = Field(min_length=1, max_length=15)
+    decision_triggers: list[str] = Field(min_length=1, max_length=6)
+    sample_quotes: list[str] = Field(min_length=1, max_length=5)
+    journey_stages: list[JourneyStage] = Field(min_length=1, max_length=5)
+    source_evidence: list[SourceEvidence] = Field(min_length=3)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _fill_public_person_required_lists(cls, data: object) -> object:
+        if not isinstance(data, dict):
+            return data
+        defaults = {
+            "capabilities": ["Public capabilities should be inferred only from used public records."],
+            "proof_points": ["Used public crawl records are the available proof points."],
+            "decision_heuristics": ["Prefer evidence grounded in public profile and activity records."],
+            "target_outcomes": ["Keep agent responses grounded in public work and writing."],
+            "voice_markers": ["Use first person and admit missing memory when public records are thin."],
+            "not_this": ["Do not invent private facts, metrics, roles, or identity links."],
+            "conversation_contract": ["Answer in first person and ground claims in public evidence."],
+            "goals": ["Represent the public profile accurately from used records."],
+            "pains": ["Thin or blocked public records can leave useful memory incomplete."],
+            "motivations": ["Keep the public persona useful without adding private claims."],
+            "objections": ["Do not trust claims that lack used public record support."],
+            "channels": ["linkedin"],
+            "vocabulary": ["public evidence"],
+            "decision_triggers": ["Used public source records."],
+            "sample_quotes": ["I can only speak from the public records available here."],
+            "journey_stages": [{
+                "stage": "awareness",
+                "mindset": "evidence-bound",
+                "key_actions": ["review used public records"],
+                "content_preferences": ["public profile evidence"],
+            }],
+        }
+        for key, fallback in defaults.items():
+            value = data.get(key)
+            if value is None or value == []:
+                data[key] = fallback
+        return data
+
+    @field_validator(
+        "capabilities",
+        "proof_points",
+        "decision_heuristics",
+        "target_outcomes",
+        "voice_markers",
+        "not_this",
+        "conversation_contract",
+        "goals",
+        "pains",
+        "motivations",
+        "objections",
+        "channels",
+        "vocabulary",
+        "decision_triggers",
+        "sample_quotes",
+        mode="before",
+    )
+    @classmethod
+    def _coerce_public_person_string_list(cls, value: object) -> list[str]:
+        if value is None:
+            return []
+        if isinstance(value, list):
+            items: list[str] = []
+            for item in value:
+                items.extend(_coerce_public_person_string_values(item))
+            return items
+        return _coerce_public_person_string_values(value)
+
+
+def _coerce_public_person_string_values(value: object) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, dict):
+        for key in ("text", "value", "claim", "goal", "pain", "motivation", "objection", "quote", "name"):
+            nested = value.get(key)
+            if isinstance(nested, str) and nested.strip():
+                return [nested]
+        if value and all(str(key).isdigit() for key in value.keys()):
+            return [_coerce_public_person_string(item) for _key, item in sorted(value.items(), key=lambda pair: int(str(pair[0])))]
+    return [_coerce_public_person_string(value)]
+
+
+def _coerce_public_person_string(value: object) -> str:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        for key in ("text", "value", "claim", "goal", "pain", "motivation", "objection", "quote", "name"):
+            nested = value.get(key)
+            if isinstance(nested, str) and nested.strip():
+                return nested
+        return json.dumps(value, ensure_ascii=False, sort_keys=True)
+    return str(value)
 
 
 class PersonaV1VoiceFirst(BaseModel):
