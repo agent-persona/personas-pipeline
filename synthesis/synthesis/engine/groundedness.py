@@ -7,6 +7,7 @@ from synthesis.models.persona import PersonaV1
 
 # Fields that require at least one source_evidence entry
 EVIDENCE_REQUIRED_FIELDS = ("goals", "pains", "motivations", "objections")
+EVIDENCE_REQUIRED_FIELDS_V2 = EVIDENCE_REQUIRED_FIELDS + ("emotional_triggers",)
 
 # Sub-objects that require at least one evidence entry rooted in them
 PSYCHOLOGICAL_REQUIRED_PREFIXES = (
@@ -30,6 +31,7 @@ class GroundednessReport:
 def check_groundedness(
     persona: PersonaV1,
     cluster: ClusterData,
+    evidence_fields: tuple[str, ...] | None = None,
 ) -> GroundednessReport:
     """Run deterministic groundedness checks on a synthesized persona.
 
@@ -61,7 +63,7 @@ def check_groundedness(
 
     total_required = 0
     covered = 0
-    for field_name in EVIDENCE_REQUIRED_FIELDS:
+    for field_name in (evidence_fields if evidence_fields is not None else EVIDENCE_REQUIRED_FIELDS):
         items = getattr(persona, field_name)
         for idx in range(len(items)):
             total_required += 1

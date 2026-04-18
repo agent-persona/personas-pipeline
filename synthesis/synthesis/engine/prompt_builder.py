@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from synthesis.models.cluster import ClusterData
-from synthesis.models.persona import PersonaV1
+from synthesis.models.persona import PersonaV1, PersonaV2
 
 SYSTEM_PROMPT = """\
 You are a persona synthesis expert. Your job is to analyze behavioral data from a \
@@ -335,6 +335,115 @@ def build_retry_messages(
 ) -> list[dict]:
     """Build messages for a retry attempt, including previous errors."""
     user_msg = build_user_message(cluster, existing_personas=existing_personas, prompt_kind=prompt_kind)
+    error_section = "\n## Previous Attempt Errors\n"
+    error_section += "Your previous attempt had these issues. Please fix them:\n"
+    for err in errors:
+        error_section += f"- {err}\n"
+    error_section += "\nPlease try again, addressing all errors above."
+
+    return [
+        {"role": "user", "content": error_section + "\n\n" + user_msg},
+    ]
+
+
+# ---------------------------------------------------------------------------
+# Humanized (V2) prompt variants
+# ---------------------------------------------------------------------------
+
+HUMANIZED_SYSTEM_PROMPT = """\
+You are a persona synthesis expert. Your job is to analyze behavioral data from a \
+customer cluster and produce a single, richly detailed persona that a product marketer \
+and a data scientist would both trust.
+
+Quality criteria:
+- **Grounded**: Every claim must trace back to specific source records. Use the \
+record IDs provided in the data to populate source_evidence entries.
+- **Distinctive**: The persona should feel like a real individual, not a generic \
+average. Use specific vocabulary, concrete quotes, and sharp motivations.
+- **Actionable**: Goals, pains, and objections should be specific enough to inform \
+product and marketing decisions.
+- **Consistent**: Demographics, firmographics, vocabulary, and quotes should all \
+describe the same coherent person.
+
+Evidence rules:
+- Each entry in source_evidence must reference at least one record_id from the \
+provided sample records.
+- The field_path must use dot notation pointing to the persona field the evidence \
+supports (e.g. "goals.0", "pains.2", "motivations.1").
+- Every item in goals, pains, motivations, objections, and emotional_triggers MUST \
+have a corresponding source_evidence entry.
+- Confidence should reflect how directly the data supports the claim (1.0 = verbatim \
+from data, 0.5 = reasonable inference).
+
+Example source_evidence entry:
+{
+  "claim": "Wants to reduce manual data entry by 50%",
+  "record_ids": ["rec_0042", "rec_0087"],
+  "field_path": "goals.0",
+  "confidence": 0.85
+}
+
+Additional quality criteria for humanized personas:
+
+- **Human-sounding**: The persona should read as if a real person described themselves, not \
+as an AI-generated profile. Use contractions. Vary sentence length — mix short punchy \
+statements with longer flowing ones. Include hedges ("I think", "probably", "honestly") \
+where natural. Avoid formal connectives ("Furthermore", "Additionally", "Moreover") — \
+prefer "That said", "Here's the thing", "Look". Use specific anecdotes over abstractions.
+
+New fields guidance:
+
+- **backstory**: Write 3-5 sentences in first person. Include one concrete professional \
+origin moment (e.g., "I got into DevOps after spending two years manually deploying \
+builds at a startup that kept catching fire"). Ground the backstory in observed \
+behaviors and firmographic data. Connect it to the persona's current goals and pains.
+
+- **speech_patterns**: Extract 2-6 distinctive verbal habits from vocabulary and sample \
+quotes. Include at least one discourse marker ("That said", "Here's the thing", "Look"), \
+one hedging pattern ("I think", "probably", "not sure but"), and characteristic sentence \
+starters or rhetorical questions this person uses.
+
+- **emotional_triggers**: Derive 2-5 situations that provoke strong reactions from pains \
+and motivations. Each must be traceable to source records. Frame as specific scenarios, \
+not abstract categories (e.g., "When a vendor's API documentation is wrong and I waste \
+half a day debugging" not "Poor documentation").
+
+- **tone**: One line combining register with affect. Should be consistent with vocabulary \
+and speech patterns. E.g., "Direct and slightly impatient, uses tech jargon casually" or \
+"Warm but skeptical, prefers concrete proof over promises".
+"""
+
+
+def build_humanized_tool_definition() -> dict:
+    """Build the Claude tool definition from the PersonaV2 JSON schema."""
+    return {
+        "name": "create_persona_v2",
+        "description": (
+            "Create a structured humanized persona from the analyzed cluster data. "
+            "All fields are required and must be grounded in the provided source records."
+        ),
+        "input_schema": PersonaV2.model_json_schema(),
+    }
+
+
+def build_humanized_messages(cluster: ClusterData) -> list[dict]:
+    """Build the full message list for a humanized (V2) synthesis call."""
+    user_msg = build_user_message(cluster)
+    user_msg += (
+        "\n\nSynthesize a single humanized persona from this data. "
+        "Use the create_persona_v2 tool to structure your output."
+    )
+    return [
+        {"role": "user", "content": user_msg},
+    ]
+
+
+def build_humanized_retry_messages(
+    cluster: ClusterData,
+    errors: list[str],
+) -> list[dict]:
+    """Build messages for a humanized retry attempt, including previous errors."""
+    user_msg = build_user_message(cluster)
     error_section = "\n## Previous Attempt Errors\n"
     error_section += "Your previous attempt had these issues. Please fix them:\n"
     for err in errors:
