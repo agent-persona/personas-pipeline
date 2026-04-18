@@ -1,0 +1,98 @@
+{
+  "experiment": "exp-7.04-oss-bench-segment-intrinsic",
+  "tenant": "tenant_acme_corp",
+  "n_users": 8,
+  "n_records": 38,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "results": [
+    {
+      "method": "ours-jaccard",
+      "coverage_pct": 1.0,
+      "n_clusters": 2,
+      "stability_ari_mean": 1.0,
+      "stability_ari_per_run": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "per_run_n_clusters": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "error": null
+    },
+    {
+      "method": "bertopic",
+      "coverage_pct": 1.0,
+      "n_clusters": 2,
+      "stability_ari_mean": 1.0,
+      "stability_ari_per_run": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "per_run_n_clusters": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "error": null
+    },
+    {
+      "method": "top2vec",
+      "coverage_pct": 0.0,
+      "n_clusters": 0,
+      "stability_ari_mean": NaN,
+      "stability_ari_per_run": [],
+      "per_run_n_clusters": [],
+      "error": "ValueError: need at least one array to concatenate"
+    },
+    {
+      "method": "kmeans-emb",
+      "coverage_pct": 1.0,
+      "n_clusters": 2,
+      "stability_ari_mean": 1.0,
+      "stability_ari_per_run": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "per_run_n_clusters": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "error": null
+    }
+  ],
+  "cross_method_ari_seed0": [
+    {
+      "pair": "ours-jaccard vs bertopic",
+      "ari": 1.0
+    },
+    {
+      "pair": "ours-jaccard vs kmeans-emb",
+      "ari": 1.0
+    },
+    {
+      "pair": "bertopic vs kmeans-emb",
+      "ari": 1.0
+    }
+  ]
+}

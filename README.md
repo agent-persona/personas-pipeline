@@ -43,6 +43,37 @@ variance 44% but introduced a -0.33 anchoring bias and was rejected
 position bias and was deferred (exp-5.10). Those negative results are in the
 repo so you don't pay to rediscover them.
 
+### Compared to open-source alternatives
+
+A handful of OSS projects touch parts of this problem, but **as of April 2026
+we have not found another open-source repo that combines all five stages —
+ingestion → segmentation → grounded synthesis → twin runtime → evaluation
+harness — in one place.** The capability matrix below is the evidence.
+Columns are the strongest OSS comparators; rows are the capabilities this
+pipeline ships.
+
+Comparators (linked once here, referenced by short name in the table):
+- [`persona-generation-workflow`](https://github.com/joongishin/persona-generation-workflow) — Shin et al., DIS'24 (survey data → k-means → LLM summarization → roleplay)
+- [`TinyTroupe`](https://github.com/microsoft/TinyTroupe) — Microsoft, multi-agent persona simulation
+- [`persona-hub`](https://github.com/tencent-ailab/persona-hub) — Tencent, 1B synthetic personas for data generation
+- [`OpenPersona`](https://github.com/acnlabs/OpenPersona) — four-layer framework for single-person AI
+- [`deepeval`](https://github.com/confident-ai/deepeval) — generic LLM evaluation framework
+
+| Capability | **personas-pipeline** | persona-generation-workflow | TinyTroupe | persona-hub | OpenPersona | deepeval |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Ingest raw behavioral records (crawler) | **yes** | partial (CSV only) | no | no | partial (single-person) | no |
+| Behavioral segmentation into clusters | **yes** | yes (k-means) | no | no | no | no |
+| Grounded synthesis with `source_evidence` IDs | **yes** | no | no | no | no | no |
+| Twin chat runtime (tested boundary / refusal / meta) | **yes** | partial (roleplay) | yes | no | yes (single-person) | no |
+| Evaluation harness (groundedness / drift / judge rubric) | **yes** | no | partial (t-test / KS-test) | no | no | yes (generic) |
+| Logged hypothesis-driven experiments | **yes (~30)** | no | no | no | no | no |
+| MIT-licensed / self-host | **yes** | yes | yes | yes (Apache-2.0) | yes | yes |
+
+Every row has exactly one "yes" in the **personas-pipeline** column. No other
+column has yes in more than three rows. Head-to-head benchmarks against the
+strongest comparators per row live at `output/experiments/exp-7.01`…`exp-7.04`
+once run.
+
 ---
 
 ## Who it's for
