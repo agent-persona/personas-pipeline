@@ -166,6 +166,22 @@ def build_user_message(
         for k, v in cluster.summary.extra.items():
             sections.append(f"- {k}: {v}")
 
+    # Voice grounding: style-coherent verbatim text from cluster records.
+    # Empty when the cluster has no text-bearing records; skipped entirely
+    # in that case so the prompt stays byte-identical to pre-verbatim runs.
+    if getattr(cluster, "verbatim_samples", None):
+        sections.append("\n## Voice Grounding — Match This Register")
+        sections.append(
+            "The following are verbatim text samples from people in this "
+            "cluster. When you generate narrative fields (summary, goals, "
+            "pains, sample_quotes, objections), match their register — "
+            "length, punctuation, formality, word choice, rhythm. These are "
+            "the voice these personas actually have; do NOT default to a "
+            "marketing or assistant register."
+        )
+        for i, sample in enumerate(cluster.verbatim_samples, 1):
+            sections.append(f"{i}. {sample}")
+
     # Sample records
     sections.append("\n## Sample Records")
     for rec in cluster.sample_records:
