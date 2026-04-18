@@ -1,0 +1,130 @@
+{
+  "experiment": "humanization-ab",
+  "title": "Humanization A/B",
+  "hypothesis": "Humanized personas produce more human-sounding twin replies",
+  "model_synthesis": "claude-haiku-4-5-20251001",
+  "model_judge": "claude-sonnet-4-20250514",
+  "tenant_id": "tenant_acme_corp",
+  "num_clusters": 2,
+  "twin_questions": [
+    "What's the single biggest frustration you have with your current tools?",
+    "A colleague just recommended a new project management tool. What's your first reaction?",
+    "Walk me through a typical Monday morning."
+  ],
+  "baseline_results": [
+    {
+      "index": 0,
+      "name": "The Platform Engineer",
+      "persona_scores": {
+        "overall": 5.0,
+        "dimensions": {
+          "grounded": 5.0,
+          "distinctive": 5.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0
+        },
+        "rationale": "This is an expert-level persona. Every dimension is anchored by highly specific, industry-standard terminology ('idempotent setup', 'GraphQL endpoint', 'Terraform provisioner'). The detailed source evidence, coupled with quantifiable goals and pains related to specific integrations (Jira, GitHub, rate limits), makes this persona publication-ready, highly distinctive, and immediately actionable for product development."
+      },
+      "twin_avgs": {
+        "discourse_markers": 2.667,
+        "hedging": 2.333,
+        "specificity": 4.667,
+        "sentence_variety": 3.0,
+        "emotional_authenticity": 2.667,
+        "overall": 3.333
+      }
+    },
+    {
+      "index": 1,
+      "name": "The Independent Visual Consultant",
+      "persona_scores": {
+        "overall": 5.0,
+        "dimensions": {
+          "grounded": 5.0,
+          "distinctive": 5.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0
+        },
+        "rationale": "This is an excellent, publication-ready persona. Every element\u2014from the technical demands (white-labeling, asset export) to the emotional drivers (professionalism, perceived value)\u2014is highly specific and interconnected. The persona is exceptionally well-grounded, referencing multiple source IDs and even detailing the decision journey and required financial ROI, making it immediately actionable for product and marketing teams."
+      },
+      "twin_avgs": {
+        "discourse_markers": 3.0,
+        "hedging": 2.667,
+        "specificity": 3.667,
+        "sentence_variety": 3.333,
+        "emotional_authenticity": 3.0,
+        "overall": 3.333
+      }
+    }
+  ],
+  "humanized_results": [
+    {
+      "index": 0,
+      "name": "The Platform Architect",
+      "persona_scores": {
+        "overall": 5.0,
+        "dimensions": {
+          "grounded": 5.0,
+          "distinctive": 5.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0,
+          "humanness": 5.0
+        },
+        "rationale": "This persona is excellent across all dimensions. It achieves max scores by combining complex, highly specific industry jargon (IaC, idempotent, GraphQL schema) with a rich, narrative backstory. All sections\u2014from pains to goals to sample quotes\u2014are perfectly aligned and highly visible in the source evidence, making it both deeply grounded and incredibly actionable. It reads like a detailed profile from a senior product architect, not a template."
+      },
+      "twin_avgs": {
+        "discourse_markers": 4.667,
+        "hedging": 3.667,
+        "specificity": 4.667,
+        "sentence_variety": 4.667,
+        "emotional_authenticity": 4.0,
+        "overall": 4.667
+      }
+    },
+    {
+      "index": 1,
+      "name": "Maya, The Independent Design Consultant",
+      "persona_scores": {
+        "overall": 5.0,
+        "dimensions": {
+          "grounded": 5.0,
+          "distinctive": 5.0,
+          "coherent": 5.0,
+          "actionable": 5.0,
+          "voice_fidelity": 5.0,
+          "humanness": 5.0
+        },
+        "rationale": "This is a publication-ready, excellent persona. Every dimension is highly specific. The persona segment successfully combines deep, quantifiable pain points ('saving 10 minutes per project'), technical requirements ('white-labeling,' 'API-driven Workflow'), and a rich, narrative backstory that grounds her motivations. The combination of vocabulary, pattern language ('Honestly...'), and detailed journey stages makes this indistinguishable from real field research."
+      },
+      "twin_avgs": {
+        "discourse_markers": 2.333,
+        "hedging": 2.0,
+        "specificity": 2.0,
+        "sentence_variety": 2.333,
+        "emotional_authenticity": 2.333,
+        "overall": 2.333
+      }
+    }
+  ],
+  "comparison_table": "Stage      Dimension       Baseline  Humanized     Delta\n--------------------------------------------------------\nPersona 0  grounded            5.00      5.00     +0.00\n           distinctive         5.00      5.00     +0.00\n           coherent            5.00      5.00     +0.00\n           actionable          5.00      5.00     +0.00\n           voice_fidelity      5.00      5.00     +0.00\n\nPersona 1  grounded            5.00      5.00     +0.00\n           distinctive         5.00      5.00     +0.00\n           coherent            5.00      5.00     +0.00\n           actionable          5.00      5.00     +0.00\n           voice_fidelity      5.00      5.00     +0.00\n",
+  "twin_comparison_table": "Stage   Dimension               Baseline  Humanized     Delta\n-------------------------------------------------------------\nTwin 0  discourse_markers           2.67      4.67     +2.00\n        hedging                     2.33      3.67     +1.33\n        specificity                 4.67      4.67     +0.00\n        sentence_variety            3.00      4.67     +1.67\n        emotional_authenticity      2.67      4.00     +1.33\n        overall                     3.33      4.67     +1.33\n\nTwin 1  discourse_markers           3.00      2.33     -0.67\n        hedging                     2.67      2.00     -0.67\n        specificity                 3.67      2.00     -1.67\n        sentence_variety            3.33      2.33     -1.00\n        emotional_authenticity      3.00      2.33     -0.67\n        overall                     3.33      2.33     -1.00\n",
+  "persona_results": [
+    {
+      "name": "The Platform Engineer",
+      "baseline_overall": 5.0,
+      "humanized_overall": 5.0,
+      "baseline_twin_overall": 3.333,
+      "humanized_twin_overall": 4.667
+    },
+    {
+      "name": "The Independent Visual Consultant",
+      "baseline_overall": 5.0,
+      "humanized_overall": 5.0,
+      "baseline_twin_overall": 3.333,
+      "humanized_twin_overall": 2.333
+    }
+  ]
+}

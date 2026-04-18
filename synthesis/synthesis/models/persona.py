@@ -66,3 +66,41 @@ class PersonaV1(BaseModel):
     )
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+
+
+class PersonaV2(PersonaV1):
+    """Extended persona schema v2 — adds humanization fields for richer personas."""
+
+    schema_version: Literal["2.0"] = "2.0"
+    backstory: str = Field(
+        description=(
+            "3-5 sentence first-person narrative origin story. "
+            "Include a concrete professional origin moment grounded in observed data. "
+            "Connect backstory to behavioral patterns."
+        ),
+    )
+    speech_patterns: list[str] = Field(
+        min_length=2,
+        max_length=6,
+        description=(
+            "Characteristic verbal habits: discourse markers ('That said', "
+            "'Here\u2019s the thing'), hedging phrases ('I think', 'probably'), "
+            "sentence starters, rhetorical questions. "
+            "Specific enough to distinguish this persona."
+        ),
+    )
+    emotional_triggers: list[str] = Field(
+        min_length=2,
+        max_length=5,
+        description=(
+            "Situations provoking strong emotional reactions, derived from "
+            "pains/motivations, each traceable to source records."
+        ),
+    )
+    tone: str = Field(
+        description=(
+            "One-line descriptor combining register (formal/casual/technical) "
+            "with affect (impatient/enthusiastic/skeptical). "
+            "E.g. 'Direct and slightly impatient, uses tech jargon casually'"
+        ),
+    )

@@ -6,12 +6,16 @@ from dataclasses import dataclass, field
 from pydantic import ValidationError
 
 from synthesis.models.cluster import ClusterData
-from synthesis.models.persona import PersonaV1
+from synthesis.models.persona import PersonaV1, PersonaV2
 
-from .groundedness import GroundednessReport, check_groundedness
+from .groundedness import EVIDENCE_REQUIRED_FIELDS_V2, GroundednessReport, check_groundedness
 from .model_backend import LLMResult, ModelBackend
 from .prompt_builder import (
+    HUMANIZED_SYSTEM_PROMPT,
     SYSTEM_PROMPT,
+    build_humanized_messages,
+    build_humanized_retry_messages,
+    build_humanized_tool_definition,
     build_messages,
     build_retry_messages,
     build_tool_definition,
@@ -55,6 +59,7 @@ async def synthesize(
     cluster: ClusterData,
     backend: ModelBackend,
     max_retries: int = MAX_RETRIES,
+    groundedness_threshold: float = 0.9,
 ) -> SynthesisResult:
     """Synthesize a persona from cluster data with validation and retry.
 
@@ -77,11 +82,18 @@ async def synthesize(
             messages = build_messages(cluster)
 
         # Call the LLM
-        llm_result: LLMResult = await backend.generate(
-            system=SYSTEM_PROMPT,
-            messages=messages,
-            tool=tool,
-        )
+        try:
+            llm_result: LLMResult = await backend.generate(
+                system=SYSTEM_PROMPT,
+                messages=messages,
+                tool=tool,
+            )
+        except (ValueError, Exception) as e:
+            record.validation_errors = [f"LLM call failed: {e}"]
+            errors_for_retry.extend(record.validation_errors)
+            logger.warning("Attempt %d: LLM call failed: %s", attempt_num, e)
+            attempts.append(record)
+            continue
 
         record.cost_usd = llm_result.estimated_cost_usd
         total_cost += record.cost_usd
@@ -116,7 +128,7 @@ async def synthesize(
 
         # Check groundedness
         groundedness = check_groundedness(persona, cluster)
-        if not groundedness.passed:
+        if groundedness.score < groundedness_threshold:
             record.groundedness_violations = groundedness.violations
             errors_for_retry.extend(groundedness.violations)
             logger.warning(
@@ -148,5 +160,116 @@ async def synthesize(
     # All attempts exhausted
     raise SynthesisError(
         f"Synthesis failed after {max_retries + 1} attempts",
+        attempts=attempts,
+    )
+
+
+async def synthesize_v2(
+    cluster: ClusterData,
+    backend: ModelBackend,
+    max_retries: int = MAX_RETRIES,
+    groundedness_threshold: float = 0.9,
+) -> SynthesisResult:
+    """Synthesize a humanized V2 persona from cluster data.
+
+    Same retry/validation/cost logic as synthesize(), but uses PersonaV2,
+    humanized prompts, and V2 groundedness evidence fields.
+    """
+    tool = build_humanized_tool_definition()
+    attempts: list[AttemptRecord] = []
+    total_cost = 0.0
+    first_attempt_cost: float | None = None
+    errors_for_retry: list[str] = []
+
+    for attempt_num in range(1, max_retries + 2):
+        record = AttemptRecord(attempt=attempt_num)
+
+        # Build messages (with error context on retries)
+        if errors_for_retry:
+            messages = build_humanized_retry_messages(cluster, errors_for_retry)
+        else:
+            messages = build_humanized_messages(cluster)
+
+        # Call the LLM
+        try:
+            llm_result: LLMResult = await backend.generate(
+                system=HUMANIZED_SYSTEM_PROMPT,
+                messages=messages,
+                tool=tool,
+            )
+        except (ValueError, Exception) as e:
+            record.validation_errors = [f"LLM call failed: {e}"]
+            errors_for_retry.extend(record.validation_errors)
+            logger.warning("Attempt %d: LLM call failed: %s", attempt_num, e)
+            attempts.append(record)
+            continue
+
+        record.cost_usd = llm_result.estimated_cost_usd
+        total_cost += record.cost_usd
+
+        if first_attempt_cost is None:
+            first_attempt_cost = record.cost_usd
+
+        # Cost safety: abort if we've spent too much
+        if total_cost > first_attempt_cost * COST_SAFETY_MULTIPLIER * (max_retries + 1):
+            attempts.append(record)
+            raise SynthesisError(
+                f"Cost safety limit exceeded: ${total_cost:.4f}",
+                attempts=attempts,
+            )
+
+        # Validate with Pydantic
+        errors_for_retry = []
+        try:
+            persona = PersonaV2.model_validate(llm_result.tool_input)
+        except ValidationError as e:
+            record.validation_errors = [
+                f"{err['loc']}: {err['msg']}" for err in e.errors()
+            ]
+            errors_for_retry.extend(record.validation_errors)
+            logger.warning(
+                "Attempt %d: validation failed with %d errors",
+                attempt_num,
+                len(record.validation_errors),
+            )
+            attempts.append(record)
+            continue
+
+        # Check groundedness
+        groundedness = check_groundedness(
+            persona, cluster, evidence_fields=EVIDENCE_REQUIRED_FIELDS_V2,
+        )
+        if groundedness.score < groundedness_threshold:
+            record.groundedness_violations = groundedness.violations
+            errors_for_retry.extend(groundedness.violations)
+            logger.warning(
+                "Attempt %d: groundedness check failed (score=%.2f, %d violations)",
+                attempt_num,
+                groundedness.score,
+                len(groundedness.violations),
+            )
+            attempts.append(record)
+            continue
+
+        # Success
+        record.success = True
+        attempts.append(record)
+        logger.info(
+            "Synthesis v2 succeeded on attempt %d (cost=$%.4f, groundedness=%.2f)",
+            attempt_num,
+            total_cost,
+            groundedness.score,
+        )
+        return SynthesisResult(
+            persona=persona,
+            groundedness=groundedness,
+            total_cost_usd=total_cost,
+            model_used=llm_result.model,
+            attempts=attempt_num,
+        )
+
+    # All attempts exhausted
+    raise SynthesisError(
+        f"Synthesis v2 failed after {max_retries + 1} attempts",
         attempts=attempts,
     )
