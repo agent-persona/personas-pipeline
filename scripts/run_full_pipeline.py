@@ -20,6 +20,7 @@ sys.path.insert(0, str(REPO_ROOT / "segmentation"))
 sys.path.insert(0, str(REPO_ROOT / "synthesis"))
 sys.path.insert(0, str(REPO_ROOT / "orchestration"))
 sys.path.insert(0, str(REPO_ROOT / "twin"))
+sys.path.insert(0, str(REPO_ROOT / "evaluation"))
 
 from dotenv import load_dotenv
 
@@ -28,6 +29,7 @@ load_dotenv(REPO_ROOT / "synthesis" / ".env")
 from anthropic import AsyncAnthropic  # noqa: E402
 
 from crawler import fetch_all  # noqa: E402
+from evaluation.testing.pipeline_stage import run_testing_stage, summarize_testing  # noqa: E402
 from orchestration import Pipeline, Stage  # noqa: E402
 from segmentation.models.record import RawRecord  # noqa: E402
 from segmentation.pipeline import segment  # noqa: E402
@@ -106,6 +108,17 @@ async def stage_synthesize(clusters: list[ClusterData]) -> list[dict]:
     return personas
 
 
+def stage_test(personas: list[dict]) -> list[dict]:
+    """Tier 1 gating: schema/completeness/consistency before any twin chat.
+
+    Tier 2+ (semantic, distributional, bias) are heavier — run them via
+    `scripts/run_testing_suite.py` after the pipeline finishes.
+    """
+    run_testing_stage(personas, tier_filter=1)
+    print(summarize_testing(personas))
+    return personas
+
+
 async def stage_twin_chat(personas: list[dict]) -> list[dict]:
     """Demo: ask each twin one question to prove the persona feels alive."""
     if not settings.anthropic_api_key:
@@ -152,6 +165,7 @@ async def main():
         Stage(name="ingest", fn=stage_ingest, description="Pull from connectors"),
         Stage(name="segment", fn=stage_segment, description="Cluster by behavior"),
         Stage(name="synthesize", fn=stage_synthesize, description="Generate personas"),
+        Stage(name="test", fn=stage_test, description="Tier 1 scorer gating"),
         Stage(name="twin_chat", fn=stage_twin_chat, description="Demo twin replies"),
         Stage(name="persist", fn=stage_persist, description="Save outputs"),
     ])

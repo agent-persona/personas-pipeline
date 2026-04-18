@@ -1,17 +1,25 @@
 [project]
 name = "persona-evaluation"
 version = "0.1.0"
-description = "Lab evaluation scaffold — judges, metrics, golden set (problem space 5)"
+description = "Evaluation + testing phase: judges, metrics, golden set, tiered scorer suite"
 requires-python = ">=3.11"
 dependencies = [
     "pydantic>=2.0",
     "anthropic>=0.40.0",
+    # Tiered scorer suite (evaluation/testing/) — ported from agent-persona/testing
+    "litellm>=1.0",
+    "sentence-transformers>=2.7",
+    "scipy>=1.13",
+    "scikit-learn>=1.5",
+    "numpy>=1.26",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.24.0",
+    "pytest-timeout>=2.2",
+    "hypothesis>=6.100",
 ]
 
 [build-system]
