@@ -252,6 +252,14 @@ _BOT_PATTERNS = (
     r"^@?(system|admin|mod|moderator|bot)\b",
     r"\bauto-?(reply|response|generated)\b",
     r"^\s*\[?\s*(bot|system|auto)\s*[\]:]",
+    # @channel / @here / @everyone broadcasts are admin/moderator announcements
+    # with formal register, not representative peer chat. Exclude from voice
+    # pool — found empirically on real Slack crawls where these were clustering
+    # together and crowding out real peer messages.
+    # No \b after the keyword: Slack export often concatenates without a
+    # space, e.g. "@hereOffice hours will begin..." or "@channelHere's the..."
+    # so word-boundary anchors would miss them.
+    r"@(channel|here|everyone)",
 )
 _BOT_RE = re.compile("|".join(_BOT_PATTERNS), re.IGNORECASE)
 

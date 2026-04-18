@@ -63,6 +63,28 @@ def test_bot_filter_catches_all_caps_announcements():
     )
 
 
+def test_bot_filter_catches_channel_broadcasts():
+    """@channel / @here / @everyone messages are admin announcements, not
+    peer chat. Exclude from the voice-sample pool. Found empirically on
+    real Slack crawls where these were crowding out authentic messages."""
+    assert _is_likely_bot_or_system(
+        "@channel You should be receiving a Ramp card with $450 on it."
+    )
+    assert _is_likely_bot_or_system(
+        "@hereOffice hours will begin in a few minutes."
+    )
+    assert _is_likely_bot_or_system(
+        "Hey Challengers! @channel Here's the Orientation Deck for you to review."
+    )
+    assert _is_likely_bot_or_system(
+        "@everyone please review the new guidelines by Friday."
+    )
+    # Normal messages that just reference a channel should still pass through
+    assert not _is_likely_bot_or_system(
+        "i posted my MVP link in #general if anyone wants to try it"
+    )
+
+
 def test_bot_filter_lets_real_messages_through():
     assert not _is_likely_bot_or_system(
         "hey, just wrapped up that webhook issue. the retry logic was broken."
