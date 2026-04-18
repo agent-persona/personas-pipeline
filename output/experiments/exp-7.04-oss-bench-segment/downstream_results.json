@@ -1,0 +1,83 @@
+{
+  "experiment": "exp-7.04-oss-bench-segment-downstream",
+  "tenant": "tenant_acme_corp",
+  "seed": 0,
+  "model": "claude-haiku-4-5-20251001",
+  "convergence_pairs_ari": [
+    {
+      "pair": "ours-jaccard vs bertopic",
+      "ari": 0.7741935483870968
+    },
+    {
+      "pair": "ours-jaccard vs kmeans-emb",
+      "ari": 1.0
+    },
+    {
+      "pair": "bertopic vs kmeans-emb",
+      "ari": 0.7741935483870968
+    }
+  ],
+  "per_method": [
+    {
+      "method": "ours-jaccard",
+      "n_clusters": 2,
+      "n_personas": 1,
+      "mean_groundedness": 1.0,
+      "total_cost_usd": 0.11231,
+      "personas": [
+        {
+          "cluster_id": "clust_0000",
+          "error": "SynthesisError: Synthesis failed after 5 attempts: ('source_evidence',): Field required"
+        },
+        {
+          "cluster_id": "clust_0001",
+          "name": "Creative Director Carmen",
+          "groundedness": 1.0,
+          "cost_usd": 0.11231,
+          "attempts": 5
+        }
+      ],
+      "error": null
+    },
+    {
+      "method": "bertopic",
+      "n_clusters": 2,
+      "n_personas": 1,
+      "mean_groundedness": 1.0,
+      "total_cost_usd": 0.09684399999999999,
+      "personas": [
+        {
+          "cluster_id": "clust_0000",
+          "name": "Creative Director Clara",
+          "groundedness": 1.0,
+          "cost_usd": 0.09684399999999999,
+          "attempts": 4
+        },
+        {
+          "cluster_id": "clust_0001",
+          "error": "SynthesisError: Synthesis failed after 5 attempts: ('source_evidence',): Field required"
+        }
+      ],
+      "error": null
+    },
+    {
+      "method": "kmeans-emb",
+      "n_clusters": 2,
+      "n_personas": 0,
+      "mean_groundedness": 0.0,
+      "total_cost_usd": 0.0,
+      "personas": [
+        {
+          "cluster_id": "clust_0000",
+          "error": "SynthesisError: Synthesis failed after 5 attempts: ('source_evidence',): Field required"
+        },
+        {
+          "cluster_id": "clust_0001",
+          "error": "SynthesisError: Synthesis failed after 5 attempts: ('source_evidence',): Field required"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "total_cost_usd": 0.20915399999999998
+}
