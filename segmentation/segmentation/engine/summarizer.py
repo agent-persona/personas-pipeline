@@ -63,8 +63,25 @@ def build_cluster_data(
     top_behaviors = [b for b, _ in behavior_counter.most_common(8)]
     top_pages = [p for p, _ in page_counter.most_common(8)]
 
-    # Pick representative sample records (one of each top behavior if possible)
-    sample = _pick_representative_sample(cluster_records, top_behaviors, sample_size)
+    # Filter admin/bot/system records out of the evidence pool before
+    # picking the sample. Without this, sample_records for cluster-heavy
+    # tenants ends up dominated by @channel broadcasts (which are stylistically
+    # coherent and thus selected by behavior-coverage logic), which both
+    # misrepresents the cluster and confuses synthesis — the LLM is asked to
+    # cite admin announcements as evidence for a peer persona, and it
+    # responds by silently omitting source_evidence entirely.
+    #
+    # Fall back to unfiltered records if filtering removes everything
+    # (behavior-only clusters where no record has text-shaped payload).
+    _filtered = [
+        r for r in cluster_records
+        if not any(
+            isinstance(v, str) and _is_likely_bot_or_system(v)
+            for v in _iter_string_values(r.payload)
+        )
+    ]
+    _pool = _filtered if _filtered else cluster_records
+    sample = _pick_representative_sample(_pool, top_behaviors, sample_size)
 
     # Extract style-coherent verbatim text samples from this cluster's records.
     # These are raw strings — never LLM-rewritten — carried unchanged through
