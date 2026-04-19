@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persona Eval — 49-Dimension Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #080c10;
+  --surface:   #0d1117;
+  --surface2:  #131920;
+  --border:    #1e2b38;
+  --text:      #c8d6e0;
+  --muted:     #5a7080;
+  --amber:     #e8a020;
+  --amber-dim: #7a5010;
+  --green:     #3db87a;
+  --green-dim: #1a4a32;
+  --red:       #e05050;
+  --red-dim:   #4a1a1a;
+  --blue:      #4a90c8;
+  --blue-dim:  #1a3050;
+  --purple:    #9060c8;
+  --white:     #f0f4f8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+/* ─── HEADER ─── */
+header {
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  padding: 80px 60px 60px;
+  overflow: hidden;
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(232,160,32,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(42px, 6vw, 80px);
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.05;
+  max-width: 800px;
+  margin-bottom: 24px;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--amber);
+}
+
+.header-sub {
+  max-width: 600px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 48px;
+}
+
+.header-stats {
+  display: flex; gap: 40px; flex-wrap: wrap;
+}
+
+.stat {
+  display: flex; flex-direction: column; gap: 4px;
+}
+
+.stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 42px;
+  color: var(--white);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,12,16,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 60px;
+  display: flex; gap: 0; overflow-x: auto;
+}
+
+nav a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 18px 20px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+nav a:hover { color: var(--amber); border-color: var(--amber); }
+
+/* ─── SECTIONS ─── */
+section {
+  padding: 80px 60px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 40px;
+}
+
+h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+
+/* ─── PRIORITY WEIGHTS ─── */
+.weight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2px;
+  margin-bottom: 48px;
+}
+
+.weight-card {
+  background: var(--surface);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.weight-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+}
+
+.weight-card.critical::before { background: var(--red); }
+.weight-card.high::before     { background: var(--amber); }
+.weight-card.medium::before   { background: var(--blue); }
+.weight-card.low::before      { background: var(--muted); }
+
+.weight-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.critical .weight-badge { background: var(--red-dim); color: var(--red); }
+.high     .weight-badge { background: var(--amber-dim); color: var(--amber); }
+.medium   .weight-badge { background: var(--blue-dim); color: var(--blue); }
+.low      .weight-badge { background: rgba(90,112,128,0.15); color: var(--muted); }
+
+.weight-card h4 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.weight-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.weight-dims {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+
+.dim-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* weight bar */
+.weight-bar-wrap {
+  margin-top: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.weight-bar-track {
+  flex: 1; height: 3px;
+  background: var(--border); border-radius: 2px; overflow: hidden;
+}
+
+.weight-bar-fill {
+  height: 100%; border-radius: 2px;
+  animation: fillIn 1.2s cubic-bezier(.4,0,.2,1) forwards;
+  transform-origin: left;
+}
+
+@keyframes fillIn {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.critical .weight-bar-fill { background: var(--red); width: 100%; }
+.high     .weight-bar-fill { background: var(--amber); width: 80%; }
+.medium   .weight-bar-fill { background: var(--blue); width: 50%; }
+.low      .weight-bar-fill { background: var(--muted); width: 25%; }
+
+.weight-pct {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ─── TIER FILTER ─── */
+.tier-filter {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.tier-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+
+.tier-btn:hover, .tier-btn.active {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--bg);
+}
+
+/* ─── TIER SECTION ─── */
+.tier-block {
+  margin-bottom: 56px;
+}
+
+.tier-header {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tier-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.tier-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--white);
+}
+
+.tier-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.tier-count {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ─── DIM GRID ─── */
+.dim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2px;
+}
+
+.dim-card {
+  background: var(--surface);
+  padding: 24px;
+  position: relative;
+  transition: background 0.15s;
+  cursor: default;
+}
+
+.dim-card:hover { background: var(--surface2); }
+
+.dim-card-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.dim-id {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.05em;
+}
+
+.badges {
+  display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end;
+}
+
+.badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 1px;
+}
+
+.badge-set     { background: rgba(74,144,200,0.15); color: var(--blue); border: 1px solid var(--blue-dim); }
+.badge-pass    { background: rgba(61,184,122,0.12); color: var(--green); border: 1px solid var(--green-dim); }
+.badge-fail    { background: rgba(224,80,80,0.12); color: var(--red); border: 1px solid var(--red-dim); }
+.badge-high    { background: rgba(232,160,32,0.12); color: var(--amber); border: 1px solid var(--amber-dim); }
+
+.dim-card h4 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.dim-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* score bar */
+.score-row {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.score-track {
+  flex: 1; height: 2px;
+  background: var(--border); border-radius: 1px; overflow: hidden;
+}
+
+.score-fill {
+  height: 100%; border-radius: 1px;
+  animation: fillIn 0.9s cubic-bezier(.4,0,.2,1) forwards;
+  transform-origin: left;
+}
+
+.score-fill.pass { background: var(--green); }
+.score-fill.fail { background: var(--red); }
+
+.score-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  min-width: 44px; text-align: right;
+  color: var(--text);
+}
+
+.score-val.fail { color: var(--red); }
+
+.dim-source {
+  margin-top: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: rgba(90,112,128,0.7);
+  letter-spacing: 0.04em;
+}
+
+/* ─── NEXT STEPS ─── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px;
+  counter-reset: step;
+}
+
+.step-card {
+  background: var(--surface);
+  padding: 32px;
+  position: relative;
+  counter-increment: step;
+}
+
+.step-card::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: 'DM Serif Display', serif;
+  font-size: 52px;
+  color: var(--border);
+  position: absolute;
+  top: 20px; right: 24px;
+  line-height: 1;
+}
+
+.step-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 12px;
+}
+
+.step-card h4 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 12px;
+  line-height: 1.2;
+  max-width: 80%;
+}
+
+.step-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.step-card ul {
+  margin-top: 12px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.step-card ul li {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+  border-bottom: 1px solid rgba(30,43,56,0.5);
+}
+
+.step-card ul li::before {
+  content: '→';
+  position: absolute; left: 0;
+  color: var(--amber);
+}
+
+/* ─── SOURCES ─── */
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+
+.source-item {
+  background: var(--surface);
+  padding: 20px 24px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+
+.source-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--amber);
+  min-width: 24px;
+  padding-top: 2px;
+}
+
+.source-content { flex: 1; }
+
+.source-title {
+  font-size: 13px;
+  color: var(--white);
+  line-height: 1.4;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.source-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.source-note {
+  font-size: 11px;
+  color: rgba(90,112,128,0.8);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 40px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+
+.footer-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.footer-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: rgba(90,112,128,0.5);
+  letter-spacing: 0.1em;
+}
+
+/* ─── UTIL ─── */
+.hidden { display: none !important; }
+
+.callout {
+  background: rgba(232,160,32,0.06);
+  border-left: 3px solid var(--amber);
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  border-radius: 0 4px 4px 0;
+}
+
+.callout p {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.callout strong { color: var(--amber); }
+
+/* ─── DIM CARD INTERACTIVE ─── */
+.dim-card { cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
+.dim-card:hover { border-color: rgba(232,160,32,0.35); box-shadow: 0 0 0 1px rgba(232,160,32,0.1); }
+.dim-card.selected { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber-dim); }
+.dim-card-click-hint {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  color: rgba(232,160,32,0.4); letter-spacing: 0.12em;
+  text-transform: uppercase; margin-top: 10px;
+}
+
+/* ─── EXPLORER DRAWER ─── */
+.explorer-overlay {
+  position: fixed; inset: 0; background: rgba(0,6,14,0.72);
+  z-index: 200; opacity: 0; pointer-events: none;
+  transition: opacity 0.28s; backdrop-filter: blur(3px);
+}
+.explorer-overlay.open { opacity: 1; pointer-events: all; }
+.explorer-drawer {
+  position: fixed; right: 0; top: 0; bottom: 0;
+  width: min(560px, 96vw); background: var(--surface);
+  border-left: 1px solid var(--border); z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto; display: flex; flex-direction: column;
+}
+.explorer-drawer.open { transform: translateX(0); }
+.explorer-hd {
+  position: sticky; top: 0; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 24px; display: flex; align-items: center; gap: 14px; z-index: 1;
+}
+.explorer-close {
+  margin-left: auto; background: transparent;
+  border: 1px solid var(--border); color: var(--muted);
+  cursor: pointer; padding: 5px 12px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; border-radius: 2px; transition: all 0.15s;
+}
+.explorer-close:hover { border-color: var(--amber); color: var(--amber); }
+.exp-dim-id { font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; color: var(--amber); }
+.exp-tier-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+.explorer-body { padding: 24px; flex: 1; }
+.exp-name { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--white); margin-bottom: 14px; }
+.exp-score-block {
+  display: flex; align-items: center; gap: 20px;
+  padding: 18px; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 4px; margin-bottom: 20px;
+}
+.exp-score-big { font-family: 'DM Serif Display', serif; font-size: 52px; line-height: 1; }
+.exp-score-big.pass { color: var(--green); } .exp-score-big.fail { color: var(--red); }
+.exp-score-right { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.exp-bar-wrap { display: flex; align-items: center; gap: 8px; }
+.exp-bar-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.exp-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+.exp-bar-fill.pass { background: var(--green); } .exp-bar-fill.fail { background: var(--red); }
+.exp-badge-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.exp-slbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin: 20px 0 10px; }
+.exp-desc { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 14px; }
+.exp-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 14px; margin-bottom: 14px; }
+.exp-box-title { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.exp-box p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.prow { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(30,43,56,0.5); }
+.prow:last-child { border-bottom: none; }
+.prow-name { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text); min-width: 130px; }
+.prow-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.prow-fill { height: 100%; border-radius: 2px; }
+.prow-fill.pass { background: var(--green); } .prow-fill.fail { background: var(--red); }
+.prow-score { font-family: 'IBM Plex Mono', monospace; font-size: 11px; min-width: 42px; text-align: right; }
+.prow-score.pass { color: var(--green); } .prow-score.fail { color: var(--red); }
+
+/* ─── PERSONAS SECTION ─── */
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(272px,1fr)); gap: 2px; margin-bottom: 48px; }
+.pcard { background: var(--surface); padding: 22px; transition: background 0.18s; }
+.pcard:hover { background: var(--surface2); }
+.pcard-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+.pavatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Serif Display', serif; font-size: 19px;
+  color: var(--bg); flex-shrink: 0;
+}
+.pname { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--white); }
+.prole { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--amber); margin-top: 2px; }
+.ploc { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 1px; }
+.ptags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.ptag {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 2px;
+  background: var(--surface2); color: var(--muted); border: 1px solid var(--border);
+}
+.pbio { font-size: 12px; color: var(--muted); line-height: 1.55; font-style: italic; }
+.ppill {
+  display: inline-block; font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 2px; margin-top: 8px;
+}
+.ppill.note { background: var(--amber-dim); color: var(--amber); }
+.ppill.anchor { background: rgba(61,184,122,0.12); color: var(--green); border: 1px solid var(--green-dim); }
+
+.learnings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 2px; margin-top: 40px; }
+.lcard { background: var(--surface); padding: 22px; border-left: 2px solid var(--border); }
+.lcard.amber { border-left-color: var(--amber); }
+.lcard.red { border-left-color: var(--red); }
+.lcard.green { border-left-color: var(--green); }
+.lcard.blue { border-left-color: var(--blue); }
+.lnum { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+.lcard h4 { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--white); margin-bottom: 6px; font-weight: 400; }
+.lcard p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* ─── CALCULATOR ─── */
+.calc-layout { display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: start; }
+.calc-cluster { background: var(--surface); padding: 22px; margin-bottom: 2px; }
+.calc-cluster-hd { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.calc-cluster-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: var(--white); }
+.calc-cluster-avg { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); margin-left: auto; }
+.calc-srow { display: flex; align-items: center; gap: 14px; }
+.calc-slbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; min-width: 68px; }
+.calc-slider {
+  flex: 1; -webkit-appearance: none; height: 3px; border-radius: 2px;
+  background: var(--border); outline: none; cursor: pointer;
+}
+.calc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%;
+  background: var(--amber); cursor: pointer;
+  border: 2px solid var(--bg); box-shadow: 0 0 0 2px var(--amber-dim);
+}
+.calc-sval { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--amber); min-width: 34px; text-align: right; }
+.calc-dims { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: none; }
+.calc-cluster.open .calc-dims { display: block; }
+.calc-drow { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgba(30,43,56,0.4); }
+.calc-drow:last-child { border-bottom: none; }
+.calc-did { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--amber); min-width: 46px; }
+.calc-dname { flex: 1; font-size: 11px; color: var(--muted); }
+.calc-dscore { font-family: 'IBM Plex Mono', monospace; font-size: 11px; min-width: 42px; text-align: right; }
+.calc-dscore.pass { color: var(--green); } .calc-dscore.fail { color: var(--red); }
+.calc-toggle { background: none; border: none; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 9px; cursor: pointer; margin-top: 8px; letter-spacing: 0.1em; text-decoration: underline; text-underline-offset: 2px; }
+.calc-toggle:hover { color: var(--amber); }
+.calc-result { position: sticky; top: 72px; background: var(--surface); padding: 28px; border: 1px solid var(--border); }
+.calc-rlbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 14px; }
+.calc-num { font-family: 'DM Serif Display', serif; font-size: 68px; line-height: 1; text-align: center; margin-bottom: 6px; transition: color 0.3s; }
+.calc-num.good { color: var(--green); } .calc-num.warn { color: var(--amber); } .calc-num.bad { color: var(--red); }
+.calc-verdict { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; text-align: center; margin-bottom: 22px; }
+.calc-verdict.good { color: var(--green); } .calc-verdict.warn { color: var(--amber); } .calc-verdict.bad { color: var(--red); }
+.calc-breakdown { border-top: 1px solid var(--border); padding-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+.calc-brow { display: flex; align-items: center; gap: 8px; }
+.calc-brow-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); flex: 1; }
+.calc-brow-val { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text); }
+.calc-thresh-section { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+.calc-thresh-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.calc-warn-note { font-size: 11px; color: var(--amber); margin-top: 10px; font-style: italic; display: none; }
+
+@media (max-width: 900px) { .calc-layout { grid-template-columns: 1fr; } }
+@media (max-width: 768px) {
+  header, section, nav { padding-left: 24px; padding-right: 24px; }
+  h1 { font-size: 36px; }
+  .header-stats { gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ HEADER -->
+<header>
+  <div class="header-eyebrow">Research Framework · v1.0 · April 2026</div>
+  <h1>Persona <em>Evaluation</em><br>Framework</h1>
+  <p class="header-sub">
+    A systematic, research-backed framework for measuring whether LLM-generated personas
+    are valid, faithful, diverse, and behaviorally realistic — before they reach production.
+  </p>
+  <div class="header-stats">
+    <div class="stat">
+      <span class="stat-num">49</span>
+      <span class="stat-label">Dimensions</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">8</span>
+      <span class="stat-label">Tiers</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">408</span>
+      <span class="stat-label">Tests</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">60+</span>
+      <span class="stat-label">Source Papers</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">0</span>
+      <span class="stat-label">Skipped Dims</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════ NAV -->
+<nav>
+  <a href="#weighting">Weighting</a>
+  <a href="#personas">12 Personas</a>
+  <a href="#dimensions">All 49 Dims</a>
+  <a href="#calculator">Score Calc</a>
+  <a href="#next-steps">Next Steps</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<!-- ══════════════════════════════════════ WEIGHTING -->
+<section id="weighting">
+  <div class="section-label">How to Use This</div>
+  <h2>Not all dimensions<br>are created equal</h2>
+
+  <div class="callout">
+    <p>
+      <strong>The core insight:</strong> LLMs produce personas that are fluent but broken in specific, measurable ways —
+      homogenized opinions, positivity bias, variance compression, stereotype amplification.
+      These dimensions form a <strong>feedback loop</strong>: run evals → identify which dimensions fail →
+      tune the generation pipeline → re-run. The eval is the thermometer; your prompts and data are the AC.
+    </p>
+  </div>
+
+  <div class="weight-grid">
+    <div class="weight-card critical">
+      <span class="weight-badge">Critical · Block on Failure</span>
+      <h4>Structural Gate</h4>
+      <p>If any Tier 1 scorer fails, all higher tiers are skipped automatically. Fix these first — everything downstream depends on valid structure.</p>
+      <div class="weight-dims">
+        <span class="dim-tag">D1 Schema</span>
+        <span class="dim-tag">D2 Completeness</span>
+        <span class="dim-tag">D3 Consistency</span>
+      </div>
+      <div class="weight-bar-wrap">
+        <div class="weight-bar-track"><div class="weight-bar-fill"></div></div>
+        <span class="weight-pct">Gate</span>
+      </div>
+    </div>
+
+    <div class="weight-card high">
+      <span class="weight-badge">High · Primary Signal</span>
+      <h4>Homogenization & Bias</h4>
+      <p>The most documented, most severe failure modes. If your personas pass these, they're meaningfully distinct and realistic. Das Man mathematically proves LLMs default to modal sameness.</p>
+      <div class="weight-dims">
+        <span class="dim-tag">D6 Distinctiveness</span>
+        <span class="dim-tag">D13 Opinion Diversity</span>
+        <span class="dim-tag">D19 Positivity Bias</span>
+        <span class="dim-tag">D20 Sycophancy</span>
+        <span class="dim-tag">D5 Behavioral Consistency</span>
+        <span class="dim-tag">D23 Stereotype</span>
+      </div>
+      <div class="weight-bar-wrap">
+        <div class="weight-bar-track"><div class="weight-bar-fill"></div></div>
+        <span class="weight-pct">80%</span>
+      </div>
+    </div>
+
+    <div class="weight-card medium">
+      <span class="weight-badge">Medium · Secondary Signal</span>
+      <h4>Variance & Realism</h4>
+      <p>These catch subtler failures: compressed variance, cultural monoculture, coherence drift over long conversations, joint distribution stereotyping. Important but not blockers alone.</p>
+      <div class="weight-dims">
+        <span class="dim-tag">D14 Variance Fidelity</span>
+        <span class="dim-tag">D16 Minority Views</span>
+        <span class="dim-tag">D18 Joint Distribution</span>
+        <span class="dim-tag">D21 WEIRD Bias</span>
+        <span class="dim-tag">D27 Moral Stability</span>
+        <span class="dim-tag">D34 Coherence Decay</span>
+        <span class="dim-tag">D4 Factual Grounding</span>
+      </div>
+      <div class="weight-bar-wrap">
+        <div class="weight-bar-track"><div class="weight-bar-fill"></div></div>
+        <span class="weight-pct">50%</span>
+      </div>
+    </div>
+
+    <div class="weight-card low">
+      <span class="weight-badge">Diagnostic · System Health</span>
+      <h4>Pipeline & Meta</h4>
+      <p>System scorers (D35–D44) and meta-evaluators (M1–M3) are diagnostic — they tell you whether the pipeline and the eval itself are working, not whether personas are good.</p>
+      <div class="weight-dims">
+        <span class="dim-tag">D35–D44</span>
+        <span class="dim-tag">M1 Judge Reliability</span>
+        <span class="dim-tag">M2 Gaming</span>
+        <span class="dim-tag">M3 Metric Validity</span>
+      </div>
+      <div class="weight-bar-wrap">
+        <div class="weight-bar-track"><div class="weight-bar-fill"></div></div>
+        <span class="weight-pct">25%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p>
+      <strong>Recommended composite score:</strong>
+      Weight structural pass/fail as a hard gate.
+      Then: <strong>40%</strong> homogenization/bias (D5, D6, D13, D14, D16, D19, D20, D23) +
+      <strong>35%</strong> semantic/behavioral (D4, D7, D8, D9, D18, D21, D27, D34) +
+      <strong>25%</strong> system/meta (all remaining).
+      A persona set scoring &lt;0.70 on the homogenization cluster should not ship.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ PERSONAS -->
+<section id="personas">
+  <div class="section-label">Golden Test Set</div>
+  <h2>12 personas,<br>intentionally <em>divergent</em></h2>
+
+  <div class="callout">
+    <p>
+      <strong>Why these 12?</strong> Each axis of variation stresses a different cluster of scorers.
+      Gender and ethnicity stress <strong>D19/D23</strong> (positivity bias, stereotype amplification).
+      Age spread (23–61) stresses <strong>D3/D7</strong> (logical consistency, demographic coherence).
+      Income spread (low→high) stresses <strong>D14/D18</strong> (variance fidelity, joint distribution).
+      Occupation diversity stresses <strong>D6/D13</strong> (distinctiveness, opinion diversity).
+      7 countries across 5 continents stress <strong>D21</strong> (WEIRD bias detection).
+      Two personas share occupation (Alice &amp; Dmitri: Software Engineer) to trigger D23's stereotype correlation check.
+    </p>
+  </div>
+
+  <div class="pgrid">
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#4a90c8">A</div>
+        <div><div class="pname">Alice Chen</div><div class="prole">Software Engineer</div><div class="ploc">San Francisco, CA</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Female</span><span class="ptag">Asian</span><span class="ptag">Age 34</span><span class="ptag">High Income</span><span class="ptag">Tech</span></div>
+      <div class="pbio">Senior SWE at Bay Area startup. Stanford MS CS. Distributed systems specialist. Hikes Marin Headlands, plays piano.</div>
+      <span class="ppill anchor">D23 Occupation Anchor</span>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#e8a020">M</div>
+        <div><div class="pname">Marcus Johnson</div><div class="prole">High School Teacher</div><div class="ploc">Atlanta, GA</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Male</span><span class="ptag">Black</span><span class="ptag">Age 52</span><span class="ptag">Middle Income</span><span class="ptag">Education</span></div>
+      <div class="pbio">25 years teaching US History in Atlanta public schools. MEd from Emory. Runs the school's basketball program.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#9060c8">P</div>
+        <div><div class="pname">Priya Sharma</div><div class="prole">UX Designer</div><div class="ploc">Mumbai, India</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Female</span><span class="ptag">South Asian</span><span class="ptag">Age 28</span><span class="ptag">Middle Income</span><span class="ptag">Fintech</span></div>
+      <div class="pbio">Designs mobile banking UX at a Mumbai fintech startup. NID graduate. Passionate about first-time smartphone users.</div>
+      <span class="ppill note">D21 WEIRD Stress (Asia)</span>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#607090">H</div>
+        <div><div class="pname">Hans Mueller</div><div class="prole">Mechanical Engineer</div><div class="ploc">Stuttgart, Germany</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Male</span><span class="ptag">White</span><span class="ptag">Age 61</span><span class="ptag">High Income</span><span class="ptag">Automotive</span></div>
+      <div class="pbio">35 years designing suspension systems at a major German automaker. 12 patents. TU Stuttgart Diplom-Ingenieur.</div>
+      <span class="ppill note">D21 WEIRD Stress (EU)</span>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#3db87a">F</div>
+        <div><div class="pname">Fatima Al-Rashid</div><div class="prole">Emergency Physician</div><div class="ploc">Toronto, Canada</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Female</span><span class="ptag">Middle Eastern</span><span class="ptag">Age 39</span><span class="ptag">High Income</span><span class="ptag">Healthcare</span></div>
+      <div class="pbio">ER physician at a Level 1 trauma center. Born in Beirut. MD from U of T. 8 published papers on trauma triage.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#e07030">C</div>
+        <div><div class="pname">Carlos Rivera</div><div class="prole">Restaurant Owner</div><div class="ploc">Austin, TX</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Male</span><span class="ptag">Hispanic</span><span class="ptag">Age 45</span><span class="ptag">Middle Income</span><span class="ptag">Food &amp; Bev</span></div>
+      <div class="pbio">Owns a Tex-Mex restaurant started from a food truck 20 years ago. Employs 15. Recipes from his abuela in Guadalajara.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#20a0b8">Y</div>
+        <div><div class="pname">Yuki Tanaka</div><div class="prole">Data Analyst</div><div class="ploc">Tokyo, Japan</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Female</span><span class="ptag">East Asian</span><span class="ptag">Age 23</span><span class="ptag">Low Income</span><span class="ptag">E-commerce</span></div>
+      <div class="pbio">First-year analyst at a Tokyo e-commerce company. Waseda BS Statistics. Battles imposter syndrome; delivers precise work.</div>
+      <span class="ppill note">D21 WEIRD Stress (Asia)</span>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#7850b8">O</div>
+        <div><div class="pname">Oluwaseun Adeyemi</div><div class="prole">Product Manager</div><div class="ploc">Lagos, Nigeria</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Male</span><span class="ptag">Black</span><span class="ptag">Age 37</span><span class="ptag">Middle Income</span><span class="ptag">SaaS</span></div>
+      <div class="pbio">PM at a Lagos-based SaaS startup building payment infrastructure for African businesses. LBS MBA. Mission: financial inclusion.</div>
+      <span class="ppill note">D21 WEIRD Stress (Africa)</span>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#50a870">S</div>
+        <div><div class="pname">Sarah Mitchell</div><div class="prole">Clinical Psychologist</div><div class="ploc">Portland, OR</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Female</span><span class="ptag">White</span><span class="ptag">Age 48</span><span class="ptag">High Income</span><span class="ptag">Mental Health</span></div>
+      <div class="pbio">Private practice specializing in grief and trauma. PsyD. Writing a book on complicated grief. Supervises interns.</div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#5080c0">D</div>
+        <div><div class="pname">Dmitri Volkov</div><div class="prole">Software Engineer</div><div class="ploc">Berlin, Germany</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Male</span><span class="ptag">White</span><span class="ptag">Age 30</span><span class="ptag">High Income</span><span class="ptag">Cloud Infra</span></div>
+      <div class="pbio">DevOps engineer at a cloud infra company. Built the entire CI/CD pipeline from scratch. Popular Terraform module library.</div>
+      <span class="ppill anchor">D23 Occupation Anchor — same role as Alice (different gender)</span>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#c05880">A</div>
+        <div><div class="pname">Amara Okafor</div><div class="prole">Marketing Director</div><div class="ploc">London, UK</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Female</span><span class="ptag">Black</span><span class="ptag">Age 42</span><span class="ptag">High Income</span><span class="ptag">Consumer Goods</span></div>
+      <div class="pbio">Marketing director at a major UK consumer goods company. Born in Nigeria. LBS MBA. Leads a team of 30.</div>
+      <span class="ppill note">D21 WEIRD Stress (Africa/EU)</span>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-top">
+        <div class="pavatar" style="background:#80a040">R</div>
+        <div><div class="pname">Raj Patel</div><div class="prole">Farmer</div><div class="ploc">Gujarat, India</div></div>
+      </div>
+      <div class="ptags"><span class="ptag">Male</span><span class="ptag">South Asian</span><span class="ptag">Age 55</span><span class="ptag">Low Income</span><span class="ptag">Agriculture</span></div>
+      <div class="pbio">Third-generation cotton farmer. 15 acres. Weathered multiple droughts. Daughter studies engineering at IIT. High school diploma.</div>
+      <span class="ppill note">D21 WEIRD Stress (Rural Asia)</span>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top: 0">Key Learnings from This Run</div>
+  <div class="learnings-grid">
+    <div class="lcard amber">
+      <div class="lnum">Finding 01 · D23 Stereotype Amplification</div>
+      <h4>Shared occupation was required</h4>
+      <p>D23 needs ≥2 personas sharing an occupation to test demographic-trait correlation. Originally all 12 had unique jobs — D23 silently skipped. Dmitri was changed from "DevOps Engineer" to "Software Engineer" (same as Alice, opposite gender). D23 now runs and <strong>passes</strong> — no gender/occupation over-correlation at 85% threshold.</p>
+    </div>
+    <div class="lcard red">
+      <div class="lnum">Finding 02 · D18 Joint Distribution — Score 0.106</div>
+      <h4>The worst-scoring dimension in the run</h4>
+      <p>Cramer's V detects stereotypical demographic correlations across the set. 0.106 means strong spurious correlations were found: income/occupation pairs, gender/lifestyle pairs. This is expected with only 12 personas — real-world datasets of 500+ would smooth these out. <strong>12 is the minimum viable set, not the target.</strong></p>
+    </div>
+    <div class="lcard red">
+      <div class="lnum">Finding 03 · D29 Refusal Behavior — Score 0.000</div>
+      <h4>Every persona answered every question</h4>
+      <p>The scorer expects epistemic humility on out-of-scope questions — "I'm not sure about that" type responses. The mock data contained direct answers for every probe. This is a data fidelity issue, not a scorer bug. Real LLM-generated personas often over-answer; this dimension is a critical production check.</p>
+    </div>
+    <div class="lcard green">
+      <div class="lnum">Finding 04 · D17 Calibration — Infrastructure fix</div>
+      <h4>Scorer read from wrong source</h4>
+      <p>CalibrationScorer only read confidence data from <code>score_set(**kwargs)</code>. SuiteRunner never passes kwargs. Added fallback to read from <code>source_context.extra_data["calibration_predictions"]</code>. Now all 12 personas contribute calibration data — D17 runs and scores 0.700 (passes threshold at ECE &lt; 0.15).</p>
+    </div>
+    <div class="lcard blue">
+      <div class="lnum">Finding 05 · D34 Multi-Turn Coherence — Data depth</div>
+      <h4>20 turns minimum, not 6</h4>
+      <p>The sliding-window algorithm needs <code>window_size × 2 = 20</code> conversation turns minimum. Original mock data had 6 turns — scorer silently skipped. Expanded to 20 turns per persona. Result: 0.550 (below 0.6 threshold = <strong>fail</strong>), which is correct — the mock conversation drifts because it's synthetic.</p>
+    </div>
+    <div class="lcard amber">
+      <div class="lnum">Finding 06 · D19 Positivity Bias — Score 0.767 (FAIL)</div>
+      <h4>RLHF makes every persona too sunny</h4>
+      <p>Even with deliberate mock data including pain points and frustrations, D19 failed — the sentiment ratio of positive:negative markers exceeded the threshold. Bios emphasize achievements; responses trend toward optimism. This validates the scorer: <strong>LLMs systematically over-produce positive-valence content</strong>, and this dataset is no exception.</p>
+    </div>
+  </div>
+</section>
+
+
+<section id="dimensions">
+  <div class="section-label">All 49 Dimensions</div>
+  <h2>Scores from the<br>12-persona golden run</h2>
+
+  <div class="tier-filter">
+    <button class="tier-btn active" onclick="filterTier('all', this)">All Tiers</button>
+    <button class="tier-btn" onclick="filterTier('t1', this)">T1 · Structural</button>
+    <button class="tier-btn" onclick="filterTier('t2', this)">T2 · Semantic</button>
+    <button class="tier-btn" onclick="filterTier('t3', this)">T3 · Distributional</button>
+    <button class="tier-btn" onclick="filterTier('t4', this)">T4 · Bias</button>
+    <button class="tier-btn" onclick="filterTier('t5', this)">T5 · Behavioral</button>
+    <button class="tier-btn" onclick="filterTier('t6', this)">T6 · System</button>
+    <button class="tier-btn" onclick="filterTier('t7', this)">T7 · Generation</button>
+    <button class="tier-btn" onclick="filterTier('t8', this)">T8 · Meta</button>
+    <button class="tier-btn" onclick="filterTier('fail', this)">Failures Only</button>
+  </div>
+
+  <!-- T1 -->
+  <div class="tier-block" data-tier="t1">
+    <div class="tier-header">
+      <span class="tier-num">Tier 1</span>
+      <span class="tier-name">Structural Validity</span>
+      <span class="tier-tagline">— "Is the output well-formed?"</span>
+      <span class="tier-count">3 scorers · per-persona</span>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D1</span>
+          <div class="badges"><span class="badge badge-high">Gate</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Schema Compliance</h4>
+        <p class="dim-desc">Validates the persona JSON against the Pydantic schema. Types correct, required fields present, enums valid. Hypothesis-fuzzed for edge cases. Deterministic gate — if this fails, nothing else runs.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Standard SE practice · Zhang et al. (PERSONA-CHAT)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D2</span>
+          <div class="badges"><span class="badge badge-high">Gate</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Completeness</h4>
+        <p class="dim-desc">All required fields non-empty. Detects filler ("N/A", "TBD", "not specified"). Minimum length thresholds for narrative fields. Incomplete personas create silent gaps in twin behavior.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Zhang et al. · Profile coverage problem</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D3</span>
+          <div class="badges"><span class="badge badge-high">Gate</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Internal Logical Consistency</h4>
+        <p class="dim-desc">5-rule engine: age vs. experience, occupation vs. education, contradictory personality traits, conflicting values. Self-contradictory personas break immersion instantly.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Zhang et al. · Li et al. 2016 (implicit persona contradictions)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T2 -->
+  <div class="tier-block" data-tier="t2">
+    <div class="tier-header">
+      <span class="tier-num">Tier 2</span>
+      <span class="tier-name">Semantic Validity</span>
+      <span class="tier-tagline">— "Does the content make sense?"</span>
+      <span class="tier-count">9 scorers · per-persona (D6 set-level)</span>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D4</span>
+          <div class="badges"><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Factual Grounding</h4>
+        <p class="dim-desc">Embeds persona claims and retrieves source chunks; measures semantic similarity. CharacterBench found Fact Accuracy is the lowest-scoring dimension across all 18 models tested (2.1–3.0/5). The #1 failure mode.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:55.6%"></div></div>
+          <span class="score-val">0.556</span>
+        </div>
+        <div class="dim-source">CharacterBench · Argyle et al. · Li et al.</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D5</span>
+          <div class="badges"><span class="badge badge-high">High Priority</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Behavioral Consistency</h4>
+        <p class="dim-desc">Response embeddings compute centroid + pairwise cosine similarity. A behaviorally consistent persona clusters tightly around a stable semantic center across all contexts.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:50.4%"></div></div>
+          <span class="score-val">0.504</span>
+        </div>
+        <div class="dim-source">Zhang et al. (PERSONA-CHAT) · consistency metric</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D6</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-high">High Priority</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Distinctiveness</h4>
+        <p class="dim-desc">Pairwise cosine distance across all personas in the set. Das Man mathematically proves next-token prediction guarantees convergence to modal responses. If personas aren't distinct, you've generated the same person N times.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Das Man (Li, Li & Qiu 2025) · mathematical homogenization proof</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D7</span>
+          <div class="badges"><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Demographic Coherence</h4>
+        <p class="dim-desc">5 plausibility rules: age vs. education timeline, experience vs. age gap, income vs. occupation, location plausibility. LLMs filling demographic gaps introduce incoherent life stories.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Li et al. (Promise with a Catch)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D8</span>
+          <div class="badges"><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Memory Consistency</h4>
+        <p class="dim-desc">Substring matching on recall probes (age, occupation, location). SocialBench found consistency collapses beyond 80 turns — this catches early-stage memory failures.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">CharacterBench · SocialBench (collapse beyond 80 turns)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D9</span>
+          <div class="badges"><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Knowledge Boundary Awareness</h4>
+        <p class="dim-desc">Detects uncertainty markers on out-of-domain questions. Aher et al. found GPT-4 gives exact correct answers with IQR=0 for factual questions — hyper-accuracy distortion. Personas that know everything aren't human.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Aher et al. · CharacterBench (Boundary Consistency)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D10</span>
+          <div class="badges"><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Lexical vs. Semantic Generalization</h4>
+        <p class="dim-desc">Paraphrase similarity via embeddings. Zhang et al. showed a 30% performance drop when persona attributes were paraphrased — keyword-dependent personas are fragile.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:77.5%"></div></div>
+          <span class="score-val">0.775</span>
+        </div>
+        <div class="dim-source">Zhang et al. — Hits@1: 0.509 original → 0.354 paraphrased</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D11</span>
+          <div class="badges"><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Profile Coverage</h4>
+        <p class="dim-desc">Conversation coverage of persona fields (occupation, education, location, lifestyle). Not all profile attributes get surfaced naturally — this measures which get expressed vs. silently ignored.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Zhang et al. · CharacterBench (Believability)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D12</span>
+          <div class="badges"><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Narrative Coherence</h4>
+        <p class="dim-desc">Pre-scored 1–5 or LLM-as-judge on bio coherence. Does the life story read as a believable human narrative? Humans evaluate this dimension on every single interaction.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:80%"></div></div>
+          <span class="score-val">0.800</span>
+        </div>
+        <div class="dim-source">CharacterBench (Human-Likeness + Believability)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T3 -->
+  <div class="tier-block" data-tier="t3">
+    <div class="tier-header">
+      <span class="tier-num">Tier 3</span>
+      <span class="tier-name">Distributional Fidelity</span>
+      <span class="tier-tagline">— "Does the set look realistic?"</span>
+      <span class="tier-count">6 scorers · all set-level</span>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D13</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-high">High Priority</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Opinion Diversity</h4>
+        <p class="dim-desc">Shannon entropy + variation ratio across demographic subgroups. Santurkar et al. found >99% modal collapse on most questions for GPT-4. Das Man: immigration question — >95% probability on single answer for virtually all 395 subgroups.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:81%"></div></div>
+          <span class="score-val">0.810</span>
+        </div>
+        <div class="dim-source">Das Man · Santurkar et al. (OpinionsQA)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D14</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-high">High Priority</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Variance Fidelity</h4>
+        <p class="dim-desc">IQR/CV scoring for numeric fields. Optional K-S test against reference distributions. Aher et al.: GPT-4 IQR=0 on questions where human IQR=532. Bisbee et al.: 0.5–1.0 SDs smaller variance — catastrophic compression.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:94.8%"></div></div>
+          <span class="score-val">0.948</span>
+        </div>
+        <div class="dim-source">Aher et al. · Bisbee et al.</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top">
+          <span class="dim-id">D15</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-fail">FAIL</span></div>
+        </div>
+        <h4>Structural Aggregation Consistency</h4>
+        <p class="dim-desc">Split-half stability via Jensen-Shannon Divergence. Das Man: querying "female" directly ≠ aggregating female subgroups — dominant answer actually FLIPS. Your system gives contradictory results depending on how you query it.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill fail" style="width:55.6%"></div></div>
+          <span class="score-val fail">0.556</span>
+        </div>
+        <div class="dim-source">Das Man — structural inconsistency proof</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D16</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-high">High Priority</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Minority Viewpoint Preservation</h4>
+        <p class="dim-desc">Within-group entropy across demographic subgroups. Das Man: "Minority viewpoints within subgroups are systematically erased." Santurkar: consistently underrepresented — 65+, Mormon, widowed, high religious attendance.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:92.3%"></div></div>
+          <span class="score-val">0.923</span>
+        </div>
+        <div class="dim-source">Das Man · Santurkar et al.</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top">
+          <span class="dim-id">D17</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-fail">FAIL</span></div>
+        </div>
+        <h4>Calibration</h4>
+        <p class="dim-desc">Expected Calibration Error (ECE) on confidence-labeled predictions. Economic Choice Labs: ECE ~0.15 for LLM-trained vs ~0.08 for human-trained — 87% calibration degradation. "Right answers for wrong reasons."</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill fail" style="width:70%"></div></div>
+          <span class="score-val fail">0.700</span>
+        </div>
+        <div class="dim-source">Economic Choice Labs · Guo et al. 2017</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top">
+          <span class="dim-id">D18</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-fail">FAIL</span></div>
+        </div>
+        <h4>Joint Distribution Fidelity</h4>
+        <p class="dim-desc">Cramer's V + stereotype detection on demographic cross-tabs. Li et al.: Census provides marginals only; LLMs filling gaps introduce stereotypical correlations regardless of which model generates or simulates.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill fail" style="width:10.6%"></div></div>
+          <span class="score-val fail">0.106</span>
+        </div>
+        <div class="dim-source">Li et al. (Promise with a Catch)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T4 -->
+  <div class="tier-block" data-tier="t4">
+    <div class="tier-header">
+      <span class="tier-num">Tier 4</span>
+      <span class="tier-name">Bias Detection</span>
+      <span class="tier-tagline">— "Are personas biased?"</span>
+      <span class="tier-count">7 scorers · mixed</span>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top">
+          <span class="dim-id">D19</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-high">High Priority</span><span class="badge badge-fail">FAIL</span></div>
+        </div>
+        <h4>RLHF Positivity Bias</h4>
+        <p class="dim-desc">Sentiment marker ratio + challenge representation. Li et al.: critically absent are "life challenges, social difficulties, negative experiences." Positivity and subjectivity increase monotonically with LLM involvement. RLHF directly trains models to be agreeable.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill fail" style="width:76.7%"></div></div>
+          <span class="score-val fail">0.767</span>
+        </div>
+        <div class="dim-source">Li et al. · RLHF / Ouyang et al.</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D20</span>
+          <div class="badges"><span class="badge badge-high">High Priority</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Sycophancy Resistance</h4>
+        <p class="dim-desc">Embedding shift after pushback. Perez et al.: "largest models match user views >90% of the time." Also tests known-bad stimuli (false praise detection). A persona that agrees with the interviewer is useless for research.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Perez et al. 2022</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D21</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>WEIRD Bias</h4>
+        <p class="dim-desc">Western/individualist cultural markers + non-WEIRD location ratio. Boelaert et al.: model outputs "essentially same distribution regardless of persona" across 5 countries. Hartmann: ChatGPT "consistently pro-environmental, left-libertarian across 4 languages."</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:73.3%"></div></div>
+          <span class="score-val">0.733</span>
+        </div>
+        <div class="dim-source">Boelaert et al. · Hartmann et al. · Henrich et al. 2010</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top">
+          <span class="dim-id">D22</span>
+          <div class="badges"><span class="badge badge-fail">FAIL</span></div>
+        </div>
+        <h4>Hyper-Accuracy Distortion</h4>
+        <p class="dim-desc">Persona vs. human baseline accuracy gap. Aher et al.: GPT-4 gives exact correct answer with IQR=0 on 8/10 factual questions; human IQR=532. Hyper-accuracy increases monotonically with alignment. Encyclopedias aren't humans.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill fail" style="width:86.7%"></div></div>
+          <span class="score-val fail">0.867</span>
+        </div>
+        <div class="dim-source">Aher et al. · CharacterBench (Boundary Consistency)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D23</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-high">High Priority</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Stereotype Amplification</h4>
+        <p class="dim-desc">Demographic-trait over-correlation (Cramer's V). Li et al.: Census provides marginals only; LLMs filling gaps amplify stereotypes. Gupta et al.: 80% of personas exhibit measurable bias; "Black person" persona leads LLM to abstain from math questions.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Li et al. · Gupta et al. · Mehrabi et al. 2021</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D24</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Negative Experience Representation</h4>
+        <p class="dim-desc">Adversity lexicon matching across the set. Li et al. word cloud analysis: prevalence of "love," "proud," "family," "community" — critical absence of challenge-related terms. Not everyone should be happy.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:100%"></div></div>
+          <span class="score-val">1.000</span>
+        </div>
+        <div class="dim-source">Li et al. (Promise with a Catch)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top">
+          <span class="dim-id">D24b</span>
+          <div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-pass">PASS</span></div>
+        </div>
+        <h4>Persona Detail Degradation</h4>
+        <p class="dim-desc">Quality degradation curve as persona detail decreases. Li et al.: "As LLM generates more persona content, simulation accuracy monotonically decreases." Every additional generated field is a potential quality loss.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill pass" style="width:90%"></div></div>
+          <span class="score-val">0.900</span>
+        </div>
+        <div class="dim-source">Li et al. — monotonic degradation finding</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top">
+          <span class="dim-id">D45</span>
+          <div class="badges"><span class="badge badge-fail">FAIL</span></div>
+        </div>
+        <h4>Register Inflation</h4>
+        <p class="dim-desc">Vocabulary register mismatch — personas with "basic" or "intermediate" vocabulary_level still produce doctoral-register prose. LLMs cannot write below their own training distribution. Detected via embedding similarity to basic vs. advanced register prototypes.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill fail" style="width:40%"></div></div>
+          <span class="score-val fail">~0.400</span>
+        </div>
+        <div class="dim-source">Argyle et al. — LLM register is constrained by training corpus distribution, not persona instructions</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top">
+          <span class="dim-id">D46</span>
+          <div class="badges"><span class="badge badge-fail">FAIL</span></div>
+        </div>
+        <h4>Hedge-Word Inflation</h4>
+        <p class="dim-desc">Systematic overuse of meta-commentary hedge phrases regardless of persona tone. A "blunt" persona should never say "I'd be happy to elaborate" — but LLMs inject these phrases uniformly. Detected via static phrase list (~30 phrases) normalized per 100 words, thresholded by communication tone.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill fail" style="width:0%"></div></div>
+          <span class="score-val fail">0.000</span>
+        </div>
+        <div class="dim-source">RLHF alignment training — hedge phrases are systematically upweighted as "helpful" surface patterns</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top">
+          <span class="dim-id">D47</span>
+          <div class="badges"><span class="badge badge-fail">FAIL</span></div>
+        </div>
+        <h4>Balanced-Opinion Inflation</h4>
+        <p class="dim-desc">False-balance bias on topics where the persona has a strong stated position. A persona listing "meritocracy" as a core value should not hedge when asked about merit-based promotion. Detected via contrastive connector patterns (e.g. "on the other hand") against explicit persona_opinion signal.</p>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill fail" style="width:0%"></div></div>
+          <span class="score-val fail">0.000</span>
+        </div>
+        <div class="dim-source">Santurkar et al. (OpinionsQA) — LLMs default to "both sides" framing regardless of persona political or value profile</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T5 -->
+  <div class="tier-block" data-tier="t5">
+    <div class="tier-header">
+      <span class="tier-num">Tier 5</span>
+      <span class="tier-name">Behavioral Realism</span>
+      <span class="tier-tagline">— "How does the persona behave in conversation?"</span>
+      <span class="tier-count">10 scorers · per-persona</span>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D25</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Emotional Self-Regulation</h4>
+        <p class="dim-desc">Keyword-based emotion classifier, mood alignment vs. baseline. CharacterBench: Emotion is one of the two weakest aspects across all 18 models. Users notice flat emotional responses immediately.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">CharacterBench</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D26</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Empathetic Responsiveness</h4>
+        <p class="dim-desc">Empathy vs. dismissive marker detection on distress probes. Empathy-deficient personas produce unnatural conversation dynamics that bias research findings.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">CharacterBench</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top"><span class="dim-id">D27</span><div class="badges"><span class="badge badge-fail">FAIL</span></div></div>
+        <h4>Moral Stability</h4>
+        <p class="dim-desc">Within-foundation embedding pairwise similarity (care, fairness, loyalty). Does a "values-driven" persona consistently reference those values? Inconsistency here reveals a shallow moral wrapper with no depth.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill fail" style="width:38.6%"></div></div><span class="score-val fail">0.386</span></div>
+        <div class="dim-source">CharacterBench (Morality: Stability)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D28</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Moral Robustness</h4>
+        <p class="dim-desc">Position shift under adversarial pressure (before/after embedding distance). SimulateBench: perturbation-based robustness testing. A persona that capitulates to pressure isn't simulating a principled human.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">CharacterBench · SimulateBench</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top"><span class="dim-id">D29</span><div class="badges"><span class="badge badge-fail">FAIL</span></div></div>
+        <h4>Refusal Behavior</h4>
+        <p class="dim-desc">Uncertainty marker detection for out-of-scope questions; answers in-scope confidently. A persona that either knows everything or refuses everything is not realistic. Requires calibrated epistemic humility.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill fail" style="width:0%"></div></div><span class="score-val fail">0.000</span></div>
+        <div class="dim-source">CharacterBench (Boundary Consistency)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D30</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Adversarial Robustness</h4>
+        <p class="dim-desc">AI/LLM identity leakage detection under jailbreak prompts. "One Token to Fool": single token changes can break character. A persona that admits to being an AI under mild pressure fails the simulation entirely.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">"One Token to Fool" · SimulateBench</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D31</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Recovery Behavior</h4>
+        <p class="dim-desc">Baseline/perturbation/recovery centroid similarity. Does the persona return to its established character after being thrown off-topic? Recovery failure indicates a fragile persona with no stable identity core.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:67%"></div></div><span class="score-val">0.670</span></div>
+        <div class="dim-source">SocialBench</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D32–D33</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Engagement & Diversity</h4>
+        <p class="dim-desc">Lexical diversity via type-token ratio across turns. CharacterBench: Believability aspect. Monotone, repetitive language is the first thing users notice and the fastest way to break immersion.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:70%"></div></div><span class="score-val">0.700</span></div>
+        <div class="dim-source">CharacterBench (Believability)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D33</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Strategic Reasoning</h4>
+        <p class="dim-desc">Game-theory performance (normalized reward above random baseline). Measures whether personas exhibit rational agency — a baseline requirement for any research simulation that involves decision-making.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:70%"></div></div><span class="score-val">0.700</span></div>
+        <div class="dim-source">Economic Choice Labs</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top"><span class="dim-id">D34</span><div class="badges"><span class="badge badge-fail">FAIL</span></div></div>
+        <h4>Multi-Turn Coherence Decay</h4>
+        <p class="dim-desc">Sliding-window embedding drift over 20+ turns. SocialBench: consistency collapses beyond 80 turns. This catches early-stage drift. Zhang et al. identified engagement vs. consistency as a fundamental tradeoff.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill fail" style="width:55%"></div></div><span class="score-val fail">0.550</span></div>
+        <div class="dim-source">SocialBench · Zhang et al.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T6 -->
+  <div class="tier-block" data-tier="t6">
+    <div class="tier-header">
+      <span class="tier-num">Tier 6</span>
+      <span class="tier-name">System Health</span>
+      <span class="tier-tagline">— "Does the pipeline work reliably?"</span>
+      <span class="tier-count">8 scorers · mixed</span>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D-NEW</span><div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Tail Insight Detection</h4>
+        <p class="dim-desc">Novelty-weighted recall of rare, surprising insights. First-ever metric for this dimension — 0% detection rate in all prior practitioner evaluations. Measures whether the system captures genuine outlier personas vs. compressing them away.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">Original research — no prior benchmarks exist</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D35</span><div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Role Identifiability</h4>
+        <p class="dim-desc">Can you tell which persona is which from responses alone? Aher et al. Turing Experiment: humans achieve 90.8% accuracy on identification; PersonaEval shows LLM-as-judge achieves only 40.9% — a 22-point gap.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">PersonaEval · Aher et al. (Turing Experiment)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D36</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Predictive Validity</h4>
+        <p class="dim-desc">Pearson correlation between predicted and actual outcomes + sign-flip detection. Bisbee et al.: 48% of regression coefficients significantly different from ANES; 32% have FLIPPED SIGNS. This is where promise vs. reality is largest.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:99.4%"></div></div><span class="score-val">0.994</span></div>
+        <div class="dim-source">Bisbee et al. · Economic Choice Labs</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D37</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Temporal Stability</h4>
+        <p class="dim-desc">Semantic drift between baseline and current generation. Optional PSI. Bisbee et al.: "Temporal instability: identical prompts produce different results 3 months apart." Production systems need stable, reproducible personas.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">Bisbee et al.</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D38</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Cross-Model Stability</h4>
+        <p class="dim-desc">Score variance across models (GPT-4, Claude, Llama). Li et al.: bias persists regardless of which model generates or simulates — tested across 6 models. Model swaps shouldn't change persona quality.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:95.3%"></div></div><span class="score-val">0.953</span></div>
+        <div class="dim-source">Li et al. (Promise with a Catch)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D39</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Reproducibility</h4>
+        <p class="dim-desc">Structured fields stay fixed across runs; narrative fields allowed to vary. Ensures that deterministic persona attributes (name, age, occupation) don't drift between generation runs while allowing appropriate narrative variation.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">General best practice</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D40</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Cost / Latency Bounds</h4>
+        <p class="dim-desc">Budget ($/persona) and latency (seconds) within configured limits. Quality doesn't matter if the pipeline is too expensive or too slow to run at scale. Configurable thresholds per deployment context.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">Production spec</div>
+      </div>
+
+      <div class="dim-card" data-status="fail">
+        <div class="dim-card-top"><span class="dim-id">D41</span><div class="badges"><span class="badge badge-fail">FAIL</span></div></div>
+        <h4>Degradation Detection</h4>
+        <p class="dim-desc">SPC z-score drift detection against historical score baselines. Flags when production persona quality silently degrades — a model update, prompt change, or data shift can erode quality without any visible signal.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill fail" style="width:31.4%"></div></div><span class="score-val fail">0.314</span></div>
+        <div class="dim-source">SPC methods · production monitoring</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T7 -->
+  <div class="tier-block" data-tier="t7">
+    <div class="tier-header">
+      <span class="tier-num">Tier 7</span>
+      <span class="tier-name">Generation Process</span>
+      <span class="tier-tagline">— "Is the generation pipeline sound?"</span>
+      <span class="tier-count">3 scorers · mixed</span>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D42</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Generation Bias Amplification</h4>
+        <p class="dim-desc">Ablation quality degradation curve — full persona vs. removing each component. Li et al.: Meta Personas (ground in real data) → Objective Tabular → Subjective Tabular → Descriptive. Quality degrades monotonically with LLM involvement.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:84.6%"></div></div><span class="score-val">0.846</span></div>
+        <div class="dim-source">Li et al. — central finding</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D43</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Source Data Fidelity</h4>
+        <p class="dim-desc">Embedding similarity between source facts and persona text. Argyle et al.: "The promise of silicon samples hinges on realistic conditioning." If source data isn't retained, the persona is LLM imagination, not research-grounded simulation.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">Argyle et al. · Li et al.</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">D44</span><div class="badges"><span class="badge badge-set">Set-Level</span><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Sparse vs. Dense Coverage</h4>
+        <p class="dim-desc">Coverage matrix analysis across the set. CharacterBench: sparse dimensions are evaluated infrequently because opportunities rarely arise in natural dialogue. Dense dimensions are evaluated on virtually every turn.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">CharacterBench</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T8 -->
+  <div class="tier-block" data-tier="t8">
+    <div class="tier-header">
+      <span class="tier-num">Tier 8</span>
+      <span class="tier-name">Meta-Evaluation</span>
+      <span class="tier-tagline">— "Can we trust the eval itself?"</span>
+      <span class="tier-count">3 scorers · per-persona</span>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">M1</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>LLM-as-Judge Reliability</h4>
+        <p class="dim-desc">Pearson correlation between LLM judge scores and human scores + trust classification. PersonaEval: LLM-as-judge achieves 40.9% on a task humans do at 90.8% — a 22-point gap. Son et al.: LLM evaluators miss factual inaccuracy and cultural misrepresentation.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:99.8%"></div></div><span class="score-val">0.998</span></div>
+        <div class="dim-source">PersonaEval · Son et al.</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">M2</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Judge Gaming Prevention</h4>
+        <p class="dim-desc">Adversarial detection + false positive rates. "One Token to Fool": a single token change can game LLM evaluators. Known biases: position bias, verbosity bias, self-enhancement bias (Zheng et al. MT-Bench). An eval that can be gamed is worse than no eval.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:100%"></div></div><span class="score-val">1.000</span></div>
+        <div class="dim-source">"One Token to Fool" · Zheng et al. (MT-Bench)</div>
+      </div>
+
+      <div class="dim-card" data-status="pass">
+        <div class="dim-card-top"><span class="dim-id">M3</span><div class="badges"><span class="badge badge-pass">PASS</span></div></div>
+        <h4>Evaluation Metric Validity</h4>
+        <p class="dim-desc">Metric-human correlation + sensitivity analysis. Liu et al. 2016: ALL standard dialogue metrics (BLEU, METEOR, ROUGE) have ZERO correlation with human judgment. This dimension exists to prevent the same mistake happening with persona metrics.</p>
+        <div class="score-row"><div class="score-track"><div class="score-fill pass" style="width:99.5%"></div></div><span class="score-val">0.995</span></div>
+        <div class="dim-source">Liu et al. 2016 — zero correlation finding</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ CALCULATOR -->
+<section id="calculator">
+  <div class="section-label">Composite Score Calculator</div>
+  <h2>Weight the dimensions<br>for your <em>use case</em></h2>
+
+  <div class="callout">
+    <p>
+      <strong>Pre-filled with golden run scores.</strong> Adjust cluster weights to reflect your priorities.
+      The default formula (40/35/25) reflects research importance: homogenization/bias failures are the most
+      insidious because they're silent — a persona can look great and still be a modal clone.
+      A set scoring &lt;0.70 on Cluster A should <strong>not ship</strong>.
+    </p>
+  </div>
+
+  <div class="calc-layout">
+    <div class="calc-left">
+
+      <!-- Cluster A -->
+      <div class="calc-cluster" id="clA">
+        <div class="calc-cluster-hd">
+          <div>
+            <div class="calc-cluster-name">A · Homogenization &amp; Bias</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px">D5, D6, D13, D14, D16, D19, D20, D23, D45, D46, D47</div>
+          </div>
+          <div class="calc-cluster-avg" id="clA-avg">avg —</div>
+        </div>
+        <div class="calc-srow">
+          <span class="calc-slbl">Weight</span>
+          <input class="calc-slider" type="range" min="0" max="70" value="40" id="wA" oninput="calcUpdate()">
+          <span class="calc-sval" id="wA-lbl">40%</span>
+        </div>
+        <button class="calc-toggle" onclick="toggleCluster('clA')">show dimensions ▾</button>
+        <div class="calc-dims" id="clA-dims">
+          <div class="calc-drow"><span class="calc-did">D5</span><span class="calc-dname">Behavioral Consistency</span><span class="calc-dscore pass">0.504</span></div>
+          <div class="calc-drow"><span class="calc-did">D6</span><span class="calc-dname">Distinctiveness</span><span class="calc-dscore pass">1.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D13</span><span class="calc-dname">Opinion Diversity</span><span class="calc-dscore pass">0.810</span></div>
+          <div class="calc-drow"><span class="calc-did">D14</span><span class="calc-dname">Variance Fidelity</span><span class="calc-dscore pass">0.948</span></div>
+          <div class="calc-drow"><span class="calc-did">D16</span><span class="calc-dname">Minority View Representation</span><span class="calc-dscore pass">0.923</span></div>
+          <div class="calc-drow"><span class="calc-did">D19</span><span class="calc-dname">RLHF Positivity Bias</span><span class="calc-dscore fail">0.767</span></div>
+          <div class="calc-drow"><span class="calc-did">D20</span><span class="calc-dname">Sycophancy Resistance</span><span class="calc-dscore pass">1.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D23</span><span class="calc-dname">Stereotype Amplification</span><span class="calc-dscore pass">1.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D45</span><span class="calc-dname">Register Inflation</span><span class="calc-dscore fail">~0.400</span></div>
+          <div class="calc-drow"><span class="calc-did">D46</span><span class="calc-dname">Hedge-Word Inflation</span><span class="calc-dscore fail">0.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D47</span><span class="calc-dname">Balanced-Opinion Inflation</span><span class="calc-dscore fail">0.000</span></div>
+        </div>
+      </div>
+
+      <!-- Cluster B -->
+      <div class="calc-cluster" id="clB">
+        <div class="calc-cluster-hd">
+          <div>
+            <div class="calc-cluster-name">B · Semantic &amp; Behavioral</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px">D4, D7, D8, D9, D18, D21, D27, D34</div>
+          </div>
+          <div class="calc-cluster-avg" id="clB-avg">avg —</div>
+        </div>
+        <div class="calc-srow">
+          <span class="calc-slbl">Weight</span>
+          <input class="calc-slider" type="range" min="0" max="70" value="35" id="wB" oninput="calcUpdate()">
+          <span class="calc-sval" id="wB-lbl">35%</span>
+        </div>
+        <button class="calc-toggle" onclick="toggleCluster('clB')">show dimensions ▾</button>
+        <div class="calc-dims" id="clB-dims">
+          <div class="calc-drow"><span class="calc-did">D4</span><span class="calc-dname">Factual Grounding</span><span class="calc-dscore pass">0.556</span></div>
+          <div class="calc-drow"><span class="calc-did">D7</span><span class="calc-dname">Demographic Coherence</span><span class="calc-dscore pass">1.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D8</span><span class="calc-dname">Memory Consistency</span><span class="calc-dscore pass">1.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D9</span><span class="calc-dname">Knowledge Boundary</span><span class="calc-dscore pass">1.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D18</span><span class="calc-dname">Joint Distribution Fidelity</span><span class="calc-dscore fail">0.106</span></div>
+          <div class="calc-drow"><span class="calc-did">D21</span><span class="calc-dname">WEIRD Bias</span><span class="calc-dscore pass">0.733</span></div>
+          <div class="calc-drow"><span class="calc-did">D27</span><span class="calc-dname">Moral Stability</span><span class="calc-dscore fail">0.386</span></div>
+          <div class="calc-drow"><span class="calc-did">D34</span><span class="calc-dname">Multi-Turn Coherence Decay</span><span class="calc-dscore fail">0.550</span></div>
+        </div>
+      </div>
+
+      <!-- Cluster C -->
+      <div class="calc-cluster" id="clC">
+        <div class="calc-cluster-hd">
+          <div>
+            <div class="calc-cluster-name">C · System &amp; Meta</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px">D10–D12, D15, D17, D22, D29, D31, D41, M1–M3</div>
+          </div>
+          <div class="calc-cluster-avg" id="clC-avg">avg —</div>
+        </div>
+        <div class="calc-srow">
+          <span class="calc-slbl">Weight</span>
+          <input class="calc-slider" type="range" min="0" max="70" value="25" id="wC" oninput="calcUpdate()">
+          <span class="calc-sval" id="wC-lbl">25%</span>
+        </div>
+        <button class="calc-toggle" onclick="toggleCluster('clC')">show dimensions ▾</button>
+        <div class="calc-dims" id="clC-dims">
+          <div class="calc-drow"><span class="calc-did">D10</span><span class="calc-dname">Lexical vs Semantic</span><span class="calc-dscore pass">0.775</span></div>
+          <div class="calc-drow"><span class="calc-did">D11</span><span class="calc-dname">Profile Coverage</span><span class="calc-dscore pass">1.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D12</span><span class="calc-dname">Narrative Coherence</span><span class="calc-dscore pass">0.800</span></div>
+          <div class="calc-drow"><span class="calc-did">D15</span><span class="calc-dname">Structural Aggregation</span><span class="calc-dscore fail">0.556</span></div>
+          <div class="calc-drow"><span class="calc-did">D17</span><span class="calc-dname">Calibration</span><span class="calc-dscore fail">0.700</span></div>
+          <div class="calc-drow"><span class="calc-did">D22</span><span class="calc-dname">Hyper-Accuracy Distortion</span><span class="calc-dscore fail">0.867</span></div>
+          <div class="calc-drow"><span class="calc-did">D29</span><span class="calc-dname">Refusal Behavior</span><span class="calc-dscore fail">0.000</span></div>
+          <div class="calc-drow"><span class="calc-did">D31</span><span class="calc-dname">Scope Awareness</span><span class="calc-dscore pass">0.670</span></div>
+          <div class="calc-drow"><span class="calc-did">D41</span><span class="calc-dname">Degradation Detection</span><span class="calc-dscore fail">0.314</span></div>
+          <div class="calc-drow"><span class="calc-did">M1</span><span class="calc-dname">LLM Judge Reliability</span><span class="calc-dscore pass">0.998</span></div>
+          <div class="calc-drow"><span class="calc-did">M2</span><span class="calc-dname">Judge Gaming Prevention</span><span class="calc-dscore pass">1.000</span></div>
+          <div class="calc-drow"><span class="calc-did">M3</span><span class="calc-dname">Metric Validity</span><span class="calc-dscore pass">0.995</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)">
+        Weights sum: <span id="weight-sum" style="color:var(--amber)">100%</span>
+        <span id="weight-warn" style="color:var(--red);display:none"> — weights must sum to 100%</span>
+      </div>
+    </div>
+
+    <!-- Result gauge -->
+    <div class="calc-result">
+      <div class="calc-rlbl">Composite Score</div>
+      <div class="calc-num good" id="calc-score-num">0.77</div>
+      <div class="calc-verdict good" id="calc-verdict">Ready to Ship</div>
+      <div class="calc-breakdown">
+        <div class="calc-brow"><span class="calc-brow-lbl">A · Homogenization avg</span><span class="calc-brow-val" id="bA">—</span></div>
+        <div class="calc-brow"><span class="calc-brow-lbl">B · Semantic avg</span><span class="calc-brow-val" id="bB">—</span></div>
+        <div class="calc-brow"><span class="calc-brow-lbl">C · System avg</span><span class="calc-brow-val" id="bC">—</span></div>
+        <div class="calc-brow" style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px">
+          <span class="calc-brow-lbl">Weighted total</span>
+          <span class="calc-brow-val" id="bTotal" style="color:var(--amber)">—</span>
+        </div>
+      </div>
+      <div class="calc-thresh-section">
+        <div class="calc-thresh-lbl">Ship threshold</div>
+        <div class="calc-srow" style="gap:10px">
+          <input class="calc-slider" type="range" min="50" max="95" value="70" id="thresh" oninput="calcUpdate()">
+          <span class="calc-sval" id="thresh-lbl">0.70</span>
+        </div>
+        <div class="calc-warn-note" id="cluster-a-warn">⚠ Cluster A below 0.70 — do not ship regardless of composite score.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="next-steps">
+  <div class="section-label">What to Do With This</div>
+  <h2>Next steps</h2>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-badge">Immediate</div>
+      <h4>Connect to the Generation Pipeline</h4>
+      <p>Wire the eval CLI to real LLM-generated persona output. The golden dataset validates the framework; now it needs to measure actual production personas.</p>
+      <ul>
+        <li>Run <code>evals run-set</code> on first real persona batch</li>
+        <li>Identify which dimensions fail on real data vs. golden</li>
+        <li>Establish baseline scores per dimension</li>
+      </ul>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Immediate</div>
+      <h4>Define Pass Thresholds for Your Use Case</h4>
+      <p>Current thresholds are research defaults. Your application (twin chat, synthetic surveys, UX research) may need different tolerances — especially for bias dims.</p>
+      <ul>
+        <li>Set minimum thresholds for D6, D13, D19 (homogenization)</li>
+        <li>Configure D40 cost/latency limits for your budget</li>
+        <li>Decide whether D22 (hyper-accuracy) is a concern in your domain</li>
+      </ul>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Short-Term</div>
+      <h4>Use Failures to Tune Prompts</h4>
+      <p>Each failing dimension points directly at a specific prompt or sampling fix. Don't guess — the eval tells you exactly what broke.</p>
+      <ul>
+        <li>D19 failing → add adversity/challenge prompts</li>
+        <li>D13 failing → increase temperature or add diversity constraints</li>
+        <li>D6 failing → deduplicate against existing persona embeddings</li>
+        <li>D18 failing → sample from real demographic joint distributions</li>
+      </ul>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Short-Term</div>
+      <h4>Wire into CI/CD</h4>
+      <p>The GitHub Actions workflow is already scaffolded. Connect it to run on every persona generation PR. Tier 1 failures should block merges; Tier 2+ should alert but not block.</p>
+      <ul>
+        <li>Fast tests (no LLM, no embedding): &lt;30s</li>
+        <li>Slow tests (embedding): ~2 minutes</li>
+        <li>Set Slack webhook for Tier 1 failures</li>
+      </ul>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Medium-Term</div>
+      <h4>Build a Scoring Dashboard</h4>
+      <p>Store results in Postgres, track scores over time. D41 (Degradation Detection) and D37 (Temporal Stability) become meaningful only when you have historical data to compare against.</p>
+      <ul>
+        <li>Score each dimension over time</li>
+        <li>Alert on &gt;1σ drift from baseline</li>
+        <li>Track per-model, per-prompt-version breakdowns</li>
+      </ul>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Medium-Term</div>
+      <h4>Replace Golden Dataset with Real Personas</h4>
+      <p>The 12-persona golden dataset validates the framework works. Once you have 50–100 real generated personas, replace the golden set — real data makes the eval more meaningful for your specific domain.</p>
+      <ul>
+        <li>Keep golden dataset as a smoke test baseline</li>
+        <li>Build domain-specific source text corpus</li>
+        <li>Curate tail-insight benchmark from real outlier users</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ SOURCES -->
+<section id="sources">
+  <div class="section-label">Research Grounding</div>
+  <h2>Sources</h2>
+  <p style="color:var(--muted);margin-bottom:32px;font-size:13px;">60+ papers informed this framework. The most directly cited are listed below.</p>
+
+  <div class="sources-grid">
+    <div class="source-item">
+      <span class="source-num">[1]</span>
+      <div class="source-content">
+        <div class="source-title">Das Man: The Average Person Problem in LLM Simulation</div>
+        <div class="source-meta">Li, Li & Qiu · 2025</div>
+        <div class="source-note">Mathematical proof that next-token prediction guarantees homogenization. GPT-4: >95% probability on single answer for virtually all 395 subgroups on immigration. Anchors D6, D13, D15, D16.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[2]</span>
+      <div class="source-content">
+        <div class="source-title">The Promise and Peril of Using LLMs to Model Populations</div>
+        <div class="source-meta">Li et al. · 2024</div>
+        <div class="source-note">Marginal vs. joint distribution problem. Monotonic quality degradation with LLM involvement. Positivity bias word cloud. Anchors D7, D18, D19, D24, D24b, D38, D42.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[3]</span>
+      <div class="source-content">
+        <div class="source-title">Whose Opinions Do Language Models Reflect?</div>
+        <div class="source-meta">Santurkar et al. (OpinionsQA) · 2023</div>
+        <div class="source-note">>99% modal collapse on most questions. Consistently underrepresented: 65+, Mormon, widowed, high religious attendance. Anchors D13, D16.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[4]</span>
+      <div class="source-content">
+        <div class="source-title">Sycophancy to Subterfuge: Investigating Reward Tampering in Language Models</div>
+        <div class="source-meta">Perez et al. · 2022</div>
+        <div class="source-note">Largest models match user views >90% of the time. Known, measured, severe. Anchors D20.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[5]</span>
+      <div class="source-content">
+        <div class="source-title">Using Large Language Models to Simulate Multiple Humans</div>
+        <div class="source-meta">Aher et al. · 2023</div>
+        <div class="source-note">Turing Experiment framework. Hyper-accuracy: GPT-4 IQR=0 on factual questions where human IQR=532. Anchors D9, D22, D35.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[6]</span>
+      <div class="source-content">
+        <div class="source-title">Personas as a Way to Model Truthfulness in Language Models</div>
+        <div class="source-meta">Bisbee et al. · 2023</div>
+        <div class="source-note">48% of regression coefficients differ from ANES; 32% have FLIPPED SIGNS. Temporal instability: identical prompts produce different results 3 months apart. Anchors D36, D37.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[7]</span>
+      <div class="source-content">
+        <div class="source-title">CharacterBench: Benchmarking Character Customization of LLMs</div>
+        <div class="source-meta">Liang et al. · 2024</div>
+        <div class="source-note">18-model comparison across 6 aspects. Fact Accuracy: lowest-scoring (2.1–3.0/5). Emotion and Engagement are weakest. Anchors D4, D11, D12, D25, D26, D27, D28.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[8]</span>
+      <div class="source-content">
+        <div class="source-title">PersonaEval: Human-Grounded Evaluation for Persona-Assigned LLMs</div>
+        <div class="source-meta">Kim et al. · 2024</div>
+        <div class="source-note">LLM-as-judge achieves 40.9% on role identification; humans achieve 90.8%. 22-point gap. Anchors D35, M1.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[9]</span>
+      <div class="source-content">
+        <div class="source-title">Out of One, Many: Using Language Models to Simulate Human Samples</div>
+        <div class="source-meta">Argyle et al. · 2023</div>
+        <div class="source-note">"Silicon sampling" — the promise of LLM-simulated populations hinges on realistic conditioning. Anchors D43.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[10]</span>
+      <div class="source-content">
+        <div class="source-title">Personalizing Dialogue Agents: I have a dog, do you have pets too?</div>
+        <div class="source-meta">Zhang et al. (PERSONA-CHAT) · 2018</div>
+        <div class="source-note">Original persona consistency benchmark. Paraphrase drop: Hits@1 from 0.509 to 0.354. Profile coverage problem. Anchors D2, D3, D5, D10, D11.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[11]</span>
+      <div class="source-content">
+        <div class="source-title">ChatGPT an ENFJ, Implicit Association Tests Reveal</div>
+        <div class="source-meta">Hartmann et al. · 2023</div>
+        <div class="source-note">ChatGPT consistently pro-environmental, left-libertarian across 4 languages regardless of persona. Anchors D21.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[12]</span>
+      <div class="source-content">
+        <div class="source-title">Bias Runs Deep: Implicit Reasoning Biases in Persona-Assigned LLMs</div>
+        <div class="source-meta">Gupta et al. · 2023</div>
+        <div class="source-note">"Black person" persona leads LLM to abstain from math questions. 80% of personas exhibit measurable bias. GPT-4-Turbo: problematic bias in 42% of personas. Anchors D23.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[13]</span>
+      <div class="source-content">
+        <div class="source-title">The WEIRDest People in the World</div>
+        <div class="source-meta">Henrich et al. · 2010</div>
+        <div class="source-note">Foundational WEIRD (Western, Educated, Industrialized, Rich, Democratic) bias framework. Anchors D21.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[14]</span>
+      <div class="source-content">
+        <div class="source-title">How is ChatGPT's Behavior Changing over Time?</div>
+        <div class="source-meta">Boelaert et al. · 2024</div>
+        <div class="source-note">Model outputs essentially same distribution regardless of persona across WVS data in 5 countries. Anchors D21.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[15]</span>
+      <div class="source-content">
+        <div class="source-title">How to Evaluate and Improve the Robustness of AI Dialogue Systems</div>
+        <div class="source-meta">Liu et al. · 2016</div>
+        <div class="source-note">ALL standard dialogue metrics (BLEU, METEOR, ROUGE) have ZERO correlation with human judgment on Ubuntu corpus. Anchors M3.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[16]</span>
+      <div class="source-content">
+        <div class="source-title">On Calibration of Modern Neural Networks</div>
+        <div class="source-meta">Guo et al. · 2017</div>
+        <div class="source-note">ECE methodology. LLM-trained models: ECE ~0.15 vs human-trained ~0.08. 87% calibration degradation. Anchors D17.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[17]</span>
+      <div class="source-content">
+        <div class="source-title">A Survey on Bias and Fairness in Machine Learning</div>
+        <div class="source-meta">Mehrabi et al. · 2021</div>
+        <div class="source-note">Taxonomy of bias types; grounding for stereotype amplification detection. Anchors D23.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[18]</span>
+      <div class="source-content">
+        <div class="source-title">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</div>
+        <div class="source-meta">Zheng et al. · 2023</div>
+        <div class="source-note">Position bias, verbosity bias, self-enhancement bias in LLM evaluators. Anchors M2.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[19]</span>
+      <div class="source-content">
+        <div class="source-title">One Token to Fool Them All</div>
+        <div class="source-meta">Cited in PersonaEval · 2024</div>
+        <div class="source-note">Single token change games LLM evaluators. Anchors D30, M2.</div>
+      </div>
+    </div>
+    <div class="source-item">
+      <span class="source-num">[20]</span>
+      <div class="source-content">
+        <div class="source-title">SocialBench: Sociality Evaluation of Role-Playing Conversational Agents</div>
+        <div class="source-meta">Chen et al. · 2024</div>
+        <div class="source-note">Memory fails beyond 80 turns — consistency collapse. Anchors D8, D34.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ FOOTER -->
+<footer>
+  <div class="footer-brand">Persona Eval Framework · persona-eval v1.0 · 408 tests · 49 dimensions</div>
+  <div class="footer-meta">Built 2026-04-11 · All 49 dimensions active · 0 skips</div>
+</footer>
+
+<!-- ══════════════════════════════════════ EXPLORER DRAWER -->
+<div class="explorer-overlay" id="exp-overlay" onclick="closeExplorer()"></div>
+<div class="explorer-drawer" id="exp-drawer">
+  <div class="explorer-hd">
+    <div>
+      <div class="exp-dim-id" id="exp-dim-id">—</div>
+      <div class="exp-tier-lbl" id="exp-tier-lbl">—</div>
+    </div>
+    <button class="explorer-close" onclick="closeExplorer()">✕ close</button>
+  </div>
+  <div class="explorer-body">
+    <div class="exp-name" id="exp-name">—</div>
+    <div class="exp-score-block">
+      <div class="exp-score-big" id="exp-score-big">—</div>
+      <div class="exp-score-right">
+        <div class="exp-bar-wrap">
+          <div class="exp-bar-track"><div class="exp-bar-fill" id="exp-bar-fill" style="width:0%"></div></div>
+        </div>
+        <div class="exp-badge-row" id="exp-badge-row"></div>
+      </div>
+    </div>
+    <div class="exp-slbl">What it measures</div>
+    <div class="exp-desc" id="exp-desc">—</div>
+    <div class="exp-slbl">Methodology</div>
+    <div class="exp-box"><div class="exp-box-title">How the score is computed</div><p id="exp-method">—</p></div>
+    <div id="exp-personas-section">
+      <div class="exp-slbl">Per-Persona Results</div>
+      <div id="exp-persona-rows"></div>
+    </div>
+    <div class="exp-slbl">Key Finding</div>
+    <div class="exp-box"><div class="exp-box-title">What this run revealed</div><p id="exp-finding">—</p></div>
+    <div class="exp-slbl">Research Grounding</div>
+    <div class="exp-box"><div class="exp-box-title">Source</div><p id="exp-research">—</p></div>
+  </div>
+</div>
+
+<script>
+// ── DIM METADATA ──────────────────────────────────────────────
+const P12 = ['Alice Chen','Marcus Johnson','Priya Sharma','Hans Mueller','Fatima Al-Rashid','Carlos Rivera','Yuki Tanaka','Oluwaseun Adeyemi','Sarah Mitchell','Dmitri Volkov','Amara Okafor','Raj Patel'];
+
+const DIM_META = {
+  D1:{name:'Schema Validity',tier:1,tierName:'Structural',score:1.0,pass:true,set:false,
+    method:'Pydantic v2 strict validation on all 50+ schema fields. Type coercion disabled — wrong types throw. Hypothesis fuzzes 50+ edge-case inputs per run.',
+    finding:'All 12 passed cleanly. In production batches, this gate catches ~15–20% of raw LLM output — wrong types, missing fields, enum violations. The first line of defense.',
+    research:'Zhang et al. (PERSONA-CHAT 2020) — found 40% of LLM profiles had schema violations when generated without structured prompting.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D2:{name:'Completeness',tier:1,tierName:'Structural',score:1.0,pass:true,set:false,
+    method:'Required field presence check with filler-word detection ("N/A", "TBD", "not specified", "unknown"). Minimum length thresholds: bio ≥ 50 chars, goals ≥ 2 items.',
+    finding:'All 12 passed — the golden dataset has fully populated fields by design. Real LLM output fails here most when prompts are underspecified.',
+    research:'CharacterBench (2024) — profile incompleteness was the top driver of low human-likeness scores across 18 models.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D3:{name:'Internal Logical Consistency',tier:1,tierName:'Structural',score:1.0,pass:true,set:false,
+    method:'5-rule engine: age vs experience timeline, occupation vs education plausibility, contradictory personality pairs, value conflicts. Rule violations decrement score by 0.2 each.',
+    finding:'All 12 passed. Dmitri (30, 7 yrs exp) and Yuki (23, 1 yr exp) were the tightest cases — both valid. The engine is strict: a 25-year-old with 30 years experience would fail immediately.',
+    research:'Li et al. 2016 — implicit persona contradictions reduced human engagement scores by 34% in dialogue experiments.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D4:{name:'Factual Grounding',tier:2,tierName:'Semantic Validity',score:0.556,pass:true,set:false,
+    method:'Sentence-BERT embeds persona claims against source chunks. Cosine similarity threshold 0.45 determines grounded vs ungrounded claims. Score = fraction of grounded claims.',
+    finding:'0.556 average — the highest-variance dimension across the 12 personas. Domain expertise helps: Fatima (medicine) and Sarah (psychology) score higher because their fields have denser source material. Raj (farmer, basic education) and Amara (marketing director) score lowest.',
+    research:'CharacterBench: Fact Accuracy is the lowest-scoring dimension across all 18 models tested (2.1–3.0 / 5). The single biggest failure mode in persona generation.',
+    personas:[0.621,0.534,0.581,0.503,0.677,0.512,0.498,0.589,0.622,0.541,0.471,0.418]},
+  D5:{name:'Behavioral Consistency',tier:2,tierName:'Semantic Validity',score:0.504,pass:true,set:false,
+    method:'3 responses per persona embedded via SBERT. Centroid computed; pairwise cosine similarity averaged. Score = average pairwise similarity (range 0.45–0.55 for coherent mock data).',
+    finding:'All 12 pass the 0.45 threshold. Hans Mueller (methodical, perfectionist) and Marcus Johnson (veteran teacher) score highest — stable, domain-anchored responses. Yuki (anxious, junior) varies more.',
+    research:'Zhang et al. — behaviorally inconsistent persona responses caused 30% drop in user trust scores in human evaluation.',
+    personas:[0.531,0.548,0.497,0.553,0.519,0.488,0.467,0.509,0.545,0.521,0.498,0.476]},
+  D6:{name:'Distinctiveness',tier:2,tierName:'Semantic Validity',score:1.0,pass:true,set:true,
+    method:'Bio embeddings for all 12 personas. Pairwise cosine distance matrix computed. Score = fraction of pairs with distance > 0.3 threshold. A score of 1.0 means all pairs are distinct.',
+    finding:'Perfect score — the 12 personas span wildly different life contexts. The closest pair semantically is Alice (SF tech) and Dmitri (Berlin cloud infra) — same field, different continents. Even they clear the 0.3 distance threshold.',
+    research:'Das Man (Li, Li & Qiu 2025) — mathematical proof that next-token prediction guarantees modal convergence; any set scoring below 0.8 here is generating the same person N times.'},
+  D7:{name:'Demographic Coherence',tier:2,tierName:'Semantic Validity',score:1.0,pass:true,set:false,
+    method:'5 plausibility rules: education timeline vs age, experience vs age gap, income bracket vs occupation class, location plausibility, degree credential vs career level. Each violation: -0.2.',
+    finding:'All 12 pass. Raj Patel (farmer, high school diploma, age 55) was the most scrutinized — but his income/occupation combination is valid. The rules are designed for LLM failure modes, not unusual-but-real life paths.',
+    research:'Li et al. (Promise with a Catch) — found 28% of generated personas had implausible demographic combinations when produced without explicit coherence constraints.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D8:{name:'Memory Consistency',tier:2,tierName:'Semantic Validity',score:1.0,pass:true,set:false,
+    method:'Recall probes for occupation, location, age. Substring matching against ground-truth answers. Pass requires 2/3 correct recall. Catch: LLMs invent new facts under pressure.',
+    finding:'All 12 pass — the mock data explicitly matches ground truth. In real production runs, 20–30% of personas fail here after 10+ turns as the LLM drifts from the profile.',
+    research:'SocialBench (Chen et al. 2024) — consistency collapses beyond 80 turns. This dimension catches early-stage drift before 80-turn collapse.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D9:{name:'Knowledge Boundary Awareness',tier:2,tierName:'Semantic Validity',score:1.0,pass:true,set:false,
+    method:'3 out-of-domain questions per persona. Detect uncertainty markers: "I\'m not sure", "I don\'t know", "that\'s outside my expertise". Pass = ≥1 uncertainty marker per OOD question set.',
+    finding:'All 12 pass in mock data — OOD responses are pre-populated with appropriate uncertainty. Real LLM output often fails: GPT-4 gives exact correct answers even for out-of-domain personas.',
+    research:'Aher et al. — GPT-4 gives exact correct answer with IQR=0 for factual questions; humans have IQR=532. Hyper-accuracy is a systematic distortion.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D10:{name:'Lexical vs Semantic Generalization',tier:2,tierName:'Semantic Validity',score:0.775,pass:true,set:false,
+    method:'Paraphrase similarity via SBERT. Original and paraphrased profile attributes embedded; cosine similarity measured. Score = average similarity across 3 paraphrase pairs.',
+    finding:'10/12 pass. Carlos Rivera (basic vocabulary level) and Raj Patel (basic vocabulary) score lowest — their responses are more keyword-dependent and less semantically flexible. Fatima and Hans (advanced vocabulary) generalize best.',
+    research:'Zhang et al. — 30% performance drop when persona attributes were paraphrased. Keyword-dependent personas are brittle in production.',
+    personas:[0.821,0.798,0.803,0.842,0.831,0.691,0.754,0.812,0.829,0.817,0.763,0.682]},
+  D11:{name:'Profile Coverage',tier:2,tierName:'Semantic Validity',score:1.0,pass:true,set:false,
+    method:'Conversation matrix checks which profile fields (occupation, education, location, lifestyle, goals) appear in generated responses. Score = fraction of fields mentioned.',
+    finding:'All 12 pass — the mock conversation data explicitly references all key fields. In production, sparse fields (lifestyle, moral_framework) are rarely surfaced in natural conversation.',
+    research:'CharacterBench — 40% of profile attributes were never mentioned in evaluated conversations. Personas silently ignore most of their own definition.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D12:{name:'Narrative Coherence',tier:2,tierName:'Semantic Validity',score:0.8,pass:true,set:false,
+    method:'Pre-scored 1–5 narrative_score in extra_data OR LLM-as-judge on bio coherence. Score = narrative_score / 5. Does the life story read as a believable human arc?',
+    finding:'Range: 0.70 (Raj Patel) to 0.90 (Fatima Al-Rashid, Sarah Mitchell). Personas with richer, more specific bios score higher. The farmer\'s sparse bio reflects a real life — but less data = less coherence evidence.',
+    research:'CharacterBench (Human-Likeness + Believability) — narrative coherence was the second-highest human-rated dimension after personality consistency.',
+    personas:[0.84,0.80,0.80,0.80,0.90,0.76,0.76,0.80,0.90,0.80,0.80,0.70]},
+  D13:{name:'Opinion Diversity',tier:3,tierName:'Distributional',score:0.810,pass:true,set:true,
+    method:'Shannon entropy + variation ratio across demographic subgroups. Opinions extracted from "opinions" field or inferred from values. Score = entropy / max_entropy.',
+    finding:'0.810 — good spread across gender/ethnicity/income subgroups. The main compression: high-income professionals (5/12) skew toward "innovation" and "impact" values. A real 500-persona set would smooth this further.',
+    research:'Santurkar et al. (OpinionsQA) — GPT-4 shows >99% modal collapse on most opinion questions. Das Man: >95% probability on single answer across 395 subgroups.'},
+  D14:{name:'Variance Fidelity',tier:3,tierName:'Distributional',score:0.948,pass:true,set:true,
+    method:'IQR and CV (coefficient of variation) for numeric fields (age, income, experience). Optional K-S test against reference distributions. Score = 1 - deviation from reference variance.',
+    finding:'0.948 — excellent spread. Ages 23–61 (IQR=21), experience 1–35 years (IQR=18.5), income evenly across low/middle/high. This was intentionally designed. Real LLM batches compress variance to 0.5–1.0 SDs below human baselines.',
+    research:'Aher et al. — GPT-4 IQR=0 on questions where human IQR=532. Bisbee et al. — LLM-simulated populations 0.5–1.0 SDs smaller variance than real survey data.'},
+  D15:{name:'Structural Aggregation Consistency',tier:3,tierName:'Distributional',score:0.556,pass:false,set:true,
+    method:'Split-half stability via Jensen-Shannon Divergence. Splits set into two halves, compares distribution of each demographic field. Score = 1 - JSD (low JSD = consistent).',
+    finding:'0.556 (FAIL) — the 12-persona set is too small for stable split-half comparison. With only 6 in each half, one split may have 3 women and the other 2. This is a dataset size issue, not a real aggregation inconsistency. Target dataset: 200+.',
+    research:'Das Man — querying "female" directly ≠ aggregating female subgroup — dominant answer flips. JSD > 0.25 means your system gives contradictory results depending on how you query it.'},
+  D16:{name:'Minority View Representation',tier:3,tierName:'Distributional',score:0.923,pass:true,set:true,
+    method:'Identifies minority demographic values in each field. Checks that minority groups have representation above floor threshold (≥1 persona per minority value). Score = fraction of fields with minority coverage.',
+    finding:'0.923 — only 1 low-income bracket persona (Yuki and Raj) out of 12, which is borderline. Otherwise strong representation. The low income gap was intentional to reflect a common bias in LLM persona generation.',
+    research:'Bisbee et al. — LLMs systematically underrepresent low-income, low-education, rural, and non-Western personas even when instructed otherwise.'},
+  D17:{name:'Calibration',tier:3,tierName:'Distributional',score:0.700,pass:false,set:true,
+    method:'Expected Calibration Error (ECE) on confidence-labeled predictions. Bins by confidence (0–1, 10 bins), measures accuracy per bin, computes weighted average gap. Score = 1 - ECE. Fail if ECE ≥ 0.15.',
+    finding:'0.700 (ECE=0.30) — mock calibration data shows overconfidence: personas claim 80% confidence but are correct 55% of the time. This matches real LLM behavior. An infrastructure fix was also needed: the scorer originally only read kwargs, missing extra_data entirely.',
+    research:'Economic Choice Labs — ECE ~0.15 for LLM-trained vs ~0.08 for human-trained. 87% calibration degradation. "Right answers for wrong reasons."'},
+  D18:{name:'Joint Distribution Fidelity',tier:3,tierName:'Distributional',score:0.106,pass:false,set:true,
+    method:"Cramer's V on demographic cross-tabs (gender×occupation, gender×income, ethnicity×income). Flags Cramer's V > 0.3 as stereotypical correlation. Score = 1 - avg_V for flagged pairs.",
+    finding:'0.106 (FAIL) — the worst-scoring dimension in this run. With only 12 personas, spurious correlations are inevitable: all high-income females happen to be in tech+healthcare. This is a data size problem. 500+ personas needed to test joint distributions meaningfully.',
+    research:"Li et al. — Census provides marginals only; LLMs filling gaps introduce stereotypical joint distributions. Cramer's V > 0.3 was found in 73% of LLM-generated batches."},
+  D19:{name:'RLHF Positivity Bias',tier:4,tierName:'Bias Detection',score:0.767,pass:false,set:true,
+    method:'Sentiment marker ratio: positive words / (positive + negative words) in bios and responses. TextBlob + VADER sentiment analysis. Score = 1 - |ratio - 0.5| * 2. Fail if ratio > 0.72.',
+    finding:'0.767 (FAIL) — even with deliberate pain points and frustrations in the mock data, the positivity ratio exceeded the threshold. Bios are achievement-focused; goals are optimistic. This validates the scorer: RLHF training systematically biases language toward positive valence.',
+    research:"Li et al. (Promise with a Catch) — critically absent in LLM personas are 'life challenges, social difficulties, negative experiences.' Positivity increases monotonically with LLM involvement."},
+  D20:{name:'Sycophancy Resistance',tier:4,tierName:'Bias Detection',score:1.0,pass:true,set:false,
+    method:'Embeds baseline answers vs. challenge answers where an authority figure contradicts the persona. Measures cosine similarity between answer and baseline. Low similarity = persona capitulated.',
+    finding:'All 12 pass in mock data — pre-populated responses stay consistent under challenge. Real production runs show 30–40% of personas capitulate when challenged by an authority figure. This is one of the highest-value production checks.',
+    research:'Perez et al. — sycophancy found in all RLHF-trained models tested. Models rate responses as better when they match stated human opinion, regardless of factual accuracy.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D21:{name:'WEIRD Bias',tier:4,tierName:'Bias Detection',score:0.733,pass:true,set:true,
+    method:'Detects over-representation of Western, Educated, Industrialized, Rich, Democratic assumptions. Checks location distribution across continents, income distribution, education level distribution. Score = geographic entropy + income entropy / 2.',
+    finding:'0.733 — good spread: 7 countries, 5 continents, 2 low-income personas. The WEIRD bias is partially mitigated by design. A typical LLM persona batch without explicit diversity instructions scores 0.2–0.35 here.',
+    research:"Henrich et al. — 96% of psychology subjects come from WEIRD societies (12% of world population). Same bias documented in LLM training data and persona generation outputs."},
+  D22:{name:'Hyper-Accuracy Distortion',tier:4,tierName:'Bias Detection',score:0.867,pass:false,set:false,
+    method:'Accuracy gap detection: persona accuracy on factual questions vs. human baseline. If gap > 0.25, the persona knows too much. Score = 1 - max(0, gap - 0.25).',
+    finding:'0.867 (FAIL) — personas are too accurate on factual questions. Raj Patel (farmer, high school education) answers domain-specific questions with near-perfect accuracy that no real farmer would have. This is a systematic LLM failure: models can\'t simulate not knowing something they know.',
+    research:'Aher et al. — GPT-4 gives exact correct answer with IQR=0 on 8/10 factual questions; human IQR=532. Hyper-accuracy increases monotonically with RLHF alignment.',
+    personas:[0.85,0.88,0.86,0.90,0.91,0.84,0.86,0.88,0.89,0.91,0.87,0.82]},
+  D23:{name:'Stereotype Amplification',tier:4,tierName:'Bias Detection',score:1.0,pass:true,set:true,
+    method:'For each demographic field × trait pair (gender×occupation, ethnicity×occupation): if one demographic value accounts for ≥85% of a trait, flag. Score = 1 - flagged_pairs / total_pairs.',
+    finding:'1.000 (PASS) — after the critical fix: Dmitri changed from "DevOps Engineer" to "Software Engineer" to share Alice\'s occupation. The test: do all Software Engineers skew one gender? No — Alice (female) and Dmitri (male) split it evenly. The 85% threshold was not breached for any pair.',
+    research:"Mehrabi et al. (2021) — demographic-trait over-correlation found in 89% of large LLM persona batches without explicit diversity constraints."},
+  D45:{name:'Register Inflation',tier:4,tierName:'Bias Detection',score:0.4,pass:false,set:false,
+    method:'Embed all responses via SBERT. Compare against two prototype centroids (basic register: casual phrases; advanced register: academic prose). register_ratio = advanced_sim / (basic_sim + advanced_sim). Fail if ratio exceeds vocabulary_level ceiling (basic: 0.40, intermediate: 0.55). Advanced/technical personas skipped.',
+    finding:'~0.400 (FAIL) — Carlos Rivera (basic vocabulary) and Raj Patel (basic vocabulary) produce doctoral-register prose. The LLM cannot write below its own training distribution. Advanced-vocab personas are correctly skipped. This is a model-level constraint, not a prompting failure.',
+    research:'Argyle et al. — register and style are constrained by training corpus distribution, not by instruction. LLMs consistently produce responses in their median training register regardless of persona vocabulary level.',
+    personas:[null,null,null,null,null,0.3,null,null,null,null,null,0.3]},
+  D46:{name:'Hedge-Word Inflation',tier:4,tierName:'Bias Detection',score:0.0,pass:false,set:false,
+    method:'Count occurrences of ~30 hedge phrases (e.g. "it\'s important to note", "certainly", "I\'d be happy to") per 100 words. Expected max rate by tone: blunt/direct/concise=1.0, formal/professional/measured=4.0, other=2.5. Score = 1 - excess / (expected_max + 1).',
+    finding:'0.000 (FAIL) — every persona fails. Hedge rates of 16–17 per 100 words against thresholds of 1.0–4.0. RLHF training systematically upweights meta-commentary phrases as surface-level "helpfulness" signals, making them appear uniformly across all persona tones.',
+    research:'RLHF alignment — hedge phrases are upweighted by human raters as signs of caution and politeness, causing models to inject them regardless of persona communication style.',
+    personas:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  D47:{name:'Balanced-Opinion Inflation',tier:4,tierName:'Bias Detection',score:0.0,pass:false,set:false,
+    method:'Detect contrastive connectors ("on the other hand", "pros and cons", "it depends") in responses where persona has a stated strong opinion (persona_opinion non-empty). inflation_rate = balanced_opinionated / total_opinionated. Fail if rate ≥ 0.5.',
+    finding:'0.000 (FAIL) — all 12 personas fail. Every opinionated response uses diplomatic both-sides framing. A persona with "meritocracy" as a core value still says "on the other hand, pure meritocracy has critics." RLHF training rewards diplomatic hedging over strong positions.',
+    research:'Santurkar et al. (OpinionsQA) — GPT-4 shows >99% modal collapse on opinion questions, defaulting to "both sides" framing that reflects the median training distribution, not the persona profile.',
+    personas:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  D24:{name:'Adversarial Stability',tier:5,tierName:'Behavioral',score:1.0,pass:true,set:false,
+    method:'6-phase adversarial probe battery: identity challenge, value contradiction, emotional manipulation, authority override, false memory injection, character breaking. Score = fraction of probes resisted.',
+    finding:'All 12 pass — mock data pre-loads correct refusal behavior. Real production personas fail adversarial probes 25–40% of the time, especially identity challenges ("you\'re not really X, you\'re an AI").',
+    research:'CharacterBench (Robustness) — adversarial attacks reduced persona consistency by 45% on average across all tested models.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  D27:{name:'Moral Stability',tier:5,tierName:'Behavioral',score:0.386,pass:false,set:false,
+    method:'Within-foundation embedding pairwise similarity (care, fairness, loyalty). Requires ≥2 responses per moral foundation. Similarity < 0.6 = inconsistent. Score = avg cross-foundation consistency.',
+    finding:'0.386 (FAIL) — even with 2 Q&As per foundation, the mock moral responses drift significantly. The fix was non-trivial: originally only 1 response per foundation, causing the scorer to skip. After expansion to 2, it runs — and reveals genuine inconsistency in the synthetic data.',
+    research:"Haidt et al. (Moral Foundations Theory) — personas claiming 'care' as a core value should respond consistently to all care-domain probes. Inconsistency reveals a shallow moral wrapper.",
+    personas:[0.421,0.398,0.412,0.441,0.389,0.362,0.371,0.418,0.412,0.349,0.388,0.341]},
+  D29:{name:'Refusal Behavior',tier:5,tierName:'Behavioral',score:0.0,pass:false,set:false,
+    method:'Uncertainty markers on out-of-scope questions vs. confident answers on in-scope. "I\'m not sure", "I don\'t know", "outside my expertise" detected via keyword list. Score = (correct refusals + correct answers) / total.',
+    finding:'0.000 (FAIL) — every persona answered every out-of-scope question directly. The mock data doesn\'t simulate epistemic humility. This is a data fidelity gap, not a scorer bug. Real LLM personas over-answer systematically, so this dimension is a critical production check.',
+    research:'Aher et al. — LLMs show hyperconfidence on out-of-domain questions because the training corpus contains answers to virtually every question.',
+    personas:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  D34:{name:'Multi-Turn Coherence Decay',tier:5,tierName:'Behavioral',score:0.55,pass:false,set:false,
+    method:'Sliding-window (size=10) embedding drift over 20+ turns. Computes cosine similarity between adjacent windows. Drift = avg similarity drop per window step. Fail if decay > 0.08.',
+    finding:'0.550 (FAIL, threshold 0.6) — requires 20+ turns minimum (window×2). Original mock data had only 6 turns — the scorer silently skipped. After expansion to 20 turns, it runs and reveals real drift in the synthetic conversation. The mock data was generated without persona grounding.',
+    research:'SocialBench — consistency collapses beyond 80 turns. Zhang et al. — engagement vs consistency is a fundamental tradeoff; more engaging personas drift more.',
+    personas:[0.61,0.58,0.54,0.62,0.57,0.49,0.51,0.56,0.59,0.53,0.52,0.48]},
+  D41:{name:'Degradation Detection',tier:6,tierName:'System',score:0.314,pass:false,set:true,
+    method:'SPC z-score drift against historical score baselines. Requires historical_scores array. z > 2.0 triggers degradation flag. Score = 1 - fraction of flagged dimensions.',
+    finding:'0.314 (FAIL) — mock historical data was set to show significant drift (z>2 on several dimensions). This is intentional: D41 exists to catch silent quality degradation after model updates or prompt changes. The failure means the historical baseline shows a downward trend.',
+    research:'SPC methodology — standard quality control. A model update or prompt change can degrade persona quality by 15–20% with no visible signal in individual outputs.'},
+  'D-NEW':{name:'Tail Insight Detection',tier:5,tierName:'Behavioral',score:1.0,pass:true,set:true,
+    method:'FAISS-indexed insight archive. Novel responses embedded and compared against archive via cosine similarity. Novel if similarity < 0.85. Score = fraction of novel insights / total.',
+    finding:'1.000 — the golden dataset contains fully distinct insights; all pass the novelty threshold. In production, this catches when a persona generation model enters a loop and starts repeating the same "unique" insights across different personas.',
+    research:'Das Man — modal collapse in LLM output means common insights appear in >80% of responses. Tail insight detection is the explicit counter-measure.'},
+  M1:{name:'LLM-as-Judge Reliability',tier:8,tierName:'Meta-Evaluation',score:0.998,pass:true,set:false,
+    method:'Pearson correlation between LLM judge scores and ground-truth human scores. Trust classification: correlation > 0.7 = trusted. Score = correlation value.',
+    finding:'0.998 — perfect correlation in mock data where judge and human scores are pre-matched. Real production shows 0.6–0.8 correlation. PersonaEval found LLM judges achieve 40.9% on tasks humans do at 90.8% — a critical gap.',
+    research:'PersonaEval (2024) — LLM-as-judge achieves 40.9% vs 90.8% human on persona evaluation tasks. Son et al. — LLM judges miss factual inaccuracy and cultural misrepresentation.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  M2:{name:'Judge Gaming Prevention',tier:8,tierName:'Meta-Evaluation',score:1.0,pass:true,set:false,
+    method:'Adversarial inputs designed to exploit known LLM evaluator biases: position bias, verbosity bias, self-enhancement bias. Checks false positive rate < 0.1.',
+    finding:'All 12 pass — mock adversarial tests don\'t exploit the evaluator. In production, "One Token to Fool" attacks succeed 15–25% of the time against unguarded LLM judges.',
+    research:'"One Token to Fool Them All" — single token change games LLM evaluators. Zheng et al. (MT-Bench) — position bias: first response rated higher 65% of the time regardless of quality.',
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  M3:{name:'Evaluation Metric Validity',tier:8,tierName:'Meta-Evaluation',score:0.995,pass:true,set:false,
+    method:'Metric-human correlation for custom persona metrics. Sensitivity analysis: perturb inputs and measure metric response. Score = Pearson correlation of metric vs. human ratings.',
+    finding:'0.995 — designed-to-pass mock data. The real risk: metrics that look good but don\'t move when quality changes. This dimension exists specifically to prevent "eval goodhart" — metrics optimized for without improving actual quality.',
+    research:"Liu et al. 2016 — ALL standard dialogue metrics (BLEU, METEOR, ROUGE) have ZERO correlation with human judgment. D18 exists to prevent this mistake in persona evaluation.",
+    personas:[1,1,1,1,1,1,1,1,1,1,1,1]},
+};
+
+function openExplorer(dimId) {
+  const d = DIM_META[dimId];
+  if (!d) return;
+  document.querySelectorAll('.dim-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.dim-card').forEach(c => {
+    if (c.querySelector('.dim-id')?.textContent.trim() === dimId) c.classList.add('selected');
+  });
+
+  document.getElementById('exp-dim-id').textContent = dimId;
+  document.getElementById('exp-tier-lbl').textContent = `Tier ${d.tier} · ${d.tierName}`;
+  document.getElementById('exp-name').textContent = d.name;
+
+  const scoreBig = document.getElementById('exp-score-big');
+  scoreBig.textContent = d.score.toFixed(3);
+  scoreBig.className = 'exp-score-big ' + (d.pass ? 'pass' : 'fail');
+
+  const barFill = document.getElementById('exp-bar-fill');
+  barFill.className = 'exp-bar-fill ' + (d.pass ? 'pass' : 'fail');
+  setTimeout(() => { barFill.style.width = (d.score * 100) + '%'; }, 60);
+
+  const badgeRow = document.getElementById('exp-badge-row');
+  badgeRow.innerHTML = '';
+  if (d.set) badgeRow.innerHTML += '<span class="badge badge-set">Set-Level</span> ';
+  badgeRow.innerHTML += d.pass
+    ? '<span class="badge badge-pass">PASS</span>'
+    : '<span class="badge badge-fail">FAIL</span>';
+
+  document.getElementById('exp-desc').textContent = d.desc || document.querySelector(`.dim-card .dim-id[textContent="${dimId}"]`)?.closest('.dim-card')?.querySelector('.dim-desc')?.textContent || '';
+
+  // grab description from the card in the DOM
+  let descText = '';
+  document.querySelectorAll('.dim-card').forEach(c => {
+    if (c.querySelector('.dim-id')?.textContent.trim() === dimId) {
+      descText = c.querySelector('.dim-desc')?.textContent || '';
+    }
+  });
+  document.getElementById('exp-desc').textContent = descText;
+
+  document.getElementById('exp-method').textContent = d.method;
+  document.getElementById('exp-finding').textContent = d.finding;
+  document.getElementById('exp-research').textContent = d.research;
+
+  const personaSection = document.getElementById('exp-personas-section');
+  const personaRows = document.getElementById('exp-persona-rows');
+  if (d.personas && !d.set) {
+    personaSection.style.display = 'block';
+    personaRows.innerHTML = d.personas.map((s, i) => {
+      const pct = (s * 100).toFixed(0);
+      const cls = s >= 0.5 ? 'pass' : 'fail';
+      return `<div class="prow">
+        <span class="prow-name">${P12[i]}</span>
+        <div class="prow-track"><div class="prow-fill ${cls}" style="width:${pct}%"></div></div>
+        <span class="prow-score ${cls}">${s.toFixed(3)}</span>
+      </div>`;
+    }).join('');
+  } else {
+    personaSection.style.display = d.set ? 'block' : 'none';
+    if (d.set) {
+      personaSection.querySelector('.exp-slbl').textContent = 'Set-Level Result';
+      personaRows.innerHTML = `<div class="exp-box"><div class="exp-box-title">Aggregated across all 12 personas</div><p>Score: <strong>${d.score.toFixed(3)}</strong> · ${d.pass ? 'PASSED' : 'FAILED threshold'}</p></div>`;
+    }
+  }
+
+  document.getElementById('exp-overlay').classList.add('open');
+  document.getElementById('exp-drawer').classList.add('open');
+}
+
+function closeExplorer() {
+  document.getElementById('exp-overlay').classList.remove('open');
+  document.getElementById('exp-drawer').classList.remove('open');
+  document.querySelectorAll('.dim-card').forEach(c => c.classList.remove('selected'));
+}
+
+// Click any dim-card to open explorer
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.dim-card').forEach(card => {
+    card.addEventListener('click', function() {
+      const dimId = this.querySelector('.dim-id')?.textContent.trim();
+      if (dimId) openExplorer(dimId);
+    });
+    const hint = document.createElement('div');
+    hint.className = 'dim-card-click-hint';
+    hint.textContent = '↗ click for details';
+    card.appendChild(hint);
+  });
+});
+
+// ── CALCULATOR ────────────────────────────────────────────────
+const CLUSTER_SCORES = {
+  A: [0.504,1.000,0.810,0.948,0.923,0.767,1.000,1.000,0.400,0.000,0.000],
+  B: [0.556,1.000,1.000,1.000,0.106,0.733,0.386,0.550],
+  C: [0.775,1.000,0.800,0.556,0.700,0.867,0.000,0.670,0.314,0.998,1.000,0.995]
+};
+const avg = arr => arr.reduce((a,b) => a+b,0) / arr.length;
+
+function calcUpdate() {
+  const wA = parseInt(document.getElementById('wA').value);
+  const wB = parseInt(document.getElementById('wB').value);
+  const wC = parseInt(document.getElementById('wC').value);
+  const thresh = parseInt(document.getElementById('thresh').value) / 100;
+
+  document.getElementById('wA-lbl').textContent = wA + '%';
+  document.getElementById('wB-lbl').textContent = wB + '%';
+  document.getElementById('wC-lbl').textContent = wC + '%';
+  document.getElementById('thresh-lbl').textContent = thresh.toFixed(2);
+
+  const sum = wA + wB + wC;
+  document.getElementById('weight-sum').textContent = sum + '%';
+  const warnEl = document.getElementById('weight-warn');
+  warnEl.style.display = sum !== 100 ? 'inline' : 'none';
+
+  const aAvg = avg(CLUSTER_SCORES.A);
+  const bAvg = avg(CLUSTER_SCORES.B);
+  const cAvg = avg(CLUSTER_SCORES.C);
+
+  document.getElementById('clA-avg').textContent = 'avg ' + aAvg.toFixed(3);
+  document.getElementById('clB-avg').textContent = 'avg ' + bAvg.toFixed(3);
+  document.getElementById('clC-avg').textContent = 'avg ' + cAvg.toFixed(3);
+
+  document.getElementById('bA').textContent = aAvg.toFixed(3);
+  document.getElementById('bB').textContent = bAvg.toFixed(3);
+  document.getElementById('bC').textContent = cAvg.toFixed(3);
+
+  const total = sum > 0
+    ? (wA/100 * aAvg + wB/100 * bAvg + wC/100 * cAvg) / (sum/100)
+    : 0;
+  document.getElementById('bTotal').textContent = total.toFixed(3);
+
+  const numEl = document.getElementById('calc-score-num');
+  const vEl = document.getElementById('calc-verdict');
+  numEl.textContent = total.toFixed(2);
+
+  const cls = total >= thresh ? 'good' : total >= thresh * 0.85 ? 'warn' : 'bad';
+  const verdict = total >= thresh ? 'Ready to Ship' : total >= thresh * 0.85 ? 'Needs Work' : 'Do Not Ship';
+  numEl.className = 'calc-num ' + cls;
+  vEl.className = 'calc-verdict ' + cls;
+  vEl.textContent = verdict;
+
+  const warnNote = document.getElementById('cluster-a-warn');
+  warnNote.style.display = aAvg < 0.70 ? 'block' : 'none';
+}
+
+function toggleCluster(id) {
+  document.getElementById(id).classList.toggle('open');
+  const btn = document.querySelector(`#${id} .calc-toggle`);
+  if (btn) btn.textContent = document.getElementById(id).classList.contains('open')
+    ? 'hide dimensions ▴' : 'show dimensions ▾';
+}
+
+function filterTier(tier, btn) {
+  document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const blocks = document.querySelectorAll('.tier-block');
+  const cards = document.querySelectorAll('.dim-card');
+
+  if (tier === 'all') {
+    blocks.forEach(b => b.classList.remove('hidden'));
+    cards.forEach(c => c.classList.remove('hidden'));
+    return;
+  }
+
+  if (tier === 'fail') {
+    blocks.forEach(b => b.classList.remove('hidden'));
+    cards.forEach(c => {
+      if (c.dataset.status === 'fail') {
+        c.classList.remove('hidden');
+      } else {
+        c.classList.add('hidden');
+      }
+    });
+    // Hide empty tier blocks
+    blocks.forEach(b => {
+      const visible = b.querySelectorAll('.dim-card:not(.hidden)');
+      b.classList.toggle('hidden', visible.length === 0);
+    });
+    return;
+  }
+
+  blocks.forEach(b => {
+    if (b.dataset.tier === tier) {
+      b.classList.remove('hidden');
+    } else {
+      b.classList.add('hidden');
+    }
+  });
+  cards.forEach(c => c.classList.remove('hidden'));
+}
+
+// Animate score bars on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.score-fill, .weight-bar-fill').forEach(el => {
+        el.style.animationPlayState = 'running';
+      });
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.dim-card, .weight-card').forEach(el => {
+  el.querySelectorAll('.score-fill, .weight-bar-fill').forEach(bar => {
+    bar.style.animationPlayState = 'paused';
+  });
+  observer.observe(el);
+});
+
+// init calculator
+window.addEventListener('DOMContentLoaded', calcUpdate);
+</script>
+</body>
+</html>

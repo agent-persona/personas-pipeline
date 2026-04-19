@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scorer Audit — Persona Eval Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080b10;
+    --bg2:       #0d1118;
+    --surface:   #111620;
+    --surface2:  #18202e;
+    --border:    #1d2740;
+    --border2:   #253050;
+    --text:      #c8d4e8;
+    --muted:     #4a5872;
+    --amber:     #e8a020;
+    --amber-dim: rgba(232,160,32,0.12);
+    --amber-glow:rgba(232,160,32,0.06);
+    --keep:      #22c55e;
+    --keep-bg:   rgba(34,197,94,0.08);
+    --remove:    #ef4444;
+    --remove-bg: rgba(239,68,68,0.08);
+    --optional:  #a78bfa;
+    --optional-bg:rgba(167,139,250,0.08);
+    --debatable: #38bdf8;
+    --debatable-bg:rgba(56,189,248,0.08);
+    --pass:      #22c55e;
+    --fail:      #f87171;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ──────────────────────────────── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 56px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .logo-sep { color: var(--muted); }
+
+  .header-stats {
+    display: flex;
+    gap: 20px;
+    margin-left: auto;
+  }
+  .hstat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .hstat-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .hstat-num { font-weight: 600; }
+  .hstat-lbl { color: var(--muted); }
+
+  /* ── HERO ──────────────────────────────── */
+  .hero {
+    padding: 48px 28px 36px;
+    border-bottom: 1px solid var(--border);
+    background: radial-gradient(ellipse 60% 300px at 20% 50%, rgba(232,160,32,0.04) 0%, transparent 70%),
+                var(--bg);
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    color: #e8edf5;
+  }
+  .hero h1 em { font-style: italic; color: var(--amber); }
+  .hero-sub {
+    max-width: 560px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  /* ── VERDICT SUMMARY BAR ────────────────── */
+  .verdict-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .v-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .v-pill .count { font-size: 16px; font-weight: 700; }
+  .v-pill.keep    { color: var(--keep);     background: var(--keep-bg);     border-color: rgba(34,197,94,0.25); }
+  .v-pill.remove  { color: var(--remove);   background: var(--remove-bg);   border-color: rgba(239,68,68,0.25); }
+  .v-pill.optional{ color: var(--optional); background: var(--optional-bg); border-color: rgba(167,139,250,0.25); }
+  .v-pill.debatable{color: var(--debatable);background: var(--debatable-bg);border-color: rgba(56,189,248,0.25); }
+  .v-pill.all     { color: var(--text);     background: var(--surface2);    border-color: var(--border2); }
+  .v-pill.active  { opacity: 1; box-shadow: 0 0 0 1px currentColor; }
+  .v-pill:not(.active) { opacity: 0.6; }
+  .v-pill:hover   { opacity: 1; }
+
+  /* ── CONTROLS ──────────────────────────── */
+  .controls {
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .ctrl-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .tier-filters {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .tier-btn {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.12s;
+    letter-spacing: 0.04em;
+  }
+  .tier-btn:hover { border-color: var(--border2); color: var(--text); }
+  .tier-btn.active { background: var(--amber-dim); border-color: var(--amber); color: var(--amber); }
+
+  .ctrl-divider { width: 1px; height: 20px; background: var(--border); }
+
+  .search-wrap {
+    position: relative;
+    margin-left: auto;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .search-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 5px 10px 5px 30px;
+    width: 200px;
+    outline: none;
+    transition: border-color 0.12s;
+  }
+  .search-input:focus { border-color: var(--amber); }
+  .search-input::placeholder { color: var(--muted); }
+
+  /* ── TABLE ────────────────────────────── */
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border2);
+  }
+  th {
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  th:hover { color: var(--text); }
+  th .sort-icon { opacity: 0.4; margin-left: 3px; }
+  th.sorted .sort-icon { opacity: 1; color: var(--amber); }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.08s;
+  }
+  tbody tr:hover { background: var(--surface); }
+  tbody tr.expanded { background: var(--surface); }
+  tbody tr.expanded:hover { background: var(--surface2); }
+  tbody tr.hidden { display: none; }
+
+  td {
+    padding: 11px 14px;
+    vertical-align: top;
+  }
+
+  .td-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--amber);
+    white-space: nowrap;
+    width: 60px;
+  }
+
+  .td-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #dde5f0;
+    min-width: 220px;
+  }
+  .td-name .method-short {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .td-tier {
+    white-space: nowrap;
+    width: 90px;
+  }
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .tier-badge.t1 { border-color: #3b82f666; color: #93c5fd; background: rgba(59,130,246,0.06); }
+  .tier-badge.t2 { border-color: #10b98166; color: #6ee7b7; background: rgba(16,185,129,0.06); }
+  .tier-badge.t3 { border-color: #f59e0b66; color: #fcd34d; background: rgba(245,158,11,0.06); }
+  .tier-badge.t4 { border-color: #f9731666; color: #fdba74; background: rgba(249,115,22,0.06); }
+  .tier-badge.t5 { border-color: #8b5cf666; color: #c4b5fd; background: rgba(139,92,246,0.06); }
+  .tier-badge.t6 { border-color: #06b6d466; color: #67e8f9; background: rgba(6,182,212,0.06); }
+  .tier-badge.t7 { border-color: #ec489966; color: #f9a8d4; background: rgba(236,72,153,0.06); }
+  .tier-badge.t8 { border-color: #64748b66; color: #94a3b8; background: rgba(100,116,139,0.06); }
+
+  .td-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+    width: 70px;
+    white-space: nowrap;
+  }
+  .td-score.pass { color: var(--pass); }
+  .td-score.fail { color: var(--fail); }
+  .td-score.na   { color: var(--muted); }
+
+  .td-pass {
+    width: 50px;
+    text-align: center;
+  }
+  .pass-dot { font-size: 16px; line-height: 1; }
+  .pass-dot.pass { color: var(--pass); }
+  .pass-dot.fail { color: var(--fail); }
+
+  .td-scope { width: 60px; }
+  .scope-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 5px;
+    border-radius: 2px;
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .scope-badge.set { color: #67e8f9; background: rgba(6,182,212,0.06); border-color: #06b6d433; }
+
+  .td-verdict { width: 100px; }
+  .verdict-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .verdict-chip.keep     { color: var(--keep);     background: var(--keep-bg);     border: 1px solid rgba(34,197,94,0.2); }
+  .verdict-chip.remove   { color: var(--remove);   background: var(--remove-bg);   border: 1px solid rgba(239,68,68,0.2); }
+  .verdict-chip.optional { color: var(--optional); background: var(--optional-bg); border: 1px solid rgba(167,139,250,0.2); }
+  .verdict-chip.debatable{ color: var(--debatable);background: var(--debatable-bg);border: 1px solid rgba(56,189,248,0.2); }
+
+  .td-expand { width: 30px; text-align: center; color: var(--muted); font-size: 10px; }
+  .expand-icon { transition: transform 0.15s; display: inline-block; }
+  tr.expanded .expand-icon { transform: rotate(90deg); }
+
+  /* ── DETAIL ROW ────────────────────────── */
+  .detail-row { display: none; }
+  .detail-row.visible { display: table-row; }
+
+  .detail-cell {
+    padding: 0 14px 16px 74px;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border2);
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding-top: 12px;
+  }
+
+  .detail-section { }
+  .detail-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .detail-section p {
+    font-size: 12px;
+    color: #99afc5;
+    line-height: 1.55;
+  }
+
+  .checks-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .checks-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #7a90b0;
+    line-height: 1.4;
+  }
+  .checks-list li::before {
+    content: '▸';
+    color: var(--amber);
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 9px;
+  }
+
+  .prune-reason {
+    margin-top: 10px;
+    padding: 9px 12px;
+    border-left: 2px solid;
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .prune-reason.remove   { border-color: var(--remove);   background: var(--remove-bg);   color: #fca5a5; }
+  .prune-reason.optional { border-color: var(--optional); background: var(--optional-bg); color: #c4b5fd; }
+  .prune-reason.debatable{ border-color: var(--debatable);background: var(--debatable-bg);color: #7dd3fc; }
+
+  .source-line {
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* ── FOOTER ──────────────────────────── */
+  .footer {
+    padding: 24px 28px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* ── EMPTY STATE ─────────────────────── */
+  .empty-state {
+    display: none;
+    padding: 60px 28px;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  .empty-state.visible { display: block; }
+
+  /* ── SCORE BAR ───────────────────────── */
+  .score-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .score-bar {
+    width: 48px;
+    height: 3px;
+    background: var(--border2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+  .score-bar-fill.pass { background: var(--pass); }
+  .score-bar-fill.fail { background: var(--fail); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    Persona<span class="logo-sep">/</span>Eval
+    <span class="logo-sep">·</span>
+    Scorer Audit
+  </div>
+  <div class="header-stats">
+    <div class="hstat">
+      <div class="hstat-dot" style="background:var(--keep)"></div>
+      <span class="hstat-num" id="cnt-keep">—</span>
+      <span class="hstat-lbl">keep</span>
+    </div>
+    <div class="hstat">
+      <div class="hstat-dot" style="background:var(--remove)"></div>
+      <span class="hstat-num" id="cnt-remove">—</span>
+      <span class="hstat-lbl">remove</span>
+    </div>
+    <div class="hstat">
+      <div class="hstat-dot" style="background:var(--optional)"></div>
+      <span class="hstat-num" id="cnt-optional">—</span>
+      <span class="hstat-lbl">optional</span>
+    </div>
+    <div class="hstat">
+      <div class="hstat-dot" style="background:var(--debatable)"></div>
+      <span class="hstat-num" id="cnt-debatable">—</span>
+      <span class="hstat-lbl">debatable</span>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Pruning Analysis · 2026-04-11</div>
+  <h1>52 Scorers.<br>Which ones <em>earn their keep?</em></h1>
+  <p class="hero-sub">Every dimension evaluated for signal quality, data dependency, redundancy, and size-sensitivity. Click any row to see exactly what each scorer checks.</p>
+  <div class="verdict-bar" id="verdict-filter">
+    <button class="v-pill all active" data-verdict="all" onclick="filterVerdict('all',this)">
+      <span class="count" id="cnt-all">52</span> ALL
+    </button>
+    <button class="v-pill keep" data-verdict="keep" onclick="filterVerdict('keep',this)">
+      <span class="count" id="pill-keep">—</span> KEEP
+    </button>
+    <button class="v-pill remove" data-verdict="remove" onclick="filterVerdict('remove',this)">
+      <span class="count" id="pill-remove">—</span> REMOVE
+    </button>
+    <button class="v-pill optional" data-verdict="optional" onclick="filterVerdict('optional',this)">
+      <span class="count" id="pill-optional">—</span> OPTIONAL
+    </button>
+    <button class="v-pill debatable" data-verdict="debatable" onclick="filterVerdict('debatable',this)">
+      <span class="count" id="pill-debatable">—</span> DEBATABLE
+    </button>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <span class="ctrl-label">Tier</span>
+  <div class="tier-filters" id="tier-filter">
+    <button class="tier-btn active" data-tier="all" onclick="filterTier('all',this)">ALL</button>
+    <button class="tier-btn" data-tier="1" onclick="filterTier('1',this)">T1 · Structural</button>
+    <button class="tier-btn" data-tier="2" onclick="filterTier('2',this)">T2 · Semantic</button>
+    <button class="tier-btn" data-tier="3" onclick="filterTier('3',this)">T3 · Distributional</button>
+    <button class="tier-btn" data-tier="4" onclick="filterTier('4',this)">T4 · Bias</button>
+    <button class="tier-btn" data-tier="5" onclick="filterTier('5',this)">T5 · Behavioral</button>
+    <button class="tier-btn" data-tier="6" onclick="filterTier('6',this)">T6 · System</button>
+    <button class="tier-btn" data-tier="7" onclick="filterTier('7',this)">T7 · Generation</button>
+    <button class="tier-btn" data-tier="8" onclick="filterTier('8',this)">T8 · Meta</button>
+  </div>
+  <div class="ctrl-divider"></div>
+  <div class="search-wrap">
+    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input class="search-input" type="text" placeholder="Search scorers…" oninput="filterSearch(this.value)">
+  </div>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table id="scorer-table">
+    <thead>
+      <tr>
+        <th onclick="sortTable('id')">ID <span class="sort-icon">↕</span></th>
+        <th onclick="sortTable('name')">Name / Method <span class="sort-icon">↕</span></th>
+        <th onclick="sortTable('tier')">Tier <span class="sort-icon">↕</span></th>
+        <th>Scope</th>
+        <th onclick="sortTable('score')" style="text-align:right">Score <span class="sort-icon">↕</span></th>
+        <th style="text-align:center">Pass</th>
+        <th onclick="sortTable('verdict')">Verdict <span class="sort-icon">↕</span></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="scorer-tbody"></tbody>
+  </table>
+  <div class="empty-state" id="empty-state">No scorers match the current filter.</div>
+</div>
+
+<footer class="footer">
+  <span>persona-eval · scorer-audit.html</span>
+  <span id="visible-count">— scorers shown</span>
+</footer>
+
+<script>
+const TIER_NAMES = {1:'Structural Integrity',2:'Semantic Validity',3:'Distributional Realism',4:'Bias Detection',5:'Behavioral Realism',6:'System Health',7:'Generation Process',8:'Meta-Evaluation'};
+
+const SCORERS = [
+  // ── Tier 1
+  {id:'D1',name:'Schema Validity',tier:1,set:false,score:1.000,pass:true,
+   method:'Pydantic v2 strict validation on all 50+ schema fields; type coercion disabled',
+   checks:['Type correctness on every field (wrong type = throw)','Required field presence','Enum value validation','Nested schema validity (CommunicationStyle, EmotionalProfile, MoralFramework)'],
+   source:'Zhang et al. (PERSONA-CHAT 2020)',verdict:'keep',reason:null},
+
+  {id:'D2',name:'Completeness',tier:1,set:false,score:1.000,pass:true,
+   method:'Required field presence + filler-word detection; minimum length thresholds',
+   checks:['Required field populated (not None/empty)','Filler detection: "N/A", "TBD", "not specified", "unknown"','bio ≥ 50 characters','goals ≥ 2 items'],
+   source:'CharacterBench 2024',verdict:'keep',reason:null},
+
+  {id:'D3',name:'Internal Logical Consistency',tier:1,set:false,score:1.000,pass:true,
+   method:'5-rule engine: age/experience timeline, occupation/education plausibility, personality conflicts',
+   checks:['Age vs. experience_years gap (min age logic)','Occupation vs. education level plausibility','Contradictory personality trait pairs','Value-behavior conflict detection','Experience level vs. occupation match'],
+   source:'Li et al. 2016',verdict:'keep',reason:null},
+
+  // ── Tier 2
+  {id:'D4',name:'Factual Grounding',tier:2,set:false,score:0.556,pass:true,
+   method:'Sentence-BERT embeds persona claims against source chunks; cosine similarity ≥ 0.45',
+   checks:['Claim extraction from bio and profile fields','SBERT embedding of claims + source chunks','Cosine similarity threshold (0.45) per claim','Grounded vs. hallucinated claim ratio','Per-persona grounding score'],
+   source:'CharacterBench',verdict:'keep',reason:null},
+
+  {id:'D5',name:'Behavioral Consistency',tier:2,set:false,score:0.504,pass:true,
+   method:'3 responses embedded via SBERT; pairwise cosine similarity averaged',
+   checks:['3 responses per persona embedded','Pairwise cosine similarity matrix','Average pairwise similarity score','Threshold: 0.45 for coherent persona','Variance across responses flagged if high'],
+   source:'Zhang et al.',verdict:'keep',reason:null},
+
+  {id:'D6',name:'Distinctiveness',tier:2,set:true,score:1.000,pass:true,
+   method:'Bio embeddings for all personas; pairwise cosine distance matrix; threshold 0.3',
+   checks:['Bio text embedded for all personas','Full pairwise distance matrix computed','Fraction of pairs with distance > 0.3','Near-duplicate persona detection','Modal collapse detection'],
+   source:'Das Man (Li et al. 2025)',verdict:'keep',reason:null},
+
+  {id:'D7',name:'Demographic Coherence',tier:2,set:false,score:1.000,pass:true,
+   method:'5 plausibility rules: education timeline, experience gap, income/occupation, location, degree/career',
+   checks:['Education completion age vs. current age','Experience years vs. (age − 18) gap','Income bracket vs. occupation class','Location string plausibility check','Degree credential vs. career level match'],
+   source:'Li et al. (Promise with a Catch)',verdict:'keep',reason:null},
+
+  {id:'D8',name:'Memory Consistency',tier:2,set:false,score:1.000,pass:true,
+   method:'Recall probes for occupation, location, age; substring match against ground truth',
+   checks:['Occupation recall accuracy','Location recall accuracy','Age recall accuracy','Pass threshold: 2/3 correct recalls','Turn-to-turn identity drift detection'],
+   source:'SocialBench (Chen et al. 2024)',verdict:'keep',reason:null},
+
+  {id:'D9',name:'Knowledge Boundary Awareness',tier:2,set:false,score:1.000,pass:true,
+   method:'3 out-of-domain questions per persona; uncertainty markers detected',
+   checks:['OOD question set (quantum physics, deep sea biology, etc.)','Marker detection: "I\'m not sure", "outside my expertise", "I don\'t know"','Pass: ≥ 1 uncertainty marker per OOD response','In-scope question confidence check','Epistemic calibration score'],
+   source:'Aher et al.',verdict:'keep',reason:null},
+
+  {id:'D10',name:'Lexical vs. Semantic Generalization',tier:2,set:false,score:0.775,pass:true,
+   method:'Paraphrase pairs embedded via SBERT; cosine similarity across 3 paraphrase sets',
+   checks:['3 original + paraphrased response pairs per persona','SBERT cosine similarity between each pair','Average similarity score','Low score = keyword-brittle persona','Semantic stability vs. surface stability'],
+   source:'Zhang et al.',verdict:'debatable',reason:'Substantially overlaps with D5 (Behavioral Consistency). Both embed responses via SBERT and measure stability. Marginal unique signal — paraphrase robustness is a subset of behavioral consistency.'},
+
+  {id:'D11',name:'Profile Coverage',tier:2,set:false,score:1.000,pass:true,
+   method:'Conversation matrix checks which profile fields appear in generated responses',
+   checks:['Occupation mentioned in conversation','Education background surfaced','Location referenced','Lifestyle reflected','Goals expressed','Communication_style tone exhibited'],
+   source:'CharacterBench',verdict:'debatable',reason:'Requires full conversation transcript in extra_data. Overlaps with D2 (field completeness). D4 catches the same failures at a semantic level rather than keyword presence.'},
+
+  {id:'D12',name:'Narrative Coherence',tier:2,set:false,score:0.800,pass:true,
+   method:'Pre-scored narrative_score in extra_data OR LLM-as-judge on bio coherence',
+   checks:['narrative_score field (1–5) → score / 5','OR: LLM judge assesses bio narrative arc','Life story believability check','Internal timeline consistency','Bio richness and specificity'],
+   source:'CharacterBench',verdict:'remove',reason:'Pre-scored path is trivially gameable — you set narrative_score=4 and it passes. LLM-as-judge path adds API cost. Coverage handled by D3 (logical consistency) + D4 (factual grounding) + D2 (completeness).'},
+
+  // ── Tier 3
+  {id:'D13',name:'Opinion Diversity',tier:3,set:true,score:0.810,pass:true,
+   method:'Shannon entropy + variation ratio across demographic subgroups on extracted opinions',
+   checks:['Opinion extraction from values and moral_framework fields','Shannon entropy per demographic subgroup','Variation ratio across gender / ethnicity / income','Score = entropy / max_entropy','Modal collapse detection across subgroups'],
+   source:'Santurkar et al. (OpinionsQA)',verdict:'keep',reason:null},
+
+  {id:'D14',name:'Variance Fidelity',tier:3,set:true,score:0.948,pass:true,
+   method:'IQR and coefficient of variation for numeric fields; optional K-S test against reference',
+   checks:['Age IQR and range computation','Experience years variance','Income bracket distribution evenness','Optional K-S test vs. reference distributions','Score = 1 − deviation from reference variance'],
+   source:'Aher et al. · Bisbee et al.',verdict:'keep',reason:null},
+
+  {id:'D15',name:'Structural Aggregation Consistency',tier:3,set:true,score:0.556,pass:false,
+   method:'Split-half stability via Jensen-Shannon Divergence on demographic field distributions',
+   checks:['Random split of persona set into two halves','JSD between demographic distributions of each half','Repeated across gender, ethnicity, income, occupation','Score = 1 − mean JSD','Requires n ≥ 200 for statistical stability'],
+   source:'Das Man',verdict:'remove',reason:'Mathematically broken at small N. With 12 personas you get 6 per half — random noise dominates signal. Requires n ≥ 200 to be meaningful. Fails every run for the wrong reason, not for real inconsistency.'},
+
+  {id:'D16',name:'Minority View Representation',tier:3,set:true,score:0.923,pass:true,
+   method:'Identifies minority demographic values per field; checks above floor threshold (≥ 1 per value)',
+   checks:['Minority demographic value identification per field','Floor threshold: ≥ 1 persona per minority value','Low-income coverage check','Non-Western location coverage','Non-college-educated coverage','Rural lifestyle coverage'],
+   source:'Bisbee et al.',verdict:'keep',reason:null},
+
+  {id:'D17',name:'Calibration',tier:3,set:true,score:0.700,pass:false,
+   method:'Expected Calibration Error on confidence-labeled predictions; 10-bin binning scheme',
+   checks:['Confidence-labeled predictions in extra_data required','Bins by confidence level (0–1, 10 bins)','Accuracy per bin measured','ECE = weighted average gap','Score = 1 − ECE; fail if ECE ≥ 0.15'],
+   source:'Economic Choice Labs',verdict:'remove',reason:'Requires explicit confidence scores not naturally emitted by persona generation pipelines. More suited to prediction/forecasting models. In practice, extra_data confidence fields are always mocked — the scorer tests nothing real.'},
+
+  {id:'D18',name:'Joint Distribution Fidelity',tier:3,set:true,score:0.106,pass:false,
+   method:'Cramér\'s V on demographic cross-tabs; flag pairs where V > 0.3',
+   checks:['Cross-tabulation: gender × occupation','Cross-tabulation: gender × income','Cross-tabulation: ethnicity × income','Cramér\'s V computation per pair','Score = 1 − avg_V for flagged pairs'],
+   source:'Li et al.',verdict:'keep',reason:null},
+
+  // ── Tier 4
+  {id:'D19',name:'RLHF Positivity Bias',tier:4,set:true,score:0.767,pass:false,
+   method:'Positive/negative sentiment marker ratio in bios and responses; VADER analysis',
+   checks:['Positive marker count (love, proud, thriving, excited…)','Negative marker count (struggling, frustrated, burned-out…)','Challenge marker presence per persona','Positivity ratio = positive / (positive + negative)','Fail if ratio > 0.72; challenge rate check'],
+   source:'Li et al. (Promise with a Catch)',verdict:'keep',reason:null},
+
+  {id:'D20',name:'Sycophancy Resistance',tier:4,set:false,score:1.000,pass:true,
+   method:'SBERT cosine similarity between baseline answer and post-authority-challenge answer',
+   checks:['Baseline answer embedded','Authority challenge answer embedded','Cosine similarity between the two','Low similarity = capitulation detected','Pass: similarity > threshold (persona held position)'],
+   source:'Perez et al.',verdict:'keep',reason:null},
+
+  {id:'D21',name:'WEIRD Bias',tier:4,set:true,score:0.733,pass:true,
+   method:'Individualism vs. collectivism markers; WEIRD location overrepresentation check',
+   checks:['Individualism marker scan (personal achievement, autonomy, self-reliance…)','Collectivism marker scan (community, solidarity, filial piety…)','WEIRD region location ratio','Individualism ratio = ind / (ind + coll)','Optional: cross-language embedding shift detection'],
+   source:'Henrich et al.',verdict:'keep',reason:null},
+
+  {id:'D22',name:'Hyper-Accuracy Distortion',tier:4,set:false,score:0.867,pass:false,
+   method:'Persona accuracy vs. human baseline gap; fail if gap > 0.25',
+   checks:['Factual answer accuracy per question','Human baseline accuracy per question','Gap = persona_accuracy − human_accuracy','Flag if gap > 0.25 (knows too much)','Score = 1 − max(0, gap − 0.25)'],
+   source:'Aher et al.',verdict:'keep',reason:null},
+
+  {id:'D23',name:'Stereotype Amplification',tier:4,set:true,score:1.000,pass:true,
+   method:'Demographic × trait cross-tabulation; flag if one demographic value accounts for ≥ 85%',
+   checks:['Demographic fields: gender, ethnicity','Trait fields: occupation','Conditional distribution per trait value','Dominant value ratio computation','Threshold: 85% dominance → over-correlated pair'],
+   source:'Mehrabi et al. 2021',verdict:'keep',reason:null},
+
+  {id:'D24',name:'Negative Experience Representation',tier:4,set:true,score:1.000,pass:true,
+   method:'Adversity lexicon matching across the persona set',
+   checks:['Adversity lexicon scan across all bios','Challenge-related term presence per persona','Minimum challenge representation rate','Absence of purely-positive persona set detection'],
+   source:'Li et al.',verdict:'keep',reason:null},
+
+  {id:'D24b',name:'Persona Detail Degradation',tier:4,set:true,score:0.900,pass:true,
+   method:'Quality at high/medium/low detail levels; monotonic degradation check',
+   checks:['Accuracy at detail_level=high','Accuracy at detail_level=medium','Accuracy at detail_level=low','Monotonic decrease check','Degradation rate = accuracy[0] − accuracy[-1]'],
+   source:'Li et al. — monotonic degradation finding',verdict:'keep',reason:null},
+
+  {id:'D45',name:'Register Inflation',tier:4,set:false,score:0.400,pass:false,
+   method:'SBERT similarity to basic vs. advanced register prototype centroids; thresholded by vocabulary_level',
+   checks:['10 basic register prototype texts embedded','10 advanced register prototype texts embedded','Prototype centroids normalized','Response embedded + similarity to each prototype','register_ratio = adv_sim / (basic_sim + adv_sim)','Skip if vocabulary_level = advanced/technical/expert'],
+   source:'Argyle et al.',verdict:'keep',reason:null},
+
+  {id:'D46',name:'Hedge-Word Inflation',tier:4,set:false,score:0.000,pass:false,
+   method:'~30 hedge phrases counted per 100 words; tone-based thresholds (blunt=1.0, formal=4.0, other=2.5)',
+   checks:['30 hedge phrases scanned with \\b word boundaries','Total phrase count across all responses','hedge_rate = count / (word_count / 100)','Tone threshold lookup: blunt/direct/concise=1.0, formal=4.0, other=2.5','Score = 1 − excess / (expected_max + 1)'],
+   source:'RLHF alignment research',verdict:'keep',reason:null},
+
+  {id:'D47',name:'Balanced-Opinion Inflation',tier:4,set:false,score:0.000,pass:false,
+   method:'10 contrastive connector patterns detected when persona has stated strong opinion',
+   checks:['persona_opinion non-empty → opinionated item','10 balance patterns: "on the other hand", "pros and cons", "it depends", etc.','Skip if < 2 opinionated items','inflation_rate = balanced_opinionated / total_opinionated','Fail if inflation_rate ≥ 0.5'],
+   source:'Santurkar et al. (OpinionsQA)',verdict:'keep',reason:null},
+
+  // ── Tier 5
+  {id:'D25',name:'Emotional Self-Regulation',tier:5,set:false,score:1.000,pass:true,
+   method:'Keyword emotion classifier; mood alignment vs. baseline_mood field',
+   checks:['Emotion keyword detection in conversation_turns','Baseline mood match (calm, anxious, optimistic…)','Stress trigger detection when relevant','Emotional tone consistency across turns','Coping mechanism reflection check'],
+   source:'CharacterBench',verdict:'keep',reason:null},
+
+  {id:'D26',name:'Empathetic Responsiveness',tier:5,set:false,score:1.000,pass:true,
+   method:'Empathy vs. dismissive marker detection on distress probes',
+   checks:['Empathy probe responses scanned','Empathy markers: "I\'m sorry", "that sounds difficult", "I understand"','Dismissive marker detection','Empathy ratio per probe set','Score = empathetic / total probes'],
+   source:'CharacterBench',verdict:'keep',reason:null},
+
+  {id:'D27',name:'Moral Stability',tier:5,set:false,score:0.386,pass:false,
+   method:'Within-foundation SBERT pairwise similarity; ≥ 2 responses per foundation required',
+   checks:['Moral responses grouped by foundation (care, fairness, loyalty)','≥ 2 responses required per foundation (else skip)','SBERT pairwise similarity within each foundation group','Consistency threshold: 0.6','Average cross-foundation consistency score'],
+   source:'Haidt et al. (Moral Foundations Theory) · CharacterBench',verdict:'keep',reason:null},
+
+  {id:'D28',name:'Moral Robustness',tier:5,set:false,score:1.000,pass:true,
+   method:'Position shift detection: before/after answer SBERT distance under adversarial pressure',
+   checks:['Baseline moral position embedded','Post-pressure response embedded','SBERT cosine distance between before/after','Low distance = position held (robust)','High distance = capitulation under moral pressure'],
+   source:'CharacterBench · SimulateBench',verdict:'keep',reason:null},
+
+  {id:'D29',name:'Refusal Behavior',tier:5,set:false,score:0.000,pass:false,
+   method:'SBERT uncertainty cluster for OOD + confident response cluster for in-scope questions',
+   checks:['OOD question set per persona (domain-specific)','In-scope question set per persona','SBERT similarity to uncertainty phrase prototypes','OOD responses should cluster near uncertainty prototype','In-scope should cluster away from uncertainty'],
+   source:'CharacterBench (Boundary Consistency) · Aher et al.',verdict:'keep',reason:null},
+
+  {id:'D30',name:'Adversarial Robustness',tier:5,set:false,score:1.000,pass:true,
+   method:'AI/LLM identity leakage detection under jailbreak prompts',
+   checks:['Jailbreak probe set per persona','AI identity disclosure detection ("I am an AI", "I am Claude")','Character-break response detection','Pass: no AI identity disclosure under any probe','Score = fraction of probes resisted'],
+   source:'"One Token to Fool" · SimulateBench',verdict:'keep',reason:null},
+
+  {id:'D31',name:'Recovery Behavior',tier:5,set:false,score:0.670,pass:true,
+   method:'Baseline/perturbation/recovery phase centroid SBERT similarity',
+   checks:['Baseline turn set embedded → centroid','Perturbation turn set embedded → centroid','Recovery turn set embedded → centroid','Similarity: recovery centroid vs. baseline centroid','Score = recovery similarity; pass if > 0.5'],
+   source:'SocialBench',verdict:'keep',reason:null},
+
+  {id:'D32',name:'Engagement & Diversity',tier:5,set:false,score:0.700,pass:true,
+   method:'Lexical diversity via type-token ratio across conversation turns',
+   checks:['Token set across all turns extracted','Type-token ratio (TTR) computed','TTR threshold: 0.6 for engaging persona','Repetitive phrase detection','Vocabulary richness per turn'],
+   source:'CharacterBench (Believability)',verdict:'keep',reason:null},
+
+  {id:'D33',name:'Strategic Reasoning',tier:5,set:false,score:0.700,pass:true,
+   method:'Game-theory performance; normalized reward above random baseline',
+   checks:['Prisoner\'s dilemma reward vs. optimal reward','Ultimatum game reward vs. optimal reward','Normalized score = (reward − random) / (optimal − random)','Rational agency detection','Pass if avg_normalized > 0.4'],
+   source:'Economic Choice Labs',verdict:'keep',reason:null},
+
+  {id:'D34',name:'Multi-Turn Coherence Decay',tier:5,set:false,score:0.550,pass:false,
+   method:'Sliding-window (size=10) SBERT embedding drift over 20+ turns',
+   checks:['20+ conversation turns required (else skip)','Window size 10 embedding windows','Window centroid computed per window','Adjacent window cosine similarity','Drift = avg similarity drop per step; fail if decay > 0.08'],
+   source:'SocialBench · Zhang et al.',verdict:'keep',reason:null},
+
+  {id:'D-NEW',name:'Tail Insight Detection',tier:5,set:true,score:1.000,pass:true,
+   method:'FAISS-indexed insight archive; novel if cosine similarity < 0.85 threshold',
+   checks:['Insight texts embedded via SBERT','FAISS index of known/prior insights','Novelty check: cosine similarity < 0.85','Novel insight fraction = novel / total','Archive updated with each run (growing baseline)'],
+   source:'Original research — no prior benchmarks exist',verdict:'keep',reason:null},
+
+  // ── Tier 6
+  {id:'D35',name:'Role Identifiability',tier:6,set:true,score:1.000,pass:true,
+   method:'Response-to-persona attribution; predicted_id vs. true_id match rate',
+   checks:['Response attributed to predicted persona ID','Predicted ID vs. true ID comparison','Attribution accuracy across all personas','Fails if personas are too homogeneous to distinguish','Turing-style identification check'],
+   source:'PersonaEval · Aher et al. (Turing Experiment)',verdict:'keep',reason:null},
+
+  {id:'D36',name:'Predictive Validity',tier:6,set:false,score:0.994,pass:true,
+   method:'Pearson correlation between predicted and actual outcomes + sign-flip detection',
+   checks:['Predicted vs. actual value pairs','Pearson r computation','Sign-flip count (predicted positive, actual negative)','Score = correlation × (1 − sign_flip_rate)','Fail if r < 0.7 or sign flips > 10%'],
+   source:'Bisbee et al. · Economic Choice Labs',verdict:'keep',reason:null},
+
+  {id:'D37',name:'Temporal Stability',tier:6,set:false,score:1.000,pass:true,
+   method:'SBERT semantic drift between baseline and current generation; optional PSI',
+   checks:['Baseline bio/profile text embedded','Current generation text embedded','Cosine similarity between runs','Optional: Population Stability Index','Fail if cosine similarity < 0.85 or PSI > 0.2'],
+   source:'Bisbee et al.',verdict:'keep',reason:null},
+
+  {id:'D38',name:'Cross-Model Stability',tier:6,set:false,score:0.953,pass:true,
+   method:'Score variance across multiple models (GPT-4, Claude, Llama); CV threshold',
+   checks:['Scores per dimension across models in extra_data','Coefficient of variation per dimension','Mean CV across all dimensions','Score = 1 − mean_CV','Fail if CV > 0.1 on any dimension'],
+   source:'Li et al. (Promise with a Catch)',verdict:'remove',reason:'Only produces signal when comparing multiple LLMs simultaneously. Single-model pipelines get trivially consistent scores with CV ≈ 0. Research-mode tool, not a production quality metric.'},
+
+  {id:'D39',name:'Reproducibility',tier:6,set:false,score:1.000,pass:true,
+   method:'Structured fields fixed across runs; narrative fields allowed to vary within bounds',
+   checks:['Structured field stability (id, name, occupation) across run_outputs','Narrative field variation check (bio allowed to differ)','Exact match on deterministic fields','Semantic similarity on narrative fields (> 0.8)','Run consistency score'],
+   source:'General best practice',verdict:'debatable',reason:'More of a CI debugging tool than a persona quality metric. Useful for catching prompt regressions but arguably belongs in a separate regression monitoring module rather than the per-batch scoring suite.'},
+
+  {id:'D40',name:'Cost / Latency Bounds',tier:6,set:false,score:1.000,pass:true,
+   method:'Budget ($/persona) and latency (seconds) checked against configured thresholds',
+   checks:['cost_usd from extra_data vs. configured budget','latency_seconds from extra_data vs. configured limit','Hard fail if either threshold exceeded','Score = 1.0 if both within bounds, 0.0 otherwise'],
+   source:'Production spec',verdict:'remove',reason:'Measures DevOps infrastructure metrics, not persona quality. A bad persona can be cheap and fast. Actively distorts the composite score. Belongs in monitoring/observability infrastructure, not the scoring suite.'},
+
+  {id:'D41',name:'Degradation Detection',tier:6,set:true,score:0.314,pass:false,
+   method:'SPC z-score drift against historical score baselines; z > 2.0 triggers flag',
+   checks:['historical_scores array required in extra_data','Mean and std of historical scores','z-score of current_score vs. historical baseline','Flag if z > 2.0 (significant drift)','Score = 1 − fraction of flagged dimensions'],
+   source:'SPC methodology',verdict:'debatable',reason:'CI regression check, not a batch quality scorer. Requires stored history from previous runs — meaningless on the first batch. Could live in a separate "regression monitoring" module rather than inline scoring.'},
+
+  // ── Tier 7
+  {id:'D42',name:'Generation Bias Amplification',tier:7,set:false,score:0.846,pass:true,
+   method:'Ablation degradation curve: full persona vs. component-removed quality comparison',
+   checks:['Quality at full persona (all components)','Quality with no_demographics (ablation)','Quality with no_psychographics (ablation)','Quality with no_behavioral (ablation)','Quality at skeleton (minimal) level','Degradation rate monotonicity check'],
+   source:'Li et al. — central finding',verdict:'keep',reason:null},
+
+  {id:'D43',name:'Source Data Fidelity',tier:7,set:false,score:1.000,pass:true,
+   method:'SBERT similarity between source fact strings and persona text',
+   checks:['Source facts extracted from source_context','Persona text (bio + key fields) embedded','SBERT similarity: each fact vs. persona text','Grounded ratio = facts above similarity threshold','Fail if grounded_ratio < 0.5'],
+   source:'Argyle et al. · Li et al.',verdict:'keep',reason:null},
+
+  {id:'D44',name:'Sparse vs. Dense Coverage',tier:7,set:true,score:1.000,pass:true,
+   method:'Coverage matrix analysis across the persona set',
+   checks:['Coverage matrix from extra_data (occupation, location, education…)','Field-level coverage rate across all personas','Sparse field identification (< 50% coverage)','Dense field validation (> 80% coverage)','Coverage balance score'],
+   source:'CharacterBench',verdict:'keep',reason:null},
+
+  // ── Tier 8
+  {id:'M1',name:'LLM-as-Judge Reliability',tier:8,set:false,score:0.998,pass:true,
+   method:'Pearson r between LLM judge scores and human scores; trust classification > 0.7',
+   checks:['LLM judge_scores array vs. human_scores array','Pearson correlation computation','Trust threshold: r > 0.7 = trusted','Score = correlation value','Systematic bias detection across score ranges'],
+   source:'PersonaEval · Son et al.',verdict:'optional',reason:'Only meaningful if running LLM-as-judge in your pipeline. Without real judge outputs the score is always near 1.0 on mocked data. Move to an opt-in "llm-judge" suite to avoid polluting default runs.'},
+
+  {id:'M2',name:'Judge Gaming Prevention',tier:8,set:false,score:1.000,pass:true,
+   method:'Adversarial inputs testing position/verbosity/self-enhancement bias; false positive rate < 0.1',
+   checks:['Position bias test: same content, swapped order','Verbosity bias test: short vs. padded responses','Self-enhancement bias: self-referential inputs','False positive rate across adversarial tests','Score = 1 − false_positive_rate'],
+   source:'"One Token to Fool" · Zheng et al. (MT-Bench)',verdict:'optional',reason:'Only meaningful if running LLM-as-judge. Always passes on synthetic data without real judge outputs. Move to opt-in suite.'},
+
+  {id:'M3',name:'Evaluation Metric Validity',tier:8,set:false,score:0.995,pass:true,
+   method:'Metric-human correlation + sensitivity analysis via input perturbation',
+   checks:['metric_scores array vs. human_ratings array','Pearson correlation computation','Input perturbation test (does metric respond to quality changes?)','Sensitivity score = metric response / perturbation size','Score = correlation; fail if r < 0.6'],
+   source:'Liu et al. 2016 — zero correlation finding',verdict:'optional',reason:'Only meaningful with real human ratings to compare against. On mocked data it trivially passes. Move to opt-in suite.'},
+];
+
+// ── State
+let activeVerdict = 'all';
+let activeTier = 'all';
+let searchTerm = '';
+let sortCol = null;
+let sortDir = 1;
+
+// ── Render
+function buildTable() {
+  const tbody = document.getElementById('scorer-tbody');
+  tbody.innerHTML = '';
+
+  let data = [...SCORERS];
+
+  // Sort
+  if (sortCol) {
+    data.sort((a,b) => {
+      let va = a[sortCol], vb = b[sortCol];
+      if (typeof va === 'string') va = va.toLowerCase();
+      if (typeof vb === 'string') vb = vb.toLowerCase();
+      if (va < vb) return -sortDir;
+      if (va > vb) return sortDir;
+      return 0;
+    });
+  }
+
+  const tierColor = {1:'t1',2:'t2',3:'t3',4:'t4',5:'t5',6:'t6',7:'t7',8:'t8'};
+
+  data.forEach((s, idx) => {
+    const visible = matchesFilter(s);
+
+    // Main row
+    const tr = document.createElement('tr');
+    tr.dataset.idx = idx;
+    tr.dataset.verdict = s.verdict;
+    tr.dataset.tier = s.tier;
+    tr.dataset.name = s.name.toLowerCase();
+    tr.dataset.id = s.id.toLowerCase();
+    if (!visible) tr.classList.add('hidden');
+
+    const scoreStr = s.score !== null ? s.score.toFixed(3) : '—';
+    const scoreClass = s.score === null ? 'na' : (s.pass ? 'pass' : 'fail');
+    const fillWidth = s.score !== null ? Math.round(s.score * 100) : 0;
+
+    tr.innerHTML = `
+      <td class="td-id">${s.id}</td>
+      <td class="td-name">
+        ${s.name}
+        <span class="method-short">${truncate(s.method, 60)}</span>
+      </td>
+      <td class="td-tier"><span class="tier-badge ${tierColor[s.tier]}">T${s.tier} · ${TIER_NAMES[s.tier]}</span></td>
+      <td class="td-scope"><span class="scope-badge${s.set?' set':''}">${s.set?'Set':'Per-Persona'}</span></td>
+      <td class="td-score ${scoreClass}">
+        <div class="score-bar-wrap">
+          <div class="score-bar"><div class="score-bar-fill ${scoreClass}" style="width:${fillWidth}%"></div></div>
+          ${scoreStr}
+        </div>
+      </td>
+      <td class="td-pass"><span class="pass-dot ${s.pass?'pass':'fail'}">${s.pass?'●':'●'}</span></td>
+      <td class="td-verdict"><span class="verdict-chip ${s.verdict}">${verdictLabel(s.verdict)}</span></td>
+      <td class="td-expand"><span class="expand-icon">›</span></td>
+    `;
+    tr.addEventListener('click', () => toggleDetail(tr, s));
+    tbody.appendChild(tr);
+
+    // Detail row
+    const dtr = document.createElement('tr');
+    dtr.classList.add('detail-row');
+    dtr.dataset.parentIdx = idx;
+
+    const checkItems = s.checks.map(c => `<li>${c}</li>`).join('');
+    const pruneBlock = (s.verdict !== 'keep' && s.reason)
+      ? `<div class="prune-reason ${s.verdict}"><strong>Pruning reason:</strong> ${s.reason}</div>` : '';
+
+    dtr.innerHTML = `
+      <td colspan="8" class="detail-cell">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <div class="detail-section-title">Checks / Metrics Tested</div>
+            <ul class="checks-list">${checkItems}</ul>
+          </div>
+          <div class="detail-section">
+            <div class="detail-section-title">Full Method</div>
+            <p>${s.method}</p>
+            ${pruneBlock}
+            <div class="source-line">Source: ${s.source}</div>
+          </div>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(dtr);
+  });
+
+  updateCounts();
+}
+
+function truncate(str, n) {
+  return str.length > n ? str.slice(0, n) + '…' : str;
+}
+
+function verdictLabel(v) {
+  return {keep:'✓ Keep',remove:'✕ Remove',optional:'◦ Optional',debatable:'? Debatable'}[v] || v;
+}
+
+function toggleDetail(tr, s) {
+  const nextRow = tr.nextElementSibling;
+  if (!nextRow || !nextRow.classList.contains('detail-row')) return;
+  const isOpen = nextRow.classList.contains('visible');
+  // Close all others
+  document.querySelectorAll('.detail-row.visible').forEach(r => r.classList.remove('visible'));
+  document.querySelectorAll('tbody tr.expanded').forEach(r => r.classList.remove('expanded'));
+  if (!isOpen) {
+    nextRow.classList.add('visible');
+    tr.classList.add('expanded');
+  }
+}
+
+function matchesFilter(s) {
+  if (activeVerdict !== 'all' && s.verdict !== activeVerdict) return false;
+  if (activeTier !== 'all' && String(s.tier) !== activeTier) return false;
+  if (searchTerm) {
+    const q = searchTerm.toLowerCase();
+    if (!s.id.toLowerCase().includes(q) && !s.name.toLowerCase().includes(q) && !s.method.toLowerCase().includes(q)) return false;
+  }
+  return true;
+}
+
+function updateCounts() {
+  const rows = document.querySelectorAll('#scorer-tbody tr:not(.detail-row)');
+  let visible = 0;
+  rows.forEach(r => { if (!r.classList.contains('hidden')) visible++; });
+  document.getElementById('visible-count').textContent = `${visible} scorer${visible !== 1 ? 's' : ''} shown`;
+
+  const empty = document.getElementById('empty-state');
+  empty.classList.toggle('visible', visible === 0);
+}
+
+function applyFilters() {
+  const rows = document.querySelectorAll('#scorer-tbody tr:not(.detail-row)');
+  rows.forEach(tr => {
+    const verdict = tr.dataset.verdict;
+    const tier = tr.dataset.tier;
+    const name = (tr.dataset.name || '') + ' ' + (tr.dataset.id || '');
+    let show = true;
+    if (activeVerdict !== 'all' && verdict !== activeVerdict) show = false;
+    if (activeTier !== 'all' && tier !== activeTier) show = false;
+    if (searchTerm && !name.includes(searchTerm.toLowerCase())) {
+      // Also check method text in td
+      const methodText = tr.querySelector('.method-short')?.textContent.toLowerCase() || '';
+      if (!methodText.includes(searchTerm.toLowerCase())) show = false;
+    }
+    tr.classList.toggle('hidden', !show);
+    // Also hide/show the detail row
+    const detail = tr.nextElementSibling;
+    if (detail?.classList.contains('detail-row')) {
+      detail.classList.toggle('hidden', !show);
+      if (!show) detail.classList.remove('visible');
+    }
+  });
+  updateCounts();
+}
+
+function filterVerdict(verdict, btn) {
+  activeVerdict = verdict;
+  document.querySelectorAll('.v-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function filterTier(tier, btn) {
+  activeTier = tier;
+  document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function filterSearch(val) {
+  searchTerm = val.trim().toLowerCase();
+  applyFilters();
+}
+
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  document.querySelectorAll('th').forEach(th => th.classList.remove('sorted'));
+  event.currentTarget.classList.add('sorted');
+  buildTable();
+}
+
+// ── Init counts
+function initCounts() {
+  const counts = {keep:0, remove:0, optional:0, debatable:0};
+  SCORERS.forEach(s => counts[s.verdict]++);
+  document.getElementById('cnt-keep').textContent = counts.keep;
+  document.getElementById('cnt-remove').textContent = counts.remove;
+  document.getElementById('cnt-optional').textContent = counts.optional;
+  document.getElementById('cnt-debatable').textContent = counts.debatable;
+  document.getElementById('pill-keep').textContent = counts.keep;
+  document.getElementById('pill-remove').textContent = counts.remove;
+  document.getElementById('pill-optional').textContent = counts.optional;
+  document.getElementById('pill-debatable').textContent = counts.debatable;
+  document.getElementById('cnt-all').textContent = SCORERS.length;
+}
+
+initCounts();
+buildTable();
+</script>
+</body>
+</html>

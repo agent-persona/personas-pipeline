@@ -1,0 +1,30 @@
+name: Persona Eval Suite
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run fast tests (no embeddings, no LLM)
+        run: python -m pytest tests/ -v --tb=short -m "not slow and not llm"
+
+      - name: Run slow tests (embeddings)
+        run: python -m pytest tests/ -v --tb=short -m "slow and not llm"
