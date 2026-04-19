@@ -139,6 +139,14 @@ async def synthesize(
         if prompt_kind == "public_person":
             persona = _repair_public_person_evidence(persona, cluster)
 
+        # Deterministic verbatim-samples passthrough. The LLM never sees this
+        # field in the tool schema; segmentation populated cluster.verbatim_samples
+        # with style-coherent raw text, and we copy it onto the persona unchanged
+        # so downstream consumers (twin chat, content generators) ground voice
+        # on real human text. Silently no-ops when either side is missing the
+        # field (older ClusterData dicts, persona schemas without verbatim_samples).
+        _apply_verbatim_samples_passthrough(persona, cluster)
+
         # Check groundedness
         groundedness = check_groundedness(persona, cluster)
         if not groundedness.passed and not _passes_relaxed_groundedness(groundedness, llm_result.model):
@@ -230,3 +238,23 @@ def _repair_public_person_evidence(persona: object, cluster: ClusterData) -> obj
             ))
             existing_paths.add(path)
     return repaired
+
+
+def _apply_verbatim_samples_passthrough(persona, cluster) -> None:
+    """Copy cluster.verbatim_samples onto persona.verbatim_samples in place.
+
+    Silent no-op when either side lacks the field — keeps backwards compat
+    with older ClusterData dicts and persona schemas (e.g. PublicPersonPersonaV1)
+    that do not declare verbatim_samples. When both sides have the field,
+    the copy is deterministic: the LLM never generates this value, so it
+    cannot drift, paraphrase, or hallucinate verbatim text.
+    """
+    samples = getattr(cluster, "verbatim_samples", None)
+    if not samples:
+        return
+    if not hasattr(persona, "verbatim_samples"):
+        return
+    try:
+        persona.verbatim_samples = list(samples)
+    except Exception:  # noqa: BLE001 — tolerate immutable/frozen persona models
+        return

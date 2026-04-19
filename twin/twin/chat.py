@@ -27,6 +27,32 @@ class TwinReply:
         return (self.input_tokens * 3 + self.output_tokens * 15) / 1_000_000
 
 
+def _verbatim_samples_block(samples: list) -> list[str]:
+    """Render the voice-grounding section of the system prompt.
+
+    Returns an empty list when no samples are present — the caller splices
+    this into the prompt's line list, so an empty return is a clean no-op
+    that preserves prior prompt output byte-for-byte.
+
+    When present, frames the samples as "match this register" (not as
+    "examples this persona has said") so the model imitates register,
+    length, punctuation, and rhythm directly rather than treating them as
+    optional flavor to draw from.
+    """
+    if not samples:
+        return []
+    lines = [
+        "## How your messages actually read (match this register)",
+        "The quotes below are VERBATIM text from messages this kind of "
+        "person actually writes. Match their register, length, punctuation, "
+        "casing, and rhythm when you reply. Do not clean them up; do not "
+        "default to assistant-register.",
+    ]
+    lines.extend(f"- {s}" for s in samples)
+    lines.append("")
+    return lines
+
+
 def build_persona_system_prompt(persona: dict) -> str:
     """Construct a system prompt that puts Claude in character as the persona.
 
@@ -44,6 +70,7 @@ def build_persona_system_prompt(persona: dict) -> str:
     not_this = persona.get("not_this", [])
     vocabulary = persona.get("vocabulary", [])
     sample_quotes = persona.get("sample_quotes", [])
+    verbatim_samples = persona.get("verbatim_samples") or []
 
     not_this_block: list[str] = []
     if not_this:
@@ -85,6 +112,12 @@ def build_persona_system_prompt(persona: dict) -> str:
         "Examples of things you have said before:",
         *(f'- "{q}"' for q in sample_quotes),
         "",
+        # Voice grounding: verbatim text carried from segmentation, not
+        # LLM-rewritten. Shown as "match this register" rather than "examples"
+        # so the model imitates register/length/rhythm directly rather than
+        # treating it as further persona-flavoring hints. Skipped when absent
+        # (personas from non-text-bearing corpora).
+        *(_verbatim_samples_block(verbatim_samples)),
         "## Rules",
         "- Answer in first person, in character.",
         "- Use your vocabulary naturally — don't sound like a chatbot.",

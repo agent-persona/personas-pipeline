@@ -164,6 +164,18 @@ class PersonaV1(BaseModel):
         description="Core values and ethical stance. Inferred from what this persona cares about — language of fairness, autonomy, efficiency, etc.",
     )
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+    verbatim_samples: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Raw text samples carried verbatim from the source corpus "
+            "(never LLM-generated or rewritten). Populated by the "
+            "segmentation stage and passed through synthesis deterministically "
+            "so downstream consumers (twin chat, content generators, any "
+            "future output stage) can ground voice on real human text "
+            "instead of LLM defaults. Empty when the cluster has no "
+            "text-bearing records."
+        ),
+    )
 
 
 class PublicPersonPersonaV1(BaseModel):
@@ -362,3 +374,11 @@ class PersonaV1VoiceFirst(BaseModel):
     decision_triggers: list[str] = Field(min_length=1, max_length=6)
     journey_stages: list[JourneyStage] = Field(min_length=2, max_length=5)
     source_evidence: list[SourceEvidence] = Field(min_length=3)
+    verbatim_samples: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Raw text samples carried verbatim from the source corpus "
+            "(never LLM-generated). Populated by segmentation, passed "
+            "through synthesis deterministically for voice grounding."
+        ),
+    )

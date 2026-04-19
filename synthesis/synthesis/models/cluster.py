@@ -59,6 +59,16 @@ class ClusterData(BaseModel):
     summary: ClusterSummary
     sample_records: list[SampleRecord] = Field(min_length=1)
     enrichment: EnrichmentPayload = Field(default_factory=EnrichmentPayload)
+    verbatim_samples: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Style-coherent raw text samples from cluster records, carried "
+            "through synthesis unchanged into PersonaV1.verbatim_samples. "
+            "Populated by segmentation; never LLM-generated. Empty when the "
+            "cluster has no text-bearing records — downstream consumers "
+            "handle as 'no voice signal' and fall back to prior behavior."
+        ),
+    )
 
     @property
     def all_record_ids(self) -> list[str]:
