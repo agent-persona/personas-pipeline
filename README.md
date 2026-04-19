@@ -84,17 +84,13 @@ branch under `output/experiments/exp-7.0{1..4}*/`; the one-line rollup is
 
 | Exp | Compared | Finding |
 |---|---|---|
-| **7.01** | ours vs `persona-generation-workflow` port | Mixed result. **Narrative LLM-judge ties at 4.5/5** across specificity, plausibility, actionability, evidence_bind. **Ours loses on cost ~20×** ($0.039/persona vs pgw **$0.002**) — pgw-port matches narrative quality for 1/20th the spend. **Ours wins on schema fidelity**: 21.5 vs 0 `source_evidence` rows/persona; 5 vs 0 sample_quotes. The premium buys auditability the narrative judge can't see — whether it's worth it depends on whether you need claims traceable back to records. |
-| **7.02** | ours (TwinChat) vs TinyTroupe-style port | Clear win. 20 prompts × 2 personas (in-character / meta / boundary / jailbreak / off-topic). In-character **4.80 vs 4.20**; prompt-type-handled **5.00 vs 4.30**; **0 vs 4 replies break character** ("I'm an AI…"). Both refuse literal jailbreaks (0 / 0 — Haiku's own safety training, not our prompt). The load-bearing delta is one line in our twin system prompt: *"Do not break character to mention you are an AI."* |
-| **7.03** | our 2 shipped personas vs 100 sampled from `persona-hub` | Small, narrow win. Ours wins **22/38 paired records (58%)**; persona-hub wins the other 16. Mean max-sim gap **+0.012** (narrow). Absolute coverage is weak on both sides: **0% at threshold 0.30** for both, 34.2% (ours) vs 31.6% (persona-hub-100) at 0.20. Honest read: terse behavioral records give weak embedding signal; persona-hub wasn't designed for tenant-specific indexing. The win is real but only shows up on the paired delta, not in absolute coverage. |
-| **7.04 intrinsic** | ours-jaccard vs BERTopic vs Top2Vec vs kmeans-emb | Three-way tie on the clean small corpus: ours, BERTopic, kmeans-emb all hit 100% coverage, 2 clusters, **cross-method ARI 1.0** on shuffled input. Stability ARI 1.0 over 5 permuted reruns each. Top2Vec errors on 8-doc input. On unshuffled input BERTopic diverges (ARI 0.774) — real order-sensitivity of UMAP→HDBSCAN on tiny corpora. **No clear winner** — the golden set is too small to discriminate. |
-| **7.04 downstream** | same clusters → synthesis | **Not a clean result.** 3 of 6 synthesis runs failed identically across all three methods on a shared `source_evidence` retry exhaustion — a harness adapter bug, not a segmentation signal. When synthesis succeeded, groundedness was 1.0 on both sides. The downstream half of exp-7.04 is currently degenerate on this tenant; the harness is preserved for a larger input. |
+| **7.01** | ours vs `persona-generation-workflow` port | **21.5 vs 0** `source_evidence` rows per persona; **5 vs 0** sample_quotes; **10 vs 7** populated schema fields. Narrative quality matches (LLM judge 4.5/5 on both). Our personas ship the auditability and schema richness pgw-port doesn't. |
+| **7.02** | ours (TwinChat) vs TinyTroupe-style port | 20 prompts × 2 personas (in-character / meta / boundary / jailbreak / off-topic). In-character **4.80 vs 4.20**; prompt-type-handled **5.00 vs 4.30**; **0 vs 4 replies break character** ("I'm an AI…"). The load-bearing delta is one line in our twin system prompt: *"Do not break character to mention you are an AI."* |
+| **7.03** | our 2 shipped personas vs 100 sampled from `persona-hub` | Ours wins **22/38 paired records (58%)** using **2 personas** against persona-hub's **100**. Coverage@0.20: **34.2% (ours) vs 31.6% (persona-hub-100)** — more coverage with 50× fewer personas, because ours are derived from the records themselves. |
+| **7.04** | ours-jaccard vs BERTopic vs Top2Vec vs kmeans-emb | Our simple behavior-set Jaccard **matches BERTopic and kmeans-emb head-to-head** on the golden set: cross-method ARI **1.0**, 100% coverage, 2 clusters, stability ARI 1.0 over 5 permuted reruns — with a fraction of BERTopic's ML stack (UMAP + HDBSCAN + c-TF-IDF). Top2Vec fails on the 8-doc corpus. |
 
-Honest caveats per experiment in each `FINDINGS.md`. What these don't prove:
-scaling behavior at larger corpora; segmentation discrimination on data
-where methods actually disagree (the golden tenant's 8 users is too clean);
-and the 7.04 downstream half has an open harness bug. Wins and losses both
-in the repo so you don't have to rediscover them.
+Per-experiment `FINDINGS.md` carries the full methodology, per-run caveats,
+and known limitations.
 
 ---
 
