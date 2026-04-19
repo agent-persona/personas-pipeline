@@ -104,12 +104,75 @@ def build_cluster_data(
             for r in sample
         ],
         "verbatim_samples": verbatim_samples,
-        "enrichment": {
-            "firmographic": {},
-            "intent_signals": [],
-            "technographic": {},
-            "extra": {},
-        },
+        "enrichment": _extract_enrichment(cluster_records),
+    }
+
+
+_INTEGRATION_KEYWORDS = {"api", "webhook", "integration", "github", "slack"}
+
+
+def _extract_enrichment(records: list[RawRecord]) -> dict:
+    """Extract firmographic, intent, and technographic signals from raw records."""
+
+    # --- firmographic (HubSpot) ---
+    titles: list[str] = []
+    company_sizes: list[str] = []
+    industries: list[str] = []
+    for r in records:
+        if r.source != "hubspot":
+            continue
+        title = r.payload.get("contact_title")
+        if title:
+            titles.append(title)
+        size = r.payload.get("company_size")
+        if size:
+            company_sizes.append(size)
+        industry = r.payload.get("industry")
+        if industry:
+            industries.append(industry)
+
+    firmographic: dict = {}
+    if titles:
+        firmographic["titles"] = list(dict.fromkeys(titles))
+    if company_sizes:
+        firmographic["company_size"] = Counter(company_sizes).most_common(1)[0][0]
+    if industries:
+        firmographic["industries"] = list(dict.fromkeys(industries))
+
+    # --- intent_signals (Intercom) ---
+    intent_signals: list[str] = []
+    for r in records:
+        if r.source != "intercom":
+            continue
+        topic = r.payload.get("topic", "")
+        message = r.payload.get("message", "")
+        preview = message[:100]
+        if topic or preview:
+            intent_signals.append(f"{topic}: {preview}..." if preview else topic)
+
+    # --- technographic (GA4) ---
+    integration_pages: list[str] = []
+    tech_events: list[str] = []
+    for r in records:
+        if r.source != "ga4":
+            continue
+        for page in r.pages:
+            if any(kw in page.lower() for kw in _INTEGRATION_KEYWORDS):
+                integration_pages.append(page)
+        for behavior in r.behaviors:
+            tech_events.append(behavior)
+
+    technographic: dict = {}
+    if integration_pages:
+        technographic["integration_pages"] = list(dict.fromkeys(integration_pages))
+    if tech_events:
+        technographic["tech_events"] = list(dict.fromkeys(tech_events))
+
+    return {
+        "firmographic": firmographic,
+        "intent_signals": intent_signals,
+        "technographic": technographic,
+        "extra": {},
     }
 
 

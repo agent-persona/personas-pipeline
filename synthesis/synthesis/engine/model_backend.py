@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -139,3 +140,104 @@ def _extract_first_json_object(text: str) -> dict:
     if not isinstance(parsed, dict):
         raise json.JSONDecodeError("Top-level JSON value is not an object", text, start)
     return parsed
+
+
+class OpenAIBackend:
+    """OpenAI-compatible backend (Ollama, vLLM, etc.) using JSON prompting.
+
+    Falls back to asking the model to return JSON directly since many local
+    models don't support forced tool calling.
+    """
+
+    def __init__(self, client, model: str) -> None:
+        self.client = client  # openai.AsyncOpenAI
+        self.model = model
+
+    async def generate(
+        self,
+        system: str,
+        messages: list[dict],
+        tool: dict,
+    ) -> LLMResult:
+        schema = tool.get("input_schema", {})
+        schema_str = json.dumps(schema, indent=2)
+
+        json_system = (
+            f"{system}\n\n"
+            "CRITICAL: You MUST respond with ONLY a valid JSON object matching this schema. "
+            "No markdown fences, no explanation, no extra text.\n\n"
+            f"JSON SCHEMA:\n{schema_str}"
+        )
+
+        response = await self.client.chat.completions.create(
+            model=self.model,
+            max_tokens=8192,
+            messages=[
+                {"role": "system", "content": json_system},
+                *messages,
+            ],
+        )
+
+        content = response.choices[0].message.content or ""
+        content = content.strip()
+
+        # Strip markdown fences if present
+        if content.startswith("```"):
+            content = re.sub(r"^```(?:json)?\s*", "", content)
+            content = re.sub(r"\s*```$", "", content)
+
+        # Try direct parse first
+        try:
+            tool_input = json.loads(content)
+        except json.JSONDecodeError:
+            # Try to extract the largest valid JSON object
+            # Find the outermost { ... } and attempt repair
+            start = content.find("{")
+            if start == -1:
+                raise ValueError(f"No JSON object found in response: {content[:200]}")
+
+            # Try progressively shorter substrings to find valid JSON
+            best = None
+            depth = 0
+            for i in range(start, len(content)):
+                if content[i] == "{":
+                    depth += 1
+                elif content[i] == "}":
+                    depth -= 1
+                    if depth == 0:
+                        try:
+                            best = json.loads(content[start : i + 1])
+                            break
+                        except json.JSONDecodeError:
+                            continue
+
+            if best is None:
+                # Last resort: truncate at last complete key-value and close
+                truncated = content[start:]
+                # Find last complete string value
+                last_quote = truncated.rfind('"')
+                if last_quote > 0:
+                    # Walk back to find a clean cut point
+                    for cut in range(last_quote, 0, -1):
+                        candidate = truncated[:cut].rstrip(", \n\t")
+                        # Close any open arrays/objects
+                        opens = candidate.count("[") - candidate.count("]")
+                        candidate += "]" * max(0, opens)
+                        opens = candidate.count("{") - candidate.count("}")
+                        candidate += "}" * max(0, opens)
+                        try:
+                            best = json.loads(candidate)
+                            break
+                        except json.JSONDecodeError:
+                            continue
+
+            if best is None:
+                raise ValueError(f"Could not parse JSON from response: {content[:500]}")
+            tool_input = best
+
+        return LLMResult(
+            tool_input=tool_input,
+            input_tokens=response.usage.prompt_tokens if response.usage else 0,
+            output_tokens=response.usage.completion_tokens if response.usage else 0,
+            model=self.model,
+        )
