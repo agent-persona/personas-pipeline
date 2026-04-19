@@ -166,22 +166,6 @@ def build_user_message(
         for k, v in cluster.summary.extra.items():
             sections.append(f"- {k}: {v}")
 
-    # Voice grounding: style-coherent verbatim text from cluster records.
-    # Empty when the cluster has no text-bearing records; skipped entirely
-    # in that case so the prompt stays byte-identical to pre-verbatim runs.
-    if getattr(cluster, "verbatim_samples", None):
-        sections.append("\n## Voice Grounding — Match This Register")
-        sections.append(
-            "The following are verbatim text samples from people in this "
-            "cluster. When you generate narrative fields (summary, goals, "
-            "pains, sample_quotes, objections), match their register — "
-            "length, punctuation, formality, word choice, rhythm. These are "
-            "the voice these personas actually have; do NOT default to a "
-            "marketing or assistant register."
-        )
-        for i, sample in enumerate(cluster.verbatim_samples, 1):
-            sections.append(f"{i}. {sample}")
-
     # Sample records
     sections.append("\n## Sample Records")
     for rec in cluster.sample_records:
@@ -216,6 +200,35 @@ def build_user_message(
         "Use these IDs in source_evidence.record_ids: "
         + ", ".join(cluster.all_record_ids)
     )
+
+    # Voice grounding — moved to AFTER the schema-requirements sections and
+    # truncated to at most 4 samples. An earlier placement (before Sample
+    # Records) caused the LLM to drop required fields like source_evidence,
+    # emotional_profile, moral_framework — the verbatim text pulled attention
+    # away from the output contract. Placing it last + capping length reduces
+    # that distraction while still providing a register signal.
+    #
+    # Empty/missing cluster.verbatim_samples = section is skipped entirely;
+    # prompt is byte-identical to pre-verbatim pipeline runs.
+    _verbatim = getattr(cluster, "verbatim_samples", None) or []
+    if _verbatim:
+        sections.append("\n## Voice Reference (for narrative-field style only)")
+        sections.append(
+            "When generating narrative string fields (summary, sample_quotes, "
+            "and the textual entries inside goals/pains/motivations/objections), "
+            "match the register of the samples below — length, punctuation, "
+            "formality, word choice, rhythm. They are NOT records, NOT to be "
+            "quoted verbatim in sample_quotes, and NOT to be cited in "
+            "source_evidence. They are only a style reference."
+        )
+        for i, sample in enumerate(_verbatim[:4], 1):  # cap at 4 to reduce distraction
+            sections.append(f"{i}. {sample}")
+        sections.append(
+            "Every schema field above — including source_evidence, "
+            "communication_style, emotional_profile, and moral_framework — "
+            "MUST still be present and valid in your output regardless of "
+            "the voice reference."
+        )
 
     # Contrast block: inject existing personas so the LLM differentiates
     if existing_personas:
