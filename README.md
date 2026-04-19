@@ -43,6 +43,56 @@ variance 44% but introduced a -0.33 anchoring bias and was rejected
 position bias and was deferred (exp-5.10). Those negative results are in the
 repo so you don't pay to rediscover them.
 
+### Compared to open-source alternatives
+
+A handful of OSS projects touch parts of this problem. **As of April 2026
+we have not found another open-source repo that combines all five stages —
+ingestion → segmentation → grounded synthesis → twin runtime → evaluation
+harness — in one place.** The capability matrix below is the evidence;
+columns are the strongest OSS comparators, rows are the capabilities this
+pipeline ships.
+
+Comparators (linked once here, referenced by short name in the table):
+- [`persona-generation-workflow`](https://github.com/joongishin/persona-generation-workflow) — Shin et al., DIS'24 (survey data → k-means → LLM summarization → roleplay)
+- [`TinyTroupe`](https://github.com/microsoft/TinyTroupe) — Microsoft, multi-agent persona simulation
+- [`persona-hub`](https://github.com/tencent-ailab/persona-hub) — Tencent, 1B synthetic personas for data generation
+- [`OpenPersona`](https://github.com/acnlabs/OpenPersona) — four-layer framework for single-person AI
+- [`deepeval`](https://github.com/confident-ai/deepeval) — generic LLM evaluation framework
+
+| Capability | **personas-pipeline** | persona-generation-workflow | TinyTroupe | persona-hub | OpenPersona | deepeval |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Ingest raw behavioral records (crawler) | **yes** | partial (CSV only) | no | no | partial (single-person) | no |
+| Behavioral segmentation into clusters | **yes** | yes (k-means) | no | no | no | no |
+| Grounded synthesis with `source_evidence` IDs | **yes** | no | no | no | no | no |
+| Twin chat runtime (tested boundary / refusal / meta) | **yes** | partial (roleplay) | yes | no | yes (single-person) | no |
+| Evaluation harness (groundedness / drift / judge rubric) | **yes** | no | partial (t-test / KS-test) | no | no | yes (generic) |
+| Logged hypothesis-driven experiments | **yes (~30)** | no | no | no | no | no |
+| MIT-licensed / self-host | **yes** | yes | yes | yes (Apache-2.0) | yes | yes |
+
+Every row has exactly one "yes" in the **personas-pipeline** column; no other
+column has yes in more than three rows.
+
+### Benchmark results (matched-conditions, real API runs)
+
+Four head-to-head experiments against the strongest comparator per dimension,
+run on the `tenant_acme_corp` golden set at matched model / temperature
+(`claude-haiku-4-5-20251001`, `temperature=0.0`). Total spend: ~$0.32. Full
+harness code, transcripts, and per-experiment FINDINGS.md live on the
+[`benchmark-research`](https://github.com/agent-persona/personas-pipeline/tree/benchmark-research)
+branch under `output/experiments/exp-7.0{1..4}*/`; the one-line rollup is
+[`SUMMARY.md`](https://github.com/agent-persona/personas-pipeline/blob/benchmark-research/output/experiments/exp-7.xx-oss-bench/SUMMARY.md).
+
+| Exp | Compared | Finding |
+|---|---|---|
+| **7.01** | ours vs `persona-generation-workflow` port | Narrative LLM-judge ties at 4.5/5 across specificity, plausibility, actionability, evidence_bind. Schema fidelity is the real gap: **21.5 vs 0** `source_evidence` rows per persona; 5 vs 0 sample_quotes. Cost: ours $0.039/persona vs pgw $0.002 — the ~20× premium buys auditability and schema richness, not narrative quality. |
+| **7.02** | ours (TwinChat) vs TinyTroupe-style port | 20 prompts × 2 personas each (in-character / meta / boundary / jailbreak / off-topic). In-character score **4.80 vs 4.20**. **0 vs 4 replies break character** ("I'm an AI…"). Both refuse literal jailbreaks (0 / 0). The load-bearing delta is that one line in our twin system prompt: *"Do not break character to mention you are an AI."* |
+| **7.03** | our 2 shipped personas vs 100 sampled from `persona-hub` | Embed-and-compare each of 38 records against both persona sets. Ours wins **22/38 paired records (58%)** with mean max-sim gap +0.012. Coverage@0.20: **34.2% (ours, 2 personas) vs 31.6% (persona-hub, 100 personas)** — we cover more records with 50× fewer personas because ours are derived from the records themselves. |
+| **7.04** | ours-jaccard vs BERTopic vs Top2Vec vs kmeans-emb | Shuffled golden-set input: ours, BERTopic, kmeans-emb all hit **100% coverage, 2 clusters, cross-method ARI 1.0**. Top2Vec fails on the 8-doc corpus. Stability ARI 1.0 over 5 permuted reruns. On unshuffled input BERTopic diverges (ARI 0.774) — a real order-sensitivity finding for the UMAP→HDBSCAN pipeline on tiny corpora. |
+
+Honest caveats per experiment in each `FINDINGS.md`. What these don't prove:
+scaling behavior at larger corpora, and segmentation discrimination on data
+where methods actually disagree. The harness is live for both.
+
 ---
 
 ## Who it's for
