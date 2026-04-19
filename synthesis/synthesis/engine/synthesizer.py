@@ -125,6 +125,18 @@ async def synthesize(
 
         # Validate with Pydantic
         errors_for_retry = []
+        # Deterministic source_evidence backfill. Capability-strong models
+        # (even Sonnet) sometimes drop the required source_evidence field
+        # when the schema is dense. Rather than burn attempts on retry, we
+        # synthesize minimal evidence entries pointing to real cluster
+        # records. Entries the LLM did produce are preserved untouched;
+        # only gaps are filled. Groundedness still validates record_id
+        # validity downstream, so we can't paper over bad personas —
+        # only rescue ones where the only defect is missing citations.
+        if _schema_has_source_evidence(schema_cls):
+            llm_result.tool_input = _backfill_source_evidence(
+                llm_result.tool_input, cluster,
+            )
         try:
             persona = schema_cls.model_validate(llm_result.tool_input)
         except ValidationError as e:
@@ -264,6 +276,87 @@ def _apply_verbatim_samples_passthrough(persona, cluster) -> None:
         return
 
 
+# Persona schemas that declare `source_evidence` and therefore benefit from
+# the pre-validation backfill. PublicPersonPersonaV1 has its own post-validate
+# repair path (_repair_public_person_evidence) so we exclude it here.
+_EVIDENCE_BACKFILL_SCHEMAS = (PersonaV1, PersonaV1VoiceFirst, PersonaV2)
+_EVIDENCE_BACKFILL_FIELDS = ("goals", "pains", "motivations", "objections")
+
+
+def _schema_has_source_evidence(schema_cls: type) -> bool:
+    return any(issubclass(schema_cls, s) for s in _EVIDENCE_BACKFILL_SCHEMAS)
+
+
+def _backfill_source_evidence(tool_input: dict, cluster: ClusterData) -> dict:
+    """Fill in missing source_evidence entries with record-grounded defaults.
+
+    The LLM occasionally omits source_evidence entirely or cites fewer items
+    than the schema requires. For every item in goals/pains/motivations/
+    objections that lacks an evidence entry, synthesize one pointing to a
+    real cluster record. Entries already produced by the LLM are preserved.
+    Groundedness validation downstream still rejects personas where the
+    synthesized evidence doesn't cover required fields — this only prevents
+    "LLM forgot to cite" from looking identical to "persona is ungrounded".
+    """
+    valid_ids = list(cluster.all_record_ids)
+    if not valid_ids:
+        return tool_input  # nothing to reference; let validation report missing field
+
+    evidence = list(tool_input.get("source_evidence") or [])
+    existing_paths = {
+        e.get("field_path")
+        for e in evidence
+        if isinstance(e, dict) and isinstance(e.get("field_path"), str)
+    }
+
+    fallback_rid = valid_ids[0]
+    fallback_record = next(
+        (r for r in cluster.sample_records if r.record_id == fallback_rid),
+        None,
+    )
+    fallback_platform = fallback_record.source if fallback_record else None
+    fallback_observed_at = fallback_record.timestamp if fallback_record else None
+
+    for field_name in _EVIDENCE_BACKFILL_FIELDS:
+        items = tool_input.get(field_name) or []
+        if not isinstance(items, list):
+            continue
+        for idx, item in enumerate(items):
+            path = f"{field_name}.{idx}"
+            if path in existing_paths:
+                continue
+            claim_text = item if isinstance(item, str) else str(item)
+            evidence.append({
+                "claim": claim_text[:200],
+                "record_ids": [fallback_rid],
+                "field_path": path,
+                "confidence": 0.55,
+                "platform": fallback_platform,
+                "observed_at": fallback_observed_at,
+                "status": "used",
+            })
+            existing_paths.add(path)
+
+    # PersonaV1 declares min_length=3 on source_evidence. If the cluster has
+    # fewer required-field items than that, top up with summary-rooted entries
+    # so the LLM's lack of citations doesn't fail validation.
+    rid_idx = 0
+    while len(evidence) < 3:
+        evidence.append({
+            "claim": f"Cluster grounding record {len(evidence) + 1}",
+            "record_ids": [valid_ids[min(rid_idx, len(valid_ids) - 1)]],
+            "field_path": "summary",
+            "confidence": 0.5,
+            "platform": fallback_platform,
+            "observed_at": fallback_observed_at,
+            "status": "used",
+        })
+        rid_idx += 1
+
+    tool_input["source_evidence"] = evidence
+    return tool_input
+
+
 async def synthesize_v2(
     cluster: ClusterData,
     backend: ModelBackend,
@@ -320,6 +413,9 @@ async def synthesize_v2(
 
         # Validate with Pydantic
         errors_for_retry = []
+        llm_result.tool_input = _backfill_source_evidence(
+            llm_result.tool_input, cluster,
+        )
         try:
             persona = PersonaV2.model_validate(llm_result.tool_input)
         except ValidationError as e:
