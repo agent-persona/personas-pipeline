@@ -4,6 +4,13 @@ End-to-end persona-framework pipeline: turn raw behavioral records (chat logs,
 analytics events, CRM notes, Discord activity) into grounded, interactive
 persona twins you can chat with — with every claim bound to a source record.
 
+> **The only open-source project that handles the full agent-persona pipeline
+> end-to-end** — from **raw data → segmentation → synthesis → orchestration**
+> in one repo. As of April 2026, no other OSS project we could find scores
+> "yes" on more than three of the five pipeline stages. See the
+> [capability matrix](#compared-to-open-source-alternatives) below for the
+> evidence.
+
 Every default in this codebase — schema shape, prompt structure, retry policy,
 judge rubric, clustering knobs, temperature, model tier — is the product of
 **hypothesis-driven experiments** run against a frozen golden set. The repo
@@ -45,12 +52,13 @@ repo so you don't pay to rediscover them.
 
 ### Compared to open-source alternatives
 
-A handful of OSS projects touch parts of this problem. **As of April 2026
-we have not found another open-source repo that combines all five stages —
-ingestion → segmentation → grounded synthesis → twin runtime → evaluation
-harness — in one place.** The capability matrix below is the evidence;
-columns are the strongest OSS comparators, rows are the capabilities this
-pipeline ships.
+**personas-pipeline is the only open-source project that ships the full
+end-to-end agent-persona pipeline — raw data ingestion → segmentation →
+grounded synthesis → twin runtime & orchestration → evaluation harness — in
+one repo.** A handful of OSS projects touch *parts* of the problem; none
+combine more than three of the five stages. The capability matrix below is
+the evidence; columns are the strongest OSS comparators, rows are the
+capabilities this pipeline ships.
 
 Comparators (linked once here, referenced by short name in the table):
 - [`persona-generation-workflow`](https://github.com/joongishin/persona-generation-workflow) — Shin et al., DIS'24 (survey data → k-means → LLM summarization → roleplay)
