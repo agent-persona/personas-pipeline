@@ -1,5 +1,7 @@
 # personas-pipeline
 
+**The personas-pipeline system is now available as a service! Try it on [`Personality Hire`](https://personalityhire.app). 
+
 End-to-end persona-framework pipeline: turn raw behavioral records (chat logs,
 analytics events, CRM notes, Discord activity) into grounded, interactive
 persona twins you can chat with — with every claim bound to a source record.
