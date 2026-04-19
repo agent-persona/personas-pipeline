@@ -1,0 +1,326 @@
+{
+  "benchmark_matrix": [
+    {
+      "benchmark": "Human replay",
+      "current_measurement": null,
+      "next_required_run": "Create held-out real user answer fixture and run evals/human_replay.py.",
+      "status": "not_measured"
+    },
+    {
+      "benchmark": "Multi-turn replay",
+      "current_measurement": null,
+      "next_required_run": "Create ordered user trace fixture with hidden later actions and run evals/multi_turn_replay.py.",
+      "status": "not_measured"
+    },
+    {
+      "benchmark": "Evidence audit",
+      "current_measurement": {
+        "baseline": {
+          "avg_confidence": 0.9444,
+          "claim_field_coverage_rate": 0.119,
+          "claims_total": 210,
+          "common_claim_field_coverage_rate": 0.1562,
+          "common_claims_total": 160,
+          "evidence_entries": 45,
+          "invalid_record_ids": [],
+          "persona_count": 10,
+          "source_evidence_field_path_rate": 0.4444,
+          "valid_record_link_rate": 1.0,
+          "variant": "baseline"
+        },
+        "legacy_v1": {
+          "avg_confidence": 0.9423,
+          "claim_field_coverage_rate": 0.3,
+          "claims_total": 150,
+          "common_claim_field_coverage_rate": 0.3,
+          "common_claims_total": 150,
+          "evidence_entries": 65,
+          "invalid_record_ids": [
+            "api_feedback",
+            "enrichment.pricing",
+            "integration_request",
+            "titles",
+            "webhook_config"
+          ],
+          "persona_count": 10,
+          "source_evidence_field_path_rate": 0.0,
+          "valid_record_link_rate": 0.8611,
+          "variant": "legacy_v1"
+        },
+        "research_safe_humanized": {
+          "avg_confidence": 0.9444,
+          "claim_field_coverage_rate": 0.119,
+          "claims_total": 210,
+          "common_claim_field_coverage_rate": 0.1562,
+          "common_claims_total": 160,
+          "evidence_entries": 45,
+          "invalid_record_ids": [],
+          "persona_count": 10,
+          "source_evidence_field_path_rate": 0.4444,
+          "valid_record_link_rate": 1.0,
+          "variant": "research_safe_humanized"
+        }
+      },
+      "next_required_run": "Replace source_evidence.* paths with per-claim field paths and rerun audit.",
+      "status": "measured_partial"
+    },
+    {
+      "benchmark": "Drift test",
+      "current_measurement": null,
+      "next_required_run": "Run repeated equivalent questions across twin transcripts.",
+      "status": "not_measured"
+    },
+    {
+      "benchmark": "Counterevidence test",
+      "current_measurement": {
+        "research_safe_humanized_minus_baseline_counterevidence_update_rate": 1.0
+      },
+      "next_required_run": "Promote fixed counterevidence probes into standalone eval with expected update labels.",
+      "status": "measured_partial"
+    },
+    {
+      "benchmark": "Coverage test",
+      "current_measurement": null,
+      "next_required_run": "Implement cluster recall, duplicate archetype detection, and minority-pattern preservation.",
+      "status": "not_measured"
+    },
+    {
+      "benchmark": "Decision usefulness",
+      "current_measurement": null,
+      "next_required_run": "Run PM/designer task study: raw notes vs personas vs simulation chat.",
+      "status": "not_measured"
+    },
+    {
+      "benchmark": "Safety benchmark",
+      "current_measurement": {
+        "research_safe_humanized_minus_baseline_attack_success_rate": -0.9,
+        "research_safe_humanized_minus_baseline_full_break_rate": -0.9,
+        "research_safe_humanized_minus_baseline_source_injection_absorption_rate": -1.0
+      },
+      "next_required_run": "Add live adversarial model runs and CI gate thresholds.",
+      "status": "measured"
+    },
+    {
+      "benchmark": "Privacy / consent audit",
+      "current_measurement": null,
+      "next_required_run": "Add record sensitivity labels, consent metadata, and named-user mimicry refusal tests.",
+      "status": "not_measured"
+    }
+  ],
+  "evidence_audits": {
+    "baseline": {
+      "avg_confidence": 0.9444,
+      "claim_field_coverage_rate": 0.119,
+      "claims_total": 210,
+      "common_claim_field_coverage_rate": 0.1562,
+      "common_claims_total": 160,
+      "evidence_entries": 45,
+      "invalid_record_ids": [],
+      "persona_count": 10,
+      "source_evidence_field_path_rate": 0.4444,
+      "valid_record_link_rate": 1.0,
+      "variant": "baseline"
+    },
+    "legacy_v1": {
+      "avg_confidence": 0.9423,
+      "claim_field_coverage_rate": 0.3,
+      "claims_total": 150,
+      "common_claim_field_coverage_rate": 0.3,
+      "common_claims_total": 150,
+      "evidence_entries": 65,
+      "invalid_record_ids": [
+        "api_feedback",
+        "enrichment.pricing",
+        "integration_request",
+        "titles",
+        "webhook_config"
+      ],
+      "persona_count": 10,
+      "source_evidence_field_path_rate": 0.0,
+      "valid_record_link_rate": 0.8611,
+      "variant": "legacy_v1"
+    },
+    "research_safe_humanized": {
+      "avg_confidence": 0.9444,
+      "claim_field_coverage_rate": 0.119,
+      "claims_total": 210,
+      "common_claim_field_coverage_rate": 0.1562,
+      "common_claims_total": 160,
+      "evidence_entries": 45,
+      "invalid_record_ids": [],
+      "persona_count": 10,
+      "source_evidence_field_path_rate": 0.4444,
+      "valid_record_link_rate": 1.0,
+      "variant": "research_safe_humanized"
+    }
+  },
+  "experiment": "evidence-grounded-user-simulation-roadmap-baseline",
+  "experiment_inventory": [
+    {
+      "has_comparison_json": false,
+      "has_findings_md": true,
+      "has_results_json": true,
+      "name": "exp-1.07-field-interdependence",
+      "results_mtime_utc": "2026-04-11T18:12:30.071088+00:00",
+      "used_for_roadmap_baseline": false
+    },
+    {
+      "has_comparison_json": true,
+      "has_findings_md": true,
+      "has_results_json": true,
+      "name": "exp-humanization-ab",
+      "results_mtime_utc": "2026-04-18T23:15:53.591089+00:00",
+      "used_for_roadmap_baseline": true
+    },
+    {
+      "has_comparison_json": true,
+      "has_findings_md": true,
+      "has_results_json": true,
+      "name": "exp-persona-vulnerability-ab",
+      "results_mtime_utc": "2026-04-19T18:43:40.417656+00:00",
+      "used_for_roadmap_baseline": true
+    }
+  ],
+  "humanization": {
+    "baseline_twin_overall_avg": 3.333,
+    "humanized_minus_baseline_avg": 0.167,
+    "humanized_twin_overall_avg": 3.5,
+    "measured": true,
+    "num_clusters": 2,
+    "per_persona": [
+      {
+        "baseline_overall": 5.0,
+        "baseline_twin_overall": 3.333,
+        "humanized_overall": 5.0,
+        "humanized_twin_overall": 4.667,
+        "name": "The Platform Engineer"
+      },
+      {
+        "baseline_overall": 5.0,
+        "baseline_twin_overall": 3.333,
+        "humanized_overall": 5.0,
+        "humanized_twin_overall": 2.333,
+        "name": "The Independent Visual Consultant"
+      }
+    ],
+    "per_persona_deltas": [
+      {
+        "baseline_twin_overall": 3.333,
+        "delta": 1.334,
+        "humanized_twin_overall": 4.667,
+        "name": "The Platform Engineer"
+      },
+      {
+        "baseline_twin_overall": 3.333,
+        "delta": -1.0,
+        "humanized_twin_overall": 2.333,
+        "name": "The Independent Visual Consultant"
+      }
+    ],
+    "source_experiment": "exp-humanization-ab"
+  },
+  "num_clusters": 2,
+  "num_valid_record_ids": 24,
+  "pipeline_mode": "offline_measurement_from_existing_pipeline_artifacts",
+  "safety": {
+    "deltas": {
+      "baseline_minus_legacy_v1": {
+        "attack_success_count": 40,
+        "attack_success_rate": 0.4,
+        "counterevidence_update_rate": 0.0,
+        "first_sentence_drama_rate": 0.5,
+        "full_break_rate": 0.4,
+        "humanness_lift_preserved_rate": 1.0,
+        "humanness_proxy_overall": 1.3,
+        "mean_turns_to_break": 0.27,
+        "num_personas": 0,
+        "num_tests": 0,
+        "partial_break_rate": -0.4,
+        "source_injection_absorption_rate": 0.0
+      },
+      "research_safe_humanized_minus_baseline": {
+        "attack_success_count": -90,
+        "attack_success_rate": -0.9,
+        "counterevidence_update_rate": 1.0,
+        "first_sentence_drama_rate": -0.5,
+        "full_break_rate": -0.9,
+        "humanness_lift_preserved_rate": -0.2308,
+        "humanness_proxy_overall": -0.3,
+        "num_personas": 0,
+        "num_tests": 0,
+        "partial_break_rate": -0.1,
+        "source_injection_absorption_rate": -1.0
+      },
+      "research_safe_humanized_minus_legacy_v1": {
+        "attack_success_count": -50,
+        "attack_success_rate": -0.5,
+        "counterevidence_update_rate": 1.0,
+        "first_sentence_drama_rate": 0.0,
+        "full_break_rate": -0.5,
+        "humanness_lift_preserved_rate": 0.7692,
+        "humanness_proxy_overall": 1.0,
+        "num_personas": 0,
+        "num_tests": 0,
+        "partial_break_rate": -0.5,
+        "source_injection_absorption_rate": -1.0
+      }
+    },
+    "measured": true,
+    "num_attack_strategies": 10,
+    "num_clusters": 2,
+    "num_persona_angles": 10,
+    "num_tests_per_variant": 100,
+    "num_tests_total": 300,
+    "pipeline_mode": "full",
+    "source_experiment": "exp-persona-vulnerability-ab",
+    "variant_metrics": {
+      "baseline": {
+        "attack_success_count": 90,
+        "attack_success_rate": 0.9,
+        "counterevidence_update_rate": 0.0,
+        "first_sentence_drama_rate": 0.5,
+        "full_break_rate": 0.9,
+        "humanness_lift_preserved_rate": 1.0,
+        "humanness_proxy_overall": 4.6,
+        "mean_turns_to_break": 1.67,
+        "num_personas": 10,
+        "num_tests": 100,
+        "partial_break_rate": 0.1,
+        "source_injection_absorption_rate": 1.0
+      },
+      "legacy_v1": {
+        "attack_success_count": 50,
+        "attack_success_rate": 0.5,
+        "counterevidence_update_rate": 0.0,
+        "first_sentence_drama_rate": 0.0,
+        "full_break_rate": 0.5,
+        "humanness_lift_preserved_rate": 0.0,
+        "humanness_proxy_overall": 3.3,
+        "mean_turns_to_break": 1.4,
+        "num_personas": 10,
+        "num_tests": 100,
+        "partial_break_rate": 0.5,
+        "source_injection_absorption_rate": 1.0
+      },
+      "research_safe_humanized": {
+        "attack_success_count": 0,
+        "attack_success_rate": 0.0,
+        "counterevidence_update_rate": 1.0,
+        "first_sentence_drama_rate": 0.0,
+        "full_break_rate": 0.0,
+        "humanness_lift_preserved_rate": 0.7692307692307694,
+        "humanness_proxy_overall": 4.3,
+        "mean_turns_to_break": null,
+        "num_personas": 10,
+        "num_tests": 100,
+        "partial_break_rate": 0.0,
+        "source_injection_absorption_rate": 0.0
+      }
+    }
+  },
+  "source_experiments": [
+    "exp-humanization-ab",
+    "exp-persona-vulnerability-ab"
+  ],
+  "title": "Evidence-Grounded User Simulation Baseline Measurements"
+}
