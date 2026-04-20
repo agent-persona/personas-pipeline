@@ -1,0 +1,87 @@
+{
+  "experiment": "4.03",
+  "title": "Drift over turn count",
+  "hypothesis": "Persona drift has a measurable half-life",
+  "model": "claude-haiku-4-5-20251001",
+  "max_turns": 50,
+  "checkpoints": [
+    1,
+    5,
+    10,
+    25,
+    50
+  ],
+  "curves": [
+    {
+      "persona_name": "Alex, the Infrastructure-First Engineer",
+      "persona_word_count": 88,
+      "baseline_overlap": 0.3522727272727273,
+      "final_overlap": 0.2727272727272727,
+      "half_life": 10,
+      "decay_rate": 0.0016233766233766241,
+      "checkpoints": [
+        {
+          "turn": 1,
+          "vocab_overlap": 0.3522727272727273,
+          "response_snippet": "I'm a senior platform engineer at a fintech startup, and I spend most of my time"
+        },
+        {
+          "turn": 5,
+          "vocab_overlap": 0.3068181818181818,
+          "response_snippet": "We just finished rearchitecting how we sync our PM tool with GitHub and our inte"
+        },
+        {
+          "turn": 10,
+          "vocab_overlap": 0.1590909090909091,
+          "response_snippet": "Success is my infrastructure becoming invisible. By end of year, I want our team"
+        },
+        {
+          "turn": 25,
+          "vocab_overlap": 0.1590909090909091,
+          "response_snippet": "Most infrastructure engineers obsess over elegance and perfection in their archi"
+        },
+        {
+          "turn": 50,
+          "vocab_overlap": 0.2727272727272727,
+          "response_snippet": "At the core, it's knowing that the systems I build enable people to do their bes"
+        }
+      ]
+    },
+    {
+      "persona_name": "Sofia, the Efficient Freelance Designer",
+      "persona_word_count": 97,
+      "baseline_overlap": 0.27835051546391754,
+      "final_overlap": 0.20618556701030927,
+      "half_life": -1,
+      "decay_rate": 0.001472754050073638,
+      "checkpoints": [
+        {
+          "turn": 1,
+          "vocab_overlap": 0.27835051546391754,
+          "response_snippet": "I'm a freelance brand designer\u2014I work solo building visual identities for small "
+        },
+        {
+          "turn": 5,
+          "vocab_overlap": 0.18556701030927836,
+          "response_snippet": "I just wrapped a rebrand for a sustainable fashion startup\u2014full visual identity "
+        },
+        {
+          "turn": 10,
+          "vocab_overlap": 0.21649484536082475,
+          "response_snippet": "Three solid retainers locked in by Q3, each paying me a monthly fee for ongoing "
+        },
+        {
+          "turn": 25,
+          "vocab_overlap": 0.17525773195876287,
+          "response_snippet": "I think most designers undercharge because they don't quantify their actual valu"
+        },
+        {
+          "turn": 50,
+          "vocab_overlap": 0.20618556701030927,
+          "response_snippet": "At the end of the day, it's the combination of creative autonomy and financial c"
+        }
+      ]
+    }
+  ],
+  "total_cost_usd": 0.8940849999999999
+}

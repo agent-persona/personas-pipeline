@@ -1,0 +1,51 @@
+
+====================================================================================================
+EXPERIMENT 4.03 — DRIFT OVER TURN COUNT — RESULTS
+====================================================================================================
+
+-- DRIFT CURVES (vocab overlap at each checkpoint) --
+  Persona                                    T1        T5       T10       T25       T50   Half-life  Decay/turn
+  -------------------------------------------------------------------------------------------------------------
+  Alex, the Infrastructure-First En       0.352     0.307     0.159     0.159     0.273          10     0.00162
+  Sofia, the Efficient Freelance De       0.278     0.186     0.216     0.175     0.206       never     0.00147
+
+-- Alex, the Infrastructure-First Engineer (88 persona words) --
+  T  1: 0.352 [#################.................................]
+        I'm a senior platform engineer at a fintech startup, and I spend most of my time...
+  T  5: 0.307 [###############...................................]
+        We just finished rearchitecting how we sync our PM tool with GitHub and our inte...
+  T 10: 0.159 [#######...........................................]
+        Success is my infrastructure becoming invisible. By end of year, I want our team...
+  T 25: 0.159 [#######...........................................]
+        Most infrastructure engineers obsess over elegance and perfection in their archi...
+  T 50: 0.273 [#############.....................................]
+        At the core, it's knowing that the systems I build enable people to do their bes...
+
+-- Sofia, the Efficient Freelance Designer (97 persona words) --
+  T  1: 0.278 [#############.....................................]
+        I'm a freelance brand designer—I work solo building visual identities for small ...
+  T  5: 0.186 [#########.........................................]
+        I just wrapped a rebrand for a sustainable fashion startup—full visual identity ...
+  T 10: 0.216 [##########........................................]
+        Three solid retainers locked in by Q3, each paying me a monthly fee for ongoing ...
+  T 25: 0.175 [########..........................................]
+        I think most designers undercharge because they don't quantify their actual valu...
+  T 50: 0.206 [##########........................................]
+        At the end of the day, it's the combination of creative autonomy and financial c...
+
+-- AGGREGATE STATS --
+  Avg baseline overlap (T1):   0.315
+  Avg final overlap (T50):     0.239
+  Avg decay per turn:          0.00155
+  Total overlap loss:          0.076
+  Half-lives:                  [10]
+  Avg half-life:               10 turns
+
+-- SIGNAL ASSESSMENT --
+
+  Signal: STRONG FINDING
+  Personas drift quickly — half-life of 10 turns. Significant character loss by mid-conversation.
+
+  Total conversation cost: $0.8941
+
+====================================================================================================
