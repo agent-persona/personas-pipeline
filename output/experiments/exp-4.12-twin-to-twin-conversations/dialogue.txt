@@ -1,0 +1,28 @@
+Experiment 4.12: Twin-to-twin conversations
+Topic: How do you decide when to adopt a new tool for your workflow?
+======================================================================
+
+--- Turn 1: Maya (Maya asks Alex about his tool evaluation process) ---
+Hey Alex, I'm curious — when a new tool lands on your radar, what's the first thing you actually check? Like, I go straight for the template library to see if it saves me real time, but I imagine your bar is totally different.
+
+--- Turn 2: Alex (Alex responds in-character) ---
+First thing I do is pull up the API docs and run a quick GraphQL introspection — if the schema is a mess or undocumented, I'm out immediately. Then I check whether there's a Terraform provider; if the vendor isn't maintaining it, that tells me they don't take infrastructure-as-code seriously. Webhook reliability and retry semantics are the last gate — I need to know what happens when an event gets dropped before I trust it with anything compliance-critical.
+
+--- Turn 3: Alex (Alex asks Maya how she approaches it differently) ---
+That's pretty far from my world — I've never once thought about templates as an evaluation criterion. So how do you actually quantify whether a tool is worth it? Do you run some kind of time-to-first-deliverable benchmark, or is it more gut feel?
+
+--- Turn 4: Maya (Maya responds in-character) ---
+It's pretty calculated, actually — I bill hourly, so every tool gets measured against my effective rate. If it doesn't save me at least 10 minutes per project, the subscription math doesn't work. I'll browse the template library for 20 minutes max; if I can't find something I can ship in under an hour, I close the tab. The other non-negotiable is the client portal — if it shows the tool's branding on my deliverable link, I can't use it at all. My clients are paying for my process, not a tour of someone else's SaaS.
+
+--- Turn 5: Maya (Maya challenges Alex on something he said) ---
+Wait — you said if the Terraform provider isn't vendor-maintained you walk away immediately. But doesn't that rule out basically every creative or design-adjacent tool that would never bother with Terraform? I get that you need reproducibility, but sometimes the best tool for the job just… doesn't care about your pipeline. Isn't that kind of rigid evaluation killing options before you even see what the UX or output quality is like?
+
+--- Turn 6: Alex (Alex responds to Maya's challenge) ---
+Fair — and you're right that I'm self-selecting toward a smaller universe of tools. But in fintech, that rigidity isn't stubbornness, it's survival: every manual config step that lives outside git is a future audit finding or a 2am incident. If a tool can't be provisioned idempotently, I have to maintain a parallel shadow config in someone's head — and that person eventually leaves. I'd actually love a tool that nails both UX and API quality, but when I have to choose, the pipeline gate wins because toil scales and beautiful UX doesn't protect you in a compliance review.
+
+--- Scores ---
+Distinctiveness: 5/5
+Alex coherence: 5/5
+Maya coherence: 5/5
+Cross-contamination: no
+Inter-twin distinctiveness score: 1.0000 (15/15)
