@@ -1,7 +1,14 @@
 from __future__ import annotations
 
+import json as _json
+
 from synthesis.models.cluster import ClusterData
 from synthesis.models.persona import PersonaV1, PersonaV2
+
+
+def _chars_to_tokens(text: str) -> int:
+    """Rough token estimate: chars / 4."""
+    return max(1, len(text) // 4)
 
 SYSTEM_PROMPT = """\
 You are a persona synthesis expert. Your job is to analyze behavioral data from a \
@@ -338,6 +345,61 @@ def build_messages(
     return [
         {"role": "user", "content": build_user_message(cluster, existing_personas=existing_personas, prompt_kind=prompt_kind)},
     ]
+
+
+def build_cached_messages(
+    cluster: ClusterData,
+    backend: object | None = None,
+) -> tuple[list[dict], dict]:
+    """Build messages with cache_control markers on static sections.
+
+    Puts the static system prompt content (instructions + tool schema) in a
+    content block with cache_control={"type":"ephemeral"} so Anthropic can
+    cache the prefix across requests. The dynamic cluster data stays in a
+    plain content block with no cache marker.
+
+    Returns:
+        (messages, token_counts) where token_counts has keys:
+            static_tokens, dynamic_tokens, cacheable_fraction
+    """
+    # Static content: system instructions + tool schema (identical for every call)
+    static_text = SYSTEM_PROMPT
+    tool_def = build_tool_definition()
+    static_text += "\n\nTool schema:\n" + _json.dumps(tool_def, indent=2)
+
+    # Dynamic content: cluster-specific data (changes per call)
+    dynamic_text = build_user_message(cluster)
+
+    static_tokens = _chars_to_tokens(static_text)
+    dynamic_tokens = _chars_to_tokens(dynamic_text)
+    cacheable_fraction = static_tokens / (static_tokens + dynamic_tokens)
+
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                # Static cached block — first so it maximizes prefix length
+                {
+                    "type": "text",
+                    "text": static_text,
+                    "cache_control": {"type": "ephemeral"},
+                },
+                # Dynamic block — cluster-specific, no cache marker
+                {
+                    "type": "text",
+                    "text": dynamic_text,
+                },
+            ],
+        }
+    ]
+
+    token_counts = {
+        "static_tokens": static_tokens,
+        "dynamic_tokens": dynamic_tokens,
+        "cacheable_fraction": round(cacheable_fraction, 4),
+    }
+
+    return messages, token_counts
 
 
 def build_retry_messages(

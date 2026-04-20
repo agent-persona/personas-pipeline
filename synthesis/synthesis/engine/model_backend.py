@@ -45,6 +45,7 @@ class ModelBackend(Protocol):
         system: str,
         messages: list[dict],
         tool: dict,
+        use_cache: bool = False,
     ) -> LLMResult: ...
 
 
@@ -60,11 +61,17 @@ class AnthropicBackend:
         system: str,
         messages: list[dict],
         tool: dict,
+        use_cache: bool = False,
     ) -> LLMResult:
+        # When use_cache=True the static system content is embedded in the
+        # first user content block (with cache_control markers), so we skip
+        # the system param to avoid duplication.
+        effective_system = "" if use_cache else system
+
         response = await self.client.messages.create(
             model=self.model,
             max_tokens=4096,
-            system=system,
+            system=effective_system,
             messages=messages,
             tools=[tool],
             tool_choice={"type": "tool", "name": tool["name"]},
