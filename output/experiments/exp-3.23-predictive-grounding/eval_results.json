@@ -1,0 +1,170 @@
+{
+  "experiment": "3.23",
+  "title": "Predictive grounding",
+  "fixture": "/Users/ivanma/Desktop/gauntlet/Capstone/personas-pipeline/.worktrees/exp-3.23-predictive-grounding/synthesis/fixtures/longitudinal_tenant/records.json",
+  "train_records": 32,
+  "test_records": 16,
+  "total_test_behaviors": 8,
+  "grounded": {
+    "accuracy": 1.0,
+    "correct": 8,
+    "total": 8
+  },
+  "ungrounded": {
+    "accuracy": 0.625,
+    "correct": 5,
+    "total": 8
+  },
+  "delta": 0.375,
+  "signal": "STRONG",
+  "details": {
+    "grounded": [
+      {
+        "behavior": "cicd_pipeline_create",
+        "cluster": "infra_cluster",
+        "actual": true,
+        "predicted": true,
+        "correct": true,
+        "confidence": "high",
+        "rationale": "Train records show webhook_config \u2192 github_integration_setup \u2192 terraform/ci_policy in strict progression. cicd_pipeline_create is the culmination of that arc. Sessions average 1800s on integration pages \u2014 clearly building, not exploring. Predict YES."
+      },
+      {
+        "behavior": "deployment_environment_config",
+        "cluster": "infra_cluster",
+        "actual": true,
+        "predicted": true,
+        "correct": true,
+        "confidence": "high",
+        "rationale": "deployment_environment_config is the standard follow-on to cicd_pipeline_create. The train data shows users who configured Terraform providers and custom CI run policies \u2014 these users absolutely configure deployment environments. Predict YES."
+      },
+      {
+        "behavior": "roadmap_view",
+        "cluster": "infra_cluster",
+        "actual": false,
+        "predicted": false,
+        "correct": true,
+        "confidence": "high",
+        "rationale": "Zero evidence of planning/roadmap behavior in train records. All 4 users spent their month-3 time on terraform docs and CI run policies \u2014 deeply technical, not strategic. Roadmap is a product/management behavior, not an infra behavior. Predict NO."
+      },
+      {
+        "behavior": "stakeholder_report_export",
+        "cluster": "infra_cluster",
+        "actual": false,
+        "predicted": false,
+        "correct": true,
+        "confidence": "high",
+        "rationale": "Stakeholder report export is a management-layer behavior. Train records show pure technical infra work (webhooks, API tokens, GitHub, Terraform). No session on any reporting or analytics page. Predict NO."
+      },
+      {
+        "behavior": "roadmap_view",
+        "cluster": "management_cluster",
+        "actual": true,
+        "predicted": true,
+        "correct": true,
+        "confidence": "high",
+        "rationale": "Train arc: team_dashboard_view \u2192 sprint_report_view \u2192 okr_dashboard_setup/velocity_chart. This is a classic strategic visibility progression. Roadmap view is the natural capstone of a manager who has gone from operational (sprint reports) to strategic (OKR) visibility. Predict YES with high confidence."
+      },
+      {
+        "behavior": "stakeholder_report_export",
+        "cluster": "management_cluster",
+        "actual": true,
+        "predicted": true,
+        "correct": true,
+        "confidence": "high",
+        "rationale": "All 4 management users had sprint_report_view in months 2-3, and 2 set up OKR dashboards. These are reporting users. Stakeholder report export is the communication layer after setting up the reporting infrastructure. Predict YES with high confidence."
+      },
+      {
+        "behavior": "cicd_pipeline_create",
+        "cluster": "management_cluster",
+        "actual": false,
+        "predicted": false,
+        "correct": true,
+        "confidence": "high",
+        "rationale": "Not a single train record for management users touches a technical infra page. All sessions are on /dashboards/, /team/, and /reports/ paths. CI/CD pipeline creation is a hands-on technical behavior that doesn't fit this persona at all. Predict NO."
+      },
+      {
+        "behavior": "deployment_environment_config",
+        "cluster": "management_cluster",
+        "actual": false,
+        "predicted": false,
+        "correct": true,
+        "confidence": "high",
+        "rationale": "management users never touched /settings/, /integrations/, or /docs/ pages in train data. Deployment environment config is a DevOps-owned task. Train signals are exclusively reporting and team management. Predict NO."
+      }
+    ],
+    "ungrounded": [
+      {
+        "behavior": "cicd_pipeline_create",
+        "cluster": "infra_cluster",
+        "actual": true,
+        "predicted": true,
+        "correct": true,
+        "confidence": "medium",
+        "rationale": "Generic DevOps label includes 'deployment-related tasks' \u2014 LLM prior says DevOps users use CI/CD pipelines. Predict YES, but without specificity about timing or sequence."
+      },
+      {
+        "behavior": "deployment_environment_config",
+        "cluster": "infra_cluster",
+        "actual": true,
+        "predicted": true,
+        "correct": true,
+        "confidence": "low",
+        "rationale": "Loosely within 'deployment-related tasks' territory, but ungrounded persona description is vague. Could equally predict team collaboration, monitoring, or project tracking. Predicting YES is a coin flip from the generic description. Predict YES (low confidence)."
+      },
+      {
+        "behavior": "roadmap_view",
+        "cluster": "infra_cluster",
+        "actual": false,
+        "predicted": true,
+        "correct": false,
+        "confidence": "medium",
+        "rationale": "Generic DevOps User description mentions 'project tracking or performance monitoring' and 'productivity improvements' \u2014 roadmap view plausibly fits an LLM's stereotype of a developer checking what's coming. LLM prior incorrectly predicts YES."
+      },
+      {
+        "behavior": "stakeholder_report_export",
+        "cluster": "infra_cluster",
+        "actual": false,
+        "predicted": false,
+        "correct": true,
+        "confidence": "medium",
+        "rationale": "Even the generic DevOps description doesn't strongly suggest report exporting. LLM prior correctly avoids this but only because the label says 'DevOps', not because of any behavioral evidence. Predict NO."
+      },
+      {
+        "behavior": "roadmap_view",
+        "cluster": "management_cluster",
+        "actual": true,
+        "predicted": true,
+        "correct": true,
+        "confidence": "medium",
+        "rationale": "Generic Engineering Leader description includes 'planning and roadmap features' \u2014 LLM prior predicts YES. But the same description mentions 'technical integrations' which would also predict CI/CD pipeline creation. Ungrounded prediction is ambiguous. Predict YES."
+      },
+      {
+        "behavior": "stakeholder_report_export",
+        "cluster": "management_cluster",
+        "actual": true,
+        "predicted": true,
+        "correct": true,
+        "confidence": "medium",
+        "rationale": "Generic description says 'reporting capabilities' and 'team performance' \u2014 loosely fits. Predict YES but this is generic manager stereotype, not behavioral evidence."
+      },
+      {
+        "behavior": "cicd_pipeline_create",
+        "cluster": "management_cluster",
+        "actual": false,
+        "predicted": true,
+        "correct": false,
+        "confidence": "medium",
+        "rationale": "Generic Engineering Leader description mentions 'technical integrations' \u2014 LLM prior conflates manager with hands-on engineer and predicts YES. This is the key failure mode of ungrounded personas."
+      },
+      {
+        "behavior": "deployment_environment_config",
+        "cluster": "management_cluster",
+        "actual": false,
+        "predicted": true,
+        "correct": false,
+        "confidence": "low",
+        "rationale": "Generic Engineering Leader is described with 'planning' and 'technical integrations' \u2014 an LLM with no grounding may predict YES for a manager on deployment config. This is the second key failure of ungrounded personas."
+      }
+    ]
+  }
+}
