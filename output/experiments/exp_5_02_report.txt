@@ -1,0 +1,83 @@
+
+====================================================================================================
+EXPERIMENT 5.02 — CROSS-JUDGE AGREEMENT — RESULTS
+====================================================================================================
+
+── RAW SCORES BY JUDGE ──
+
+  Persona 1: Marcus, the Infrastructure Architect
+    Dimension                     opus        sonnet         haiku
+    --------------------------------------------------------------
+    grounded                     0.880         0.820         0.850
+    distinctive                  0.820         0.720         0.820
+    coherent                     0.950         0.880         0.880
+    actionable                   0.900         0.850         0.900
+    voice_fidelity               0.880         0.780         0.860
+    OVERALL                      0.886         0.810         0.860
+    cost ($)                    0.0757        0.0141        0.0048
+    [opus] The persona is exceptionally well-grounded with 24 source evidence entries citing specific record IDs across multiple sy
+    [sonnet] Marcus is well-grounded with record IDs and confidence scores attached to most claims, and the goals, pains, and objecti
+    [haiku] This persona is well-grounded with specific evidence citations and high confidence scores across most claims. It is dist
+
+  Persona 2: Freelance Designer Maximizing Project Margins
+    Dimension                     opus        sonnet         haiku
+    --------------------------------------------------------------
+    grounded                     0.880         0.720         0.850
+    distinctive                  0.820         0.680         0.880
+    coherent                     0.950         0.850         0.900
+    actionable                   0.910         0.820         0.920
+    voice_fidelity               0.880         0.780         0.890
+    OVERALL                      0.888         0.770         0.890
+    cost ($)                    0.0868        0.0153        0.0050
+    [opus] The persona is well-grounded with 25 source_evidence entries citing specific record IDs across HubSpot, Intercom, and GA
+    [sonnet] The persona is well-structured with consistent source evidence linkage across most claims, though grounding relies heavi
+    [haiku] This persona is well-constructed with strong evidence linkage, vivid and consistent voice, and immediately actionable in
+
+── AGREEMENT MATRIX (per-dimension) ──
+  Judges: 3, Personas: 2
+  Dimension                 Mean   Std Dev       Min       Max    Spread
+  ----------------------------------------------------------------------
+  grounded                 0.833     0.057     0.770     0.880     0.110
+  distinctive              0.790     0.079     0.700     0.850     0.150
+  coherent                 0.902     0.044     0.865     0.950     0.085
+  actionable               0.883     0.042     0.835     0.910     0.075
+  voice_fidelity           0.845     0.056     0.780     0.880     0.100
+
+── PAIRWISE MEAN ABSOLUTE DIFFERENCE ──
+  claude-opus-4-6 vs claude-sonnet-4-6                    0.0970
+  claude-sonnet-4-6 vs claude-haiku-4-5-20251001          0.0850
+  claude-opus-4-6 vs claude-haiku-4-5-20251001            0.0280
+
+── DISAGREEMENT HOTSPOTS ──
+  !  distinctive          trust=medium   std=0.079 spread=0.150
+       opus: 0.820
+       sonnet: 0.700
+       haiku: 0.850
+  !  grounded             trust=medium   std=0.057 spread=0.110
+       opus: 0.880
+       sonnet: 0.770
+       haiku: 0.850
+  !  voice_fidelity       trust=medium   std=0.056 spread=0.100
+       opus: 0.880
+       sonnet: 0.780
+       haiku: 0.875
+     coherent             trust=high     std=0.044 spread=0.085
+       opus: 0.950
+       sonnet: 0.865
+       haiku: 0.890
+     actionable           trust=high     std=0.042 spread=0.075
+       opus: 0.905
+       sonnet: 0.835
+       haiku: 0.910
+
+── SIGNAL ASSESSMENT ──
+  High-trust dimensions: 2 (coherent, actionable)
+  Medium-trust dimensions: 3 (distinctive, grounded, voice_fidelity)
+  Low-trust dimensions: 0 (none)
+
+  Overall signal: WEAK FINDING
+  Minor disagreement — most dimensions show reasonable agreement. Medium-trust dimensions may benefit from multi-judge averaging.
+
+  Total judging cost: $0.2016
+
+====================================================================================================
