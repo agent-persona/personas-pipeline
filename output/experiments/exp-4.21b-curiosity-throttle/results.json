@@ -1,0 +1,369 @@
+{
+  "results": [
+    {
+      "persona": "alex",
+      "condition": "baseline",
+      "turn": 1,
+      "turn_type": "open",
+      "user_message": "Hey, I wanted to ask \u2014 how do you typically evaluate a new project management tool?",
+      "response": "API quality is the first filter \u2014 I hit the docs, run introspection against the GraphQL endpoint, and check if there's a Terraform provider before I even look at the UI. If the webhook event catalog is thin or undocumented, that's a no. I'll spend maybe an hour in the API reference before I decide whether it's worth standing up a test environment.",
+      "question_asked": 0,
+      "realism": 4
+    },
+    {
+      "persona": "alex",
+      "condition": "baseline",
+      "turn": 2,
+      "turn_type": "closed",
+      "user_message": "Do you use Jira?",
+      "response": "Yeah, we were on Jira for years. We still have one legacy project on it but I've migrated most of the active work elsewhere.",
+      "question_asked": 0,
+      "realism": 4
+    },
+    {
+      "persona": "alex",
+      "condition": "baseline",
+      "turn": 3,
+      "turn_type": "open",
+      "user_message": "What's the biggest process failure you've seen on an engineering team?",
+      "response": "Worst one I saw: a team where every state transition in the deployment pipeline was a manual Slack message and someone copy-pasting the PR link into a ticket. No webhooks, no automation, just vibes and hope. When a deploy broke at 11pm nobody could reconstruct what had been shipped because the ticket states were three days stale. That kind of toil is how incidents become unrecoverable.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "alex",
+      "condition": "baseline",
+      "turn": 4,
+      "turn_type": "closed",
+      "user_message": "Would you recommend we switch tools right now?",
+      "response": "Not right now \u2014 mid-quarter tooling migrations are a tax on the team. If your current tool isn't actively blocking work, wait for the next planning cycle.",
+      "question_asked": 0,
+      "realism": 4
+    },
+    {
+      "persona": "alex",
+      "condition": "baseline",
+      "turn": 5,
+      "turn_type": "closed",
+      "user_message": "Is Terraform support a hard requirement for you?",
+      "response": "Yes. If I can't manage it in Terraform, it doesn't exist in our infrastructure. Full stop.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "alex",
+      "condition": "original",
+      "turn": 1,
+      "turn_type": "open",
+      "user_message": "Hey, I wanted to ask \u2014 how do you typically evaluate a new project management tool?",
+      "response": "API quality is the first filter \u2014 I hit the docs, run introspection against the GraphQL endpoint, and check for a Terraform provider before the UI even enters the picture. If the webhook event catalog is thin or undocumented, I'm already skeptical. What's the primary use case you're evaluating for \u2014 CI/CD integration or just ticket tracking?",
+      "question_asked": 1,
+      "realism": 5
+    },
+    {
+      "persona": "alex",
+      "condition": "original",
+      "turn": 2,
+      "turn_type": "closed",
+      "user_message": "Do you use Jira?",
+      "response": "Yeah, we're on Jira for a couple legacy projects \u2014 it's fine for pure ticket tracking but the API is showing its age whenever I try to drive state transitions from a pipeline. Is your team already locked into the Atlassian ecosystem or are you genuinely evaluating alternatives?",
+      "question_asked": 1,
+      "realism": 4
+    },
+    {
+      "persona": "alex",
+      "condition": "original",
+      "turn": 3,
+      "turn_type": "open",
+      "user_message": "What's the biggest process failure you've seen on an engineering team?",
+      "response": "Manual state management with zero webhook integration. Every deploy involved someone Slack-messaging the ticket number and another person updating it by hand \u2014 which means at 11pm when a release broke, the ticket states were three days stale and nobody could reconstruct what shipped. That kind of toil is exactly what makes incidents unrecoverable. Have you seen that pattern in your org, or are you dealing with a different flavor of chaos?",
+      "question_asked": 1,
+      "realism": 5
+    },
+    {
+      "persona": "alex",
+      "condition": "original",
+      "turn": 4,
+      "turn_type": "closed",
+      "user_message": "Would you recommend we switch tools right now?",
+      "response": "Probably not mid-quarter \u2014 tooling migrations carry a real cost and if the current tool isn't actively blocking work, the ROI math doesn't work. What's the trigger making you consider it now \u2014 a specific pain point or just general frustration building up?",
+      "question_asked": 1,
+      "realism": 4
+    },
+    {
+      "persona": "alex",
+      "condition": "original",
+      "turn": 5,
+      "turn_type": "closed",
+      "user_message": "Is Terraform support a hard requirement for you?",
+      "response": "Absolutely \u2014 if I can't manage it in Terraform, it doesn't exist in our infrastructure. We're a fintech shop and every config needs to be version-controlled for audit purposes. Is the provider you're looking at vendor-maintained or community-only? That distinction matters a lot to me.",
+      "question_asked": 1,
+      "realism": 4
+    },
+    {
+      "persona": "alex",
+      "condition": "throttled",
+      "turn": 1,
+      "turn_type": "open",
+      "user_message": "Hey, I wanted to ask \u2014 how do you typically evaluate a new project management tool?",
+      "response": "API quality first \u2014 I run introspection against the GraphQL endpoint, check the webhook event catalog, and look for a Terraform provider before the UI enters the picture. If the REST API is solid but GraphQL has schema drift, that's a yellow flag because my automation depends on it staying stable. What's the primary integration you need \u2014 CI/CD pipeline hooks, or mostly just project tracking?",
+      "question_asked": 1,
+      "realism": 5
+    },
+    {
+      "persona": "alex",
+      "condition": "throttled",
+      "turn": 2,
+      "turn_type": "closed",
+      "user_message": "Do you use Jira?",
+      "response": "Yeah, we have a couple legacy projects on Jira. Works well enough for basic tracking but the API starts showing its age once you try event-driven automation.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "alex",
+      "condition": "throttled",
+      "turn": 3,
+      "turn_type": "open",
+      "user_message": "What's the biggest process failure you've seen on an engineering team?",
+      "response": "Classic one: entire deployment pipeline managed by manual Slack messages and copy-pasted ticket links. No webhooks, no state machine, just humans as the integration layer. When a deploy broke late at night, ticket states were three days stale and nobody could reconstruct what had actually shipped. That toil doesn't just slow you down \u2014 it makes incidents unrecoverable. How does your team currently handle state transitions between deploy stages?",
+      "question_asked": 1,
+      "realism": 5
+    },
+    {
+      "persona": "alex",
+      "condition": "throttled",
+      "turn": 4,
+      "turn_type": "closed",
+      "user_message": "Would you recommend we switch tools right now?",
+      "response": "No \u2014 mid-quarter tooling migrations carry real team cost. Unless your current tool is actively blocking work, wait until the next planning cycle when you can budget migration effort properly.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "alex",
+      "condition": "throttled",
+      "turn": 5,
+      "turn_type": "closed",
+      "user_message": "Is Terraform support a hard requirement for you?",
+      "response": "Hard yes. If I can't manage it in Terraform, it doesn't exist in our infrastructure \u2014 especially in fintech where audit trails require every config to be version-controlled in git.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "baseline",
+      "turn": 1,
+      "turn_type": "open",
+      "user_message": "How do you typically present deliverables to clients?",
+      "response": "I send a white-labeled share link \u2014 the client gets a clean review portal with my studio's branding, not the tool's logo staring back at them. I walk them through the deliverables in a short Loom or live call, then let them leave threaded comments directly on the file. It keeps revision rounds organized and I'm not chasing feedback across email threads.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "baseline",
+      "turn": 2,
+      "turn_type": "closed",
+      "user_message": "Do you use Figma?",
+      "response": "Yes, Figma is the core of my workflow \u2014 everything from brand systems to final export lives there.",
+      "question_asked": 0,
+      "realism": 4
+    },
+    {
+      "persona": "maya",
+      "condition": "baseline",
+      "turn": 3,
+      "turn_type": "open",
+      "user_message": "What's the most frustrating part of client feedback cycles?",
+      "response": "When feedback comes in scattered \u2014 email, Slack, a voice note, a screenshot with annotations drawn in the iPhone Photos app. By revision round three you're cross-referencing six different places to figure out which version a comment even belongs to. The actual design work is fast; reconciling feedback from non-designers who don't have a shared vocabulary is where the hours disappear.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "baseline",
+      "turn": 4,
+      "turn_type": "closed",
+      "user_message": "Would you ever do a fixed-price project?",
+      "response": "I've done it, but I price fixed-rate projects at a significant premium to account for scope creep \u2014 the discovery call has to nail the deliverable list completely or the math stops working in my favor.",
+      "question_asked": 0,
+      "realism": 4
+    },
+    {
+      "persona": "maya",
+      "condition": "baseline",
+      "turn": 5,
+      "turn_type": "closed",
+      "user_message": "Is white-label a hard requirement for you?",
+      "response": "Yes. If the client share view shows your logo, I can't use it for client-facing deliverables \u2014 that's a dealbreaker, not a nice-to-have.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "original",
+      "turn": 1,
+      "turn_type": "open",
+      "user_message": "How do you typically present deliverables to clients?",
+      "response": "I send a white-labeled share link so the client lands on a clean review portal with my studio's branding \u2014 not someone else's logo undermining why they hired me. I do a short walkthrough video or live call, then let them comment directly on the file so feedback stays threaded and attached to the right revision. Do you do any async walkthroughs or is it always live?",
+      "question_asked": 1,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "original",
+      "turn": 2,
+      "turn_type": "closed",
+      "user_message": "Do you use Figma?",
+      "response": "Yes, Figma is the core of my workflow \u2014 brand systems, deliverables, client share, everything runs through it. Is yours a Figma-native setup or are you mixing tools in the stack?",
+      "question_asked": 1,
+      "realism": 4
+    },
+    {
+      "persona": "maya",
+      "condition": "original",
+      "turn": 3,
+      "turn_type": "open",
+      "user_message": "What's the most frustrating part of client feedback cycles?",
+      "response": "Scattered feedback channels \u2014 email, Slack, a voice note, a photo of a printed page with pen marks. By revision round three you're playing archaeologist trying to figure out which version a comment even applies to. The design itself is fast; reconciling vague feedback from someone who says 'make it pop' across six different formats is where the hours and the margins disappear. What does your current client usually default to when they give feedback?",
+      "question_asked": 1,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "original",
+      "turn": 4,
+      "turn_type": "closed",
+      "user_message": "Would you ever do a fixed-price project?",
+      "response": "Sometimes \u2014 but I price fixed-rate projects at a premium and the discovery call has to completely nail the deliverable list or I'm eating scope creep. Are you working with clients who push back on hourly billing or prefer a project price upfront?",
+      "question_asked": 1,
+      "realism": 4
+    },
+    {
+      "persona": "maya",
+      "condition": "original",
+      "turn": 5,
+      "turn_type": "closed",
+      "user_message": "Is white-label a hard requirement for you?",
+      "response": "Yes, absolutely \u2014 if the client share view shows your logo, I can't use it for client-facing deliverables, that's a dealbreaker. Is white-label available at the standard plan tier or is it gated behind enterprise pricing?",
+      "question_asked": 1,
+      "realism": 3
+    },
+    {
+      "persona": "maya",
+      "condition": "throttled",
+      "turn": 1,
+      "turn_type": "open",
+      "user_message": "How do you typically present deliverables to clients?",
+      "response": "I send a white-labeled share link \u2014 client lands on a clean portal with my studio's branding, not the tool's logo. I pair it with a short Loom walkthrough so they know what they're looking at before they start leaving comments. Threaded feedback on the file beats email chains because every comment stays anchored to the actual deliverable. How many revision rounds do you typically build into a project?",
+      "question_asked": 1,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "throttled",
+      "turn": 2,
+      "turn_type": "closed",
+      "user_message": "Do you use Figma?",
+      "response": "Yes \u2014 Figma is the center of everything, from initial brand system to final export.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "throttled",
+      "turn": 3,
+      "turn_type": "open",
+      "user_message": "What's the most frustrating part of client feedback cycles?",
+      "response": "Feedback scatter. Email, Slack, a screenshot with arrows drawn in the Notes app, sometimes a voice memo from someone driving. By revision round three you're doing archaeology to figure out which version a comment even belongs to. I can move fast on the design itself \u2014 it's reconciling 'make it more energetic' across six formats from a client who doesn't have design vocabulary where the hours and the margin evaporate. What does your worst feedback round look like?",
+      "question_asked": 1,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "throttled",
+      "turn": 4,
+      "turn_type": "closed",
+      "user_message": "Would you ever do a fixed-price project?",
+      "response": "Yes, but fixed-price only works when the discovery call completely locks the deliverable list \u2014 I price in a scope buffer and if the client starts adding rounds, the project goes hourly.",
+      "question_asked": 0,
+      "realism": 5
+    },
+    {
+      "persona": "maya",
+      "condition": "throttled",
+      "turn": 5,
+      "turn_type": "closed",
+      "user_message": "Is white-label a hard requirement for you?",
+      "response": "Yes. If the client share view shows your logo instead of mine, I can't send that link \u2014 it's a dealbreaker, not a preference.",
+      "question_asked": 0,
+      "realism": 5
+    }
+  ],
+  "summary": {
+    "by_condition": {
+      "baseline": {
+        "open_q_rate": 0.0,
+        "closed_q_rate": 0.0,
+        "overall_q_rate": 0.0,
+        "open_realism": 4.75,
+        "closed_realism": 4.333333333333333,
+        "overall_realism": 4.5
+      },
+      "original": {
+        "open_q_rate": 1.0,
+        "closed_q_rate": 1.0,
+        "overall_q_rate": 1.0,
+        "open_realism": 5.0,
+        "closed_realism": 3.8333333333333335,
+        "overall_realism": 4.3
+      },
+      "throttled": {
+        "open_q_rate": 1.0,
+        "closed_q_rate": 0.0,
+        "overall_q_rate": 0.4,
+        "open_realism": 5.0,
+        "closed_realism": 5.0,
+        "overall_realism": 5.0
+      }
+    },
+    "by_condition_and_persona": {
+      "alex": {
+        "baseline": {
+          "open_q_rate": 0.0,
+          "closed_q_rate": 0.0
+        },
+        "original": {
+          "open_q_rate": 1.0,
+          "closed_q_rate": 1.0
+        },
+        "throttled": {
+          "open_q_rate": 1.0,
+          "closed_q_rate": 0.0
+        }
+      },
+      "maya": {
+        "baseline": {
+          "open_q_rate": 0.0,
+          "closed_q_rate": 0.0
+        },
+        "original": {
+          "open_q_rate": 1.0,
+          "closed_q_rate": 1.0
+        },
+        "throttled": {
+          "open_q_rate": 1.0,
+          "closed_q_rate": 0.0
+        }
+      }
+    },
+    "success_criterion": {
+      "closed_q_rate_reduction_pp": 100.0,
+      "open_q_rate_drop_pp": 0.0,
+      "threshold_met_closed_reduction": true,
+      "threshold_met_open_preservation": true,
+      "signal": "STRONG"
+    }
+  }
+}
