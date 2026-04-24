@@ -1,0 +1,37 @@
+{
+  "experiment_id": "1.01",
+  "title": "Schema width",
+  "group": 1,
+  "size": "M",
+  "hypothesis": "Minimal schemas underperform; maximal schemas plateau or hurt due to surface area for contradiction. PersonaV1 width sits near the optimum.",
+  "control": "PersonaV1 (~15 fields)",
+  "variant": "PersonaMinimal (5 fields: name, summary, goals, pains, vocabulary)",
+  "sample_size": 2,
+  "metrics": {
+    "judge_rubric_score_standard": 0.84,
+    "judge_rubric_score_minimal": 0.74,
+    "delta": 0.1,
+    "standard_dimensions": {
+      "grounded": 0.9,
+      "distinctive": 0.8,
+      "coherent": 0.9,
+      "actionable": 0.8,
+      "voice_fidelity": 0.7
+    },
+    "minimal_dimensions": {
+      "grounded": 0.9,
+      "distinctive": 0.6,
+      "coherent": 0.8,
+      "actionable": 0.7,
+      "voice_fidelity": 0.7
+    }
+  },
+  "result": "Standard PersonaV1=0.84, Minimal(5 fields)=0.74, delta=+0.10",
+  "decision": "adopt",
+  "config_diff": {},
+  "timestamp": "2026-04-10T16:40:28.260105",
+  "duration_ms": 58977,
+  "cost_usd": 0.0499,
+  "owner": "yash",
+  "tenant_id": "tenant_acme_corp"
+}
