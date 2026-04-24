@@ -1,0 +1,86 @@
+{
+  "experiment_id": "5.09",
+  "title": "Eval drift over model versions",
+  "model_version": "claude-sonnet-4-6",
+  "judge_role": "claude-code-as-judge",
+  "run_timestamp": "2026-04-10T06:44:27.312504+00:00",
+  "rubric_dimensions": [
+    "grounded",
+    "distinctive",
+    "coherent",
+    "actionable",
+    "voice_fidelity"
+  ],
+  "rubric_scale": "0-5 per dimension",
+  "personas": [
+    {
+      "persona_key": "persona_00",
+      "persona_name": "Alex the API-First DevOps Engineer",
+      "cluster_id": "clust_1adb81b417c0",
+      "deterministic": {
+        "schema_validity": 1.0,
+        "groundedness_rate": 1.0,
+        "cost_per_persona_usd": 0.0
+      },
+      "judge": {
+        "model_version": "claude-sonnet-4-6",
+        "judge_role": "claude-code-as-judge",
+        "dimensions_raw": {
+          "grounded": 5,
+          "distinctive": 5,
+          "coherent": 5,
+          "actionable": 5,
+          "voice_fidelity": 4
+        },
+        "dimensions_normalized": {
+          "grounded": 1.0,
+          "distinctive": 1.0,
+          "coherent": 1.0,
+          "actionable": 1.0,
+          "voice_fidelity": 0.8
+        },
+        "mean_normalized": 0.96,
+        "mean_out_of_5": 4.8
+      }
+    },
+    {
+      "persona_key": "persona_01",
+      "persona_name": "Maya the Freelance Brand Designer",
+      "cluster_id": "clust_bc52ee85eb83",
+      "deterministic": {
+        "schema_validity": 1.0,
+        "groundedness_rate": 1.0,
+        "cost_per_persona_usd": 0.0
+      },
+      "judge": {
+        "model_version": "claude-sonnet-4-6",
+        "judge_role": "claude-code-as-judge",
+        "dimensions_raw": {
+          "grounded": 5,
+          "distinctive": 5,
+          "coherent": 5,
+          "actionable": 5,
+          "voice_fidelity": 5
+        },
+        "dimensions_normalized": {
+          "grounded": 1.0,
+          "distinctive": 1.0,
+          "coherent": 1.0,
+          "actionable": 1.0,
+          "voice_fidelity": 1.0
+        },
+        "mean_normalized": 1.0,
+        "mean_out_of_5": 5.0
+      }
+    }
+  ],
+  "summary": {
+    "n_personas": 2,
+    "overall_mean_normalized": 0.98,
+    "overall_mean_out_of_5": 4.9,
+    "all_schema_valid": true,
+    "avg_groundedness_rate": 1.0,
+    "total_cost_usd": 0.0
+  },
+  "drift_detection_instructions": "Run this script with a different MODEL_VERSION constant when a new model release is available. Diff the two snapshot JSON files to detect judge calibration drift. Key signal: delta in overall_mean_out_of_5 across versions."
+}
