@@ -1,0 +1,134 @@
+{
+  "experiment": "3.19b",
+  "name": "Recency Weighting \u2014 Real Temporal Fixture (60-day spread)",
+  "fixture": "synthesis/fixtures/temporal_tenant/records.json",
+  "config": {
+    "half_life_days": 30,
+    "reference_date": "2026-04-10",
+    "most_recent_record": "ga4_t12 (2026-04-07)",
+    "temporal_span_days": 56
+  },
+  "weight_table": [
+    {
+      "record_id": "ga4_t01",
+      "timestamp": "2026-02-10T14:00:00Z",
+      "event": "browse_features",
+      "days_from_most_recent": 56.0,
+      "decay_weight": 0.1546,
+      "label": "LOW WEIGHT"
+    },
+    {
+      "record_id": "ga4_t02",
+      "timestamp": "2026-02-12T10:00:00Z",
+      "event": "read_docs",
+      "days_from_most_recent": 54.2,
+      "decay_weight": 0.1644,
+      "label": "LOW WEIGHT"
+    },
+    {
+      "record_id": "ga4_t03",
+      "timestamp": "2026-02-14T16:00:00Z",
+      "event": "view_pricing",
+      "days_from_most_recent": 51.9,
+      "decay_weight": 0.1772,
+      "label": "LOW WEIGHT"
+    },
+    {
+      "record_id": "ga4_t04",
+      "timestamp": "2026-02-18T11:00:00Z",
+      "event": "watch_demo",
+      "days_from_most_recent": 48.1,
+      "decay_weight": 0.2011,
+      "label": "LOW WEIGHT"
+    },
+    {
+      "record_id": "ga4_t05",
+      "timestamp": "2026-02-22T09:00:00Z",
+      "event": "browse_templates",
+      "days_from_most_recent": 44.2,
+      "decay_weight": 0.2291,
+      "label": "MEDIUM WEIGHT"
+    },
+    {
+      "record_id": "ga4_t06",
+      "timestamp": "2026-02-28T15:00:00Z",
+      "event": "read_case_study",
+      "days_from_most_recent": 38.0,
+      "decay_weight": 0.2822,
+      "label": "MEDIUM WEIGHT"
+    },
+    {
+      "record_id": "ga4_t07",
+      "timestamp": "2026-03-05T13:00:00Z",
+      "event": "help_search",
+      "days_from_most_recent": 33.0,
+      "decay_weight": 0.3324,
+      "label": "MEDIUM WEIGHT"
+    },
+    {
+      "record_id": "ga4_t08",
+      "timestamp": "2026-03-10T10:00:00Z",
+      "event": "webinar_attended",
+      "days_from_most_recent": 28.2,
+      "decay_weight": 0.3911,
+      "label": "MEDIUM WEIGHT"
+    },
+    {
+      "record_id": "ga4_t09",
+      "timestamp": "2026-03-15T14:00:00Z",
+      "event": "onboarding_checklist",
+      "days_from_most_recent": 23.0,
+      "decay_weight": 0.4646,
+      "label": "HIGH WEIGHT"
+    },
+    {
+      "record_id": "ga4_t10",
+      "timestamp": "2026-03-18T11:00:00Z",
+      "event": "integrations_browse",
+      "days_from_most_recent": 20.1,
+      "decay_weight": 0.5113,
+      "label": "HIGH WEIGHT"
+    },
+    {
+      "record_id": "ga4_t11",
+      "timestamp": "2026-03-28T09:00:00Z",
+      "event": "webhook_setup",
+      "days_from_most_recent": 10.2,
+      "decay_weight": 0.7116,
+      "label": "HIGH WEIGHT"
+    },
+    {
+      "record_id": "ga4_t12",
+      "timestamp": "2026-04-07T14:00:00Z",
+      "event": "api_config_deep",
+      "days_from_most_recent": 0.0,
+      "decay_weight": 1.0,
+      "label": "HIGH WEIGHT"
+    }
+  ],
+  "baseline": {
+    "order": "source (t01 first)",
+    "persona": "This user appears to be a curious evaluator in the early stages of exploring the platform \u2014 they started by browsing features and reading quickstart documentation, suggesting initial discovery intent without a clear use case committed. Their early sessions (February) are short and broad: pricing pages, demo videos, templates, and a customer case study all point to a pre-purchase research phase typical of a decision-maker or evaluator comparing tools. They attended a project management webinar and worked through the onboarding checklist in March, indicating growing engagement and a transition toward active adoption. Overall the persona reads as a methodical evaluator gradually warming up to the product.",
+    "freshness_score": 2,
+    "freshness_justification": "Score 2/5 \u2014 the persona describes a historical evaluation arc; it gives no signal about what the user is doing this week and reads like a retrospective summary."
+  },
+  "weighted": {
+    "order": "recency-sorted (t12 first)",
+    "persona": "This user is actively integrating the platform into their engineering workflow right now \u2014 their most recent session (3 days ago) shows deep engagement with the GraphQL API docs and a direct complaint that schema drift is breaking their automation scripts, signaling a technically sophisticated user who has moved past evaluation into production scripting. The prior high-weight session (13 days ago) involved 47 minutes debugging webhook authentication failures, confirming they are in an active integration phase encountering real friction. Their earlier broad behavior (feature browsing, pricing, webinar) now reads as a completed onboarding arc, with the current persona firmly in the power-user / integration-pain segment who needs better API stability guarantees and auth documentation.",
+    "freshness_score": 4,
+    "freshness_justification": "Score 4/5 \u2014 leading with the GraphQL complaint and webhook debug session gives an immediate sense of the user's current friction and active integration work, grounding the persona in present-tense activity rather than a historical average."
+  },
+  "freshness_delta": 2,
+  "signal": "STRONG",
+  "recommendation": "ADOPT",
+  "comparison_3_19": {
+    "temporal_span_days": 5,
+    "freshness_delta": 1.0,
+    "signal": "WEAK/DEFER \u2014 all records near-identical timestamps"
+  },
+  "comparison_3_19b": {
+    "temporal_span_days": 56,
+    "freshness_delta": 2,
+    "signal": "STRONG"
+  }
+}
